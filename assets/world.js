@@ -231,6 +231,28 @@
     under.add(c); coins.push(c);
   }
 
+  /* ---------- all the way down: rising glass bubbles, gold rings and sapphires that dodge the cursor and pop ---------- */
+  const deep = [];
+  const deepHitGeo = new T.SphereGeometry(1.15, 12, 8), deepHitMat = new T.MeshBasicMaterial({ visible: false });
+  for (let i = 0, n = coarse ? 16 : 28; i < n; i++) {
+    const kind = i % 7 === 3 ? 'ring' : i % 7 === 6 ? 'gem' : 'bubble';
+    let m;
+    if (kind === 'bubble') { m = new T.Group(); m.add(new T.Mesh(new T.SphereGeometry(1, 32, 24), glass), new T.Mesh(new T.SphereGeometry(1.005, 32, 24), rimMat)); }
+    else if (kind === 'ring') m = new T.Mesh(new T.TorusGeometry(.8, .16, 20, 64), gold);
+    else m = new T.Mesh(new T.OctahedronGeometry(.8, 0), sapphire);
+    m.userData = { kind, side: i % 2 ? 1 : -1, frac: .88 + Math.random() * .15, z: -2.5 - Math.random() * 6, x: 0,
+      r0: kind === 'bubble' ? .14 + Math.random() * .3 : .2 + Math.random() * .16, r: .3,
+      v: kind === 'bubble' ? .16 + Math.random() * .22 : .03 + Math.random() * .05, phase: Math.random() * 6, push: new T.Vector3(), popped: 0, s: 1 };
+    m.position.set(0, WY - 3 - Math.random() * (DEPTH + 4), m.userData.z);
+    m.rotation.set(Math.random() * 3, Math.random() * 3, 0);
+    if (kind !== 'bubble') m.add(new T.Mesh(deepHitGeo, deepHitMat));   // easier to click than the thin ring itself
+    under.add(m); deep.push(m);
+  }
+  const placeDeep = () => deep.forEach(m => {
+    const u = m.userData, D = 10 - u.z, halfW = Math.tan(T.MathUtils.degToRad(18)) * D * camera.aspect;
+    u.x = u.side * halfW * u.frac; u.r = u.r0 * (small() ? .7 : 1); m.position.x = u.x;
+  });
+
   /* ---------- sparkle bursts (pooled) ---------- */
   const MAXP = 360;
   const pGeo = new T.BufferGeometry();
@@ -266,6 +288,7 @@
     waterMat.uniforms.res.value.set(w * DPR, h * DPR);
     if (small()) { pivot.position.set(0.3, 2.35, -1.5); pivot.scale.setScalar(0.7); }
     else { pivot.position.set(2.7, 0.55, 0); pivot.scale.setScalar(1); }
+    placeDeep();
   };
   layout(); addEventListener('resize', layout);
 
@@ -273,8 +296,20 @@
   let mx = 0, my = 0, cx = 0, cy = 0, px = -1, py = -1;
   const ray = new T.Raycaster(), ndc = new T.Vector2();
   const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav,.dock,.hero-tags'));
+  let overUI = false;
+  addEventListener('pointermove', e => { overUI = !!interactive(e.target); }, { passive: true });
   const setRay = () => { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); };
   const hitCrown = () => { if (!isHome || px < 0) return null; setRay(); return ray.intersectObjects(crownHits, true)[0] || null; };
+  const hitDeep = () => {
+    if (px < 0 || camera.position.y > WY) return null; setRay();
+    const h = ray.intersectObjects(deep.filter(m => m.visible && !m.userData.popped), true)[0]; if (!h) return null;
+    let o = h.object; while (o && !deep.includes(o)) o = o.parent; return o;
+  };
+  const popDeep = m => {
+    const u = m.userData; if (u.popped) return;
+    u.popped = 1; burst(m.position.clone(), 40, u.kind === 'bubble' ? 0xcfdcff : 0xffd36b, .05); burst(m.position.clone(), 14, 0xffd36b, .04);
+    setTimeout(() => { u.popped = 0; u.s = 0; m.position.y -= 7; }, 2000);
+  };
   const hitBubble = () => { if (!isHome || px < 0) return null; setRay(); const h = ray.intersectObjects(bubbles.filter(b => !b.userData.popped).map(b => b.children[0]), false)[0]; return h ? h.object.parent : null; };
 
   let spin = 0, spinVel = 0.25, jump = 0, jumpVel = 0, glow = 0, hoverScale = 1;
@@ -300,9 +335,11 @@
     setTimeout(() => { u.popped = 0; u.s = 0; b.position.set(u.home.x, WY - 0.8, u.home.z); }, 2200);
   };
   addEventListener('click', e => {
-    if (!isHome || interactive(e.target)) return;
+    if (interactive(e.target)) return;
     px = e.clientX; py = e.clientY;
     if (dragMoved > 6) { dragMoved = 0; return; }
+    const d = hitDeep(); if (d) return popDeep(d);
+    if (!isHome) return;
     const b = hitBubble(); if (b) return pop(b);
     if (hitCrown()) coronation();
   });
@@ -353,6 +390,7 @@
     renderer.setClearColor(below ? scene.fog.color : COL.haze, 1);
     sky.visible = !below;
 
+    let overB = false;
     if (isHome) {
       // crown: follows the cursor, spins with momentum, jumps when crowned
       if (!dragging) { spinVel *= 0.965; spinVel += (0.006 - spinVel) * 0.02; spin += spinVel * (reduce ? 0 : 1); }
@@ -371,8 +409,8 @@
       document.documentElement.classList.toggle('over-crown', !!hov);
 
       // bubbles: bob, drift away from the cursor, pop on click, rise again
-      const hb = coarse ? null : hitBubble();
-      document.documentElement.classList.toggle('over-bubble', !!hb && !hov);
+      const hb = coarse || overUI ? null : hitBubble();
+      overB = !!hb && !hov;
       if (px >= 0) setRay();
       bubbles.forEach(b => {
         const u = b.userData;
@@ -384,15 +422,15 @@
           // distance from the bubble to the pointer ray
           ray.ray.closestPointToPoint(b.position, v3);
           const d = v3.distanceTo(b.position), reach = u.r * 2.6;
-          if (d < reach) { const f = (1 - d / reach) * 0.08; u.push.add(tmp.copy(b.position).sub(v3).normalize().multiplyScalar(f)); }
+          if (d < reach) { const f = (1 - d / reach) * 0.08; u.push.add(b.position.clone().sub(v3).normalize().multiplyScalar(f)); }
         }
         u.push.multiplyScalar(0.92);
         target.add(u.push.clone().multiplyScalar(6));
         b.position.lerp(target, u.popped ? 0 : 0.05);
         b.children[1].rotation.y = t * 0.3;
       });
-      rimMat.uniforms.t.value = t;
     }
+    rimMat.uniforms.t.value = t;
 
     // the deep
     rays.forEach(r => { r.material.uniforms.t.value = t; r.position.x += Math.sin(t * 0.3 + r.userData.p) * 0.004; r.lookAt(camera.position.x, r.position.y, camera.position.z); r.rotation.z = Math.sin(t * .25 + r.userData.p) * .08; });
@@ -402,6 +440,27 @@
       if (c.position.y < WY - DEPTH - 8) c.position.y = WY - 2;
     });
     under.visible = below || camera.position.y < WY + 2;
+    const dh = below && !coarse && !overUI ? hitDeep() : null;
+    document.documentElement.classList.toggle('over-bubble', overB || !!dh);
+    if (below && px >= 0) setRay();
+    deep.forEach(m => {
+      const u = m.userData;
+      u.s += ((u.popped ? 0 : 1) - u.s) * (u.popped ? .5 : .04);
+      m.scale.setScalar(Math.max(.0001, u.r * u.s)); m.visible = u.s > .01;
+      if (!reduce) m.position.y += dt * u.v;
+      if (m.position.y > WY - 1.6) { m.position.y = WY - DEPTH - 8; u.s = 0; }   // reaches the surface, rises again from the depths
+      if (below && px >= 0 && !coarse) {
+        ray.ray.closestPointToPoint(m.position, v3);
+        const d = v3.distanceTo(m.position), reach = u.r * 3;
+        if (d < reach && d > u.r * .9)   // leans away as the cursor approaches, holds still once it is on it
+          u.push.add(m.position.clone().sub(v3).normalize().multiplyScalar((1 - d / reach) * u.r * .013));
+      }
+      u.push.multiplyScalar(.92);
+      m.position.x += ((u.x + Math.sin(t * .5 + u.phase) * .25 + u.push.x * 6) - m.position.x) * .05;
+      m.position.z += ((u.z + u.push.z * 6) - m.position.z) * .05;
+      m.position.y += u.push.y * .25;
+      if (u.kind === 'bubble') m.children[1].rotation.y = t * .3; else { m.rotation.y += dt * .5; m.rotation.x += dt * .2; }
+    });
 
     // sparks
     for (let j = 0; j < MAXP; j++) {

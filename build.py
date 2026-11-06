@@ -137,14 +137,14 @@ def nav(active):
 FOOTER = f"""<footer>
   <div class="wrap">
     <div class="grid">
-      <div>
+      <div class="reveal">
         <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
         <p>Custom websites and software, built to order.</p>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
-      <div><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
-      <div><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
-      <div><h4>Order</h4><ul><li><a href="{CHECKOUT}">Checkout</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
+      <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
+      <div class="reveal"><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
+      <div class="reveal"><h4>Order</h4><ul><li><a href="{CHECKOUT}">Checkout</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
     <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>

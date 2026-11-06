@@ -158,3 +158,8 @@ footer{background:linear-gradient(180deg,rgba(0,0,0,.6),#000 40%)}
 :root{--edge:rgba(198,255,61,.95)}
 .sheet,.product,.controls,.faq details,.founder,.box,.condition{--edge:rgba(120,190,0,.9)}
 #industries .h-split em .wi{background:linear-gradient(transparent 60%,#c6ff3d 60%,#c6ff3d 92%,transparent 92%);-webkit-background-clip:border-box;background-clip:border-box;-webkit-text-fill-color:#0a0a0a;color:#0a0a0a;animation:none}
+
+/* character layer: the live dot pulses lime */
+@keyframes live-lime{0%{box-shadow:0 0 0 0 rgba(198,255,61,.7)}100%{box-shadow:0 0 0 9px rgba(198,255,61,0)}}
+.hero-tags li.live::before,.chip i{animation:live-lime 2s ease-out infinite}
+.brief{--edge:rgba(198,255,61,.9)}

@@ -643,3 +643,79 @@ body{overflow-x:hidden;overflow-x:clip}
 
 /* founder pages: LinkedIn button */
 .btn-linkedin svg{width:18px;height:18px}
+
+/* =====================================================================
+   Character — more motion for text and boxes (all off under reduced motion)
+   ===================================================================== */
+@keyframes rise-in{from{opacity:0;transform:translateY(16px)}}
+@keyframes drop-in{from{opacity:0;transform:translateY(-12px)}}
+
+/* nav and dock ease in on every page */
+.js .brand{animation:drop-in .7s cubic-bezier(.2,.8,.2,1) .05s backwards}
+.js .nav-links li{animation:drop-in .6s cubic-bezier(.2,.8,.2,1) backwards}
+.js .nav-links li:nth-child(1){animation-delay:.1s}.js .nav-links li:nth-child(2){animation-delay:.16s}.js .nav-links li:nth-child(3){animation-delay:.22s}
+.js .nav-links li:nth-child(4){animation-delay:.28s}.js .nav-links li:nth-child(5){animation-delay:.34s}
+.js .nav-cta > *{animation:drop-in .6s cubic-bezier(.2,.8,.2,1) .4s backwards}
+@keyframes dock-in{from{opacity:0;transform:translate(-50%,30px)}}
+.dock{animation:dock-in .9s cubic-bezier(.2,.8,.2,1) .7s backwards}
+
+/* hero: tags, lede and buttons follow the headline letters in */
+.js .hero-tags li{animation:rise-in .7s cubic-bezier(.2,.8,.2,1) backwards}
+.js .hero-tags li:nth-child(1){animation-delay:.2s}.js .hero-tags li:nth-child(2){animation-delay:.28s}.js .hero-tags li:nth-child(3){animation-delay:.36s}.js .hero-tags li:nth-child(4){animation-delay:.44s}
+.js .hero .lede{animation:rise-in .9s cubic-bezier(.2,.8,.2,1) .75s backwards}
+.js .hero .btn-row > *{animation:rise-in .8s cubic-bezier(.2,.8,.2,1) backwards}
+.js .hero .btn-row > :nth-child(1){animation-delay:.9s}.js .hero .btn-row > :nth-child(2){animation-delay:1s}
+.js .hero-foot,.js .play-hint{animation:rise-in .9s cubic-bezier(.2,.8,.2,1) 1.15s backwards}
+/* the live dot pulses */
+@keyframes live{0%{box-shadow:0 0 0 0 rgba(88,211,154,.7)}100%{box-shadow:0 0 0 9px rgba(88,211,154,0)}}
+.hero-tags li.live::before,.chip i{animation:live 2s ease-out infinite}
+
+/* inner page headers build in on arrival */
+.js .page-head .back{animation:rise-in .7s cubic-bezier(.2,.8,.2,1) .05s backwards}
+.js .page-head .lede{animation:rise-in .9s cubic-bezier(.2,.8,.2,1) .55s backwards}
+.js .page-head .btn-row > *,.js .page-head .search,.js .page-head .toc a{animation:rise-in .8s cubic-bezier(.2,.8,.2,1) .7s backwards}
+.js .page-head .toc a:nth-child(2){animation-delay:.76s}.js .page-head .toc a:nth-child(3){animation-delay:.82s}.js .page-head .toc a:nth-child(4){animation-delay:.88s}
+.js .page-head .toc a:nth-child(5){animation-delay:.94s}.js .page-head .toc a:nth-child(6){animation-delay:1s}.js .page-head .toc a:nth-child(7){animation-delay:1.06s}
+.js .profile-copy .facts,.js .profile-copy .contact-row,.js .profile-copy .btn-row{animation:rise-in .8s cubic-bezier(.2,.8,.2,1) .6s backwards}
+.js .profile-copy .contact-row{animation-delay:.75s}.js .profile-copy .btn-row{animation-delay:.9s}
+
+/* checkmarks pop in one by one once their card arrives */
+@keyframes tick-pop{from{transform:scale(0) rotate(-60deg)}70%{transform:scale(1.25)}}
+.anim .reveal.in .ticks > li::before{animation:tick-pop .55s cubic-bezier(.3,1.4,.5,1) backwards;animation-delay:calc(var(--si,0) * 80ms + .45s)}
+
+/* buttons: arrows nudge forward on hover */
+.btn svg{transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-linkedin:hover svg{transform:scale(1.15)}
+
+/* FAQ answers slide open */
+@keyframes faq-open{from{opacity:0;transform:translateY(-8px)}}
+.faq details[open] .a{animation:faq-open .45s cubic-bezier(.2,.8,.2,1)}
+
+/* founder initials shimmer */
+.portrait{background-size:200% 200%;animation:sheen 8s ease-in-out infinite}
+
+/* a slow light travels around the affiliate band and the contact form */
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes orbit{to{--ang:360deg}}
+.aff,.brief{position:relative}
+.aff::after,.brief::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;z-index:3;
+  background:conic-gradient(from var(--ang),transparent 0 62%,var(--edge) 80%,transparent 92%);animation:orbit 7s linear infinite;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+.brief::after{animation-duration:9s;animation-direction:reverse;opacity:.7}
+
+/* footer links underline from the left */
+footer ul a{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .35s var(--ease),color .2s}
+footer ul a:hover{background-size:100% 1px}
+
+/* strip cells and stats lift gently on hover */
+.strip .cell,.stat{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+
+/* reduced motion also stills the decorative pseudo-elements */
+@media (prefers-reduced-motion:reduce){*::before,*::after{animation:none!important;transition:none!important}}
+
+/* count-up numbers keep the size and colour of the figure they sit in */
+.stat b span,.aff .big span,.strip b span{font:inherit;color:inherit;letter-spacing:inherit;display:inline;transform:none}
+
+/* royal: keep the hero hint readable over the bright sky */
+.play-hint{background:rgba(6,16,70,.5);color:#fff}

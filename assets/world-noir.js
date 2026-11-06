@@ -31,6 +31,8 @@
   /* =====================================================================
      1. The ribbon (orthographic, in page pixels; the camera scrolls with the page)
      ===================================================================== */
+  let mx = 0, my = 0, cx = 0, cy = 0, px = -1, py = -1, overUI = false;
+  const ray = new T.Raycaster(), ndc = new T.Vector2();
   const rScene = new T.Scene();
   const rCam = new T.OrthographicCamera(0, 1, 0, -1, -10, 10);
   const U = {
@@ -344,6 +346,75 @@
     }
   };
 
+
+  /* =====================================================================
+     2b. Drifters: small chrome spheres, white cubes, lime gems and chrome rings in the margins of every page.
+         Placed in page coordinates at different depths, so they drift past at different speeds as you scroll.
+     ===================================================================== */
+  const dScene = new T.Scene();
+  dScene.environment = scene.environment;
+  dScene.add(new T.HemisphereLight(0xffffff, 0x111111, .35));
+  const dKey = new T.DirectionalLight(0xffffff, 1.2); dKey.position.set(4, 10, 8); dScene.add(dKey);
+  const dLime = new T.PointLight(LIME, 2, 30); dScene.add(dLime);
+  const dCam = new T.PerspectiveCamera(36, 1, .1, 200);
+  const dGeos = [new T.SphereGeometry(1, 40, 28), new T.BoxGeometry(1.45, 1.45, 1.45), new T.IcosahedronGeometry(1.1, 0), new T.TorusGeometry(.85, .3, 20, 64)];
+  const dMats = [chrome, ceramic, limeGem, chromeSoft];
+  const drifters = [];
+  const dRay = new T.Raycaster();
+  const hitGeo = new T.SphereGeometry(1.25, 12, 8), hitMat = new T.MeshBasicMaterial({ visible: false });
+  // a small spark pool of their own
+  const dsGeo = new T.BufferGeometry(), DS = 300;
+  const dsP = new Float32Array(DS * 3), dsL = new Float32Array(DS), dsC = new Float32Array(DS * 3), dsV = new Float32Array(DS * 3);
+  dsGeo.setAttribute('position', new T.BufferAttribute(dsP, 3)); dsGeo.setAttribute('life', new T.BufferAttribute(dsL, 1)); dsGeo.setAttribute('col', new T.BufferAttribute(dsC, 3));
+  const dSparks = new T.Points(dsGeo, sparks.material); dSparks.frustumCulled = false; dScene.add(dSparks);
+  let dsN = 0;
+  const dBurst = (at, n, color, speed) => {
+    const c = new T.Color(color);
+    for (let i = 0; i < n; i++) {
+      const j = dsN; dsN = (dsN + 1) % DS;
+      dsP[j * 3] = at.x; dsP[j * 3 + 1] = at.y; dsP[j * 3 + 2] = at.z;
+      const th = Math.random() * 6.283, ph = Math.acos(2 * Math.random() - 1), sp = speed * (.4 + Math.random() * .8);
+      dsV[j * 3] = Math.sin(ph) * Math.cos(th) * sp; dsV[j * 3 + 1] = Math.cos(ph) * sp + speed * .4; dsV[j * 3 + 2] = Math.sin(ph) * Math.sin(th) * sp;
+      dsL[j] = 1; dsC[j * 3] = c.r; dsC[j * 3 + 1] = c.g; dsC[j * 3 + 2] = c.b;
+    }
+  };
+  const seeded = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+  function placeDrifters() {
+    const W = innerWidth, VH = innerHeight, H = document.documentElement.scrollHeight, phone = small();
+    const u12 = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / VH;
+    const startY = isHome ? VH * 1.15 : VH * .3, span = Math.max(0, H - startY - VH * .25);
+    const count = Math.round(Math.min(phone ? 12 : 24, Math.max(phone ? 4 : 6, span / (phone ? 640 : 430))));
+    while (drifters.length < count) {
+      const k = drifters.length % 4, m = new T.Mesh(dGeos[k], dMats[k]);
+      const hit = new T.Mesh(hitGeo, hitMat); m.add(hit);   // a slightly larger invisible click area
+      m.userData = { push: new T.Vector3(), gone: 0, s: 1, hit }; dScene.add(m); drifters.push(m);
+    }
+    drifters.forEach((m, i) => {
+      const u = m.userData; u.off = i >= count; m.visible = !u.off; if (u.off) return;
+      const side = i % 2, z = -1 - seeded(i, 1) * 7, D = 12 - z;
+      const rpx = phone ? 8 + seeded(i, 2) * 8 : 12 + seeded(i, 2) * 18;
+      const ay = startY + (i + .2 + seeded(i, 3) * .6) / count * span;
+      let ax;
+      if (W >= 1100) { const g = Math.max(46, (W - 1200) / 2 + 12); ax = side ? W - g * (.3 + seeded(i, 4) * .55) : g * (.3 + seeded(i, 4) * .55); }
+      else ax = side ? W * (.9 + seeded(i, 4) * .1) : W * (seeded(i, 4) * .1);
+      // keep clear of text: slide toward the edge if it would sit behind words
+      if (textRects.some(r => ax + rpx > r.l && ax - rpx < r.r && ay + rpx > r.t && ay - rpx < r.b)) ax = side ? W - rpx * .35 : rpx * .35;
+      Object.assign(u, { ay, D, z, r: rpx * u12 * D / 12, phase: seeded(i, 5) * 6, spin: .12 + seeded(i, 6) * .3,
+        home: new T.Vector3((ax - W / 2) * u12 * D / 12, -(ay - VH / 2) * u12, z) });
+      m.position.copy(u.home); m.rotation.set(seeded(i, 7) * 3, seeded(i, 8) * 3, 0);
+    });
+  }
+  const hitDrifter = () => {
+    if (px < 0) return null;
+    ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); dRay.setFromCamera(ndc, dCam);
+    const h = dRay.intersectObjects(drifters.filter(m => m.visible && !m.userData.gone).map(m => m.userData.hit), false)[0]; return h ? h.object.parent : null;
+  };
+  const shatterDrifter = m => {
+    const u = m.userData; if (u.gone) return;
+    u.gone = 1; dBurst(m.position.clone(), 40, LIME, .04 + u.r * .06); dBurst(m.position.clone(), 16, 0xffffff, .035);
+    setTimeout(() => { u.gone = 0; u.s = 0; m.position.copy(u.home); }, 2000);
+  };
+
   /* =====================================================================
      3. Layout, input, loop
      ===================================================================== */
@@ -352,11 +423,13 @@
     const w = innerWidth, h = innerHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
+    dCam.aspect = w / h; dCam.updateProjectionMatrix();
     unitsPerPx = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / h;   // world units per CSS px at the crown's depth
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
     U.uSpread.value = small() ? 70 : 140;
     if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.scale.setScalar(.7); } else { pivot.position.set(2.7, .55, 0); pivot.scale.setScalar(1); }
     rebuild();
+    placeDrifters();
   };
   let pending = 0;
   const relayout = () => { clearTimeout(pending); pending = setTimeout(layout, 120); };
@@ -366,8 +439,6 @@
   layout();
   setTimeout(relayout, 3200);   // once the entrance animations have settled
 
-  let mx = 0, my = 0, cx = 0, cy = 0, px = -1, py = -1;
-  const ray = new T.Raycaster(), ndc = new T.Vector2();
   const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav,.dock,.hero-tags'));
   const setRay = () => { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); };
   const heroOn = () => isHome && scrollY < innerHeight * 1.3;
@@ -376,7 +447,7 @@
 
   let spin = 0, spinVel = .25, jump = 0, jumpVel = 0, glow = 0, hoverScale = 1, dragging = false, dragMoved = 0, lastX = 0;
   addEventListener('pointermove', e => {
-    mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; px = e.clientX; py = e.clientY;
+    mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; px = e.clientX; py = e.clientY; overUI = !!interactive(e.target);
     if (dragging) { const dx = e.clientX - lastX; lastX = e.clientX; dragMoved += Math.abs(dx); spinVel = dx * .012; spin += dx * .012; }
   }, { passive: true });
   addEventListener('pointerdown', e => {
@@ -386,9 +457,11 @@
   });
   addEventListener('pointerup', () => { if (dragging) { dragging = false; root.classList.remove('grabbing'); } });
   addEventListener('click', e => {
-    if (!isHome || interactive(e.target)) return;
+    if (interactive(e.target)) return;
     px = e.clientX; py = e.clientY;
     if (dragMoved > 6) { dragMoved = 0; return; }
+    const dd = hitDrifter(); if (dd) return shatterDrifter(dd);
+    if (!isHome) return;
     const s = hitShape();
     if (s) {
       const u = s.userData; if (u.gone) return;
@@ -430,6 +503,7 @@
     spGeo.attributes.position.needsUpdate = true; spGeo.attributes.a.needsUpdate = true;
 
     // crown + shapes ride up with the hero
+    let overS = false;
     const showStage = heroOn();
     stage.visible = showStage;
     if (showStage) {
@@ -445,7 +519,7 @@
       orb.position.y = 1.55 + Math.sin(t * 1.6) * .1 + jump * 1.4; orb.rotation.y += dt * (.8 + spinVel * 8); orb.rotation.x += dt * .3;
       glow *= .96; gems.forEach((g, i) => { g.material.emissiveIntensity = .5 + glow * 3 + Math.max(0, Math.sin(t * 2 + i)) * .3; });
       root.classList.toggle('over-crown', !!hov);
-      const hs = coarse ? null : hitShape(); root.classList.toggle('over-bubble', !!hs && !hov);
+      const hs = coarse || overUI ? null : hitShape(); overS = !!hs && !hov;
       if (px >= 0) setRay();
       shapes.forEach(s => {
         const u = s.userData;
@@ -461,7 +535,7 @@
         s.position.lerp(target, .05); s.rotation.x += dt * u.spin; s.rotation.y += dt * u.spin * 1.3;
       });
       limeLight.position.set(-3 + Math.sin(t * .5) * 2, .5 + stage.position.y, 4);
-    } else root.classList.remove('over-crown', 'over-bubble');
+    } else root.classList.remove('over-crown');
     for (let j = 0; j < MAXP; j++) {
       if (pLife[j] <= 0) continue;
       pLife[j] = Math.max(0, pLife[j] - dt * .9); pVel[j * 3 + 1] -= dt * .06;
@@ -470,10 +544,41 @@
     }
     pGeo.attributes.position.needsUpdate = true; pGeo.attributes.life.needsUpdate = true;
 
-    // draw: ribbon first (behind), then the crown on top
+    // drifters: the camera follows the page; each shape bobs, spins, dodges the cursor and can be shattered
+    const VH = innerHeight, u12 = unitsPerPx;
+    dCam.position.set(cx * .6, -scrollY * u12, 12); dCam.lookAt(cx * .2, -scrollY * u12, 0);
+    dLime.position.set(-4, -scrollY * u12 + 2, 6);
+    const dh = coarse || overUI ? null : hitDrifter();
+    root.classList.toggle('over-bubble', overS || !!dh);
+    if (px >= 0) { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); dRay.setFromCamera(ndc, dCam); }
+    drifters.forEach(m => {
+      const u = m.userData; if (u.off) return;
+      const sy = VH / 2 + (u.ay - VH / 2 - scrollY) * 12 / u.D;
+      if (sy < -160 || sy > VH + 160) { m.visible = false; return; }
+      u.s += ((u.gone ? 0 : 1) - u.s) * (u.gone ? .5 : .05); m.scale.setScalar(Math.max(.0001, u.r * u.s)); m.visible = u.s > .01;
+      const target = tmp.copy(u.home); target.y += Math.sin(t * .6 + u.phase) * u.r * .7; target.x += Math.cos(t * .4 + u.phase) * u.r * .4;
+      if (px >= 0 && !coarse) {
+        dRay.ray.closestPointToPoint(m.position, v3);
+        const d = v3.distanceTo(m.position), reach = u.r * 3.2;
+        if (d < reach && d > u.r * .9)   // leans away as the cursor approaches, holds still once it is on it
+          u.push.add(m.position.clone().sub(v3).normalize().multiplyScalar((1 - d / reach) * u.r * .013));
+      }
+      u.push.multiplyScalar(.92); target.addScaledVector(u.push, 6);
+      m.position.lerp(target, .06); m.rotation.x += dt * u.spin; m.rotation.y += dt * u.spin * 1.4;
+    });
+    for (let j = 0; j < DS; j++) {
+      if (dsL[j] <= 0) continue;
+      dsL[j] = Math.max(0, dsL[j] - dt * .9); dsV[j * 3 + 1] -= dt * .05;
+      dsP[j * 3] += dsV[j * 3]; dsP[j * 3 + 1] += dsV[j * 3 + 1]; dsP[j * 3 + 2] += dsV[j * 3 + 2];
+      dsV[j * 3] *= .96; dsV[j * 3 + 2] *= .96;
+    }
+    dsGeo.attributes.position.needsUpdate = true; dsGeo.attributes.life.needsUpdate = true;
+
+    // draw: ribbon first (behind), then the drifters, then the crown on top
     renderer.setRenderTarget(null); renderer.clear();
     renderer.render(rScene, rCam);
-    if (showStage) renderer.render(scene, camera);
+    renderer.clearDepth(); renderer.render(dScene, dCam);
+    if (showStage) { renderer.clearDepth(); renderer.render(scene, camera); }
     if (!reduce) requestAnimationFrame(frame);
   }
   if (reduce) {
