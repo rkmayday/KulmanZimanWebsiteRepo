@@ -3,6 +3,7 @@
 
     python3 build.py             -> ./dist     (production: /products is served from dist/products.html, no trailing slash)
     python3 build.py --preview   -> ./preview  (flat files + relative links, for a private preview page)
+    add --theme noir             -> ./dist-noir / ./preview-noir (black, white and lime; "fly through the gates" 3D world)
 
 Each page file starts with a front-matter block:
     ---
@@ -36,6 +37,29 @@ ORG = {
 }
 ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
         "fill='%23071648'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23d4af37' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
+
+ICON_NOIR = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
+             "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
+
+# Themes share every page and feature; they differ in colours, the 3D world and a few lines of copy.
+THEMES = {
+    "royal": {"out": "dist", "preview": "preview", "replace": {}},
+    "noir": {
+        "out": "dist-noir", "preview": "preview-noir", "preview_title": "Kulman Ziman Noir",
+        "replace": {
+            '<meta name="theme-color" content="#030820">': '<meta name="theme-color" content="#050505">',
+            ICON: ICON_NOIR,
+            '<link rel="stylesheet" href="/assets/site.css">': '<link rel="stylesheet" href="/assets/site.css">\n<link rel="stylesheet" href="/assets/theme-noir.css">',
+            '/assets/world.js': '/assets/world-noir.js',
+            'Scroll down<br>&amp; dive in': 'Scroll to<br>fly through',
+            'Drag the crown · Click it · Pop the bubbles': 'Drag the crown · Click it · Shatter the shapes',
+            'value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)">':
+                'value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d">',
+            'value="#c9ced8" aria-label="Silver"><span style="--c:linear-gradient(135deg,#7d8496,#f4f6fa,#c9ced8)">':
+                'value="#ffffff" aria-label="White"><span style="--c:#ffffff">',
+        },
+    },
+}
 
 
 def head_tags(meta):
@@ -130,8 +154,9 @@ def relativize(html):
     return re.sub(r'(href|src)="(/[^"/][^"]*|/|/#[^"]*)"', fix, html)
 
 
-def build(preview=False):
-    out_dir = ROOT / ("preview" if preview else "dist")
+def build(preview=False, theme="royal"):
+    th = THEMES[theme]
+    out_dir = ROOT / (th["preview"] if preview else th["out"])
     if out_dir.exists():
         shutil.rmtree(out_dir)
     shutil.copytree(ROOT / "assets", out_dir / "assets")
@@ -146,11 +171,13 @@ def build(preview=False):
         inner = nav(meta.get("nav", "")) + body + FOOTER
         if preview and page.stem == "index":
             # the preview host adds the document skeleton around its main page; it gets a short name
-            html = head_tags(dict(meta, title="Kulman Ziman Preview")) + BODY_START + inner
+            html = head_tags(dict(meta, title=th.get("preview_title", "Kulman Ziman Preview"))) + BODY_START + inner
         else:
             html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
                     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
                     + head_tags(meta) + "</head>\n<body>\n" + BODY_START + inner + "</body>\n</html>\n")
+        for a, b in th["replace"].items():
+            html = html.replace(a, b)
         if preview:
             html = relativize(html)
             out = out_dir / f"{page.stem}.html"
@@ -169,4 +196,6 @@ def build(preview=False):
 
 
 if __name__ == "__main__":
-    build(preview="--preview" in sys.argv)
+    args = sys.argv[1:]
+    theme = args[args.index("--theme") + 1] if "--theme" in args else "royal"
+    build(preview="--preview" in args, theme=theme)

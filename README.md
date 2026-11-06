@@ -27,6 +27,17 @@ Pages are written as flat files (`dist/products.html`, `dist/ryderziman.html`) a
 
 `python3 build.py --preview` writes flat files with relative links to `preview/`, for a private preview page.
 
+## Themes
+
+The same pages build in two looks:
+
+| Theme | Command | Look |
+|---|---|---|
+| Royal (default) | `python3 build.py` | Royal blue, gold and silver; a gold crown over reflective water; scrolling dives under the sea (`assets/world.js`). |
+| Noir | `python3 build.py --theme noir` | Black 60%, white 30%, lime 10%; a chrome crown in a black studio with a glossy grid floor; scrolling flies through a corridor of light-gates (`assets/world-noir.js`, `assets/theme-noir.css`). Output goes to `dist-noir/`. |
+
+In noir, the crown and shapes sink into the floor as you start scrolling, and clicking a chrome sphere or white cube shatters it into lime sparks.
+
 ## The 3D world (`assets/world.js`)
 
 | What | How it behaves |

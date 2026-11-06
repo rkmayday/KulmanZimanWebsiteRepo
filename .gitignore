@@ -3,3 +3,5 @@ __pycache__/
 *.png
 !assets/*.png
 preview/
+dist-noir/
+preview-noir/
