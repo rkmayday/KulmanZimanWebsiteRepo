@@ -23,7 +23,7 @@ cd dist && python3 -m http.server 8080
 ```
 
 Deploy the `dist/` folder to any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages).
-The site uses clean URLs (`/products`), which map to `dist/products/index.html`.
+Pages are written as flat files (`dist/products.html`, `dist/ryderziman.html`) and served at clean URLs with no trailing slash (`/products`, `/ryderziman`). Vercel needs the included `vercel.json`; Netlify, Cloudflare Pages and GitHub Pages do this by default.
 
 `python3 build.py --preview` writes flat files with relative links to `preview/`, for a private preview page.
 

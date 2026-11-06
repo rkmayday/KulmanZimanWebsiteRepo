@@ -158,7 +158,7 @@
   });
 
   /* ---------- 8. 3D tilt + moving glare on cards ---------- */
-  $$('.product, .founder, .stat, .box, .calc, .sheet, .cell, .b-cards div').forEach(el => {
+  $$('.product, .founder, .stat, .box, .calc, .sheet, .cell, .profile-card, .b-cards div').forEach(el => {
     el.classList.add('tilt');
     const g = document.createElement('span'); g.className = 'glare'; el.append(g);
     const max = el.matches('.product, .calc') ? 4 : 8;

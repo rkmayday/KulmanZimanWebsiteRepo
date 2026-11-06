@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds the static site: wraps each page in src/pages with the shared head, nav and footer.
 
-    python3 build.py             -> ./dist     (production: clean URLs, /products -> dist/products/index.html)
+    python3 build.py             -> ./dist     (production: /products is served from dist/products.html, no trailing slash)
     python3 build.py --preview   -> ./preview  (flat files + relative links, for a private preview page)
 
 Each page file starts with a front-matter block:
@@ -21,7 +21,7 @@ SITE = "https://kulmanziman.shop"
 CHECKOUT = "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"
 EMAIL = "info.kulmanziman@gmail.com"
 THREE = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-FONTS = ("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800"
+FONTS = ("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
          "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
 # Pages that live on the current site but are not part of this rebuild
 EXTERNAL = {"/fitness-sample": f"{SITE}/fitness-sample", "/ironpath-app": f"{SITE}/ironpath-app"}
@@ -99,7 +99,7 @@ FOOTER = f"""<footer>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
       <div><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
-      <div><h4>Founders</h4><ul><li><a href="/about#team">Ryder Ziman</a></li><li><a href="/about#team">Rex Kulman</a></li></ul></div>
+      <div><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
       <div><h4>Order</h4><ul><li><a href="{CHECKOUT}">Checkout</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
     <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
@@ -155,7 +155,9 @@ def build(preview=False):
             html = relativize(html)
             out = out_dir / f"{page.stem}.html"
         else:
-            out = out_dir / ("index.html" if page.stem == "index" else f"{page.stem}/index.html")
+            # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages and GitHub Pages all serve
+            # products.html at /products with no trailing slash
+            out = out_dir / f"{page.stem}.html"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
         print("built", out.relative_to(ROOT))
@@ -163,6 +165,7 @@ def build(preview=False):
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
         (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
         (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
+        (out_dir / "vercel.json").write_text('{"cleanUrls": true, "trailingSlash": false}\n')
 
 
 if __name__ == "__main__":
