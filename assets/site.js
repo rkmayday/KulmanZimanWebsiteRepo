@@ -20,6 +20,17 @@ window.kzGmail = (to, subject = '', body = '') => {
     try { sessionStorage.setItem('kz-top', '1'); } catch (err) {}
   }, true);
 
+  // Opening animation: the top-left logo replays it; every other link to a page of this site does not
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.target || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const u = new URL(a.href, location.href);
+    if (u.origin !== location.origin) return;
+    const brand = !!a.closest('.nav .brand');
+    if (!brand && u.pathname === location.pathname && u.hash) return;   // in-page section jumps
+    try { sessionStorage.setItem('kz-from', brand ? 'brand' : 'link'); } catch (err) {}
+  }, true);
+
   // Nav: glass background once scrolled, mobile menu toggle
   const nav = $('.nav');
   const onScroll = () => nav && nav.classList.toggle('scrolled', scrollY > 8);

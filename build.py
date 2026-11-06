@@ -86,9 +86,13 @@ def head_tags(meta):
 <link href="{FONTS}" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
-<script>/* opening animation: once per visit, never with reduced motion */
-(function(){{var r=document.documentElement,seen=false;try{{seen=sessionStorage.getItem('kz-intro')==='1';sessionStorage.setItem('kz-intro','1');}}catch(e){{}}
-if((!seen||location.hash==='#intro'||r.hasAttribute('data-always-intro'))&&!matchMedia('(prefers-reduced-motion: reduce)').matches){{r.classList.add('intro','intro-hold');
+<script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
+(function(){{var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
+try{{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}}catch(e){{}}
+var from=null;try{{from=sessionStorage.getItem('kz-from');sessionStorage.removeItem('kz-from');}}catch(e){{}}
+if(from==='brand')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
+if(location.hash==='#intro')play=true;
+if(play&&!matchMedia('(prefers-reduced-motion: reduce)').matches){{r.classList.add('intro','intro-hold');
 setTimeout(function(){{r.classList.remove('intro-hold');}},1150);setTimeout(function(){{r.classList.remove('intro');}},2400);}}}})();</script>
 <script>
 /* Arriving from another page of the site: start at the top (links to a spot on the page, back/forward and reload are left alone) */
@@ -222,8 +226,7 @@ def build(preview=False, theme="royal"):
         html = gmail_links(html)
         if preview:
             html = relativize(html)
-            # previews always play the opening animation, so it can be checked any time
-            html = html.replace("<script>/* opening animation", "<script>document.documentElement.setAttribute('data-always-intro','')</script>\n<script>/* opening animation", 1)
+
             out = out_dir / f"{page.stem}.html"
         else:
             # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages and GitHub Pages all serve
