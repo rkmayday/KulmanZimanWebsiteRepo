@@ -163,3 +163,6 @@ footer{background:linear-gradient(180deg,rgba(0,0,0,.6),#000 40%)}
 @keyframes live-lime{0%{box-shadow:0 0 0 0 rgba(198,255,61,.7)}100%{box-shadow:0 0 0 9px rgba(198,255,61,0)}}
 .hero-tags li.live::before,.chip i{animation:live-lime 2s ease-out infinite}
 .brief{--edge:rgba(198,255,61,.9)}
+
+/* founder pages: the interactive dot field (founder-field.js) replaces the static dots */
+html.founder-field .dots{display:none}

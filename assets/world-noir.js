@@ -26,6 +26,7 @@
   renderer.autoClear = false;
   renderer.setClearColor(0x000000, 0);
 
+  const founderPage = !!document.querySelector('.founder-page');
   const LIME = 0xc6ff3d;   // the accent (lime)
 
   /* =====================================================================
@@ -586,7 +587,7 @@
 
     // draw: ribbon first (behind), then the drifters, then the crown on top
     renderer.setRenderTarget(null); renderer.clear();
-    renderer.render(rScene, rCam);
+    if (!founderPage) renderer.render(rScene, rCam);   // founder pages use the interactive dot field instead
     renderer.clearDepth(); renderer.render(dScene, dCam);
     if (showStage) { renderer.clearDepth(); renderer.render(scene, camera); }
     if (!reduce) requestAnimationFrame(frame);
