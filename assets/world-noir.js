@@ -46,7 +46,7 @@
     float textMask(vec2 p){ float m = 1.;
       for (int i = 0; i < 40; i++) { if (i >= uRectN) break; vec4 r = uRects[i];
         float dx = max(max(r.x - p.x, p.x - r.z), 0.), dy = max(max(r.y - p.y, p.y - r.w), 0.);
-        m = min(m, mix(.32, 1., smoothstep(0., 70., length(vec2(dx, dy))))); }
+        m = min(m, mix(.28, 1., smoothstep(0., 80., length(vec2(dx, dy))))); }
       return m; }`;
   // shared vertex logic: centerline + normal → twisted, breathing, cursor-repelled strand position
   const strandVS = MASK + `
@@ -70,20 +70,26 @@
   const lineMat = new T.ShaderMaterial({
     uniforms: U, transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
     vertexShader: strandVS + `
-      void main(){ vec2 p = strandPos(position.xy); vS = s; vR = r; vPh = ph; vM = textMask(p);
+      attribute float side; varying float vSide;
+      void main(){ vec2 p = strandPos(position.xy); vS = s; vR = r; vPh = ph; vM = textMask(p); vSide = side;
+        float clear = smoothstep(.28, 1., vM);                       // 0 behind text, 1 in the open
+        float w = (2.4 + 2.2 * fract(ph * 3.7)) * mix(4.2, 1., clear);  // bold strands, much wider (blurred) behind text
+        p += nrm * side * w;
         p.y = -p.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.); }`,
     fragmentShader: `
       uniform float uTime, uFlow, uLen;
-      varying float vS, vDepth, vR, vPh, vM;
+      varying float vS, vDepth, vR, vPh, vM, vSide;
       void main(){
-        float front = .28 + .72 * (vDepth * .5 + .5);
-        float pulse = smoothstep(.965, 1., fract(vS * .00042 - uTime * .028 + vPh * 3.17));
+        float clear = smoothstep(.28, 1., vM);
+        float soft = mix(.0, .7, clear);                              // crisp core in the open, all soft edge behind text
+        float prof = 1. - smoothstep(soft, 1., abs(vSide));
+        float front = .35 + .65 * (vDepth * .5 + .5);
+        float pulse = smoothstep(.82, 1., fract(vS * .00042 - uTime * .028 + vPh * 3.17)) * .6;
         float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
-        vec3 lime = vec3(.78, 1., .24), ice = vec3(.72, .9, 1.);
-        vec3 col = mix(lime, ice, step(.84, fract(vPh * 7.31)));
-        float tm = vM;
-        float a = (.34 + .7 * pulse) * front * ends * tm;
-        gl_FragColor = vec4(col * a + vec3(1.) * pulse * .35 * front * ends * tm, a);
+        vec3 col = vec3(.78, 1., .24);                                 // lime only
+        float dim = mix(.22, 1., clear);                              // darker behind text so the words stand out
+        float a = (.3 + .3 * pulse) * front * ends * prof * dim;
+        gl_FragColor = vec4(col * a + vec3(.9, 1., .7) * pulse * .25 * front * ends * prof * dim, a);
       }`
   });
   const glowMat = new T.ShaderMaterial({
@@ -223,24 +229,24 @@
 
     ribbon.children.slice().forEach(c => { c.geometry.dispose(); ribbon.remove(c); });
     // filaments: one LineSegments geometry holding every strand
-    const STR = coarse || small() ? 40 : 96, V = (N + 1) * STR;
-    const pos = new Float32Array(V * 3), n2 = new Float32Array(V * 2), s1 = new Float32Array(V), rr = new Float32Array(V), pp = new Float32Array(V);
-    const idx = new Uint32Array(N * 2 * STR);
+    const STR = coarse || small() ? 22 : 46, V = (N + 1) * 2 * STR;
+    const pos = new Float32Array(V * 3), n2 = new Float32Array(V * 2), s1 = new Float32Array(V), rr = new Float32Array(V), pp = new Float32Array(V), sd = new Float32Array(V);
+    const idx = new Uint32Array(N * 6 * STR);
     let k = 0;
     for (let j = 0; j < STR; j++) {
       const r = (Math.random() * 2 - 1) * (Math.random() < .3 ? 1 : .6), ph = Math.random() * 6.283;
-      for (let i = 0; i <= N; i++) {
-        const v = j * (N + 1) + i;
-        pos[v * 3] = base[i * 2]; pos[v * 3 + 1] = base[i * 2 + 1];
+      for (let i = 0; i <= N; i++) for (let e = 0; e < 2; e++) {
+        const v = (j * (N + 1) + i) * 2 + e;
+        pos[v * 3] = base[i * 2]; pos[v * 3 + 1] = base[i * 2 + 1]; sd[v] = e ? 1 : -1;
         n2[v * 2] = nrm[i * 2]; n2[v * 2 + 1] = nrm[i * 2 + 1]; s1[v] = sArr[i]; rr[v] = r; pp[v] = ph;
-        if (i < N) { idx[k++] = v; idx[k++] = v + 1; }
+        if (i < N && e === 0) { idx[k++] = v; idx[k++] = v + 1; idx[k++] = v + 2; idx[k++] = v + 1; idx[k++] = v + 3; idx[k++] = v + 2; }
       }
     }
     const g = new T.BufferGeometry();
     g.setAttribute('position', new T.BufferAttribute(pos, 3)); g.setAttribute('nrm', new T.BufferAttribute(n2, 2));
-    g.setAttribute('s', new T.BufferAttribute(s1, 1)); g.setAttribute('r', new T.BufferAttribute(rr, 1)); g.setAttribute('ph', new T.BufferAttribute(pp, 1));
+    g.setAttribute('s', new T.BufferAttribute(s1, 1)); g.setAttribute('r', new T.BufferAttribute(rr, 1)); g.setAttribute('ph', new T.BufferAttribute(pp, 1)); g.setAttribute('side', new T.BufferAttribute(sd, 1));
     g.setIndex(new T.BufferAttribute(idx, 1));
-    const lines = new T.LineSegments(g, lineMat); lines.frustumCulled = false;
+    const lines = new T.Mesh(g, lineMat); lines.frustumCulled = false;
 
     // soft glow bands along the centreline
     const gp = new Float32Array((N + 1) * 2 * 3), gn = new Float32Array((N + 1) * 2 * 2), gs = new Float32Array((N + 1) * 2), gside = new Float32Array((N + 1) * 2);
