@@ -719,3 +719,24 @@ footer ul a:hover{background-size:100% 1px}
 
 /* royal: keep the hero hint readable over the bright sky */
 .play-hint{background:rgba(6,16,70,.5);color:#fff}
+
+/* =====================================================================
+   Home hero: more vertical room so its parts can breathe
+   ===================================================================== */
+@media (min-width:901px){
+  .hero{min-height:calc(100svh + 24vh);padding-block:28px 0}
+  .hero-grid{grid-template-rows:auto auto auto 1fr;align-content:start;gap:0}
+  .hero-copy{align-self:start;margin-top:clamp(40px,7vh,110px);gap:30px}
+  .hero-foot{margin-top:clamp(36px,5vh,64px)}
+}
+@media (max-width:900px){
+  .hero{min-height:calc(100svh + 14vh);padding-bottom:40px}
+  .hero-grid{min-height:calc(100svh + 14vh - 118px)}
+  .hero-copy{gap:22px}
+  .hero-foot{margin-top:32px}
+}
+/* phones: keep the extra room, but both buttons stay on the first screen (text starts just under the crown) */
+@media (max-width:900px){
+  .hero-grid{grid-template-rows:auto auto 1fr}
+  .hero-copy{align-self:start;margin-top:clamp(150px,24svh,240px)}
+}

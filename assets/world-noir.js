@@ -152,18 +152,18 @@
         // phones: swirl around the crown at the top, then run down the right edge, clear of the text
         pts.push([-160, VH * .16], [W * .22, VH * .13]);
         knotIdx = pts.length; pts.push([W * .55, VH * .115]);
-        pts.push([W * .9, VH * .16], [W * 1.02, VH * .3], [W * .98, VH * .6], [W * .96, VH * .95]);
+        pts.push([W * .9, VH * .16], [W * 1.02, VH * .3], [W * .98, VH * .6], [W * .96, heroBottom() * .97]);
       } else {
         pts.push([-160, VH * 1.02], [W * .3, VH * .97]);
         knotIdx = pts.length; pts.push([W * .63, VH * .8]);
-        pts.push([W * .67, VH * .26], [W * .93, VH * .3], [W * .99, VH * .62], [W * .82, VH * .99]);
+        pts.push([W * .67, VH * .26], [W * .93, VH * .3], [W * .99, VH * .62], [W * .92, heroBottom() * .97]);
       }
     } else {
       pts.push([-160, 160]); knotIdx = pts.length; pts.push([W * .38, 250]); pts.push([W * .85, 120], [W * 1.02, 420]);
     }
     let side = 0; // 0 = left edge, 1 = right edge
     rows.forEach((row, k) => {
-      if (isHome && row.b < VH * .9) return;           // hero rows are covered by the swoop
+      if (isHome && row.b < heroBottom() * .95) return;           // hero rows are covered by the swoop
       if (!isHome && k === 0 && row.b < 520) return;
       const h = row.b - row.t, gutter = Math.max(18, Math.min(110, row.l * .55));
       const outX = side ? Math.min(W - 10, row.r + gutter) : Math.max(10, row.l - gutter);
@@ -319,7 +319,7 @@
     [[-3.6, 1.7, -2, .5, 'sphere'], [5.7, .2, 1.2, .38, 'cube'], [-1.5, -.5, 3, .26, 'sphere'], [6.8, 2.8, -5, .62, 'cube'], [-6.4, .5, -7, .75, 'sphere'], [1.4, 3.3, -3, .3, 'cube']].forEach(([x, y, z, r, kind]) => {
       const m = kind === 'sphere' ? new T.Mesh(new T.SphereGeometry(1, 48, 32), chrome) : new T.Mesh(new T.BoxGeometry(1.5, 1.5, 1.5), ceramic);
       m.scale.setScalar(r); m.position.set(x, y, z); m.rotation.set(Math.random(), Math.random(), 0);
-      m.userData = { home: new T.Vector3(x, y, z), r, push: new T.Vector3(), phase: Math.random() * 6, gone: 0, s: 1, spin: kind === 'cube' ? .3 : .05 };
+      m.userData = { home: new T.Vector3(x, y, z), base: new T.Vector3(x, y, z), r, push: new T.Vector3(), phase: Math.random() * 6, gone: 0, s: 1, spin: kind === 'cube' ? .3 : .05 };
       stage.add(m); shapes.push(m);
     });
   }
@@ -382,7 +382,7 @@
   function placeDrifters() {
     const W = innerWidth, VH = innerHeight, H = document.documentElement.scrollHeight, phone = small();
     const u12 = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / VH;
-    const startY = isHome ? VH * 1.15 : VH * .3, span = Math.max(0, H - startY - VH * .25);
+    const startY = isHome ? heroBottom() + 40 : VH * .3, span = Math.max(0, H - startY - VH * .25);
     const count = Math.round(Math.min(phone ? 12 : 24, Math.max(phone ? 4 : 6, span / (phone ? 640 : 430))));
     while (drifters.length < count) {
       const k = drifters.length % 4, m = new T.Mesh(dGeos[k], dMats[k]);
@@ -418,6 +418,59 @@
   /* =====================================================================
      3. Layout, input, loop
      ===================================================================== */
+
+  /* hero shapes: placed in open space on every layout, never behind the headline, copy, buttons, tags or the crown */
+  const HERO_TEXT = '.hero h1, .hero .lede, .hero .btn-row > *, .hero-tags, .play-hint, .dive';
+  const offRect = el => { let x = 0, y = 0, e = el; while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { l: x, t: y, r: x + el.offsetWidth, b: y + el.offsetHeight }; };
+  const heroBottom = () => { const h = document.querySelector('.hero'); return h ? offRect(h).b : innerHeight; };
+  function placeHeroShapes(items, minY = -Infinity) {
+    if (!isHome || !items.length) return;
+    const W = innerWidth, H = innerHeight, HB = heroBottom();
+    camera.position.set(0, 1, 12); camera.lookAt(0, .25, 0); camera.updateMatrixWorld();   // the pose at the top of the page
+    const toScreen = v => { const p = v.clone().project(camera); return { x: (p.x + 1) / 2 * W, y: (1 - p.y) / 2 * H }; };
+    const toWorld = (sx, sy, z) => {
+      const d = new T.Vector3(sx / W * 2 - 1, -(sy / H * 2 - 1), .5).unproject(camera).sub(camera.position).normalize();
+      return camera.position.clone().addScaledVector(d, (z - camera.position.z) / d.z);
+    };
+    const pad = 28;
+    const blocks = [...document.querySelectorAll(HERO_TEXT)].filter(e => e.offsetParent).map(offRect)
+      .map(r => ({ l: r.l - pad, t: r.t - pad, r: r.r + pad, b: r.b + pad }));
+    const dock = document.querySelector('.dock');   // the floating section dock is fixed, so its screen box is its spot at the top of the page
+    if (dock) { const r = dock.getBoundingClientRect(); blocks.push({ l: r.left - pad, t: r.top - pad, r: r.right + pad, b: r.bottom + pad }); }
+    const k = pivot.scale.x, cc = toScreen(pivot.position.clone().add(new T.Vector3(0, .35 * k, 0)));
+    const ce = toScreen(pivot.position.clone().add(new T.Vector3(1.8 * k, .35 * k, 0)));
+    const crownR = Math.hypot(ce.x - cc.x, ce.y - cc.y) + 26;
+    const placed = [], stepX = Math.max(20, W / 30), stepY = Math.max(20, H / 28);
+    items.slice().sort((a, b) => (b.userData.r0 || b.userData.r) - (a.userData.r0 || a.userData.r)).forEach(o => {
+      const u = o.userData, pref = toScreen(u.base);
+      u.r0 = u.r0 || u.r;
+      const bob = toScreen(u.base.clone().add(new T.Vector3(0, .3, 0)));
+      let best = null, rpUsed = 0, fitUsed = 1;
+      // try full size first; if there is no open spot, try a smaller version before leaving it out
+      for (const fit of [1, .75, .55]) {
+        const r = u.r0 * fit, edge = toScreen(u.base.clone().add(new T.Vector3(r, 0, 0)));
+        const rp = Math.hypot(edge.x - pref.x, edge.y - pref.y) * 1.15 + Math.abs(bob.y - pref.y) + 10;   // its size, how far it bobs, and a margin
+        let bestD = Infinity;
+        for (let y = 96 + rp; y <= HB - rp - 24; y += stepY) for (let x = rp * .5; x <= W - rp * .5; x += stepX) {
+          if (blocks.some(q => x + rp > q.l && x - rp < q.r && y + rp > q.t && y - rp < q.b)) continue;
+          if (Math.hypot(x - cc.x, y - cc.y) < crownR + rp) continue;
+          if (placed.some(p => Math.hypot(x - p.x, y - p.y) < p.r + rp + 34)) continue;
+          const d = (x - pref.x) ** 2 + (y - pref.y) ** 2;
+          if (d >= bestD) continue;
+          if (minY > -Infinity && toWorld(x, y, u.base.z).y - r * .45 < minY) continue;   // floats on or above the water, never sunk
+          bestD = d; best = { x, y };
+        }
+        if (best) { rpUsed = rp; fitUsed = fit; break; }
+      }
+      u.hidden = !best;
+      if (!best) return;
+      u.r = u.r0 * fitUsed;
+      placed.push({ x: best.x, y: best.y, r: rpUsed });
+      u.home.copy(toWorld(best.x, best.y, u.base.z));
+      if (!u.placed) { o.position.copy(u.home); u.cur = u.home.clone(); u.placed = true; }
+    });
+  }
+
   let unitsPerPx = 1;
   const layout = () => {
     const w = innerWidth, h = innerHeight;
@@ -428,6 +481,7 @@
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
     U.uSpread.value = small() ? 70 : 140;
     if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.scale.setScalar(.7); } else { pivot.position.set(2.7, .55, 0); pivot.scale.setScalar(1); }
+    placeHeroShapes(shapes);
     rebuild();
     placeDrifters();
   };
@@ -441,9 +495,9 @@
 
   const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav,.dock,.hero-tags'));
   const setRay = () => { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); };
-  const heroOn = () => isHome && scrollY < innerHeight * 1.3;
+  const heroOn = () => isHome && scrollY < Math.max(innerHeight * 1.3, heroBottom());
   const hitCrown = () => { if (!heroOn() || px < 0) return null; setRay(); return ray.intersectObjects(crownHits, true)[0] || null; };
-  const hitShape = () => { if (!heroOn() || px < 0) return null; setRay(); const h = ray.intersectObjects(shapes.filter(s => !s.userData.gone), false)[0]; return h ? h.object : null; };
+  const hitShape = () => { if (!heroOn() || px < 0) return null; setRay(); const h = ray.intersectObjects(shapes.filter(s => !s.userData.gone && !s.userData.hidden), false)[0]; return h ? h.object : null; };
 
   let spin = 0, spinVel = .25, jump = 0, jumpVel = 0, glow = 0, hoverScale = 1, dragging = false, dragMoved = 0, lastX = 0;
   addEventListener('pointermove', e => {
@@ -466,7 +520,7 @@
     if (s) {
       const u = s.userData; if (u.gone) return;
       u.gone = 1; burst(s.getWorldPosition(new T.Vector3()), 50, LIME, .05 + u.r * .05); burst(s.getWorldPosition(new T.Vector3()), 24, 0xffffff, .04);
-      setTimeout(() => { u.gone = 0; u.s = 0; s.position.copy(u.home); }, 2000);
+      setTimeout(() => { u.gone = 0; u.s = 0; s.position.copy(u.home); if (u.cur) u.cur.copy(u.home); }, 2000);
       return;
     }
     if (hitCrown()) {
@@ -491,7 +545,7 @@
     cx += (mx - cx) * .06; cy += (my - cy) * .06;
     lastScroll = scrollY;
     const scrolling = performance.now() - lastMove < 220;                   // any scroll in the last moment, up or down
-    flowSpeed += ((scrolling ? 1.5 : 1) - flowSpeed) * (1 - Math.exp(-dt * 5));   // eases in and out (~0.5s), same on any frame rate
+    flowSpeed += ((scrolling ? 2.25 : 1) - flowSpeed) * (1 - Math.exp(-dt * 5));   // eases in and out (~0.5s), same on any frame rate
     if (!reduce) flowT += dt * flowSpeed;
 
     // ribbon: camera follows the page; dots drift a little slower for depth
@@ -529,7 +583,7 @@
       if (px >= 0) setRay();
       shapes.forEach(s => {
         const u = s.userData;
-        u.s += ((u.gone ? 0 : 1) - u.s) * (u.gone ? .5 : .05); s.scale.setScalar(Math.max(.0001, u.r * u.s)); s.visible = u.s > .01;
+        u.s += ((u.gone || u.hidden ? 0 : 1) - u.s) * (u.gone ? .5 : .05); s.scale.setScalar(Math.max(.0001, u.r * u.s)); s.visible = u.s > .01;
         const target = tmp.copy(u.home); target.y += Math.sin(t * .8 + u.phase) * .25;
         if (px >= 0 && !coarse) {
           const wp = s.getWorldPosition(new T.Vector3());
@@ -538,7 +592,10 @@
           if (d < reach) u.push.add(wp.sub(v3).normalize().multiplyScalar((1 - d / reach) * .08));
         }
         u.push.multiplyScalar(.92); target.add(u.push.clone().multiplyScalar(6));
-        s.position.lerp(target, .05); s.rotation.x += dt * u.spin; s.rotation.y += dt * u.spin * 1.3;
+        // eased toward its spot, then locked to the page: nearer and farther shapes scroll exactly with the text
+        u.cur = u.cur || s.position.clone(); u.cur.lerp(target, .05);
+        s.position.copy(u.cur); s.position.y += scrollY * unitsPerPx * (-u.home.z / 12);
+        s.rotation.x += dt * u.spin; s.rotation.y += dt * u.spin * 1.3;
       });
       limeLight.position.set(-3 + Math.sin(t * .5) * 2, .5 + stage.position.y, 4);
     } else root.classList.remove('over-crown');

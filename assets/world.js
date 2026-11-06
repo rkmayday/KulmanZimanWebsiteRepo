@@ -156,7 +156,7 @@
       g.add(new T.Mesh(new T.SphereGeometry(1, 48, 32), glass));
       const rim = new T.Mesh(new T.SphereGeometry(1.005, 48, 32), rimMat); g.add(rim);
       g.scale.setScalar(r); g.position.set(x, y, z);
-      g.userData = { home: new T.Vector3(x, y, z), r, push: new T.Vector3(), phase: Math.random() * 6, popped: 0, s: 1 };
+      g.userData = { home: new T.Vector3(x, y, z), base: new T.Vector3(x, y, z), r, push: new T.Vector3(), phase: Math.random() * 6, popped: 0, s: 1 };
       top.add(g); bubbles.push(g);
     });
   }
@@ -278,6 +278,59 @@
     }
   };
 
+
+  /* hero shapes: placed in open space on every layout, never behind the headline, copy, buttons, tags or the crown */
+  const HERO_TEXT = '.hero h1, .hero .lede, .hero .btn-row > *, .hero-tags, .play-hint, .dive';
+  const offRect = el => { let x = 0, y = 0, e = el; while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { l: x, t: y, r: x + el.offsetWidth, b: y + el.offsetHeight }; };
+  const heroBottom = () => { const h = document.querySelector('.hero'); return h ? offRect(h).b : innerHeight; };
+  function placeHeroShapes(items, minY = -Infinity) {
+    if (!isHome || !items.length) return;
+    const W = innerWidth, H = innerHeight, HB = heroBottom();
+    camera.position.set(0, 1, 12); camera.lookAt(0, .25, 0); camera.updateMatrixWorld();   // the pose at the top of the page
+    const toScreen = v => { const p = v.clone().project(camera); return { x: (p.x + 1) / 2 * W, y: (1 - p.y) / 2 * H }; };
+    const toWorld = (sx, sy, z) => {
+      const d = new T.Vector3(sx / W * 2 - 1, -(sy / H * 2 - 1), .5).unproject(camera).sub(camera.position).normalize();
+      return camera.position.clone().addScaledVector(d, (z - camera.position.z) / d.z);
+    };
+    const pad = 28;
+    const blocks = [...document.querySelectorAll(HERO_TEXT)].filter(e => e.offsetParent).map(offRect)
+      .map(r => ({ l: r.l - pad, t: r.t - pad, r: r.r + pad, b: r.b + pad }));
+    const dock = document.querySelector('.dock');   // the floating section dock is fixed, so its screen box is its spot at the top of the page
+    if (dock) { const r = dock.getBoundingClientRect(); blocks.push({ l: r.left - pad, t: r.top - pad, r: r.right + pad, b: r.bottom + pad }); }
+    const k = pivot.scale.x, cc = toScreen(pivot.position.clone().add(new T.Vector3(0, .35 * k, 0)));
+    const ce = toScreen(pivot.position.clone().add(new T.Vector3(1.8 * k, .35 * k, 0)));
+    const crownR = Math.hypot(ce.x - cc.x, ce.y - cc.y) + 26;
+    const placed = [], stepX = Math.max(20, W / 30), stepY = Math.max(20, H / 28);
+    items.slice().sort((a, b) => (b.userData.r0 || b.userData.r) - (a.userData.r0 || a.userData.r)).forEach(o => {
+      const u = o.userData, pref = toScreen(u.base);
+      u.r0 = u.r0 || u.r;
+      const bob = toScreen(u.base.clone().add(new T.Vector3(0, .3, 0)));
+      let best = null, rpUsed = 0, fitUsed = 1;
+      // try full size first; if there is no open spot, try a smaller version before leaving it out
+      for (const fit of [1, .75, .55]) {
+        const r = u.r0 * fit, edge = toScreen(u.base.clone().add(new T.Vector3(r, 0, 0)));
+        const rp = Math.hypot(edge.x - pref.x, edge.y - pref.y) * 1.15 + Math.abs(bob.y - pref.y) + 10;   // its size, how far it bobs, and a margin
+        let bestD = Infinity;
+        for (let y = 96 + rp; y <= HB - rp - 24; y += stepY) for (let x = rp * .5; x <= W - rp * .5; x += stepX) {
+          if (blocks.some(q => x + rp > q.l && x - rp < q.r && y + rp > q.t && y - rp < q.b)) continue;
+          if (Math.hypot(x - cc.x, y - cc.y) < crownR + rp) continue;
+          if (placed.some(p => Math.hypot(x - p.x, y - p.y) < p.r + rp + 34)) continue;
+          const d = (x - pref.x) ** 2 + (y - pref.y) ** 2;
+          if (d >= bestD) continue;
+          if (minY > -Infinity && toWorld(x, y, u.base.z).y - r * .45 < minY) continue;   // floats on or above the water, never sunk
+          bestD = d; best = { x, y };
+        }
+        if (best) { rpUsed = rp; fitUsed = fit; break; }
+      }
+      u.hidden = !best;
+      if (!best) return;
+      u.r = u.r0 * fitUsed;
+      placed.push({ x: best.x, y: best.y, r: rpUsed });
+      u.home.copy(toWorld(best.x, best.y, u.base.z));
+      if (!u.placed) { o.position.copy(u.home); u.cur = u.home.clone(); u.placed = true; }
+    });
+  }
+
   /* ---------- layout ---------- */
   const layout = () => {
     const w = innerWidth, h = innerHeight;
@@ -289,8 +342,12 @@
     if (small()) { pivot.position.set(0.3, 2.35, -1.5); pivot.scale.setScalar(0.7); }
     else { pivot.position.set(2.7, 0.55, 0); pivot.scale.setScalar(1); }
     placeDeep();
+    placeHeroShapes(bubbles, WY);
   };
   layout(); addEventListener('resize', layout);
+  // re-place the hero bubbles once web fonts have settled the headline's real size
+  const replace = () => placeHeroShapes(bubbles, WY);
+  document.fonts && document.fonts.ready.then(replace); setTimeout(replace, 1500); setTimeout(replace, 3200);
 
   /* ---------- input ---------- */
   let mx = 0, my = 0, cx = 0, cy = 0, px = -1, py = -1;
@@ -310,7 +367,7 @@
     u.popped = 1; burst(m.position.clone(), 40, u.kind === 'bubble' ? 0xcfdcff : 0xffd36b, .05); burst(m.position.clone(), 14, 0xffd36b, .04);
     setTimeout(() => { u.popped = 0; u.s = 0; m.position.y -= 7; }, 2000);
   };
-  const hitBubble = () => { if (!isHome || px < 0) return null; setRay(); const h = ray.intersectObjects(bubbles.filter(b => !b.userData.popped).map(b => b.children[0]), false)[0]; return h ? h.object.parent : null; };
+  const hitBubble = () => { if (!isHome || px < 0) return null; setRay(); const h = ray.intersectObjects(bubbles.filter(b => !b.userData.popped && !b.userData.hidden).map(b => b.children[0]), false)[0]; return h ? h.object.parent : null; };
 
   let spin = 0, spinVel = 0.25, jump = 0, jumpVel = 0, glow = 0, hoverScale = 1;
   let dragging = false, dragMoved = 0, lastX = 0;
@@ -414,7 +471,7 @@
       if (px >= 0) setRay();
       bubbles.forEach(b => {
         const u = b.userData;
-        u.s += ((u.popped ? 0 : 1) - u.s) * (u.popped ? 0.5 : 0.04);
+        u.s += ((u.popped || u.hidden ? 0 : 1) - u.s) * (u.popped ? 0.5 : 0.04);
         b.scale.setScalar(Math.max(0.0001, u.r * u.s));
         b.visible = u.s > 0.01;
         const target = tmp.copy(u.home); target.y += Math.sin(t * 0.8 + u.phase) * 0.25;
