@@ -53,7 +53,7 @@
      Control points live in viewport space and are converted to page coordinates each frame, so the light
      stays behind the content while the page scrolls over it, and its shape changes at exactly scroll speed. */
   U.uP = { value: Array.from({ length: 8 }, () => new T.Vector2()) };
-  U.uKnotU = { value: .43 }; U.uKnotAmt = { value: 1 };
+  U.uKnotU = { value: .43 }; U.uKnotAmt = { value: 1 }; U.uDimIn = { value: .22 };
   const SPLINE = `
     uniform vec2 uP[8];
     void spline(float u, out vec2 pos, out vec2 tg){
@@ -86,7 +86,7 @@
       p.y = -p.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.);
     }`;
   const ribbonFS = `
-    uniform float uTime, uA, uSoft, uKnotU, uKnotAmt;
+    uniform float uTime, uA, uSoft, uKnotU, uKnotAmt, uDimIn;
     varying float vU, vDepth, vPh, vM, vSide;
     void main(){
       float clear = smoothstep(.28, 1., vM);
@@ -95,7 +95,7 @@
       float pulse = smoothstep(.82, 1., fract(vU * 1.2 - uTime * .028 + vPh * 3.17)) * .6;
       float ends = smoothstep(0., .04, vU) * smoothstep(0., .04, 1. - vU);
       vec3 col = mix(vec3(.78, 1., .24), vec3(.93, 1., .46), fract(vPh * 5.3));   // lime to yellow-green
-      float dim = mix(.22, 1., clear);                                             // darker behind text
+      float dim = mix(uDimIn, 1., clear);                                          // darker behind text
       float knotGlow = 1. + 1.8 * uKnotAmt * exp(-pow((vU - uKnotU) / .05, 2.));   // the bright pinch point
       float a = uA * (1. + .6 * pulse) * front * ends * prof * dim * knotGlow;
       gl_FragColor = vec4(col * a + vec3(.95, 1., .8) * pulse * .25 * uA * front * prof * dim, a);
@@ -139,11 +139,19 @@
     { knot: 0, k: 1.1, p: [[-.18, .82], [.12, .72], [.33, .56], [.5, .5], [.66, .46], [.84, .32], [1.02, .2], [1.22, .1]] },   // sweep across
     { knot: 1, k: 1, p: [[-.15, .3], [.18, .4], [.38, .64], [.5, .8], [.64, .7], [.8, .52], [1.0, .46], [1.22, .52]] }          // closing curl
   ];
+  // phones: the text fills the width, so the light keeps to the right edge and curls past the crown at the top
+  const KF_PHONE = [
+    { knot: 1, k: .8, p: [[1.25, .02], [.92, .06], [.66, .12], [.55, .2], [.68, .3], [.9, .42], [1.0, .7], [1.06, 1.1]] },
+    { knot: 0, k: .7, p: [[1.2, -.1], [1.0, .1], [.93, .3], [.97, .5], [.92, .7], [.98, .9], [1.0, 1.05], [1.15, 1.2]] },
+    { knot: 0, k: .7, p: [[1.15, -.15], [.95, .05], [1.02, .25], [.93, .45], [1.02, .65], [.94, .85], [1.04, 1.05], [1.2, 1.2]] },
+    { knot: 0, k: .75, p: [[1.25, .1], [1.0, .2], [.92, .4], [.96, .6], [.9, .8], [.97, .95], [1.05, 1.08], [1.2, 1.2]] },
+    { knot: 1, k: .75, p: [[1.2, .2], [.98, .3], [.86, .5], [.82, .66], [.9, .78], [1.0, .86], [1.1, .95], [1.25, 1.05]] }
+  ];
   const cur = { p: KF[0].p.map(q => q.slice()), knot: 1, k: 1 };
   function morph(t) {
     const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
     const f = Math.min(1, scrollY / max) * (KF.length - 1), i = Math.min(KF.length - 2, Math.floor(f)), k = f - i, e = k * k * (3 - 2 * k);
-    const A = KF[i], B = KF[i + 1], W = innerWidth, H = innerHeight;
+    const set = small() ? KF_PHONE : KF, A = set[i], B = set[i + 1], W = innerWidth, H = innerHeight;
     cur.knot = A.knot + (B.knot - A.knot) * e; cur.k = A.k + (B.k - A.k) * e;
     for (let j = 0; j < 8; j++) {
       const x = A.p[j][0] + (B.p[j][0] - A.p[j][0]) * e + Math.sin(t * .25 + j * 1.7) * .012;
@@ -183,7 +191,7 @@
   // layout position, unaffected by the reveal transforms
   const docRect = el => { let x = 0, y = 0, e = el; while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { l: x, t: y, r: x + el.offsetWidth, b: y + el.offsetHeight }; };
 
-  const TEXT = 'h1, h2, .lede, blockquote, .hero-tags, .play-hint, .dive, .eyebrow, .email-big, .disclaim, .facts, .proof-links, .back, .toc, .faq-filter, .contact-row';
+  const TEXT = '.btn-row > *, .hero-foot, .strip .cell, .sample, h1, h2, .lede, blockquote, .hero-tags, .play-hint, .dive, .eyebrow, .email-big, .disclaim, .facts, .proof-links, .back, .toc, .faq-filter, .contact-row';
   const OPAQUE = '#industries, .product, .sheet, .panel, .controls, .brief, .faq details, .founder, .box, .aff, .calc, .stat, .profile-card, .prose, .condition';
   let textRects = [];
   // the words' real extent (a heading's box is often much wider than its text), undoing any reveal transform
@@ -201,10 +209,18 @@
   }
   function collectText() {
     textRects = [...document.querySelectorAll(TEXT)].filter(el => el.offsetParent !== null && !el.closest(OPAQUE))
-      .map(tightRect).filter(r => r && r.r - r.l > 8 && r.b - r.t > 8).slice(0, 40)
+      .map(tightRect).filter(r => r && r.r - r.l > 8 && r.b - r.t > 8)
       .map(r => ({ l: r.l - 12, t: r.t - 10, r: r.r + 12, b: r.b + 10 }));
-    textRects.forEach((r, i) => U.uRects.value[i].set(r.l, r.t, r.r, r.b));
-    U.uRectN.value = textRects.length;
+    lastRectY = -1e9; uploadRects();
+  }
+  // the shader holds 40 blocks: send the ones on (or near) the screen
+  let lastRectY = -1e9;
+  function uploadRects() {
+    if (Math.abs(scrollY - lastRectY) < 60) return; lastRectY = scrollY;
+    const top = scrollY - 200, bot = scrollY + innerHeight + 200;
+    const near = textRects.filter(r => r.b > top && r.t < bot).slice(0, 40);
+    near.forEach((r, i) => U.uRects.value[i].set(r.l, r.t, r.r, r.b));
+    U.uRectN.value = near.length;
   }
   const inText = (x, y) => textRects.some(r => x > r.l && x < r.r && y > r.t && y < r.b);
 
@@ -425,7 +441,7 @@
     dCam.aspect = w / h; dCam.updateProjectionMatrix();
     unitsPerPx = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / h;   // world units per CSS px at the crown's depth
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
-    U.uSpread.value = small() ? 95 : 230;
+    U.uSpread.value = small() ? 70 : 230; U.uDimIn.value = small() ? .06 : .22;
     if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.scale.setScalar(.7); } else { pivot.position.set(2.7, .55, 0); pivot.scale.setScalar(1); }
     placeHeroShapes(shapes);
     rebuild();
@@ -500,7 +516,7 @@
     U.uTime.value = flowT;
     if (px >= 0) U.uMouse.value.set(px, py + scrollY);
     root.style.setProperty('--dot-y', (-scrollY * .25).toFixed(1) + 'px');
-    morph(t);
+    morph(t); uploadRects();
     for (let i = 0; i < SP; i++) {
       spS[i] += dt * spV[i] * flowSpeed; if (spS[i] > 1) spS[i] -= 1;   // always forward, down the line
       spl(spS[i], SV);
