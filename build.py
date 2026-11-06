@@ -86,6 +86,10 @@ def head_tags(meta):
 <link href="{FONTS}" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
+<script>/* opening animation: once per visit, never with reduced motion */
+(function(){{var r=document.documentElement,seen=false;try{{seen=sessionStorage.getItem('kz-intro')==='1';sessionStorage.setItem('kz-intro','1');}}catch(e){{}}
+if(!seen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){{r.classList.add('intro','intro-hold');
+setTimeout(function(){{r.classList.remove('intro-hold');}},1150);setTimeout(function(){{r.classList.remove('intro');}},2400);}}}})();</script>
 <script>
 /* Arriving from another page of the site: start at the top (links to a spot on the page, back/forward and reload are left alone) */
 (function () {{
@@ -110,6 +114,7 @@ def head_tags(meta):
 
 
 BODY_START = """<a class="skip" href="#main">Skip to content</a>
+<div id="kz-intro" aria-hidden="true"><div class="ki-frame"></div><div class="ki-fill"></div><div class="ki-badge"><i></i></div></div>
 <canvas id="world" aria-hidden="true"></canvas>
 <div class="vignette" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"></div>
