@@ -578,3 +578,6 @@ h2{letter-spacing:-.025em}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
 .hero-top .play-hint{margin-top:14px}
 @media (max-width:900px){.hero-top{display:none}}
+
+/* the hidden attribute always wins (tab panels, filtered FAQ items, empty states) */
+[hidden]{display:none!important}

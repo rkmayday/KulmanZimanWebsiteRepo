@@ -146,3 +146,10 @@ footer{background:linear-gradient(180deg,rgba(0,0,0,.6),#000 40%)}
 /* let the ribbon glow through the dark glass */
 .panel,.stat,.calc,.brief,.aff,.search input,.profile-card,.strip .cell{background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}
 .nav.scrolled{background:#050505}
+
+/* ---- the line stays visible: industries becomes a white panel with margins, phone panels let it glow through ---- */
+#industries{background:transparent}
+#industries > .wrap{background:#f7f7f7;border-radius:36px;padding-block:clamp(40px,6vw,76px);padding-inline:clamp(24px,5vw,64px);width:min(1200px,100% - 32px);box-shadow:0 40px 90px -30px rgba(0,0,0,.85)}
+@media (max-width:760px),(pointer:coarse){
+  .panel,.stat,.calc,.brief,.aff,.search input,.strip .cell,.proof-links a,.prose,.profile-card{background:rgba(18,18,18,.8)}
+}
