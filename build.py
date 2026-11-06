@@ -51,7 +51,8 @@ THEMES = {
             ICON: ICON_NOIR,
             '<link rel="stylesheet" href="/assets/site.css">': '<link rel="stylesheet" href="/assets/site.css">\n<link rel="stylesheet" href="/assets/theme-noir.css">',
             '/assets/world.js': '/assets/world-noir.js',
-            'Scroll down<br>&amp; dive in': 'Scroll to<br>fly through',
+            'Scroll down<br>&amp; dive in': 'Scroll to<br>follow the line',
+            '<canvas id="world"': '<div class="dots" aria-hidden="true"></div>\n<canvas id="world"',
             'Drag the crown · Click it · Pop the bubbles': 'Drag the crown · Click it · Shatter the shapes',
             'value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)">':
                 'value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d">',

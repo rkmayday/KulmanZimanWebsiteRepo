@@ -134,3 +134,15 @@ footer{background:linear-gradient(180deg,rgba(0,0,0,.6),#000 40%)}
 /* industry sketches in black and white, lime stays the only colour */
 #industries .art{filter:grayscale(1) contrast(1.05)}
 .nav.scrolled{background:rgba(5,5,5,.92)}
+
+/* ---- background: faint dot grid + neon ribbon (world-noir.js) ---- */
+#world{background:transparent}
+.dots{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.2) 1px,transparent 1.6px);background-size:28px 28px;background-position:0 var(--dot-y,0px);
+  -webkit-mask-image:radial-gradient(ellipse 95% 80% at 50% 45%,#000 15%,rgba(0,0,0,.45) 65%,rgba(0,0,0,.12) 100%);
+  mask-image:radial-gradient(ellipse 95% 80% at 50% 45%,#000 15%,rgba(0,0,0,.45) 65%,rgba(0,0,0,.12) 100%)}
+.hero::before{background:linear-gradient(90deg,rgba(0,0,0,.4) 0%,rgba(0,0,0,.1) 45%,transparent 70%)}
+.page-head::before{background:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.15) 55%,transparent 100%)}
+/* let the ribbon glow through the dark glass */
+.panel,.stat,.calc,.brief,.aff,.search input,.profile-card,.strip .cell{background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}
+.nav.scrolled{background:#050505}
