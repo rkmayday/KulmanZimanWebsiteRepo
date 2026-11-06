@@ -640,3 +640,6 @@ body{overflow-x:hidden;overflow-x:clip}
 @supports (overflow-x:clip){.marquees{overflow:visible;overflow-x:clip;padding-block:0;margin-block:0}}
 .skip{left:8px;top:-80px}
 .skip:focus{left:8px;top:8px}
+
+/* founder pages: LinkedIn button */
+.btn-linkedin svg{width:18px;height:18px}
