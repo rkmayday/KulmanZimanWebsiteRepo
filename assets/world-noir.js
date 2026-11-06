@@ -477,7 +477,11 @@
   });
 
   const clock = new T.Clock();
-  let running = true, lastScroll = scrollY, vel = 0;
+  let running = true, lastScroll = scrollY;
+  // The ribbon runs on its own clock. It only ever counts forward, so every pattern always travels down the line;
+  // scrolling (either way) just makes it count 50% faster, easing in and out.
+  let flowT = 0, flowSpeed = 1, lastMove = -1e9;
+  addEventListener('scroll', () => { lastMove = performance.now(); }, { passive: true });
   document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !reduce) { clock.getDelta(); requestAnimationFrame(frame); } });
   const v3 = new T.Vector3(), tmp = new T.Vector3(), smp = { x: 0, y: 0, nx: 0, ny: 0, set(a, b) { this.x = a; this.y = b; return this; } };
 
@@ -485,18 +489,20 @@
     if (!running) return;
     const dt = Math.min(clock.getDelta(), .05), t = reduce ? 0 : clock.elapsedTime;
     cx += (mx - cx) * .06; cy += (my - cy) * .06;
-    const ds = scrollY - lastScroll; lastScroll = scrollY; vel += (ds - vel) * .1;
-    const flow = reduce ? 0 : Math.min(Math.abs(vel) / 30, 1.2);
+    lastScroll = scrollY;
+    const scrolling = performance.now() - lastMove < 220;                   // any scroll in the last moment, up or down
+    flowSpeed += ((scrolling ? 1.5 : 1) - flowSpeed) * (1 - Math.exp(-dt * 5));   // eases in and out (~0.5s), same on any frame rate
+    if (!reduce) flowT += dt * flowSpeed;
 
     // ribbon: camera follows the page; dots drift a little slower for depth
     rCam.top = -scrollY; rCam.bottom = -scrollY - innerHeight; rCam.updateProjectionMatrix();
-    U.uTime.value = t;
+    U.uTime.value = flowT;
     if (px >= 0) U.uMouse.value.set(px, py + scrollY);
     root.style.setProperty('--dot-y', (-scrollY * .25).toFixed(1) + 'px');
     if (path.pts) for (let i = 0; i < SP; i++) {
-      spS[i] += dt * spV[i] / path.len; if (spS[i] > 1) spS[i] -= 1;   // same slow pace whether or not you scroll
+      spS[i] += dt * spV[i] * flowSpeed / path.len; if (spS[i] > 1) spS[i] -= 1;   // always forward, down the line
       sampleAt(spS[i] * path.len, smp);
-      const w = Math.sin(t * .4 + i) * U.uSpread.value * .8 * spO[i];
+      const w = Math.sin(flowT * .4 + i) * U.uSpread.value * .8 * spO[i];
       spPos[i * 3] = smp.x + smp.nx * w; spPos[i * 3 + 1] = smp.y + smp.ny * w;
       spA[i] = (.3 + .7 * Math.abs(Math.sin(t * 1.7 + i * 1.3))) * Math.min(1, spS[i] * 20, (1 - spS[i]) * 20) * (inText(spPos[i * 3], spPos[i * 3 + 1]) ? .08 : 1);
     }
