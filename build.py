@@ -60,6 +60,7 @@ def head(meta):
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
 """
 
 
@@ -96,6 +97,7 @@ FOOTER = f"""<footer>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
+<script src="/assets/motion.js" defer></script>
 </body>
 </html>
 """

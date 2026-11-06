@@ -31,8 +31,8 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
     <div class="scene" aria-hidden="true">
       <div class="desk"></div>
       <div class="rig">
-        <div class="glass g1"><span class="row"><span class="tick">✓</span> Round 2 approved</span><strong>Ironpath</strong>sample concept</div>
-        <div class="glass g2">Flat price<strong>$300</strong>no monthly fees</div>
+        <div class="glass g1 drag" title="Drag me"><span class="row"><span class="tick">✓</span> Round 2 approved</span><strong>Ironpath</strong>sample concept</div>
+        <div class="glass g2 drag" title="Drag me">Flat price<strong>$300</strong>no monthly fees</div>
 
         <div class="mug"><div class="steam"></div><div class="body"></div><div class="handle"></div></div>
 
@@ -49,8 +49,8 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
                     <div class="p">Log workouts, follow a 12-week plan and watch your progress build.</div>
                     <span class="cta">Try the demo app</span>
                   </div>
-                  <div class="card"><small>Weekly volume</small><strong>12,480 kg</strong>
-                    <div class="bars"><i style="height:35%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:61%"></i><i style="height:84%"></i><i style="height:96%"></i></div>
+                  <div class="card"><small>Weekly volume</small><strong data-live-kg>12,480 kg</strong>
+                    <div class="bars" data-live-bars><i style="height:35%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:61%"></i><i style="height:84%"></i><i style="height:96%"></i></div>
                   </div>
                 </div>
                 <div class="stats"><div><b>12</b>week plans</div><div><b>01</b>tracking</div><div><b>03</b>community</div></div>
@@ -88,18 +88,23 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
 <!-- GUARANTEE STRIP -->
 <section class="strip" aria-label="Our commitments">
   <div class="wrap">
-    <div class="cell"><b>$300</b><span>Flat, one-time price</span></div>
-    <div class="cell"><b>3 rounds</b><span>Concept, iteration, delivery</span></div>
-    <div class="cell"><b>≤ 1 month</b><span>From order to final site</span></div>
-    <div class="cell"><b>100%</b><span>Refund if we miss it</span></div>
+    <div class="cell"><b>$<span data-count="300">300</span></b><span>Flat, one-time price</span></div>
+    <div class="cell"><b><span data-count="3">3</span> rounds</b><span>Concept, iteration, delivery</span></div>
+    <div class="cell"><b>≤ <span data-count="1">1</span> month</b><span>From order to final site</span></div>
+    <div class="cell"><b><span data-count="100">100</span>%</b><span>Refund if we miss it</span></div>
   </div>
 </section>
+
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>Booking pages</span><span>Landing pages</span><span>Membership sign-ups</span><span>Portfolios</span><span>Pricing pages</span><span>Quote forms</span><span>Course pages</span><span>Product sites</span><span>Galleries</span><span>Custom software</span>
+  <span>Booking pages</span><span>Landing pages</span><span>Membership sign-ups</span><span>Portfolios</span><span>Pricing pages</span><span>Quote forms</span><span>Course pages</span><span>Product sites</span><span>Galleries</span><span>Custom software</span>
+</div></div>
 
 <!-- MISSION -->
 <section class="section" id="mission">
   <div class="wrap mission reveal">
     <span class="eyebrow">Our mission</span>
-    <blockquote>“To create and sell the software and websites our customers request, with a clear process and honest pricing.”<cite>Rex Kulman &amp; Ryder Ziman, founders</cite></blockquote>
+    <blockquote class="words">“To create and sell the software and websites our customers request, with a clear process and honest pricing.”<cite>Rex Kulman &amp; Ryder Ziman, founders</cite></blockquote>
   </div>
 </section>
 
@@ -142,7 +147,7 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
       <h2>Three rounds. <em>One month.</em> In writing.</h2>
       <p class="lede">You see the site take shape and say what to change. We commit to finishing every stage within one month of your order.</p>
     </div>
-    <div class="steps">
+    <div class="steps has-rail"><div class="rail" aria-hidden="true"><i></i></div>
       <div class="sheet reveal"><div class="n">01</div><h3>Initial concept</h3><p>Send us your specifications. We build a first draft of your site for you to review.</p><span class="when">You reply within 72h</span></div>
       <div class="sheet reveal"><div class="n">02</div><h3>Second iteration</h3><p>We work your feedback into a refined second version and send it back.</p><span class="when">You reply within 72h</span></div>
       <div class="sheet reveal"><div class="n">03</div><h3>Final delivery</h3><p>After your last round of revisions we polish everything and deliver the finished code.</p><span class="when">Done within 1 month</span></div>
@@ -236,6 +241,78 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
       </div>
     </div>
     <p class="muted reveal" style="margin-top:22px;font-size:.92rem">Websites start with the $300 Professional Website. Custom software is scoped per project. Email <a href="mailto:{{EMAIL}}">{{EMAIL}}</a> to discuss yours.</p>
+  </div>
+</section>
+
+<!-- PLAYGROUND -->
+<section class="section" id="playground">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Try it</span>
+      <h2>Sketch your homepage <em>right now.</em></h2>
+      <p class="lede">Type your business name, pick a look, and watch a first draft come together. Like it? Send it to us as your brief.</p>
+    </div>
+    <div class="play reveal">
+      <form class="controls" id="play" onsubmit="return false">
+        <label>Business name<input name="name" value="Northside Fitness" maxlength="28" autocomplete="off"></label>
+        <label>Headline<input name="headline" value="Stronger every week." maxlength="40" autocomplete="off"></label>
+        <fieldset><legend>Industry</legend>
+          <div class="seg">
+            <label><input type="radio" name="ind" value="fitness" checked><span>Fitness</span></label>
+            <label><input type="radio" name="ind" value="tech"><span>Tech</span></label>
+            <label><input type="radio" name="ind" value="local"><span>Local</span></label>
+            <label><input type="radio" name="ind" value="creator"><span>Creator</span></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Accent colour</legend>
+          <div class="swatches">
+            <label><input type="radio" name="accent" value="#c7f36b" checked><span style="--c:#c7f36b"></span></label>
+            <label><input type="radio" name="accent" value="#ff7a59"><span style="--c:#ff7a59"></span></label>
+            <label><input type="radio" name="accent" value="#5b8def"><span style="--c:#5b8def"></span></label>
+            <label><input type="radio" name="accent" value="#d4b07c"><span style="--c:#d4b07c"></span></label>
+            <label><input type="radio" name="accent" value="#c084fc"><span style="--c:#c084fc"></span></label>
+            <label class="custom"><input type="color" name="custom" value="#2ec4b6" aria-label="Custom colour"><span style="--c:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></span></label>
+          </div>
+        </fieldset>
+        <div class="two">
+          <fieldset><legend>Type</legend>
+            <div class="seg">
+              <label><input type="radio" name="font" value="serif" checked><span>Classic</span></label>
+              <label><input type="radio" name="font" value="sans"><span>Modern</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>Mode</legend>
+            <div class="seg">
+              <label><input type="radio" name="mode" value="dark" checked><span>Dark</span></label>
+              <label><input type="radio" name="mode" value="light"><span>Light</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="btn-row">
+          <button class="btn" type="button" id="play-send">Send this as my brief</button>
+          <button class="btn ghost" type="button" id="play-shuffle">Surprise me</button>
+        </div>
+      </form>
+      <div class="device-stage" aria-label="Live preview">
+        <div class="browser" id="preview">
+          <div class="b-bar"><b></b><b></b><b></b><div class="b-url"><span id="pv-url">northsidefitness</span>.com</div></div>
+          <div class="b-page">
+            <nav class="b-nav"><strong id="pv-logo">Northside Fitness</strong><span id="pv-links">Classes · Coaches · Join</span><em class="b-pill">Book now</em></nav>
+            <div class="b-hero">
+              <div>
+                <small id="pv-kicker">Personal training &amp; classes</small>
+                <h4 id="pv-h">Stronger every week.</h4>
+                <p id="pv-p">Small-group classes and coaching that fit around your life.</p>
+                <div class="b-ctas"><em class="b-btn" id="pv-cta">Start free week</em><em class="b-ghost">See timetable</em></div>
+              </div>
+              <div class="b-visual" id="pv-visual"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="b-cards" id="pv-cards"><div><b>01</b><span>Strength</span></div><div><b>02</b><span>Conditioning</span></div><div><b>03</b><span>Mobility</span></div></div>
+          </div>
+        </div>
+        <p class="muted" style="font-size:.85rem;margin-top:16px;text-align:center">A rough sketch to start the conversation. Your real site is designed with you over three rounds.</p>
+      </div>
+    </div>
   </div>
 </section>
 

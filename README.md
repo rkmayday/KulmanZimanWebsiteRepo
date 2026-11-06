@@ -30,3 +30,23 @@ Carry them over from the existing codebase, or the links will 404.
 The checkout link and contact email are set once at the top of `build.py`.
 
 See `IMPROVEMENTS.md` for the review of the live site.
+
+## Interactive pieces (`assets/motion.js`)
+
+All of these switch off for `prefers-reduced-motion`. Pointer-only effects are skipped on touch screens.
+
+| Piece | Where |
+|---|---|
+| Hero parallax: laptop, phone, mug and light layers move at different depths | Home hero |
+| Draggable glass cards that glide and spring back | Home hero |
+| Live laptop dashboard: ticking numbers and re-growing bars | Home hero |
+| Reading progress bar | Every page |
+| Count-up numbers | Home guarantee strip |
+| Infinite marquee that pauses on hover | Below the strip |
+| Mission quote lights up word by word as you scroll | Home |
+| Process rail fills and step numbers darken on scroll | Home |
+| **Homepage playground**: name, headline, industry, colour, type and mode drive a live mock site; "Surprise me"; "Send this as my brief" emails the result | Home |
+| Magnetic buttons | Every page |
+| 3D tilt with moving glare on cards | Every page |
+| Cursor spotlight on dark sections | Every page |
+| Coin stack that grows with the earnings slider | Affiliates |
