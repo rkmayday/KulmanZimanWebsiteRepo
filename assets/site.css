@@ -3,7 +3,7 @@
 :root{
   --m-50:#faf7f5; --m-100:#f1e8e2; --m-200:#e2d2c6; --m-300:#cbb09c; --m-400:#ad8a72;
   --m-500:#8b6f5c; --m-600:#6f5645; --m-700:#574337; --m-800:#3d2e26; --m-900:#2a1f1a; --m-950:#1a1310;
-  --paper:#f7f2ee; --ink:#231a15; --ink-2:#5b4a3f; --ink-3:#7d6a5d; --line:rgba(61,46,38,.12);
+  --paper:#f7f2ee; --ink:#231a15; --ink-2:#5b4a3f; --ink-3:#685649; --line:rgba(61,46,38,.12);
   --brass:#b8925f; --brass-hi:#e7cfa4;
   --ok:#3f6b4a;
   --font-display:"Fraunces", Georgia, "Times New Roman", serif;
