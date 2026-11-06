@@ -65,12 +65,14 @@ section{padding-block:70px}
 footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--m);color:#0d0f1a;font-weight:600;padding:12px 18px;border-radius:12px;transition:.3s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+:root{--acc:#ffcc4d}
 </style>
+<link rel="stylesheet" href="{{ASSETS}}sample-kit.css">
 </head>
 <body>
 <div class="kz"><span>Sample concept by Kulman Ziman. Deduction is a fictional creator, not a client project and not for sale.</span><a href="{{HOME}}#proof">← Back to Kulman Ziman</a></div>
+<nav class="top"><div class="wrap navin"><span class="logo">&lt;<b>Deduction</b>/&gt;</span><ul><li><a href="#path">The path</a></li><li><a href="#curriculum">Curriculum</a></li><li><a href="#try">Try it</a></li><li><a href="#projects">Projects</a></li><li><a href="#courses">Courses</a></li><li><a href="#faq">FAQ</a></li></ul><a class="btn" href="#courses">Start learning</a></div></nav>
 <div class="wrap">
-  <nav class="top"><span class="logo">&lt;<b>Deduction</b>/&gt;</span><ul><li><a href="#path">The path</a></li><li><a href="#try">Try it</a></li><li><a href="#courses">Courses</a></li></ul><a class="btn" href="#courses">Start learning</a></nav>
   <div class="hero" id="path">
     <div>
       <span class="k">Learn to code, one small win at a time</span>
@@ -83,6 +85,8 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
 </div>
 
+<div class="wrap"><div class="kstats"><div class="kstat"><b><span data-count="25000">25000</span>+</b><span>learners</span></div><div class="kstat"><b><span data-count="180">180</span></b><span>bite-size lessons</span></div><div class="kstat"><b><span data-count="6">6</span></b><span>real projects to ship</span></div><div class="kstat"><b><span data-count="4.9">4.9</span>★</b><span>average course rating</span></div></div><p class="kfine">Figures on this sample site are illustrative.</p></div><div class="kmq" aria-hidden="true"><div><span>JavaScript</span><span>Python</span><span>HTML</span><span>CSS</span><span>Git</span><span>SQL</span><span>APIs</span><span>React</span><span>Debugging</span><span>Shipping</span></div></div>
+<section class="ksec" id="curriculum"><div class="wrap"><div class="khead"><span class="k">Curriculum</span><h2>Six stops from <code style="font:inherit;color:var(--y)">hello</code> to launch.</h2><p class="lede">Every module ends with something you built, not a quiz you forgot.</p></div><div class="ksteps" style="--n:3"><div class="kstep"><i>01</i><h3>Thinking in code</h3><p>Variables, values and the logic behind every program.</p></div><div class="kstep"><i>02</i><h3>Making decisions</h3><p>Conditions, loops and functions with real examples.</p></div><div class="kstep"><i>03</i><h3>The web</h3><p>HTML, CSS and how browsers turn code into pages.</p></div><div class="kstep"><i>04</i><h3>Interactivity</h3><p>JavaScript that responds to people.</p></div><div class="kstep"><i>05</i><h3>Data</h3><p>APIs, JSON and storing what matters.</p></div><div class="kstep"><i>06</i><h3>Ship it</h3><p>Deploy your project and share the link.</p></div></div></div></section>
 <section id="try"><div class="wrap">
   <span class="k">Try it now</span><h2>Code that moves something.</h2>
   <p class="lede">Each line is a command. Watch the code type itself and the shape respond to every line.</p>
@@ -97,6 +101,10 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
 </div></section>
 
+
+<section class="ksec" id="projects"><div class="wrap"><div class="khead"><span class="k">Projects</span><h2>Things you will actually build.</h2></div><div class="kgrid" style="--c:3"><div class="kcard"><div class="ico">◫</div><h3>A personal site</h3><p>Your own corner of the internet, live on a real domain.</p><span class="ktag">Module 3</span></div><div class="kcard"><div class="ico">✓</div><h3>A to-do app</h3><p>Add, check off and save tasks between visits.</p><span class="ktag">Module 4</span></div><div class="kcard"><div class="ico">☁</div><h3>A weather dashboard</h3><p>Live data from a public API, drawn as charts.</p><span class="ktag">Module 5</span></div><div class="kcard"><div class="ico">♫</div><h3>A music quiz</h3><p>Score, timers and a leaderboard.</p><span class="ktag">Module 4</span></div><div class="kcard"><div class="ico">⌘</div><h3>A habit tracker</h3><p>Streaks, reminders and a calendar view.</p><span class="ktag">Module 5</span></div><div class="kcard"><div class="ico">🚀</div><h3>Your capstone</h3><p>Your own idea, planned, built and launched.</p><span class="ktag">Module 6</span></div></div></div></section>
+
+<section class="ksec" id="teacher"><div class="wrap"><div class="ksplit"><div class="korb"><span>&lt;/&gt;</span></div><div><div class="khead"><span class="k">The teaching</span><h2>Explained like a friend <em style="font-style:normal;color:var(--y)">who codes.</em></h2><p class="lede">Deduction lessons are short videos with a playground next to them, so you try every idea the moment you see it.</p></div><ul class="kticks"><li><span><b>Ten minutes a lesson.</b> Fits on a lunch break.</span></li><li><span><b>Code next to the video.</b> No setup, nothing to install.</span></li><li><span><b>Weekly live sessions.</b> Bring your bugs, leave with answers.</span></li></ul></div></div></div></section>
 <section id="courses"><div class="wrap">
   <span class="k">Courses</span><h2>Pick where you are.</h2>
   <div class="courses">
@@ -107,7 +115,11 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   <h2 style="margin-top:50px;font-size:1.6rem">One lesson a week, in your inbox.</h2>
   <p style="margin-top:18px"><a class="btn" href="#path">Start with lesson 01</a></p>
 </div></section>
-<footer>Deduction is a sample concept designed and built by <a href="{{HOME}}">Kulman Ziman</a>. The creator and courses are fictional.</footer>
+
+<section class="ksec" id="reviews"><div class="wrap"><div class="khead kcenter"><span class="k">Learners</span><h2>From stuck to shipping.</h2></div><div class="kgrid" style="--c:3"><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“I tried three courses before. This is the first one where I finished and had something to show.”</blockquote><div class="who"><span class="kav">TA</span><span><b>Tom Alvarez</b><span>Career changer</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“The playground next to every video made it click. I never had to set anything up.”</blockquote><div class="who"><span class="kav">AK</span><span><b>Aisha Khan</b><span>Student</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“Six months later I build small tools for my team at work.”</blockquote><div class="who"><span class="kav">BW</span><span><b>Ben Wright</b><span>Operations analyst</span></span></div></div></div><p class="kfine" style="text-align:center">Sample reviews written for this concept.</p></div></section>
+
+<section class="ksec" id="faq"><div class="wrap"><div class="khead"><span class="k">FAQ</span><h2>Questions, answered.</h2></div><div class="kfaq"><details><summary>Do I need any experience?</summary><p>None. Lesson one starts from a blank page.</p></details><details><summary>How much time does it take?</summary><p>About three hours a week finishes the core path in four months.</p></details><details><summary>Do I need a powerful computer?</summary><p>No. Everything runs in the browser.</p></details><details><summary>Is there a certificate?</summary><p>Yes, plus a portfolio of the six projects you built.</p></details></div></div></section>
+<footer class="kfoot"><div class="wrap"><div class="cols"><div><div class="logo" style="margin-bottom:12px">&lt;<b style="color:var(--y)">Deduction</b>/&gt;</div><p style="margin:0;max-width:34ch">Learn to code, one small win at a time.</p></div><div><h4>Learn</h4><ul><li><a href="#path">The path</a></li><li><a href="#curriculum">Curriculum</a></li><li><a href="#try">Try it</a></li></ul></div><div><h4>Build</h4><ul><li><a href="#projects">Projects</a></li><li><a href="#courses">Courses</a></li></ul></div><div><h4>Help</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="#reviews">Reviews</a></li></ul></div></div><div class="base"><span>Deduction is a fictional sample creator. Courses are illustrative.</span><span>Designed and built by <a href="{{HOME}}" style="color:var(--acc)">Kulman Ziman</a></span></div></div></footer>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="{{THREE}}"></script>
@@ -208,5 +220,6 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   })();
 })();
 </script>
+<script src="{{ASSETS}}sample-kit.js" defer></script>
 </body>
 </html>

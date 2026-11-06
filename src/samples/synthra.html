@@ -65,12 +65,15 @@ section{padding-block:70px}
 footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--c1);color:#05070f;font-weight:700;padding:12px 18px;border-radius:12px;transition:.3s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+:root{--acc:#5ef0ff}
+.korb span{color:#05070f}
 </style>
+<link rel="stylesheet" href="{{ASSETS}}sample-kit.css">
 </head>
 <body>
 <div class="kz"><span>Sample concept by Kulman Ziman. Synthra is a fictional AI company, not a client project and not for sale.</span><a href="{{HOME}}#proof">← Back to Kulman Ziman</a></div>
+<nav class="top"><div class="wrap navin"><span class="logo"><i></i>Synthra</span><ul><li><a href="#demo">Live demo</a></li><li><a href="#how">How it works</a></li><li><a href="#cases">Use cases</a></li><li><a href="#security">Security</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">FAQ</a></li></ul><a class="btn" href="#pricing">Get early access</a></div></nav>
 <div class="wrap">
-  <nav class="top"><span class="logo"><i></i>Synthra</span><ul><li><a href="#demo">Live demo</a></li><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li></ul><a class="btn" href="#pricing">Get early access</a></nav>
   <div class="hero" id="demo">
     <div>
       <span class="k">AI agents for IT and operations</span>
@@ -86,6 +89,8 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
 </div>
 
+<div class="wrap"><div class="kstats"><div class="kstat"><b><span data-count="3.2">3.2</span>M</b><span>tasks completed</span></div><div class="kstat"><b><span data-count="41">41</span> hrs</b><span>saved per team, per month</span></div><div class="kstat"><b><span data-count="99.95">99.95</span>%</b><span>uptime</span></div><div class="kstat"><b><span data-count="120">120</span>+</b><span>tool connectors</span></div></div><p class="kfine">Figures on this sample site are illustrative.</p></div><div class="kmq" aria-hidden="true"><div><span>Email</span><span>Calendar</span><span>CRM</span><span>Docs</span><span>Chat</span><span>Database</span><span>Tickets</span><span>Spreadsheets</span><span>Cloud storage</span><span>Billing</span></div></div>
+<section class="ksec" id="how"><div class="wrap"><div class="khead"><span class="k">How it works</span><h2>From request to done, <em>step by step.</em></h2><p class="lede">You stay in control. The agent shows its plan before it acts and keeps a record of every step.</p></div><div class="ksteps" style="--n:4"><div class="kstep"><i>01</i><h3>Connect your tools</h3><p>Sign in to the apps your team uses. Permissions are scoped per tool.</p></div><div class="kstep"><i>02</i><h3>Describe the task</h3><p>Write it the way you would ask a colleague.</p></div><div class="kstep"><i>03</i><h3>Approve the plan</h3><p>See every step before anything happens. Edit or approve.</p></div><div class="kstep"><i>04</i><h3>Agent does the work</h3><p>It runs the steps, checks the result and reports back.</p></div></div></div></section>
 <section id="features"><div class="wrap">
   <span class="k">What it does</span><h2>One agent. Every tool in reach.</h2>
   <div class="grid3">
@@ -95,6 +100,10 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
 </div></section>
 
+
+<section class="ksec" id="cases"><div class="wrap"><div class="khead"><span class="k">Use cases</span><h2>Built for the work that piles up.</h2></div><div class="kgrid" style="--c:3"><div class="kcard"><div class="ico">⌁</div><h3>IT helpdesk</h3><p>Triage tickets, reset access and close the loop with the requester.</p><span class="ktag">IT</span></div><div class="kcard"><div class="ico">◎</div><h3>Sales operations</h3><p>Update the CRM after calls and draft follow-ups for review.</p><span class="ktag">Sales</span></div><div class="kcard"><div class="ico">▤</div><h3>Finance close</h3><p>Reconcile invoices against the ledger and flag mismatches.</p><span class="ktag">Finance</span></div><div class="kcard"><div class="ico">☺</div><h3>People ops</h3><p>Onboard new hires across every account in one request.</p><span class="ktag">HR</span></div><div class="kcard"><div class="ico">⚑</div><h3>Incident response</h3><p>Gather logs, open the incident and keep the channel updated.</p><span class="ktag">Ops</span></div><div class="kcard"><div class="ico">✎</div><h3>Reporting</h3><p>Pull numbers from three tools into one weekly summary.</p><span class="ktag">All teams</span></div></div></div></section>
+
+<section class="ksec" id="security"><div class="wrap"><div class="ksplit"><div class="korb"><span>Audit log on every step</span></div><div><div class="khead"><span class="k">Security</span><h2>Powerful, and <em>on a short leash.</em></h2><p class="lede">Agents only touch what you allow, and every action is recorded.</p></div><ul class="kticks"><li><span><b>Scoped permissions.</b> Read-only by default, write access per tool.</span></li><li><span><b>Human approval.</b> Sensitive steps always wait for a person.</span></li><li><span><b>Full audit trail.</b> Every step, input and result, searchable.</span></li><li><span><b>Your data stays yours.</b> Never used to train shared models.</span></li></ul></div></div></div></section>
 <section id="pricing"><div class="wrap">
   <span class="k">Pricing</span><h2>Start small. Scale when it works.</h2>
   <div class="grid3">
@@ -104,7 +113,11 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
   <p style="text-align:center;margin-top:34px"><a class="btn" href="#demo">Get early access</a></p>
 </div></section>
-<footer>Synthra is a sample concept designed and built by <a href="{{HOME}}">Kulman Ziman</a>. The agent demo is simulated.</footer>
+
+<section class="ksec" id="reviews"><div class="wrap"><div class="khead kcenter"><span class="k">Teams</span><h2>What changes when the busywork goes.</h2></div><div class="kgrid" style="--c:3"><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“Our helpdesk queue used to be two days long. Now most tickets close before lunch.”</blockquote><div class="who"><span class="kav">PN</span><span><b>Priya Natarajan</b><span>IT lead, logistics</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“I approve the plan, it does the clicking. I got my Fridays back.”</blockquote><div class="who"><span class="kav">SO</span><span><b>Sam Okafor</b><span>Sales operations</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“The audit log is what sold our security team. Every step is right there.”</blockquote><div class="who"><span class="kav">LF</span><span><b>Lena Fischer</b><span>Head of security</span></span></div></div></div><p class="kfine" style="text-align:center">Sample reviews written for this concept.</p></div></section>
+
+<section class="ksec" id="faq"><div class="wrap"><div class="khead"><span class="k">FAQ</span><h2>Questions, answered.</h2></div><div class="kfaq"><details><summary>Does the agent act without asking?</summary><p>Only on steps you have marked safe. Anything sensitive pauses for approval.</p></details><details><summary>Which tools can it use?</summary><p>Email, calendar, CRM, docs, chat, databases and 120+ more through connectors.</p></details><details><summary>Can we run it on our own servers?</summary><p>Yes. Enterprise plans include on-premise connectors.</p></details><details><summary>How long does setup take?</summary><p>Most teams connect their first tools and run a task in under an hour.</p></details></div></div></section>
+<footer class="kfoot"><div class="wrap"><div class="cols"><div><div class="logo" style="margin-bottom:12px"><i style="display:inline-block;width:18px;height:18px;border-radius:6px;background:conic-gradient(from 200deg,#5ef0ff,#8b5cff,#5ef0ff);vertical-align:-3px"></i> Synthra</div><p style="margin:0;max-width:34ch">AI agents that handle the busywork, with people in control.</p></div><div><h4>Product</h4><ul><li><a href="#demo">Live demo</a></li><li><a href="#cases">Use cases</a></li><li><a href="#pricing">Pricing</a></li></ul></div><div><h4>Trust</h4><ul><li><a href="#security">Security</a></li><li><a href="#how">How it works</a></li></ul></div><div><h4>Help</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="#reviews">Reviews</a></li></ul></div></div><div class="base"><span>Synthra is a fictional sample. The agent demo is simulated.</span><span>Designed and built by <a href="{{HOME}}" style="color:var(--acc)">Kulman Ziman</a></span></div></div></footer>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="{{THREE}}"></script>
@@ -211,5 +224,6 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   })();
 })();
 </script>
+<script src="{{ASSETS}}sample-kit.js" defer></script>
 </body>
 </html>

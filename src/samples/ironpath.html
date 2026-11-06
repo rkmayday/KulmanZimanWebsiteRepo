@@ -60,12 +60,14 @@ section{padding-block:70px}
 footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--acc);color:#0b0d0c;font-weight:700;padding:12px 18px;border-radius:12px;transition:.3s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+:root{--acc:#c7f36b}
 </style>
+<link rel="stylesheet" href="{{ASSETS}}sample-kit.css">
 </head>
 <body>
 <div class="kz"><span>Sample concept by Kulman Ziman. Ironpath is a fictional fitness app, not a client project and not for sale.</span><a href="{{HOME}}#proof">← Back to Kulman Ziman</a></div>
+<nav class="top"><div class="wrap navin"><span class="logo">IRON<span>PATH</span></span><ul><li><a href="#lift">Lift</a></li><li><a href="#how">How it works</a></li><li><a href="#week">Your week</a></li><li><a href="#programs">Programs</a></li><li><a href="#plans">Plans</a></li><li><a href="#faq">FAQ</a></li></ul><a class="btn" href="#plans">Start free week</a></div></nav>
 <div class="wrap">
-  <nav class="top"><span class="logo">IRON<span>PATH</span></span><ul><li><a href="#lift">Lift</a></li><li><a href="#week">Your week</a></li><li><a href="#plans">Plans</a></li></ul><a class="btn" href="#plans">Start free week</a></nav>
 
   <div class="hero" id="lift">
     <div>
@@ -84,6 +86,8 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
   </div>
 </div>
 
+<div class="wrap"><div class="kstats"><div class="kstat"><b><span data-count="48000">48000</span>+</b><span>members training</span></div><div class="kstat"><b><span data-count="2.1">2.1</span>M</b><span>sessions logged</span></div><div class="kstat"><b>+<span data-count="18">18</span>%</b><span>average strength in 12 weeks</span></div><div class="kstat"><b><span data-count="4.9">4.9</span>★</b><span>average app rating</span></div></div><p class="kfine">Figures on this sample site are illustrative.</p></div><div class="kmq" aria-hidden="true"><div><span>Strength</span><span>Hypertrophy</span><span>Powerlifting</span><span>Mobility</span><span>Conditioning</span><span>Beginner foundations</span><span>Return from injury</span></div></div>
+<section class="ksec" id="how"><div class="wrap"><div class="khead"><span class="k">How it works</span><h2>Four steps. Then it <i>learns you.</i></h2><p class="lede">No spreadsheets, no guessing. Tell Ironpath where you are and it builds the next twelve weeks around you.</p></div><div class="ksteps" style="--n:4"><div class="kstep"><i>01</i><h3>Set your goal</h3><p>Strength, size, or just feeling better. Pick one and tell us your schedule.</p></div><div class="kstep"><i>02</i><h3>Get your plan</h3><p>A 12-week block built for your level, your gym and your days.</p></div><div class="kstep"><i>03</i><h3>Train and log</h3><p>Follow each session and log your sets in a couple of taps.</p></div><div class="kstep"><i>04</i><h3>It adapts</h3><p>Missed a day or smashed a lift? Next week adjusts on its own.</p></div></div></div></section>
 <section id="week"><div class="wrap chart">
   <div class="stage" id="chart-stage"><span class="hint" style="top:14px">● Live: this week, session by session</span></div>
   <div>
@@ -95,6 +99,10 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
   </div>
 </div></section>
 
+
+<section class="ksec" id="programs"><div class="wrap"><div class="khead"><span class="k">Programs</span><h2>Everything you need, nothing you don’t.</h2></div><div class="kgrid" style="--c:3"><div class="kcard"><div class="ico">↑</div><h3>Adaptive loads</h3><p>Weights go up when you are ready, not on a fixed schedule.</p><span class="ktag">Core</span></div><div class="kcard"><div class="ico">▶</div><h3>Form videos</h3><p>Short clips for every movement, filmed from three angles.</p><span class="ktag">Core</span></div><div class="kcard"><div class="ico">⏱</div><h3>Smart rest timer</h3><p>Rest times that match the set you just did.</p><span class="ktag">Core</span></div><div class="kcard"><div class="ico">◐</div><h3>Deload weeks</h3><p>Built-in recovery so you keep progressing for months.</p><span class="ktag">Build</span></div><div class="kcard"><div class="ico">▣</div><h3>Progress photos</h3><p>Private side-by-side photos to see the change.</p><span class="ktag">Build</span></div><div class="kcard"><div class="ico">✉</div><h3>Coach chat</h3><p>Ask a real coach about your plan, any day.</p><span class="ktag">Coach</span></div></div></div></section>
+
+<section class="ksec" id="coaches"><div class="wrap"><div class="ksplit"><div><div class="khead"><span class="k">Coaches</span><h2>Real coaches behind <i>every plan.</i></h2><p class="lede">Every Ironpath program is written and reviewed by certified strength coaches, then tuned by your own training data.</p></div><ul class="kticks"><li><span><b>Written by people.</b> Every block starts with a coach, not a template.</span></li><li><span><b>Checked weekly.</b> Coaches review how plans are performing.</span></li><li><span><b>Safe by default.</b> Conservative jumps for beginners and returning lifters.</span></li></ul></div><div class="korb"><span>12-week blocks</span></div></div></div></section>
 <section id="plans"><div class="wrap">
   <span class="k">Plans</span><h2>Pick a path.</h2>
   <div class="plans">
@@ -104,7 +112,11 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
   </div>
   <div class="cta" style="margin-top:40px"><h2>Your first week is on us.</h2><p class="lede" style="margin:0 auto 20px">No card needed. Cancel any time.</p><a class="btn" href="#lift">Start free week</a></div>
 </div></section>
-<footer>Ironpath is a sample concept designed and built by <a href="{{HOME}}">Kulman Ziman</a>. Prices and plans are illustrative.</footer>
+
+<section class="ksec" id="reviews"><div class="wrap"><div class="khead kcenter"><span class="k">Members</span><h2>People who stopped guessing.</h2></div><div class="kgrid" style="--c:3"><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“I finally stopped program-hopping. Twelve weeks in and my squat is up 25 kg.”</blockquote><div class="who"><span class="kav">ML</span><span><b>Maya Lopez</b><span>Member since spring</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“The plan moved my heavy day when I travelled. That alone kept me going.”</blockquote><div class="who"><span class="kav">JR</span><span><b>Jon Reed</b><span>Build plan</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“Coach chat answered my knee question in an hour. Felt like having a trainer in my pocket.”</blockquote><div class="who"><span class="kav">AB</span><span><b>Ade Brooks</b><span>Coach plan</span></span></div></div></div><p class="kfine" style="text-align:center">Sample reviews written for this concept.</p></div></section>
+
+<section class="ksec" id="faq"><div class="wrap"><div class="khead"><span class="k">FAQ</span><h2>Questions, answered.</h2></div><div class="kfaq"><details><summary>Do I need a gym?</summary><p>No. Plans work with a full gym, a home setup or just dumbbells. Tell us what you have.</p></details><details><summary>I’m a beginner. Is this for me?</summary><p>Yes. Foundation starts with the basics and builds slowly, with form videos for every movement.</p></details><details><summary>What happens if I miss a session?</summary><p>Nothing breaks. Your week reshuffles and the next session picks up where you left off.</p></details><details><summary>Can I cancel anytime?</summary><p>Yes, in two taps. No calls, no forms.</p></details></div></div></section>
+<footer class="kfoot"><div class="wrap"><div class="cols"><div><div class="logo" style="margin-bottom:12px">IRON<span>PATH</span></div><p style="margin:0;max-width:34ch">Strength training that adapts to you, week by week.</p></div><div><h4>Product</h4><ul><li><a href="#plans">Plans</a></li><li><a href="#programs">Programs</a></li><li><a href="#week">Your week</a></li></ul></div><div><h4>Company</h4><ul><li><a href="#coaches">Coaches</a></li><li><a href="#reviews">Reviews</a></li></ul></div><div><h4>Help</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="#how">How it works</a></li></ul></div></div><div class="base"><span>Ironpath is a fictional sample. Prices and plans are illustrative.</span><span>Designed and built by <a href="{{HOME}}" style="color:var(--acc)">Kulman Ziman</a></span></div></div></footer>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="{{THREE}}"></script>
@@ -204,5 +216,6 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
   })();
 })();
 </script>
+<script src="{{ASSETS}}sample-kit.js" defer></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ Each page file starts with a front-matter block:
     jsonld: [optional JSON array]
     ---
 """
-import json, pathlib, re, shutil, sys
+import json, pathlib, re, shutil, sys, urllib.parse
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
@@ -156,6 +156,22 @@ FOOTER = f"""<footer>
 """
 
 
+def gmail_links(html):
+    """mailto: links open Gmail's compose window (new tab) with the address, subject and body filled in."""
+    def fix(m):
+        rest = m.group(1).replace("&amp;", "&")
+        to, _, query = rest.partition("?")
+        q = dict(urllib.parse.parse_qsl(query))
+        params = {"view": "cm", "fs": "1", "to": to}
+        if "subject" in q:
+            params["su"] = q["subject"]
+        if "body" in q:
+            params["body"] = q["body"]
+        url = "https://mail.google.com/mail/?" + urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
+        return f'href="{url.replace("&", "&amp;")}" target="_blank" rel="noopener"'
+    return re.sub(r'href="mailto:([^"]+)"', fix, html)
+
+
 def relativize(html):
     """Preview mode: flat files and relative links (index.html, products.html, assets/...)."""
     def fix(m):
@@ -198,6 +214,7 @@ def build(preview=False, theme="royal"):
                     + head_tags(meta) + "</head>\n<body>\n" + BODY_START + inner + "</body>\n</html>\n")
         for a, b in th["replace"].items():
             html = html.replace(a, b)
+        html = gmail_links(html)
         if preview:
             html = relativize(html)
             out = out_dir / f"{page.stem}.html"
@@ -210,7 +227,7 @@ def build(preview=False, theme="royal"):
         print("built", out.relative_to(ROOT))
     # the four sample sites: standalone pages with their own branding
     for sp in sorted((SRC / "samples").glob("*.html")):
-        html = sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", THREE)
+        html = gmail_links(sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", THREE).replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)

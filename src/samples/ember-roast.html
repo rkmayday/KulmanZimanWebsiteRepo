@@ -58,12 +58,15 @@ section{padding-block:70px}
 footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--ink);color:var(--paper);font-weight:700;padding:12px 18px;border-radius:12px;transition:.3s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+:root{--acc:#c8743a;--panel:var(--paper);--fg:var(--ink);--display:"Fraunces",Georgia,serif;--mono:ui-monospace,monospace}
+.kav{color:#fff}.kticks li::before{color:#fff}.korb span{color:#fff}
 </style>
+<link rel="stylesheet" href="{{ASSETS}}sample-kit.css">
 </head>
 <body>
 <div class="kz"><span>Sample concept by Kulman Ziman. Ember Roast is a fictional coffee shop, not a client project and not for sale.</span><a href="{{HOME}}#proof">← Back to Kulman Ziman</a></div>
+<nav class="top"><div class="wrap navin"><span class="logo">Ember<span>·</span>Roast</span><ul><li><a href="#build">Now pouring</a></li><li><a href="#roast">Our roast</a></li><li><a href="#menu">Menu</a></li><li><a href="#events">This week</a></li><li><a href="#visit">Visit</a></li></ul><span class="open" id="open"><i></i><span>Open now</span></span></div></nav>
 <div class="wrap">
-  <nav class="top"><span class="logo">Ember<span>·</span>Roast</span><ul><li><a href="#build">Order ahead</a></li><li><a href="#menu">Menu</a></li><li><a href="#visit">Visit</a></li></ul><span class="open" id="open"><i></i><span>Open now</span></span></nav>
   <div class="hero" id="build">
     <div>
       <span class="k">Neighbourhood coffee, roasted on site</span>
@@ -81,6 +84,8 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
 </div>
 
+<div class="wrap"><div class="kstats"><div class="kstat"><b><span data-count="6">6</span></b><span>single-origin coffees</span></div><div class="kstat"><b><span data-count="1200">1200</span>+</b><span>cups poured a week</span></div><div class="kstat"><b><span data-count="18">18</span> hrs</b><span>cold brew steep</span></div><div class="kstat"><b><span data-count="2">2</span></b><span>doors from the roaster</span></div></div><p class="kfine">Figures on this sample site are illustrative.</p></div><div class="kmq" aria-hidden="true"><div><span>House latte</span><span>Cold brew</span><span>Cortado</span><span>Oat flat white</span><span>Mocha</span><span>Cardamom bun</span><span>Pour-over</span><span>Seasonal special</span></div></div>
+<section class="ksec" id="roast"><div class="wrap"><div class="khead"><span class="k">Our roast</span><h2>Bean to cup, <em>two doors apart.</em></h2><p class="lede">We roast small batches every Tuesday and pour them all week, so your coffee is never more than days old.</p></div><div class="ksteps" style="--n:4"><div class="kstep"><i>01</i><h3>Source</h3><p>Direct from three farms we visit and know by name.</p></div><div class="kstep"><i>02</i><h3>Roast</h3><p>Small batches every Tuesday, light to medium.</p></div><div class="kstep"><i>03</i><h3>Rest</h3><p>Two days to settle, so the flavour opens up.</p></div><div class="kstep"><i>04</i><h3>Pour</h3><p>Dialled in every morning before the doors open.</p></div></div></div></section>
 <section id="menu"><div class="wrap">
   <span class="k">The menu</span><h2>Small menu. Done properly.</h2>
   <div class="menu">
@@ -90,6 +95,12 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   </div>
 </div></section>
 
+
+<section class="ksec" id="more-menu"><div class="wrap"><div class="khead"><span class="k">Also on the menu</span><h2>Something for every table.</h2></div><div class="kgrid" style="--c:3"><div class="kcard"><div class="ico">☕</div><h3>Pour-over of the week</h3><p>One origin, brewed by hand. Ask what is on today.</p><span class="ktag">$5.00</span></div><div class="kcard"><div class="ico">◑</div><h3>Oat flat white</h3><p>Silky, a little sweet, our most ordered drink.</p><span class="ktag">$4.75</span></div><div class="kcard"><div class="ico">❄</div><h3>Iced cortado</h3><p>Short, cold and strong. Summer only.</p><span class="ktag">$4.25</span></div><div class="kcard"><div class="ico">✿</div><h3>Cardamom bun</h3><p>Baked here every morning until they run out.</p><span class="ktag">$3.75</span></div><div class="kcard"><div class="ico">◍</div><h3>Almond croissant</h3><p>Twice-baked, from the bakery down the road.</p><span class="ktag">$4.25</span></div><div class="kcard"><div class="ico">♨</div><h3>Hot chocolate</h3><p>Real chocolate, melted to order.</p><span class="ktag">$4.00</span></div></div></div></section>
+
+<section class="ksec" id="events"><div class="wrap"><div class="ksplit"><div><div class="khead"><span class="k">This week at Ember</span><h2>Come for coffee, <em>stay for the people.</em></h2></div><ul class="kticks"><li><span><b>Thursday 6pm · Cupping night.</b> Taste this week’s roasts side by side.</span></li><li><span><b>Saturday 10am · Latte art hour.</b> Watch, then try a pour yourself.</span></li><li><span><b>Sunday · Dog day.</b> Pup cups for every four-legged guest.</span></li></ul></div><div class="korb"><span>Roasted Tuesday</span></div></div></div></section>
+
+<section class="ksec" id="reviews"><div class="wrap"><div class="khead kcenter"><span class="k">Regulars</span><h2>The neighbourhood’s kitchen table.</h2></div><div class="kgrid" style="--c:3"><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“Order ahead is a lifesaver. My oat latte is on the counter when I walk in.”</blockquote><div class="who"><span class="kav">HC</span><span><b>Hannah Cole</b><span>Weekday regular</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“You can taste that it was roasted this week. Nothing else nearby comes close.”</blockquote><div class="who"><span class="kav">ML</span><span><b>Marcus Lee</b><span>Pour-over fan</span></span></div></div><div class="kcard kquote"><div class="kstars">★★★★★</div><blockquote>“The cardamom buns sell out by ten. I have learned to come early.”</blockquote><div class="who"><span class="kav">ID</span><span><b>Ines Duarte</b><span>Saturday regular</span></span></div></div></div><p class="kfine" style="text-align:center">Sample reviews written for this concept.</p></div></section>
 <section id="visit"><div class="wrap">
   <span class="k">Visit</span><h2>Come say hi.</h2>
   <div class="visit">
@@ -97,7 +108,9 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
     <div class="item"><h3>12 Orchard Lane</h3><p>Corner of Orchard and Pine. Bike racks out front, dogs welcome on the patio.</p></div>
   </div>
 </div></section>
-<footer>Ember Roast is a sample concept designed and built by <a href="{{HOME}}">Kulman Ziman</a>. The address, hours and prices are made up.</footer>
+
+<section class="ksec" id="faq"><div class="wrap"><div class="khead"><span class="k">FAQ</span><h2>Good to know.</h2></div><div class="kfaq"><details><summary>Do you have dairy-free milk?</summary><p>Yes: oat and almond, at no extra charge on Tuesdays.</p></details><details><summary>Can I buy beans to take home?</summary><p>Yes, whole or ground, in 250 g and 1 kg bags.</p></details><details><summary>Is there wifi and power?</summary><p>Both, at the long table by the window.</p></details><details><summary>Do you cater events?</summary><p>Yes, for groups of 10 to 80. Ask at the counter.</p></details></div></div></section>
+<footer class="kfoot"><div class="wrap"><div class="cols"><div><div class="logo" style="margin-bottom:12px">Ember<span style="color:var(--acc)">·</span>Roast</div><p style="margin:0;max-width:34ch">Neighbourhood coffee, roasted two doors down.</p></div><div><h4>Visit</h4><ul><li><a href="#visit">Hours</a></li><li><a href="#events">This week</a></li></ul></div><div><h4>Menu</h4><ul><li><a href="#menu">Coffee</a></li><li><a href="#more-menu">Bakery</a></li></ul></div><div><h4>About</h4><ul><li><a href="#roast">Our roast</a></li><li><a href="#faq">FAQ</a></li></ul></div></div><div class="base"><span>Ember Roast is a fictional sample. The address, hours and prices are made up.</span><span>Designed and built by <a href="{{HOME}}" style="color:var(--acc)">Kulman Ziman</a></span></div></div></footer>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="{{THREE}}"></script>
@@ -222,5 +235,6 @@ footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
   })();
 })();
 </script>
+<script src="{{ASSETS}}sample-kit.js" defer></script>
 </body>
 </html>

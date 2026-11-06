@@ -1,4 +1,11 @@
 // Kulman Ziman — small, dependency-free enhancements. The site works without this file.
+/* Open Gmail's compose window with everything filled in (falls back to a normal link if pop-ups are blocked) */
+window.kzGmail = (to, subject = '', body = '') => {
+  const url = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + (subject ? '&su=' + encodeURIComponent(subject) : '') + (body ? '&body=' + encodeURIComponent(body) : '');
+  const w = window.open(url, '_blank', 'noopener');
+  if (!w) location.href = url;
+};
+
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -112,7 +119,7 @@
     t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200);
   };
   $$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(b.dataset.copy); toast('Email copied'); } catch { location.href = 'mailto:' + b.dataset.copy; }
+    try { await navigator.clipboard.writeText(b.dataset.copy); toast('Email copied'); } catch { window.kzGmail(b.dataset.copy); }
   }));
 
   // Project brief: turns the "contact us before you pay" step into a 30-second form that opens a pre-filled email
@@ -124,8 +131,8 @@
       `Name: ${f.get('name')}`, `Business: ${f.get('business')}`, `Industry: ${f.get('industry')}`,
       `Domain I'd like: ${f.get('domain') || 'Not sure yet'}`, '', 'What I need:', f.get('details')
     ].join('\n');
-    location.href = `mailto:info.kulmanziman@gmail.com?subject=${encodeURIComponent('Website brief — ' + (f.get('business') || f.get('name')))}&body=${encodeURIComponent(body)}`;
-    toast('Opening your email app…');
+    window.kzGmail('info.kulmanziman@gmail.com', 'Website brief — ' + (f.get('business') || f.get('name')), body);
+    toast('Opening Gmail…');
   });
 
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
