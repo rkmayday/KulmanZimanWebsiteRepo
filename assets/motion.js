@@ -319,3 +319,55 @@
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { measure(); update(); });
   measure(); update();
 })();
+
+/* ---------- Life: headings rise word by word, labels draw in, panels arrive in sequence ---------- */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  const root = document.documentElement;
+  root.classList.add('anim');   // hidden start states only apply once this script is running
+
+  // 1. headings: every word slides up from behind its own edge
+  const heads = [...document.querySelectorAll('main h2, .page-head h1')];
+  heads.forEach(h => {
+    h.setAttribute('aria-label', h.textContent.replace(/\s+/g, ' ').trim());
+    let n = 0;
+    const split = el => [...el.childNodes].forEach(node => {
+      if (node.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        node.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(' '); return; }
+          const m = document.createElement('span'); m.className = 'wm'; m.setAttribute('aria-hidden', 'true');
+          const i = document.createElement('span'); i.className = 'wi'; i.style.setProperty('--wi', n++); i.textContent = part;
+          m.append(i); frag.append(m);
+        });
+        node.replaceWith(frag);
+      } else if (node.nodeType === 1 && !node.classList.contains('wm')) split(node);
+    });
+    split(h);
+    h.classList.add('h-split');
+  });
+
+  // 2. index children so they can cascade in when their card is revealed
+  const KIDS = '.ticks, .proof-links, .facts, .timeline, .faq, .tabs';
+  document.querySelectorAll(KIDS).forEach(list => [...list.children].forEach((c, i) => c.style.setProperty('--si', i)));
+
+  // 3. sibling panels arrive one after another
+  document.querySelectorAll('.reveal').forEach(el => {
+    const sibs = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+    const i = sibs.indexOf(el);
+    if (sibs.length > 1 && i > 0) {
+      el.style.transitionDelay = (i * 110) + 'ms';
+      el.addEventListener('transitionend', () => { el.style.transitionDelay = ''; }, { once: true });
+    }
+  });
+
+  // 4. trigger headings and labels when they come into view
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add(e.target.classList.contains('eyebrow') ? 'e-in' : 'h-in');
+    io.unobserve(e.target);
+  }), { rootMargin: '0px 0px -10% 0px', threshold: .2 });
+  heads.forEach(h => io.observe(h));
+  document.querySelectorAll('main .eyebrow').forEach(e => io.observe(e));
+})();

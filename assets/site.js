@@ -22,7 +22,11 @@
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { rootMargin: '0px 0px -8% 0px' });
     items.forEach(el => io.observe(el));
-    setTimeout(() => items.forEach(el => el.classList.add('in')), 2500);
+    // safety net: anything on screen that the observer missed is shown; sections further down still animate when reached
+    let sweepRaf = 0;
+    const sweep = () => { sweepRaf = 0; items.forEach(el => { if (!el.classList.contains('in') && el.getBoundingClientRect().top < innerHeight * .95) el.classList.add('in'); }); };
+    setTimeout(sweep, 2500);
+    addEventListener('scroll', () => { if (!sweepRaf) sweepRaf = requestAnimationFrame(sweep); }, { passive: true });
   } else items.forEach(el => el.classList.add('in'));
 
   // Hero: the desk scene tilts gently with the pointer, like looking at real objects

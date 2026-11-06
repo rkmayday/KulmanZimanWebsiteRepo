@@ -153,3 +153,8 @@ footer{background:linear-gradient(180deg,rgba(0,0,0,.6),#000 40%)}
 @media (max-width:760px),(pointer:coarse){
   .panel,.stat,.calc,.brief,.aff,.search input,.strip .cell,.proof-links a,.prose,.profile-card{background:rgba(18,18,18,.8)}
 }
+
+/* life layer: lime edge light; the industries highlighter moves onto each word */
+:root{--edge:rgba(198,255,61,.95)}
+.sheet,.product,.controls,.faq details,.founder,.box,.condition{--edge:rgba(120,190,0,.9)}
+#industries .h-split em .wi{background:linear-gradient(transparent 60%,#c6ff3d 60%,#c6ff3d 92%,transparent 92%);-webkit-background-clip:border-box;background-clip:border-box;-webkit-text-fill-color:#0a0a0a;color:#0a0a0a;animation:none}
