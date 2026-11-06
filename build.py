@@ -39,7 +39,7 @@ ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
         "fill='%23071648'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23d4af37' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
 ICON_NOIR = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
-             "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23ff6b1a' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
+             "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
 # Themes share every page and feature; they differ in colours, the 3D world and a few lines of copy.
 THEMES = {
@@ -55,7 +55,7 @@ THEMES = {
             '<canvas id="world"': '<div class="dots" aria-hidden="true"></div>\n<canvas id="world"',
             'Drag the crown · Click it · Pop the bubbles': 'Drag the crown · Click it · Scroll to spin it',
             'value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)">':
-                'value="#ff6b1a" checked aria-label="Orange"><span style="--c:#ff6b1a">',
+                'value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d">',
             'value="#c9ced8" aria-label="Silver"><span style="--c:linear-gradient(135deg,#7d8496,#f4f6fa,#c9ced8)">':
                 'value="#ffffff" aria-label="White"><span style="--c:#ffffff">',
         },

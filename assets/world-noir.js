@@ -26,7 +26,7 @@
   renderer.autoClear = false;
   renderer.setClearColor(0x000000, 0);
 
-  const LIME = 0xff6b1a;   // the accent (orange)
+  const LIME = 0xc6ff3d;   // the accent (lime)
 
   /* =====================================================================
      1. The ribbon (orthographic, in page pixels; the camera scrolls with the page)
@@ -79,7 +79,7 @@
         float front = .28 + .72 * (vDepth * .5 + .5);
         float pulse = smoothstep(.965, 1., fract(vS * .00042 - uTime * .028 + vPh * 3.17));
         float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
-        vec3 lime = vec3(1., .42, .1), ice = vec3(1., .86, .7);
+        vec3 lime = vec3(.78, 1., .24), ice = vec3(.72, .9, 1.);
         vec3 col = mix(lime, ice, step(.84, fract(vPh * 7.31)));
         float tm = vM;
         float a = (.34 + .7 * pulse) * front * ends * tm;
@@ -106,7 +106,7 @@
         float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
         float knot = 1. + 2.6 * exp(-pow((vS - uKnot) / 300., 2.));
         float a = exp(-vSide * vSide * 3.2) * uA * ends * knot * (.85 + .15 * sin(vS * .01 - uTime * 1.));
-        vec3 col = mix(vec3(1., .42, .1), vec3(1., .9, .78), exp(-vSide * vSide * 18.) * .6);
+        vec3 col = mix(vec3(.78, 1., .24), vec3(.95, 1., .8), exp(-vSide * vSide * 18.) * .6);
         a *= vM;
         gl_FragColor = vec4(col * a, a);
       }`
@@ -123,7 +123,7 @@
   const spMat = new T.ShaderMaterial({
     uniforms: U, transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
     vertexShader: 'uniform float uDpr; attribute float a; varying float vA; void main(){ vA=a; gl_PointSize = (1.5 + a * 3.) * uDpr; gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, -position.y, 0., 1.); }',
-    fragmentShader: 'varying float vA; void main(){ float d = length(gl_PointCoord - .5); float k = smoothstep(.5, 0., d) * vA; gl_FragColor = vec4(vec3(1., .7, .45) * k, k); }'
+    fragmentShader: 'varying float vA; void main(){ float d = length(gl_PointCoord - .5); float k = smoothstep(.5, 0., d) * vA; gl_FragColor = vec4(vec3(.85, 1., .55) * k, k); }'
   });
   const sparkles = new T.Points(spGeo, spMat); sparkles.frustumCulled = false; rScene.add(sparkles);
   const spS = new Float32Array(SP), spV = new Float32Array(SP), spO = new Float32Array(SP);
@@ -277,7 +277,7 @@
     g.fillStyle = bg; g.fillRect(0, 0, W, H);
     const soft = (x, y, w, h, c, b) => { g.save(); g.filter = `blur(${b}px)`; g.fillStyle = c; g.fillRect(x, y, w, h); g.restore(); };
     soft(380, 14, 300, 80, '#ffffff', 10); soft(120, 120, 60, 250, '#ffffff', 8); soft(840, 110, 60, 260, '#f2f2f2', 8);
-    soft(470, 190, 90, 170, '#ff6b1a', 10); soft(0, 300, W, 30, '#3a3a3a', 14);
+    soft(470, 190, 90, 170, '#c6ff3d', 10); soft(0, 300, W, 30, '#3a3a3a', 14);
   })();
   const envTex = new T.CanvasTexture(envCanvas); envTex.mapping = T.EquirectangularReflectionMapping; envTex.encoding = T.sRGBEncoding;
   const pmrem = new T.PMREMGenerator(renderer);
@@ -290,7 +290,7 @@
   const chromeSoft = new T.MeshStandardMaterial({ color: 0xdedede, metalness: 1, roughness: .26, envMapIntensity: 1.4 });
   const ceramic = new T.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: .32, clearcoat: 1, clearcoatRoughness: .12 });
   const velvet = new T.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 1, metalness: 0, side: T.BackSide, envMapIntensity: .2 });
-  const limeGem = new T.MeshPhysicalMaterial({ color: LIME, metalness: .1, roughness: .06, clearcoat: 1, clearcoatRoughness: .04, flatShading: true, emissive: 0x8a2a00, emissiveIntensity: .5 });
+  const limeGem = new T.MeshPhysicalMaterial({ color: LIME, metalness: .1, roughness: .06, clearcoat: 1, clearcoatRoughness: .04, flatShading: true, emissive: 0x6a9a00, emissiveIntensity: .5 });
 
   const stage = new T.Group(); scene.add(stage);          // moves up as the page scrolls
   const pivot = new T.Group(), crown = new T.Group(); pivot.add(crown); stage.add(pivot);
@@ -315,7 +315,6 @@
       g.position.set(Math.cos(a) * 1.3, .05, Math.sin(a) * 1.3); g.lookAt(Math.cos(a) * 5, .05, Math.sin(a) * 5); crown.add(g); gems.push(stone);
       const b = a + Math.PI / POINTS, stud = new T.Mesh(new T.SphereGeometry(.055, 16, 12), chrome); stud.position.set(Math.cos(b) * 1.27, -.2, Math.sin(b) * 1.27); crown.add(stud);
     }
-    pivot.add(orb); crownHits.push(orb);
     [].forEach(   // the crown stands alone now (shapes removed)
     ([x, y, z, r, kind]) => {
       const m = kind === 'sphere' ? new T.Mesh(new T.SphereGeometry(1, 48, 32), chrome) : new T.Mesh(new T.BoxGeometry(1.5, 1.5, 1.5), ceramic);
@@ -384,7 +383,7 @@
     const W = innerWidth, VH = innerHeight, H = document.documentElement.scrollHeight, phone = small();
     const u12 = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / VH;
     const startY = isHome ? heroBottom() + 40 : VH * .3, span = Math.max(0, H - startY - VH * .25);
-    const count = Math.round(Math.min(phone ? 12 : 24, Math.max(phone ? 4 : 6, span / (phone ? 640 : 430))));
+    const count = 0;   // side shapes removed
     while (drifters.length < count) {
       const k = drifters.length % 4, m = new T.Mesh(dGeos[k], dMats[k]);
       const hit = new T.Mesh(hitGeo, hitMat); m.add(hit);   // a slightly larger invisible click area
@@ -527,7 +526,7 @@
     if (hitCrown()) {
       spinVel += .32; jumpVel = .11; glow = 1;
       tips.forEach(t => burst(t.getWorldPosition(new T.Vector3()), 10, LIME, .05));
-      burst(orb.getWorldPosition(new T.Vector3()), 40, 0xffffff, .06);
+      burst(crown.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, .8, 0)), 40, 0xffffff, .06);
     }
   });
 
