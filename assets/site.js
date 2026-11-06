@@ -44,7 +44,9 @@
     const select = t => tabs.forEach(o => {
       const on = o === t;
       o.setAttribute('aria-selected', on); o.tabIndex = on ? 0 : -1;
-      document.getElementById(o.getAttribute('aria-controls')).hidden = !on;
+      const p = document.getElementById(o.getAttribute('aria-controls'));
+      p.hidden = !on;
+      if (on && !reduce) { p.classList.remove('swing'); void p.offsetWidth; p.classList.add('swing'); }
     });
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(t));
@@ -54,6 +56,15 @@
       });
     });
   });
+
+  // 3D flip card (product)
+  $$('.flip-btn').forEach(b => b.addEventListener('click', () => {
+    const card = document.getElementById(b.getAttribute('aria-controls'));
+    const flipped = card.classList.toggle('flipped');
+    $$('.flip-btn', card).forEach(x => x.setAttribute('aria-pressed', flipped));
+    $$('.flip-face', card).forEach(f => { f.inert = f.classList.contains('flip-back') ? !flipped : flipped; });
+  }));
+  $$('.flip').forEach(card => $$('.flip-back', card).forEach(f => { f.inert = true; }));
 
   // Help: search + category filter
   const q = $('#faq-search'), faq = $('.faq');

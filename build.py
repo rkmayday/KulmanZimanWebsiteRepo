@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Builds the static site: wraps each page in src/pages with the shared head, nav and footer.
 
-    python3 build.py        -> writes *.html into ./dist
+    python3 build.py             -> ./dist     (production: clean URLs, /products -> dist/products/index.html)
+    python3 build.py --preview   -> ./preview  (flat files + relative links, for a private preview page)
 
 Each page file starts with a front-matter block:
     ---
@@ -9,15 +10,21 @@ Each page file starts with a front-matter block:
     description: Meta description
     path: /products
     nav: products
+    jsonld: [optional JSON array]
     ---
 """
-import json, pathlib, re, shutil
+import json, pathlib, re, shutil, sys
 
 ROOT = pathlib.Path(__file__).parent
-SRC, DIST = ROOT / "src", ROOT / "dist"
+SRC = ROOT / "src"
 SITE = "https://kulmanziman.shop"
 CHECKOUT = "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"
 EMAIL = "info.kulmanziman@gmail.com"
+THREE = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+FONTS = ("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800"
+         "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
+# Pages that live on the current site but are not part of this rebuild
+EXTERNAL = {"/fitness-sample": f"{SITE}/fitness-sample", "/ironpath-app": f"{SITE}/ironpath-app"}
 
 NAV = [("home", "/", "Home"), ("products", "/products", "Pricing"), ("about", "/about", "About"),
        ("affiliates", "/affiliates", "Affiliates"), ("help", "/help", "Help")]
@@ -27,21 +34,19 @@ ORG = {
     "logo": f"{SITE}/assets/wordmark.png", "email": EMAIL, "foundingDate": "2026-08-24",
     "founder": [{"@type": "Person", "name": "Rex Kulman"}, {"@type": "Person", "name": "Ryder Ziman"}],
 }
+ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
+        "fill='%23071648'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23d4af37' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
 
-def head(meta):
+def head_tags(meta):
     title = meta["title"]
     canonical = SITE + meta["path"]
     ld = [ORG] + json.loads(meta.get("jsonld", "[]"))
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
+    return f"""<title>{title}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="{meta['description']}">
 <link rel="canonical" href="{canonical}">
-<meta name="theme-color" content="#f7f2ee">
+<meta name="theme-color" content="#030820">
 <meta name="google-site-verification" content="5wKKFu7Au6tRw0wMbycFva9GoaTk3sH9IX6nqa0HNWA">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kulman Ziman">
@@ -50,16 +55,19 @@ def head(meta):
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{SITE}/og-kulman-ziman.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232a1f1a'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23e7cfa4' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="{ICON}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="{FONTS}" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">{json.dumps(ld if len(ld) > 1 else ORG)}</script>
-</head>
-<body>
-<a class="skip" href="#main">Skip to content</a>
+"""
+
+
+BODY_START = """<a class="skip" href="#main">Skip to content</a>
+<canvas id="world" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"></div>
 """
 
@@ -96,34 +104,65 @@ FOOTER = f"""<footer>
     <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>
 </footer>
+<script src="{THREE}"></script>
+<script src="/assets/world.js" defer></script>
 <script src="/assets/site.js" defer></script>
 <script src="/assets/motion.js" defer></script>
-</body>
-</html>
 """
 
 
-def build():
-    if DIST.exists():
-        shutil.rmtree(DIST)
-    shutil.copytree(ROOT / "assets", DIST / "assets")
-    shutil.copy(ROOT / "assets" / "og.jpg", DIST / "og-kulman-ziman.jpg")
-    for page in sorted((SRC / "pages").glob("*.html")):
+def relativize(html):
+    """Preview mode: flat files and relative links (index.html, products.html, assets/...)."""
+    def fix(m):
+        attr, url = m.group(1), m.group(2)
+        path, _, frag = url.partition("#")
+        frag = "#" + frag if frag else ""
+        if path in EXTERNAL:
+            return f'{attr}="{EXTERNAL[path]}{frag}"'
+        if path.startswith("/assets/"):
+            return f'{attr}="{path[1:]}{frag}"'
+        if path == "/":
+            return f'{attr}="index.html{frag}"'
+        if path == "" and frag:
+            return m.group(0)
+        return f'{attr}="{path.strip("/")}.html{frag}"'
+    return re.sub(r'(href|src)="(/[^"/][^"]*|/|/#[^"]*)"', fix, html)
+
+
+def build(preview=False):
+    out_dir = ROOT / ("preview" if preview else "dist")
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+    shutil.copytree(ROOT / "assets", out_dir / "assets")
+    if not preview:
+        shutil.copy(ROOT / "assets" / "og.jpg", out_dir / "og-kulman-ziman.jpg")
+    pages = sorted((SRC / "pages").glob("*.html"))
+    for page in pages:
         text = page.read_text()
         m = re.match(r"---\n(.*?)\n---\n", text, re.S)
         meta = dict(line.split(": ", 1) for line in m.group(1).splitlines())
         body = text[m.end():].replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
-        html = head(meta) + nav(meta.get("nav", "")) + body + FOOTER
-        # /products -> dist/products/index.html so clean URLs work on any static host
-        out = DIST / ("index.html" if page.stem == "index" else f"{page.stem}/index.html")
+        inner = nav(meta.get("nav", "")) + body + FOOTER
+        if preview and page.stem == "index":
+            # the preview host adds the document skeleton around its main page
+            html = head_tags(meta) + BODY_START + inner
+        else:
+            html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+                    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+                    + head_tags(meta) + "</head>\n<body>\n" + BODY_START + inner + "</body>\n</html>\n")
+        if preview:
+            html = relativize(html)
+            out = out_dir / f"{page.stem}.html"
+        else:
+            out = out_dir / ("index.html" if page.stem == "index" else f"{page.stem}/index.html")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
         print("built", out.relative_to(ROOT))
-    urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>"
-                   for p in sorted((SRC / "pages").glob("*.html")))
-    (DIST / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
-    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
+    if not preview:
+        urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
+        (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
+        (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
 
 
 if __name__ == "__main__":
-    build()
+    build(preview="--preview" in sys.argv)

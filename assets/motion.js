@@ -131,7 +131,7 @@
   });
 
   /* ---------- 8. 3D tilt + moving glare on cards ---------- */
-  $$('.product, .founder, .stat, .box, .calc, .sheet, .b-cards div').forEach(el => {
+  $$('.product, .founder, .stat, .box, .calc, .sheet, .cell, .b-cards div').forEach(el => {
     el.classList.add('tilt');
     const g = document.createElement('span'); g.className = 'glare'; el.append(g);
     const max = el.matches('.product, .calc') ? 4 : 8;
@@ -147,25 +147,12 @@
     });
   });
 
-  /* ---------- 9. Spotlight on dark sections ---------- */
-  $$('.proof, .cta-final, .strip').forEach(s => {
-    s.classList.add('spot');
-    s.addEventListener('pointermove', e => {
-      const r = s.getBoundingClientRect();
-      s.style.setProperty('--sx', e.clientX - r.left + 'px'); s.style.setProperty('--sy', e.clientY - r.top + 'px');
-    });
-  });
-
-  /* ---------- 10. Hero parallax depth: each layer moves a different amount ---------- */
-  const layers = [['.laptop', 10], ['.phone', 26], ['.mug', 18], ['.leaf-shadow', -24], ['.blinds', -14]]
-    .map(([s, d]) => [$(s), d]).filter(([el]) => el);
-  let tx = 0, ty = 0, cx = 0, cy = 0;
-  addEventListener('pointermove', e => { tx = e.clientX / innerWidth - .5; ty = e.clientY / innerHeight - .5; });
-  (function loop() {
-    cx += (tx - cx) * .06; cy += (ty - cy) * .06;
-    if (scrollY < innerHeight) layers.forEach(([el, d]) => { el.style.translate = `${(cx * d).toFixed(2)}px ${(cy * d).toFixed(2)}px`; });
-    requestAnimationFrame(loop);
-  })();
+  /* ---------- 9. Extruded headings follow the pointer ---------- */
+  const root = document.documentElement;
+  addEventListener('pointermove', e => {
+    root.style.setProperty('--ex', ((e.clientX / innerWidth - .5) * -3).toFixed(2));
+    root.style.setProperty('--ey', ((e.clientY / innerHeight - .5) * -3 + .6).toFixed(2));
+  }, { passive: true });
 
   playground(); coins();
 
