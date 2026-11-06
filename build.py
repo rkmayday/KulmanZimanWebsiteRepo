@@ -18,7 +18,7 @@ import json, pathlib, re, shutil, sys, urllib.parse
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
-SITE = "https://kulmanziman.com"
+SITE = "https://kulmanziman.shop"
 CHECKOUT = "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"
 EMAIL = "info.kulmanziman@gmail.com"
 THREE = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
