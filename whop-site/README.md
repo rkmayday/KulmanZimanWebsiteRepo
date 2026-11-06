@@ -1,39 +1,16 @@
-# Put kulmanziman.shop on Whop
+# kulmanziman.shop on Whop
 
-This folder packages the black-and-lime site for Whop website hosting.
-`npm run build` rebuilds the site (`../build.py --theme noir`) and packs `dist/whop-build.zip`
-in the format the Whop CLI uploads. `server/index.js` serves pages at clean addresses
-(`/about`, `/ryderziman`, `/rexkulman`, `/samples/...`) and forwards the old fitness links.
-
-Needs: Node.js 20+, Python 3, a Whop account.
+`site/` holds the finished black-and-lime website. `server/index.js` is the Cloudflare worker that serves it at clean
+addresses (`/about`, `/ryderziman`, `/rexkulman`, `/samples/...`) and forwards the old fitness links. No Python is needed to deploy.
 
 ```bash
-curl -fsSL https://whop.com/install.sh | sh
+npm install
 ```
 
 ```bash
-whop
+whop apps deploy --app app_uSQNScwPPUo9Fo
 ```
 
-(Sign in and pick your Kulman Ziman business.)
+`whop apps deploy` runs `npm run build` (Vite + @cloudflare/vite-plugin + whop()), packs `dist/whop-build.zip` and uploads it.
 
-```bash
-cd whop-site && npm install
-```
-
-Create the website on Whop, attached to your domain (choose this ONCE; "website" can't be changed later):
-
-```bash
-whop apps init --app_type website --name "Kulman Ziman" --domain kulmanziman.shop
-```
-
-`init` scaffolds a starter project into a new folder; delete that folder and keep this one, then link it:
-
-```bash
-whop apps deploy --app app_xxxxxxxx
-```
-
-(`app_xxxxxxxx` is the app id `init` printed.) Later updates are just `whop apps deploy`.
-
-Domain: because you already own kulmanziman.shop, Whop lists DNS records to add at your domain
-registrar. Check progress with `whop domains get kulmanziman.shop`.
+After editing pages in the repo, refresh `site/` with `npm run sync` (needs Python 3), then deploy again.

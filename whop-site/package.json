@@ -3,11 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 ../build.py --theme noir && vite build",
-    "deploy": "whop apps deploy"
+    "build": "vite build",
+    "deploy": "whop apps deploy",
+    "sync": "python3 ../build.py --theme noir && rm -rf site && cp -R ../dist-noir site && rm -f site/_redirects site/vercel.json"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "1.67.0",
     "@whop/cli": "0.34.1",
-    "vite": "6.3.5"
+    "vite": "6.3.5",
+    "wrangler": "4.158.0"
   }
 }

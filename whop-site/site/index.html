@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kulman Ziman — Custom Websites Built to Order for $300</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A professional, mobile-friendly website built around your business for a flat $300. Three rounds of refinement, done within one month, or a full refund.">
+<link rel="canonical" href="https://kulmanziman.shop/">
+<meta name="theme-color" content="#050505">
+<meta name="google-site-verification" content="5wKKFu7Au6tRw0wMbycFva9GoaTk3sH9IX6nqa0HNWA">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kulman Ziman">
+<meta property="og:title" content="Kulman Ziman — Custom Websites Built to Order for $300">
+<meta property="og:description" content="A professional, mobile-friendly website built around your business for a flat $300. Three rounds of refinement, done within one month, or a full refund.">
+<meta property="og:url" content="https://kulmanziman.shop/">
+<meta property="og:image" content="https://kulmanziman.shop/og-kulman-ziman.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/theme-noir.css">
+<script>document.documentElement.classList.add('js')</script>
+<script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
+(function(){var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
+try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
+var from=null;try{from=sessionStorage.getItem('kz-from');sessionStorage.removeItem('kz-from');}catch(e){}
+if(from==='brand')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
+if(location.hash==='#intro')play=true;
+if(play&&!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('intro','intro-hold');
+setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(function(){r.classList.remove('intro');},2400);}})();</script>
+<script>
+/* Arriving from another page of the site: start at the top (links to a spot on the page, back/forward and reload are left alone) */
+(function () {
+  var nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+  if (location.hash || (nav && nav.type !== 'navigate')) return;
+  var fromSite = false;
+  try { fromSite = sessionStorage.getItem('kz-top') === '1'; sessionStorage.removeItem('kz-top'); } catch (e) {}
+  var moved = false, root = document.documentElement;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) { addEventListener(ev, function () { moved = true; }, { once: true, passive: true }); });
+  function top() {
+    if (moved || (window.scrollY === 0 && !fromSite)) return;
+    var b = root.style.scrollBehavior; root.style.scrollBehavior = 'auto'; window.scrollTo(0, 0); root.style.scrollBehavior = b;
+  }
+  top(); addEventListener('DOMContentLoaded', top); addEventListener('load', top); addEventListener('pageshow', top);
+  [60, 200, 500, 1000].forEach(function (ms) { setTimeout(top, ms); });
+  // a viewer that scrolls the whole frame keeps its own position, so bring the top of this page into view there too
+  if (fromSite && window.top !== window) addEventListener('load', function () { if (!moved) try { root.scrollIntoView({ block: 'start' }); } catch (e) {} });
+})();
+</script>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "Kulman Ziman", "url": "https://kulmanziman.shop", "logo": "https://kulmanziman.shop/assets/wordmark.png", "email": "info.kulmanziman@gmail.com", "foundingDate": "2026-08-24", "founder": [{"@type": "Person", "name": "Rex Kulman"}, {"@type": "Person", "name": "Ryder Ziman"}]}, {"@context": "https://schema.org", "@type": "Product", "name": "Professional Website", "brand": {"@type": "Brand", "name": "Kulman Ziman"}, "description": "A custom, mobile-friendly website tailored to your industry, built through three rounds of refinement.", "offers": {"@type": "Offer", "price": "300", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"}}]</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="kz-intro" aria-hidden="true"><div class="ki-frame"></div><div class="ki-fill"></div><div class="ki-badge"><i></i></div></div>
+<div class="dots" aria-hidden="true"></div>
+<canvas id="world" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Kulman Ziman home"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
+    <nav aria-label="Main"><ul class="nav-links"><li><a href="/" aria-current=page>Home</a></li><li><a href="/products">Pricing</a></li><li><a href="/about">About</a></li><li><a href="/affiliates">Affiliates</a></li><li><a href="/help">Help</a></li><li><a href="/legal">Legal</a></li></ul></nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="/#start">Send a brief</a>
+      <a class="btn small" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Get started</a>
+      <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<!-- HERO: the gold-and-silver centrepiece is rendered by world.js behind this -->
+<section class="hero" data-dock="Home" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-top">
+      <ul class="hero-tags">
+        <li class="live">Taking new projects</li>
+        <li>$300 flat, one-time</li>
+        <li>3 rounds of refinement</li>
+        <li>Done within 1 month or refunded</li>
+      </ul>
+      <span class="play-hint" aria-hidden="true">Drag the crown · Click it · Scroll to spin it</span>
+    </div>
+    <div class="hero-copy">
+      <h1 class="extrude">Your business, <em>crowned</em> online.</h1>
+      <p class="lede">Custom websites and software, built to order. One flat $300, three rounds of refinement with you, finished within a month or your money back. In writing.</p>
+      <div class="btn-row">
+        <a class="btn" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Get a $300 website
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+        <a class="btn ghost" href="#start">Send us your brief first</a>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <a class="dive" href="#featured-product"><i aria-hidden="true"></i><span>Scroll to<br>follow the line</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE STRIP -->
+<section class="strip" aria-label="Our commitments">
+  <div class="wrap">
+    <div class="cell reveal"><b>$<span data-count="300">300</span></b><span>Flat, one-time price</span></div>
+    <div class="cell reveal"><b><span data-count="3">3</span> rounds</b><span>Concept, iteration, delivery</span></div>
+    <div class="cell reveal"><b>≤ <span data-count="1">1</span> month</b><span>From order to final site</span></div>
+    <div class="cell reveal"><b><span data-count="100">100</span>%</b><span>Refund if we miss it</span></div>
+  </div>
+</section>
+
+<div class="marquees">
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>Booking pages</span><span>Landing pages</span><span>Membership sign-ups</span><span>Portfolios</span><span>Pricing pages</span><span>Quote forms</span><span>Course pages</span><span>Product sites</span>
+  <span>Booking pages</span><span>Landing pages</span><span>Membership sign-ups</span><span>Portfolios</span><span>Pricing pages</span><span>Quote forms</span><span>Course pages</span><span>Product sites</span>
+</div></div>
+<div class="marquee silver" aria-hidden="true"><div class="track">
+  <span>Mobile-friendly</span><span>Tailored to your industry</span><span>Three rounds</span><span>One month</span><span>Refund guarantee</span><span>Custom software</span>
+  <span>Mobile-friendly</span><span>Tailored to your industry</span><span>Three rounds</span><span>One month</span><span>Refund guarantee</span><span>Custom software</span>
+</div></div>
+</div>
+
+<!-- MISSION -->
+<section class="section" id="mission">
+  <div class="wrap mission reveal">
+    <span class="eyebrow">Our mission</span>
+    <blockquote class="words">“To create and sell the software and websites our customers request, with a clear process and honest pricing.”<cite>Rex Kulman &amp; Ryder Ziman, founders</cite></blockquote>
+  </div>
+</section>
+
+<!-- PRODUCT: flips in 3D to show what's included -->
+<section class="section" id="featured-product" data-dock="Pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Featured product</span>
+      <h2 class="extrude">One website, built <em>around</em> your business.</h2>
+    </div>
+    <div class="flip reveal" id="product-flip">
+      <div class="flip-inner">
+        <article class="product flip-face flip-front">
+          <div class="info">
+            <span class="eyebrow">Professional Website</span>
+            <h3 style="font-size:2.1rem">Designed for your industry. Refined with you. Yours to keep.</h3>
+            <p class="muted">A professional website tailored to your industry and designed to work on phones and computers. You review it and refine it with us before it is final.</p>
+            <ul class="ticks">
+              <li>Modern, mobile-friendly design</li>
+              <li>Tailored to your industry</li>
+              <li>Reviewed with you at every stage, three rounds in total</li>
+              <li>First-year domain paid by us when it costs under $30</li>
+              <li>Written refund guarantee</li>
+            </ul>
+            <button class="flip-btn" type="button" aria-controls="product-flip">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 10a7 7 0 0 1 12-5l2 2M17 3v4h-4M17 10a7 7 0 0 1-12 5l-2-2M3 17v-4h4"/></svg>
+              Flip: what's included and what's not</button>
+          </div>
+          <div class="price">
+            <span class="eyebrow">One flat price</span>
+            <div class="amount"><sup>$</sup>300</div>
+            <small>One-time payment. No subscription. No monthly fees.</small>
+            <a class="btn" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Buy now for $300</a>
+            <small class="fine">The $300 covers your website code. We register your domain once you approve our quote, and pay the first year if it costs under $30.00 USD (otherwise a 20% markup applies). Hosting and maintenance are not included. <a href="/legal#terms">See the terms</a>.</small>
+          </div>
+        </article>
+        <article class="product flip-face flip-back" aria-label="What's included">
+          <div class="product-back" style="grid-column:1/-1">
+            <div style="display:grid;gap:18px;align-content:start">
+              <span class="eyebrow">Included in $300</span>
+              <ul class="ticks">
+                <li>The design and code for your website</li>
+                <li>All three stages: concept, iteration, final delivery</li>
+                <li>Domain registration once you approve our quote</li>
+                <li>First year of the domain paid by us if under $30.00 USD</li>
+              </ul>
+            </div>
+            <div style="display:grid;gap:18px;align-content:start">
+              <span class="eyebrow">Not included</span>
+              <ul class="ticks no">
+                <li>Hosting. You choose where the site lives</li>
+                <li>Maintenance and updates after final delivery</li>
+                <li>Domain renewal after the first year</li>
+                <li>Domains costing $30 or more carry a 20% markup on the registrar's cost</li>
+              </ul>
+            </div>
+            <div class="btn-row" style="grid-column:1/-1">
+              <button class="flip-btn" type="button" aria-controls="product-flip">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 10a7 7 0 0 1 12-5l2 2M17 3v4h-4M17 10a7 7 0 0 1-12 5l-2-2M3 17v-4h4"/></svg>
+                Flip back</button>
+              <a class="btn small" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/" style="margin-left:auto">Buy now for $300</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS: a 3D staircase -->
+<section class="section" id="selling-points" data-dock="Process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 class="extrude">Three rounds. <em>One month.</em> In writing.</h2>
+      <p class="lede">You see the site take shape and say what to change. We commit to finishing every stage within one month of your order.</p>
+    </div>
+    <div class="steps has-rail">
+      <div class="rail" aria-hidden="true"><i></i></div>
+      <div class="sheet reveal"><div class="n">01</div><h3>Initial concept</h3><p>Send us your specifications. We build a first draft of your site for you to review.</p><span class="when">You reply within 72h</span></div>
+      <div class="sheet reveal"><div class="n">02</div><h3>Second iteration</h3><p>We work your feedback into a refined second version and send it back.</p><span class="when">You reply within 72h</span></div>
+      <div class="sheet reveal"><div class="n">03</div><h3>Final delivery</h3><p>After your last round of revisions we polish everything and deliver the finished code.</p><span class="when">Done within 1 month</span></div>
+    </div>
+    <div class="condition reveal">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.8" aria-hidden="true" style="flex:none"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <p><strong>Full refund if we miss the deadline.</strong> The one-month deadline and the refund apply when you reply to each feedback request within 72 hours. <a class="link-arrow" href="/legal#refund">Read the refund policy</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="section" id="industries">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Tailored to your industry</span>
+      <h2 class="extrude">Shaped around how <em>your</em> business works.</h2>
+      <p class="lede">Tell us your industry and what you need. We build the pages and features that fit it.</p>
+    </div>
+    <div class="tabs reveal" role="tablist" aria-label="Industries">
+      <button class="tab" role="tab" id="t-fit" aria-controls="p-fit" aria-selected="true">Fitness &amp; Wellness</button>
+      <button class="tab" role="tab" id="t-tech" aria-controls="p-tech" aria-selected="false" tabindex="-1">Technology &amp; IT</button>
+      <button class="tab" role="tab" id="t-local" aria-controls="p-local" aria-selected="false" tabindex="-1">Local Services</button>
+      <button class="tab" role="tab" id="t-create" aria-controls="p-create" aria-selected="false" tabindex="-1">Creators &amp; Education</button>
+    </div>
+    <div class="panel-stage">
+      <div class="panel reveal" role="tabpanel" id="p-fit" aria-labelledby="t-fit">
+        <div>
+          <h3>Fitness &amp; Wellness</h3>
+          <p class="muted" style="margin-bottom:20px">Sites for trainers, gyms, studios and fitness apps that turn visitors into members.</p>
+          <ul class="ticks"><li>Class and session booking pages</li><li>Membership and program sign-up sites</li><li>Trainer and gym landing pages</li><li>Marketing sites for fitness apps</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="/samples/ironpath">See the fitness sample: Ironpath →</a></p>
+        </div>
+        <div class="art" style="background:linear-gradient(160deg,#0d1f6e,#030820)" aria-hidden="true">
+          <div class="win" style="background:#06103a">
+            <div class="blk" style="left:8%;top:22%;width:50%;height:12%;background:#f4f6fa"></div>
+            <div class="blk" style="left:8%;top:38%;width:36%;height:12%;background:#d4af37"></div>
+            <div class="blk" style="left:8%;top:58%;width:22%;height:8%;background:#d4af37;border-radius:99px"></div>
+            <div class="blk" style="right:8%;top:22%;width:30%;height:56%;background:linear-gradient(160deg,#122c8c,#0a1a55);border:1px solid #1b2b6e"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="p-tech" aria-labelledby="t-tech" hidden>
+        <div>
+          <h3>Technology &amp; IT</h3>
+          <p class="muted" style="margin-bottom:20px">Clear, credible sites for software products, IT providers and startups.</p>
+          <ul class="ticks"><li>Product and SaaS landing pages</li><li>Feature, pricing and comparison pages</li><li>Managed-service and IT support sites</li><li>Documentation and changelog pages</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="/samples/synthra">See the tech sample: Synthra AI agents →</a></p>
+        </div>
+        <div class="art" style="background:linear-gradient(160deg,#c9ced8,#7d8496)" aria-hidden="true">
+          <div class="win">
+            <div class="blk" style="left:8%;top:22%;width:60%;height:10%;background:#0b1440"></div>
+            <div class="blk" style="left:8%;top:36%;width:42%;height:6%;background:#9aa8c2"></div>
+            <div class="blk" style="left:8%;top:52%;width:26%;height:30%;background:#eef2f9;border:1px solid #d7deea"></div>
+            <div class="blk" style="left:37%;top:52%;width:26%;height:30%;background:#eef2f9;border:1px solid #d7deea"></div>
+            <div class="blk" style="left:66%;top:52%;width:26%;height:30%;background:#4169e1"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="p-local" aria-labelledby="t-local" hidden>
+        <div>
+          <h3>Local Services</h3>
+          <p class="muted" style="margin-bottom:20px">Sites that help nearby customers find you, trust you and get in touch.</p>
+          <ul class="ticks"><li>Service and pricing pages</li><li>Quote request and contact forms</li><li>Service-area and opening-hours pages</li><li>Photo galleries of past jobs</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="/samples/ember-roast">See the local sample: Ember Roast coffee →</a></p>
+        </div>
+        <div class="art" style="background:linear-gradient(160deg,#f6e3a1,#b8902c)" aria-hidden="true">
+          <div class="win" style="background:#fbf7ef">
+            <div class="blk" style="left:0;right:0;top:16%;height:38%;background:linear-gradient(135deg,#1d3fae,#4169e1);border-radius:0"></div>
+            <div class="blk" style="left:8%;top:26%;width:46%;height:9%;background:#fff"></div>
+            <div class="blk" style="left:8%;top:40%;width:22%;height:7%;background:#d4af37;border-radius:99px"></div>
+            <div class="blk" style="left:8%;top:62%;width:38%;height:26%;background:#efe9dc"></div>
+            <div class="blk" style="left:54%;top:62%;width:38%;height:26%;background:#efe9dc"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="p-create" aria-labelledby="t-create" hidden>
+        <div>
+          <h3>Creators &amp; Education</h3>
+          <p class="muted" style="margin-bottom:20px">Homes on the web for creators, coaches, tutors and course makers.</p>
+          <ul class="ticks"><li>Personal brand and portfolio sites</li><li>Course and program landing pages</li><li>Tutoring and coaching booking pages</li><li>Newsletter and community sign-up pages</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="/samples/deduction">See the creator sample: Deduction →</a></p>
+        </div>
+        <div class="art" style="background:linear-gradient(160deg,#4169e1,#0d1f6e)" aria-hidden="true">
+          <div class="win" style="background:#0a1a55">
+            <div class="blk" style="left:8%;top:22%;width:24%;height:34%;background:linear-gradient(160deg,#f4f6fa,#7d8496);border-radius:50%"></div>
+            <div class="blk" style="left:38%;top:26%;width:52%;height:9%;background:#f4f6fa"></div>
+            <div class="blk" style="left:38%;top:40%;width:40%;height:6%;background:#c9ced8"></div>
+            <div class="blk" style="left:8%;top:66%;width:84%;height:16%;background:#122c8c;border:1px solid #d4af37"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="muted reveal" style="margin-top:22px;font-size:.92rem">Websites start with the $300 Professional Website. Custom software is scoped per project. Email <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.kulmanziman%40gmail.com" target="_blank" rel="noopener">info.kulmanziman@gmail.com</a> to discuss yours.</p>
+  </div>
+</section>
+
+<!-- PLAYGROUND -->
+<section class="section" id="playground" data-dock="Try it">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Try it</span>
+      <h2 class="extrude">Sketch your homepage <em>right now.</em></h2>
+      <p class="lede">Type your business name, pick a look, and watch a first draft come together. Like it? Send it to us as your brief.</p>
+    </div>
+    <div class="play reveal">
+      <form class="controls" id="play" onsubmit="return false">
+        <label for="pl-name">Business name<input id="pl-name" name="name" value="Northside Fitness" maxlength="28" autocomplete="off"></label>
+        <label for="pl-head">Headline<input id="pl-head" name="headline" value="Stronger every week." maxlength="40" autocomplete="off"></label>
+        <fieldset><legend>Industry</legend>
+          <div class="seg">
+            <label><input type="radio" name="ind" value="fitness" checked><span>Fitness</span></label>
+            <label><input type="radio" name="ind" value="tech"><span>Tech</span></label>
+            <label><input type="radio" name="ind" value="local"><span>Local</span></label>
+            <label><input type="radio" name="ind" value="creator"><span>Creator</span></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Accent colour</legend>
+          <div class="swatches">
+            <label><input type="radio" name="accent" value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d"></span></label>
+            <label><input type="radio" name="accent" value="#ffffff" aria-label="White"><span style="--c:#ffffff"></span></label>
+            <label><input type="radio" name="accent" value="#4169e1" aria-label="Royal blue"><span style="--c:#4169e1"></span></label>
+            <label><input type="radio" name="accent" value="#ff7a59" aria-label="Coral"><span style="--c:#ff7a59"></span></label>
+            <label><input type="radio" name="accent" value="#58d39a" aria-label="Green"><span style="--c:#58d39a"></span></label>
+            <label class="custom"><input type="color" name="custom" value="#c084fc" aria-label="Custom colour"><span style="--c:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></span></label>
+          </div>
+        </fieldset>
+        <div class="two">
+          <fieldset><legend>Type</legend>
+            <div class="seg">
+              <label><input type="radio" name="font" value="serif" checked><span>Classic</span></label>
+              <label><input type="radio" name="font" value="sans"><span>Modern</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>Mode</legend>
+            <div class="seg">
+              <label><input type="radio" name="mode" value="dark" checked><span>Dark</span></label>
+              <label><input type="radio" name="mode" value="light"><span>Light</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="btn-row">
+          <button class="btn" type="button" id="play-send">Send this as my brief</button>
+          <button class="btn ghost" type="button" id="play-shuffle">Surprise me</button>
+        </div>
+      </form>
+      <div class="device-stage" aria-label="Live preview">
+        <div class="browser" id="preview">
+          <div class="b-bar"><b></b><b></b><b></b><div class="b-url"><span id="pv-url">northsidefitness</span>.com</div></div>
+          <div class="b-page">
+            <nav class="b-nav"><strong id="pv-logo">Northside Fitness</strong><span id="pv-links">Classes · Coaches · Join</span><em class="b-pill">Book now</em></nav>
+            <div class="b-hero">
+              <div>
+                <small id="pv-kicker">Personal training &amp; classes</small>
+                <h4 id="pv-h">Stronger every week.</h4>
+                <p id="pv-p">Small-group classes and coaching that fit around your life.</p>
+                <div class="b-ctas"><em class="b-btn" id="pv-cta">Start free week</em><em class="b-ghost">See timetable</em></div>
+              </div>
+              <div class="b-visual" id="pv-visual"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="b-cards" id="pv-cards"><div><b>01</b><span>Strength</span></div><div><b>02</b><span>Conditioning</span></div><div><b>03</b><span>Mobility</span></div></div>
+          </div>
+        </div>
+        <p class="muted" style="font-size:.85rem;margin-top:18px;text-align:center">Example business shown. A rough sketch to start the conversation; your real site is designed with you over three rounds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="section" id="proof">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Proof</span>
+      <h2 class="extrude">See the work <em>before</em> you pay for it.</h2>
+      <p class="lede">We started on August 24, 2026, so we built four complete sample sites, one for each industry we serve. Open one and take a look. They are concepts we made ourselves, not client projects, and not for sale.</p>
+    </div>
+    <div class="samples">
+      <a class="sample reveal" href="/samples/ironpath" style="--s1:#c7f36b;--s2:#0b0d0c"><span class="s-ind">Fitness &amp; Wellness</span><b>Ironpath</b><span>A sculpted chrome path turns above a glowing stage, with a live 3D training chart.</span><em>Open sample →</em><i class="s-art s-bar" aria-hidden="true"></i></a>
+      <a class="sample reveal" href="/samples/synthra" style="--s1:#5ef0ff;--s2:#05070f"><span class="s-ind">Technology &amp; IT</span><b>Synthra</b><span>An AI agent core plans tasks and lights up the tools it uses, all in 3D.</span><em>Open sample →</em><i class="s-art s-core" aria-hidden="true"></i></a>
+      <a class="sample reveal" href="/samples/ember-roast" style="--s1:#c8743a;--s2:#2b1a12"><span class="s-ind">Local Services</span><b>Ember Roast</b><span>Roasted beans drift around a glowing ember in 3D, with the day’s roast and origins.</span><em>Open sample →</em><i class="s-art s-cup" aria-hidden="true"></i></a>
+      <a class="sample reveal" href="/samples/deduction" style="--s1:#ffcc4d;--s2:#0d0f1a"><span class="s-ind">Creators &amp; Education</span><b>Deduction</b><span>A 3D learning path and live code that reshapes a 3D object as it types.</span><em>Open sample →</em><i class="s-art s-code" aria-hidden="true"></i></a>
+    </div>
+    <div class="proof-links reveal" style="max-width:640px">
+      <a href="/products#refinement-process">See the refinement process <span>→</span></a>
+      <a href="/about#team">Meet the founders <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- AFFILIATES -->
+<section class="section" style="padding-block-end:0">
+  <div class="wrap">
+    <div class="aff reveal">
+      <div>
+        <span class="eyebrow">Affiliate program</span>
+        <h2 style="margin:14px 0 10px">Know a business that needs a website?</h2>
+        <p class="lede">A part-time role. Share your link, we handle everything else, and you earn 20% ($60) on every qualifying $300 purchase.</p>
+        <p style="margin-top:22px"><a class="btn silver" href="/affiliates">Become an affiliate</a></p>
+      </div>
+      <div class="big"><span data-count="20">20</span>%</div>
+    </div>
+  </div>
+</section>
+
+<!-- START / BRIEF -->
+<section class="section" id="start" data-dock="Contact">
+  <div class="wrap cta-grid">
+    <div class="reveal" style="display:grid;gap:22px;align-content:start">
+      <span class="eyebrow">Get started</span>
+      <h2 class="extrude">Tell us about your business. <em>We'll take it from there.</em></h2>
+      <p class="lede">We ask every customer to get in touch before or right after paying, so we can confirm your specifications and your domain. Fill in the brief and it opens as a ready-to-send email.</p>
+      <p class="email-big"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.kulmanziman%40gmail.com" target="_blank" rel="noopener">info.kulmanziman@gmail.com</a></p>
+      <div class="btn-row">
+        <a class="btn" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Go straight to checkout</a>
+        <button class="btn ghost" type="button" data-copy="info.kulmanziman@gmail.com">Copy our email</button>
+      </div>
+    </div>
+    <form class="brief reveal" id="brief">
+      <div class="two">
+        <label for="b-name">Your name<input id="b-name" name="name" required autocomplete="name"></label>
+        <label for="b-biz">Business name<input id="b-biz" name="business" autocomplete="organization"></label>
+      </div>
+      <div class="two">
+        <label for="b-ind">Industry
+          <select id="b-ind" name="industry"><option>Fitness &amp; Wellness</option><option>Technology &amp; IT</option><option>Local Services</option><option>Creators &amp; Education</option><option>Something else</option></select>
+        </label>
+        <label for="b-dom">Domain you'd like<input id="b-dom" name="domain" placeholder="yourbusiness.com"></label>
+      </div>
+      <label for="b-det">What should the site do?<textarea id="b-det" name="details" rows="4" required placeholder="Pages you need, sites you like, anything we should know"></textarea></label>
+      <button class="btn" type="submit">Send my brief</button>
+      <small>Opens Gmail with everything filled in. Nothing is stored on this site.</small>
+    </form>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
+        <p>Custom websites and software, built to order.</p>
+        <p style="margin-top:14px"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.kulmanziman%40gmail.com" target="_blank" rel="noopener">info.kulmanziman@gmail.com</a></p>
+      </div>
+      <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
+      <div class="reveal"><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
+      <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Checkout</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
+    </div>
+    <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/assets/world-noir.js" defer></script>
+<script src="/assets/site.js" defer></script>
+<script src="/assets/motion.js" defer></script>
+<script src="/assets/founder-field.js" defer></script>
+</body>
+</html>
