@@ -259,3 +259,63 @@
     r.addEventListener('input', draw); draw();
   }
 })();
+
+/* ---------- Hero headline: letters rise in on load, then lift and fan apart as you scroll ---------- */
+(() => {
+  const h1 = document.querySelector('.hero h1');
+  if (!h1 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  h1.setAttribute('aria-label', h1.textContent.replace(/\s+/g, ' ').trim());
+  const letters = [];
+  const splitText = (textNode, inEm) => {
+    const frag = document.createDocumentFragment();
+    textNode.textContent.split(/(\s+)/).forEach(part => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) { frag.append(' '); return; }
+      const word = document.createElement('span'); word.className = 'hw'; word.setAttribute('aria-hidden', 'true');
+      [...part].forEach(ch => {
+        const l = document.createElement('span'); l.className = 'hl' + (inEm ? ' hl-em' : ''); l.textContent = ch;
+        l.style.setProperty('--i', letters.length); letters.push(l); word.append(l);
+      });
+      frag.append(word);
+    });
+    textNode.replaceWith(frag);
+  };
+  const walk = (node, inEm) => [...node.childNodes].forEach(n => {
+    if (n.nodeType === 3) splitText(n, inEm);
+    else if (n.nodeType === 1) walk(n, inEm || n.tagName === 'EM');
+  });
+  walk(h1, false);
+  h1.classList.add('split');
+
+  // group letters into visual lines so each line moves at its own pace
+  let meta = [];
+  const measure = () => {
+    const tops = [...new Set(letters.map(l => l.offsetTop))].sort((a, b) => a - b);
+    meta = letters.map((l, i) => {
+      const line = tops.indexOf(l.offsetTop);
+      const inLine = letters.filter(o => o.offsetTop === l.offsetTop);
+      const k = inLine.length > 1 ? inLine.indexOf(l) / (inLine.length - 1) : .5;
+      return { line, k, wave: Math.sin(k * Math.PI) };   // smooth arc across each line
+    });
+  };
+  let raf = 0;
+  const update = () => {
+    raf = 0;
+    const p = Math.min(1, Math.max(0, scrollY / (innerHeight * .75)));
+    const e = p * p * (3 - 2 * p);
+    letters.forEach((l, i) => {
+      const m = meta[i]; if (!m) return;
+      if (e === 0) { l.style.transform = ''; l.style.opacity = ''; return; }
+      const ty = -e * (50 + m.line * 45) * (.72 + .28 * m.wave);
+      const tx = (m.k - .5) * e * (30 + m.line * 18);
+      const rx = e * (22 + m.wave * 14);
+      l.style.transform = `translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0) rotateX(${rx.toFixed(1)}deg)`;
+      l.style.opacity = Math.max(0, 1 - e * (1.05 + m.line * .12)).toFixed(3);
+    });
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', () => { measure(); onScroll(); });
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { measure(); update(); });
+  measure(); update();
+})();

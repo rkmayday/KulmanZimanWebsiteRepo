@@ -35,20 +35,29 @@
   const rCam = new T.OrthographicCamera(0, 1, 0, -1, -10, 10);
   const U = {
     uTime: { value: 0 }, uFlow: { value: 0 }, uSpread: { value: 130 }, uKnot: { value: 0 }, uLen: { value: 1 },
-    uMouse: { value: new T.Vector2(-9999, -9999) }, uPush: { value: coarse ? 0 : 1 }, uDpr: { value: DPR }
+    uMouse: { value: new T.Vector2(-9999, -9999) }, uPush: { value: coarse ? 0 : 1 }, uDpr: { value: DPR },
+    uRects: { value: Array.from({ length: 40 }, () => new T.Vector4(-1e5, -1e5, -1e5, -1e5)) }, uRectN: { value: 0 }
   };
+  // text blocks the ribbon fades behind (page px, padded)
+  const MASK = `
+    uniform vec4 uRects[40]; uniform int uRectN;
+    float textMask(vec2 p){ float m = 1.;
+      for (int i = 0; i < 40; i++) { if (i >= uRectN) break; vec4 r = uRects[i];
+        float dx = max(max(r.x - p.x, p.x - r.z), 0.), dy = max(max(r.y - p.y, p.y - r.w), 0.);
+        m = min(m, mix(.08, 1., smoothstep(0., 46., length(vec2(dx, dy))))); }
+      return m; }`;
   // shared vertex logic: centerline + normal → twisted, breathing, cursor-repelled strand position
-  const strandVS = `
+  const strandVS = MASK + `
     uniform float uTime, uFlow, uSpread, uKnot, uLen, uPush;
     uniform vec2 uMouse;
     attribute vec2 nrm; attribute float s; attribute float r; attribute float ph;
-    varying float vS, vDepth, vR, vPh;
+    varying float vS, vDepth, vR, vPh, vM;
     vec2 strandPos(vec2 base){
       float pinch = smoothstep(0., 520., abs(s - uKnot));
       float ends = smoothstep(0., 400., s) * smoothstep(0., 400., uLen - s);
-      float breathe = .65 + .35 * sin(s * .0011 + uTime * .25 + ph * .3);
+      float breathe = .65 + .35 * sin(s * .0011 - uTime * .25 + ph * .3);
       float spread = mix(5., uSpread, pinch) * breathe * (.35 + .65 * ends);
-      float tw = s * .0042 + uTime * (.55 + uFlow) + ph;
+      float tw = s * .0042 - uTime * (.5 + uFlow * .5) + ph;
       float c = cos(tw), w = sin(s * .0023 - uTime * .4 + ph * 2.) * .18;
       vDepth = sin(tw);
       vec2 p = base + nrm * spread * (r * c + w);
@@ -59,42 +68,44 @@
   const lineMat = new T.ShaderMaterial({
     uniforms: U, transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
     vertexShader: strandVS + `
-      void main(){ vec2 p = strandPos(position.xy); vS = s; vR = r; vPh = ph;
+      void main(){ vec2 p = strandPos(position.xy); vS = s; vR = r; vPh = ph; vM = textMask(p);
         p.y = -p.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.); }`,
     fragmentShader: `
       uniform float uTime, uFlow, uLen;
-      varying float vS, vDepth, vR, vPh;
+      varying float vS, vDepth, vR, vPh, vM;
       void main(){
         float front = .28 + .72 * (vDepth * .5 + .5);
         float pulse = smoothstep(.965, 1., fract(vS * .00042 - uTime * (.05 + uFlow * .2) + vPh * 3.17));
         float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
         vec3 lime = vec3(.78, 1., .24), ice = vec3(.72, .9, 1.);
         vec3 col = mix(lime, ice, step(.84, fract(vPh * 7.31)));
-        float a = (.34 + .7 * pulse) * front * ends;
-        gl_FragColor = vec4(col * a + vec3(1.) * pulse * .35 * front * ends, a);
+        float tm = vM;
+        float a = (.34 + .7 * pulse) * front * ends * tm;
+        gl_FragColor = vec4(col * a + vec3(1.) * pulse * .35 * front * ends * tm, a);
       }`
   });
   const glowMat = new T.ShaderMaterial({
     uniforms: Object.assign({ uW: { value: 30 }, uA: { value: .2 } }, U), transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
-    vertexShader: `
+    vertexShader: MASK + `
       uniform float uTime, uSpread, uKnot, uLen, uW;
       attribute vec2 nrm; attribute float s; attribute float side;
-      varying float vSide, vS;
+      varying float vSide, vS, vM;
       void main(){
         float pinch = smoothstep(0., 520., abs(s - uKnot));
         float w = mix(uW * .45, uW, pinch) * (.8 + .2 * sin(s * .002 - uTime));
         vec2 p = position.xy + nrm * (side * w + sin(s * .0023 - uTime * .4) * uSpread * .12);
-        vSide = side; vS = s; p.y = -p.y;
+        vSide = side; vS = s; vM = textMask(position.xy); p.y = -p.y;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.);
       }`,
     fragmentShader: `
       uniform float uA, uTime, uLen, uKnot;
-      varying float vSide, vS;
+      varying float vSide, vS, vM;
       void main(){
         float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
         float knot = 1. + 2.6 * exp(-pow((vS - uKnot) / 300., 2.));
         float a = exp(-vSide * vSide * 3.2) * uA * ends * knot * (.85 + .15 * sin(vS * .01 - uTime * 3.));
         vec3 col = mix(vec3(.78, 1., .24), vec3(.95, 1., .8), exp(-vSide * vSide * 18.) * .6);
+        a *= vM;
         gl_FragColor = vec4(col * a, a);
       }`
   });
@@ -137,13 +148,13 @@
       // hero: enter from the left, pinch into a knot beside the headline, loop around the crown
       if (small()) {
         // phones: swirl around the crown at the top, then run down the right edge, clear of the text
-        pts.push([-160, VH * .02], [W * .25, VH * .07]);
-        knotIdx = pts.length; pts.push([W * .55, VH * .05]);
-        pts.push([W * .9, VH * .12], [W * 1.02, VH * .3], [W * .98, VH * .6], [W * .96, VH * .95]);
+        pts.push([-160, VH * .16], [W * .22, VH * .13]);
+        knotIdx = pts.length; pts.push([W * .55, VH * .115]);
+        pts.push([W * .9, VH * .16], [W * 1.02, VH * .3], [W * .98, VH * .6], [W * .96, VH * .95]);
       } else {
-        pts.push([-160, VH * .78], [W * .28, VH * .66]);
-        knotIdx = pts.length; pts.push([W * .5, VH * .55]);
-        pts.push([W * .66, VH * .22], [W * .92, VH * .3], [W * .98, VH * .62], [W * .8, VH * .98]);
+        pts.push([-160, VH * 1.02], [W * .3, VH * .97]);
+        knotIdx = pts.length; pts.push([W * .63, VH * .8]);
+        pts.push([W * .67, VH * .26], [W * .93, VH * .3], [W * .99, VH * .62], [W * .82, VH * .99]);
       }
     } else {
       pts.push([-160, 160]); knotIdx = pts.length; pts.push([W * .38, 250]); pts.push([W * .85, 120], [W * 1.02, 420]);
@@ -165,6 +176,18 @@
     return { pts, knotIdx };
   }
 
+  const TEXT = '.hero-copy, .hero-tags, .play-hint, .dive, .section-head, .mission, .page-head .wrap > *:not(.profile), .profile-copy, .proof-grid > div:first-child, .cta-grid > div:first-child, .disclaim, .muted.reveal, .faq-filter, .toc, .narrow > .faq';
+  const OPAQUE = '#industries, .product, .sheet, .panel, .controls, .brief, .faq details, .founder, .box, .aff, .calc, .stat, .profile-card, .prose, .condition';
+  let textRects = [];
+  function collectText() {
+    textRects = [...document.querySelectorAll(TEXT)].filter(el => el.offsetParent !== null && !el.closest(OPAQUE))
+      .map(docRect).filter(r => r.r - r.l > 8 && r.b - r.t > 8).slice(0, 40)
+      .map(r => ({ l: r.l - 16, t: r.t - 14, r: r.r + 16, b: r.b + 14 }));
+    textRects.forEach((r, i) => U.uRects.value[i].set(r.l, r.t, r.r, r.b));
+    U.uRectN.value = textRects.length;
+  }
+  const inText = (x, y) => textRects.some(r => x > r.l && x < r.r && y > r.t && y < r.b);
+
   function rebuild() {
     const { pts, knotIdx } = anchorsFor();
     const curve = new T.CatmullRomCurve3(pts.map(([x, y]) => new T.Vector3(x, y, 0)), false, 'centripetal', .5);
@@ -181,6 +204,7 @@
       base[i * 2] = P[i].x; base[i * 2 + 1] = P[i].y; nrm[i * 2] = -ty; nrm[i * 2 + 1] = tx; sArr[i] = i / N * len;
     }
     path = { pts: base, nrm, len, N, knot: knotS };
+    collectText();
     U.uKnot.value = knotS; U.uLen.value = len;
 
     ribbon.children.slice().forEach(c => { c.geometry.dispose(); ribbon.remove(c); });
@@ -389,7 +413,7 @@
       sampleAt(spS[i] * path.len, smp);
       const w = Math.sin(t * .9 + i) * U.uSpread.value * .8 * spO[i];
       spPos[i * 3] = smp.x + smp.nx * w; spPos[i * 3 + 1] = smp.y + smp.ny * w;
-      spA[i] = (.3 + .7 * Math.abs(Math.sin(t * 1.7 + i * 1.3))) * Math.min(1, spS[i] * 20, (1 - spS[i]) * 20);
+      spA[i] = (.3 + .7 * Math.abs(Math.sin(t * 1.7 + i * 1.3))) * Math.min(1, spS[i] * 20, (1 - spS[i]) * 20) * (inText(spPos[i * 3], spPos[i * 3 + 1]) ? .08 : 1);
     }
     spGeo.attributes.position.needsUpdate = true; spGeo.attributes.a.needsUpdate = true;
 

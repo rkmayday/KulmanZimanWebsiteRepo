@@ -563,3 +563,18 @@ h2{letter-spacing:-.025em}
 .page-head::before{content:"";position:absolute;inset:-84px 0 0 0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(3,10,60,.6) 0%,rgba(3,10,60,.3) 55%,rgba(3,10,60,.1) 100%)}
 .back{background:rgba(8,20,90,.6);color:#fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 @media (max-width:820px){.profile-card{max-width:240px;justify-self:center}.page-head::before{background:linear-gradient(180deg,rgba(3,10,60,.35),rgba(3,10,60,.65))}}
+
+/* ---- hero headline letters (motion.js) ---- */
+.hero h1.split{perspective:900px}
+.hero h1 .hw{display:inline-block;white-space:nowrap}
+.hero h1 .hl{display:inline-block;transform-origin:50% 90%;will-change:transform,opacity;animation:hl-in .9s cubic-bezier(.2,.75,.2,1) backwards;animation-delay:calc(var(--i) * 28ms + 120ms)}
+@keyframes hl-in{from{opacity:0;transform:translateY(.55em) rotateX(-70deg)}}
+/* the gradient on "crowned" moves onto each letter so it survives the per-letter transforms */
+.hero h1.split em{background:none;-webkit-text-fill-color:currentColor;animation:none;padding-right:0}
+.hero h1 .hl-em{background:var(--gold-grad);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-right:.02em}
+@media (prefers-reduced-motion:reduce){.hero h1 .hl{animation:none}}
+
+/* hero: the hint sits top-right, away from the section dock at the bottom */
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.hero-top .play-hint{margin-top:14px}
+@media (max-width:900px){.hero-top{display:none}}
