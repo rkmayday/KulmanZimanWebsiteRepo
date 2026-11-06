@@ -630,3 +630,13 @@ h2{letter-spacing:-.025em}
 .device-stage .browser{animation-duration:8s;animation-delay:-2s}
 .profile-card{animation-duration:9s}
 .device-stage .browser.flash{animation:flash .7s var(--ease),bob 8s ease-in-out -2s infinite}
+
+/* =====================================================================
+   Nothing may widen the page on phones (phone browsers let you pan into overflow that desktop clips)
+   ===================================================================== */
+html{overflow-x:clip}
+body{overflow-x:hidden;overflow-x:clip}
+.marquees{position:relative;z-index:2;overflow:hidden;padding-block:70px;margin-block:-70px}
+@supports (overflow-x:clip){.marquees{overflow:visible;overflow-x:clip;padding-block:0;margin-block:0}}
+.skip{left:8px;top:-80px}
+.skip:focus{left:8px;top:8px}

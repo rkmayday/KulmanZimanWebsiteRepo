@@ -86,6 +86,25 @@ def head_tags(meta):
 <link href="{FONTS}" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
+<script>
+/* Arriving from another page of the site: start at the top (links to a spot on the page, back/forward and reload are left alone) */
+(function () {{
+  var nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+  if (location.hash || (nav && nav.type !== 'navigate')) return;
+  var fromSite = false;
+  try {{ fromSite = sessionStorage.getItem('kz-top') === '1'; sessionStorage.removeItem('kz-top'); }} catch (e) {{}}
+  var moved = false, root = document.documentElement;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {{ addEventListener(ev, function () {{ moved = true; }}, {{ once: true, passive: true }}); }});
+  function top() {{
+    if (moved || (window.scrollY === 0 && !fromSite)) return;
+    var b = root.style.scrollBehavior; root.style.scrollBehavior = 'auto'; window.scrollTo(0, 0); root.style.scrollBehavior = b;
+  }}
+  top(); addEventListener('DOMContentLoaded', top); addEventListener('load', top); addEventListener('pageshow', top);
+  [60, 200, 500, 1000].forEach(function (ms) {{ setTimeout(top, ms); }});
+  // a viewer that scrolls the whole frame keeps its own position, so bring the top of this page into view there too
+  if (fromSite && window.top !== window) addEventListener('load', function () {{ if (!moved) try {{ root.scrollIntoView({{ block: 'start' }}); }} catch (e) {{}} }});
+}})();
+</script>
 <script type="application/ld+json">{json.dumps(ld if len(ld) > 1 else ORG)}</script>
 """
 
@@ -107,7 +126,7 @@ def nav(active):
     <nav aria-label="Main"><ul class="nav-links">{links}</ul></nav>
     <div class="nav-cta">
       <a class="btn ghost" href="/#start">Send a brief</a>
-      <a class="btn small" href="{CHECKOUT}">Get started · $300</a>
+      <a class="btn small" href="{CHECKOUT}">Get started</a>
       <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
     </div>
   </div>

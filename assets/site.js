@@ -4,6 +4,15 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Links to another page of this site: remember to open that page at the top (see the head script)
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.target || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const u = new URL(a.href, location.href);
+    if (u.origin !== location.origin || u.hash || u.pathname === location.pathname) return;
+    try { sessionStorage.setItem('kz-top', '1'); } catch (err) {}
+  }, true);
+
   // Nav: glass background once scrolled, mobile menu toggle
   const nav = $('.nav');
   const onScroll = () => nav && nav.classList.toggle('scrolled', scrollY > 8);
