@@ -1,0 +1,13 @@
+{
+  "name": "kulmanziman-shop",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 ../build.py --theme noir && vite build",
+    "deploy": "whop apps deploy"
+  },
+  "devDependencies": {
+    "@whop/cli": "0.34.1",
+    "vite": "6.3.5"
+  }
+}
