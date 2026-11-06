@@ -36,7 +36,7 @@ The same pages build in two looks:
 | Royal (default) | `python3 build.py` | Royal blue, gold and silver; a gold crown over reflective water; scrolling dives under the sea (`assets/world.js`). |
 | Noir | `python3 build.py --theme noir` | Black 60%, white 30%, lime 10%; a faint white dot grid with a neon-lime light ribbon that flows down the page and weaves around the cards; a chrome crown in the hero (`assets/world-noir.js`, `assets/theme-noir.css`). Output goes to `dist-noir/`. |
 
-The noir ribbon is a bundle of fine filaments that twist like a cable, pinch into a bright knot beside the headline and then weave along the edges of each card. Its path is worked out from where the boxes sit on the page, so it fits every page and screen size. Pulses travel along it, scrolling speeds up the flow and the cursor pushes nearby strands aside. Clicking a chrome sphere or white cube in the hero shatters it into lime sparks.
+The noir light is a silky band of lime strands fixed behind the page: a sharp body, bright core highlights and an out-of-focus haze. It morphs through five shapes as you scroll (a hero swoosh with a bright knot, a wide diagonal, an S-curve, a sweep and a closing curl), so it changes at exactly scroll speed. Behind text it widens, softens and dims. Pulses travel along it, scrolling speeds up the flow and the cursor pushes nearby strands aside. Clicking a chrome sphere or white cube in the hero shatters it into lime sparks.
 
 ## The 3D world (`assets/world.js`)
 

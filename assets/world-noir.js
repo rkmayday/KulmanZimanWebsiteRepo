@@ -29,7 +29,7 @@
   const LIME = 0xc6ff3d;   // the accent (lime)
 
   /* =====================================================================
-     1. The ribbon (orthographic, in page pixels; the camera scrolls with the page)
+     1. The light (orthographic, in page pixels; its shape is fixed to the screen and morphs with scroll)
      ===================================================================== */
   let mx = 0, my = 0, cx = 0, cy = 0, px = -1, py = -1, overUI = false;
   const ray = new T.Raycaster(), ndc = new T.Vector2();
@@ -48,80 +48,124 @@
         float dx = max(max(r.x - p.x, p.x - r.z), 0.), dy = max(max(r.y - p.y, p.y - r.w), 0.);
         m = min(m, mix(.28, 1., smoothstep(0., 80., length(vec2(dx, dy))))); }
       return m; }`;
-  // shared vertex logic: centerline + normal → twisted, breathing, cursor-repelled strand position
-  const strandVS = MASK + `
-    uniform float uTime, uFlow, uSpread, uKnot, uLen, uPush;
-    uniform vec2 uMouse;
-    attribute vec2 nrm; attribute float s; attribute float r; attribute float ph;
-    varying float vS, vDepth, vR, vPh, vM;
-    vec2 strandPos(vec2 base){
-      float pinch = smoothstep(0., 520., abs(s - uKnot));
-      float ends = smoothstep(0., 400., s) * smoothstep(0., 400., uLen - s);
-      float breathe = .65 + .35 * sin(s * .0011 - uTime * .1 + ph * .3);
-      float spread = mix(5., uSpread, pinch) * breathe * (.35 + .65 * ends);
-      float tw = s * .0042 - uTime * .16 + ph;
-      float c = cos(tw), w = sin(s * .0023 - uTime * .15 + ph * 2.) * .18;
-      vDepth = sin(tw);
-      vec2 p = base + nrm * spread * (r * c + w);
-      vec2 d = p - uMouse; float dd = dot(d, d);
-      p += normalize(d + 1e-4) * 55. * exp(-dd / 26000.) * uPush;
-      return p;
+  /* ---------- the light: fixed to the screen, morphing between shapes as you scroll ----------
+     Control points live in viewport space and are converted to page coordinates each frame, so the light
+     stays behind the content while the page scrolls over it, and its shape changes at exactly scroll speed. */
+  U.uP = { value: Array.from({ length: 8 }, () => new T.Vector2()) };
+  U.uKnotU = { value: .43 }; U.uKnotAmt = { value: 1 };
+  const SPLINE = `
+    uniform vec2 uP[8];
+    void spline(float u, out vec2 pos, out vec2 tg){
+      float f = clamp(u, 0., .9999) * 7.; int i = int(floor(f)); float t = f - float(i);
+      vec2 p0 = uP[i > 0 ? i - 1 : 0], p1 = uP[i], p2 = uP[i < 7 ? i + 1 : 7], p3 = uP[i < 6 ? i + 2 : 7];
+      vec2 a = 2. * p0 - 5. * p1 + 4. * p2 - p3, b = -p0 + 3. * p1 - 3. * p2 + p3;
+      pos = .5 * (2. * p1 + (p2 - p0) * t + a * t * t + b * t * t * t);
+      tg = .5 * ((p2 - p0) + 2. * a * t + 3. * b * t * t);
     }`;
-  const lineMat = new T.ShaderMaterial({
-    uniforms: U, transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
-    vertexShader: strandVS + `
-      attribute float side; varying float vSide;
-      void main(){ vec2 p = strandPos(position.xy); vS = s; vR = r; vPh = ph; vM = textMask(p); vSide = side;
-        float clear = smoothstep(.28, 1., vM);                       // 0 behind text, 1 in the open
-        float w = (2.4 + 2.2 * fract(ph * 3.7)) * mix(4.2, 1., clear);  // bold strands, much wider (blurred) behind text
-        p += nrm * side * w;
-        p.y = -p.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.); }`,
-    fragmentShader: `
-      uniform float uTime, uFlow, uLen;
-      varying float vS, vDepth, vR, vPh, vM, vSide;
-      void main(){
-        float clear = smoothstep(.28, 1., vM);
-        float soft = mix(.0, .7, clear);                              // crisp core in the open, all soft edge behind text
-        float prof = 1. - smoothstep(soft, 1., abs(vSide));
-        float front = .35 + .65 * (vDepth * .5 + .5);
-        float pulse = smoothstep(.82, 1., fract(vS * .00042 - uTime * .028 + vPh * 3.17)) * .6;
-        float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
-        vec3 col = vec3(.78, 1., .24);                                 // lime only
-        float dim = mix(.22, 1., clear);                              // darker behind text so the words stand out
-        float a = (.3 + .3 * pulse) * front * ends * prof * dim;
-        gl_FragColor = vec4(col * a + vec3(.9, 1., .7) * pulse * .25 * front * ends * prof * dim, a);
-      }`
-  });
-  const glowMat = new T.ShaderMaterial({
-    uniforms: Object.assign({ uW: { value: 30 }, uA: { value: .2 } }, U), transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
-    vertexShader: MASK + `
-      uniform float uTime, uSpread, uKnot, uLen, uW;
-      attribute vec2 nrm; attribute float s; attribute float side;
-      varying float vSide, vS, vM;
-      void main(){
-        float pinch = smoothstep(0., 520., abs(s - uKnot));
-        float w = mix(uW * .45, uW, pinch) * (.8 + .2 * sin(s * .002 - uTime * .35));
-        vec2 p = position.xy + nrm * (side * w + sin(s * .0023 - uTime * .15) * uSpread * .12);
-        vSide = side; vS = s; vM = textMask(position.xy); p.y = -p.y;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.);
-      }`,
-    fragmentShader: `
-      uniform float uA, uTime, uLen, uKnot;
-      varying float vSide, vS, vM;
-      void main(){
-        float ends = smoothstep(0., 300., vS) * smoothstep(0., 300., uLen - vS);
-        float knot = 1. + 2.6 * exp(-pow((vS - uKnot) / 300., 2.));
-        float a = exp(-vSide * vSide * 3.2) * uA * ends * knot * (.85 + .15 * sin(vS * .01 - uTime * 1.));
-        vec3 col = mix(vec3(.78, 1., .24), vec3(.95, 1., .8), exp(-vSide * vSide * 18.) * .6);
-        a *= vM;
-        gl_FragColor = vec4(col * a, a);
-      }`
+  const ribbonVS = MASK + SPLINE + `
+    uniform float uTime, uSpread, uKnotU, uKnotAmt, uPush, uW, uSpreadK;
+    uniform vec2 uMouse;
+    attribute float u; attribute float side; attribute float r; attribute float ph;
+    varying float vU, vDepth, vPh, vM, vSide;
+    void main(){
+      vec2 c, tg; spline(u, c, tg);
+      vec2 n = normalize(vec2(-tg.y, tg.x) + 1e-5);
+      float pinch = mix(1., smoothstep(0., .16, abs(u - uKnotU)), uKnotAmt);
+      float breathe = .7 + .3 * sin(u * 9. - uTime * .1 + ph * .3);
+      float spread = mix(5., uSpread * uSpreadK, pinch) * breathe;
+      float tw = u * 6.5 - uTime * .16 + ph * .35;                      // the twist travels down the line
+      vDepth = sin(tw);
+      vec2 p = c + n * spread * (r * (.75 + .25 * cos(tw)) + sin(u * 5. - uTime * .15 + ph) * .06);   // silky: mostly side by side
+      vec2 d = p - uMouse; p += normalize(d + 1e-4) * 55. * exp(-dot(d, d) / 26000.) * uPush;
+      vM = textMask(p);
+      float clear = smoothstep(.28, 1., vM);
+      float w = uW * (.6 + .8 * fract(ph * 3.7)) * mix(4.2, 1., clear);   // wider (blurred) behind text
+      p += n * side * w;
+      vU = u; vPh = ph; vSide = side;
+      p.y = -p.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 0., 1.);
+    }`;
+  const ribbonFS = `
+    uniform float uTime, uA, uSoft, uKnotU, uKnotAmt;
+    varying float vU, vDepth, vPh, vM, vSide;
+    void main(){
+      float clear = smoothstep(.28, 1., vM);
+      float prof = 1. - smoothstep(mix(0., uSoft, clear), 1., abs(vSide));
+      float front = .35 + .65 * (vDepth * .5 + .5);
+      float pulse = smoothstep(.82, 1., fract(vU * 1.2 - uTime * .028 + vPh * 3.17)) * .6;
+      float ends = smoothstep(0., .04, vU) * smoothstep(0., .04, 1. - vU);
+      vec3 col = mix(vec3(.78, 1., .24), vec3(.93, 1., .46), fract(vPh * 5.3));   // lime to yellow-green
+      float dim = mix(.22, 1., clear);                                             // darker behind text
+      float knotGlow = 1. + 1.8 * uKnotAmt * exp(-pow((vU - uKnotU) / .05, 2.));   // the bright pinch point
+      float a = uA * (1. + .6 * pulse) * front * ends * prof * dim * knotGlow;
+      gl_FragColor = vec4(col * a + vec3(.95, 1., .8) * pulse * .25 * uA * front * prof * dim, a);
+    }`;
+  const layerMat = o => new T.ShaderMaterial({
+    uniforms: Object.assign({}, U, { uW: { value: o.w }, uA: { value: o.a }, uSoft: { value: o.soft }, uSpreadK: { value: o.k } }),
+    transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending, vertexShader: ribbonVS, fragmentShader: ribbonFS
   });
   const ribbon = new T.Group(); rScene.add(ribbon);
-  const glowBands = [[8, .9], [26, .4], [70, .16], [190, .06]].map(([w, a]) => { const m = glowMat.clone(); m.uniforms = Object.assign({}, U, { uW: { value: w }, uA: { value: a } }); return m; });
+  function strandGeo(count, N) {
+    const V = (N + 1) * 2 * count;
+    const pos = new Float32Array(V * 3), uu = new Float32Array(V), sd = new Float32Array(V), rr = new Float32Array(V), pp = new Float32Array(V);
+    const idx = new Uint32Array(N * 6 * count); let k = 0;
+    for (let j = 0; j < count; j++) {
+      const r = (Math.random() * 2 - 1) * (Math.random() < .3 ? 1 : .6), ph = Math.random() * 6.283;
+      for (let i = 0; i <= N; i++) for (let e = 0; e < 2; e++) {
+        const v = (j * (N + 1) + i) * 2 + e; uu[v] = i / N; sd[v] = e ? 1 : -1; rr[v] = r; pp[v] = ph;
+        if (i < N && e === 0) { idx[k++] = v; idx[k++] = v + 1; idx[k++] = v + 2; idx[k++] = v + 1; idx[k++] = v + 3; idx[k++] = v + 2; }
+      }
+    }
+    const g = new T.BufferGeometry();
+    g.setAttribute('position', new T.BufferAttribute(pos, 3)); g.setAttribute('u', new T.BufferAttribute(uu, 1)); g.setAttribute('side', new T.BufferAttribute(sd, 1));
+    g.setAttribute('r', new T.BufferAttribute(rr, 1)); g.setAttribute('ph', new T.BufferAttribute(pp, 1)); g.setIndex(new T.BufferAttribute(idx, 1));
+    return g;
+  }
+  let built = false;
+  function buildRibbon() {
+    if (built) return; built = true;
+    const lite = coarse || small();
+    [{ n: lite ? 10 : 18, w: 34, a: .11, soft: 0, k: 1.8 },       // out-of-focus haze behind everything
+     { n: lite ? 30 : 70, w: 3.6, a: .42, soft: .65, k: 1 },        // the body of bold strands
+     { n: lite ? 8 : 16, w: 1.6, a: .75, soft: .5, k: .4 }]      // a few bright core highlights
+      .forEach(L => { const m = new T.Mesh(strandGeo(L.n, lite ? 160 : 240), layerMat(L)); m.frustumCulled = false; ribbon.add(m); });
+  }
 
-  // sparkles drifting along the ribbon
-  const SP = coarse ? 120 : 320;
+  // the shapes it moves through (x, y as fractions of the screen), one per stretch of the page
+  const KF = [
+    { knot: 1, k: 1, p: [[1.15, 1.06], [.9, .93], [.71, .8], [.61, .67], [.68, .5], [.82, .36], [.98, .22], [1.18, .05]] },   // hero swoosh with a knot
+    { knot: 0, k: 1.15, p: [[1.18, -.12], [.92, .08], [.76, .28], [.63, .48], [.55, .68], [.4, .88], [.18, 1.04], [-.15, 1.16]] }, // wide diagonal band
+    { knot: 0, k: .95, p: [[.72, -.15], [.86, .12], [.7, .32], [.84, .52], [.66, .72], [.8, .92], [.62, 1.08], [.74, 1.25]] },   // S-curve on the right
+    { knot: 0, k: 1.1, p: [[-.18, .82], [.12, .72], [.33, .56], [.5, .5], [.66, .46], [.84, .32], [1.02, .2], [1.22, .1]] },   // sweep across
+    { knot: 1, k: 1, p: [[-.15, .3], [.18, .4], [.38, .64], [.5, .8], [.64, .7], [.8, .52], [1.0, .46], [1.22, .52]] }          // closing curl
+  ];
+  const cur = { p: KF[0].p.map(q => q.slice()), knot: 1, k: 1 };
+  function morph(t) {
+    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const f = Math.min(1, scrollY / max) * (KF.length - 1), i = Math.min(KF.length - 2, Math.floor(f)), k = f - i, e = k * k * (3 - 2 * k);
+    const A = KF[i], B = KF[i + 1], W = innerWidth, H = innerHeight;
+    cur.knot = A.knot + (B.knot - A.knot) * e; cur.k = A.k + (B.k - A.k) * e;
+    for (let j = 0; j < 8; j++) {
+      const x = A.p[j][0] + (B.p[j][0] - A.p[j][0]) * e + Math.sin(t * .25 + j * 1.7) * .012;
+      const y = A.p[j][1] + (B.p[j][1] - A.p[j][1]) * e + Math.cos(t * .21 + j * 1.3) * .012;
+      cur.p[j][0] = x * W; cur.p[j][1] = y * H + scrollY;                // to page coordinates
+      U.uP.value[j].set(cur.p[j][0], cur.p[j][1]);
+    }
+    U.uKnotAmt.value = cur.knot;
+  }
+  // the same curve on the CPU, for the sparkles
+  const spl = (u, out) => {
+    const P = cur.p, f = Math.min(.9999, Math.max(0, u)) * 7, i = Math.floor(f), t = f - i;
+    const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[Math.min(7, i + 1)], p3 = P[Math.min(7, i + 2)];
+    for (let d = 0; d < 2; d++) {
+      const a = 2 * p0[d] - 5 * p1[d] + 4 * p2[d] - p3[d], b = -p0[d] + 3 * p1[d] - 3 * p2[d] + p3[d];
+      out[d] = .5 * (2 * p1[d] + (p2[d] - p0[d]) * t + a * t * t + b * t * t * t);
+      out[d + 2] = .5 * ((p2[d] - p0[d]) + 2 * a * t + 3 * b * t * t);
+    }
+    const l = Math.hypot(out[2], out[3]) || 1; out[4] = -out[3] / l; out[5] = out[2] / l; return out;
+  };
+
+  // sparkles drifting along the light
+  const SP = coarse ? 120 : 300;
   const spGeo = new T.BufferGeometry();
   const spPos = new Float32Array(SP * 3), spA = new Float32Array(SP);
   spGeo.setAttribute('position', new T.BufferAttribute(spPos, 3));
@@ -133,55 +177,10 @@
   });
   const sparkles = new T.Points(spGeo, spMat); sparkles.frustumCulled = false; rScene.add(sparkles);
   const spS = new Float32Array(SP), spV = new Float32Array(SP), spO = new Float32Array(SP);
-  for (let i = 0; i < SP; i++) { spS[i] = Math.random(); spV[i] = 18 + Math.random() * 40; spO[i] = (Math.random() - .5) * 2; spA[i] = .2 + Math.random() * .8; }
+  for (let i = 0; i < SP; i++) { spS[i] = Math.random(); spV[i] = .006 + Math.random() * .014; spO[i] = (Math.random() - .5) * 2; spA[i] = .2 + Math.random() * .8; }
 
-  // path samples (page px) for sparkles
-  let path = { pts: null, nrm: null, len: 1, step: 10, knot: 0 };
-
-  /* ---------- build the path from where the boxes actually are ---------- */
-  const SELECT = '#industries > .wrap, .hero-copy, .strip .wrap, .section-head, .product, .flip, .steps, .condition, .panel-stage, .play, .proof-grid, .aff, .cta-grid, .founders, .page-head .wrap, .profile, .two-col, .stats4, .calc, .faq, .prose, .narrow, .timeline';
   // layout position, unaffected by the reveal transforms
   const docRect = el => { let x = 0, y = 0, e = el; while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { l: x, t: y, r: x + el.offsetWidth, b: y + el.offsetHeight }; };
-  function anchorsFor() {
-    const W = innerWidth, VH = innerHeight;
-    const els = [...document.querySelectorAll(SELECT)].filter(el => el.offsetParent !== null && !el.closest('[hidden]'));
-    const top = els.filter(el => !els.some(o => o !== el && o.contains(el)));
-    const boxes = top.map(docRect).filter(b => b.b - b.t > 40).sort((a, b) => a.t - b.t);
-    // merge boxes that share a row
-    const rows = [];
-    boxes.forEach(b => { const last = rows[rows.length - 1]; if (last && b.t < last.b + 70) { last.l = Math.min(last.l, b.l); last.r = Math.max(last.r, b.r); last.b = Math.max(last.b, b.b); } else rows.push({ ...b }); });
-    const pts = [];
-    let knotIdx = 0;
-    if (isHome) {
-      // hero: enter from the left, pinch into a knot beside the headline, loop around the crown
-      if (small()) {
-        // phones: swirl around the crown at the top, then run down the right edge, clear of the text
-        pts.push([-160, VH * .16], [W * .22, VH * .13]);
-        knotIdx = pts.length; pts.push([W * .55, VH * .115]);
-        pts.push([W * .9, VH * .16], [W * 1.02, VH * .3], [W * .98, VH * .6], [W * .96, heroBottom() * .97]);
-      } else {
-        pts.push([-160, VH * 1.02], [W * .3, VH * .97]);
-        knotIdx = pts.length; pts.push([W * .63, VH * .8]);
-        pts.push([W * .67, VH * .26], [W * .93, VH * .3], [W * .99, VH * .62], [W * .92, heroBottom() * .97]);
-      }
-    } else {
-      pts.push([-160, 160]); knotIdx = pts.length; pts.push([W * .38, 250]); pts.push([W * .85, 120], [W * 1.02, 420]);
-    }
-    let side = 0; // 0 = left edge, 1 = right edge
-    rows.forEach((row, k) => {
-      if (isHome && row.b < heroBottom() * .95) return;           // hero rows are covered by the swoop
-      if (!isHome && k === 0 && row.b < 520) return;
-      const h = row.b - row.t, gutter = Math.max(18, Math.min(110, row.l * .55));
-      const outX = side ? Math.min(W - 10, row.r + gutter) : Math.max(10, row.l - gutter);
-      pts.push([outX, row.t + h * .12]);
-      if (h > 320) pts.push([outX, row.t + h * .5]);    // run alongside the card, grazing its edge
-      pts.push([outX, row.b - h * .1]);
-      side ^= 1;
-    });
-    const last = pts[pts.length - 1];
-    pts.push([side ? W + 160 : -160, last[1] + 260]);
-    return { pts, knotIdx };
-  }
 
   const TEXT = 'h1, h2, .lede, blockquote, .hero-tags, .play-hint, .dive, .eyebrow, .email-big, .disclaim, .facts, .proof-links, .back, .toc, .faq-filter, .contact-row';
   const OPAQUE = '#industries, .product, .sheet, .panel, .controls, .brief, .faq details, .founder, .box, .aff, .calc, .stat, .profile-card, .prose, .condition';
@@ -208,67 +207,7 @@
   }
   const inText = (x, y) => textRects.some(r => x > r.l && x < r.r && y > r.t && y < r.b);
 
-  function rebuild() {
-    const { pts, knotIdx } = anchorsFor();
-    const curve = new T.CatmullRomCurve3(pts.map(([x, y]) => new T.Vector3(x, y, 0)), false, 'centripetal', .5);
-    const len = curve.getLength();
-    const N = Math.max(60, Math.floor(len / 9));
-    const P = curve.getSpacedPoints(N);
-    // arc length of the knot point
-    let knotS = 0, best = 1e9;
-    P.forEach((p, i) => { const d = (p.x - pts[knotIdx][0]) ** 2 + (p.y - pts[knotIdx][1]) ** 2; if (d < best) { best = d; knotS = i / N * len; } });
-    const base = new Float32Array((N + 1) * 2), nrm = new Float32Array((N + 1) * 2), sArr = new Float32Array(N + 1);
-    for (let i = 0; i <= N; i++) {
-      const a = P[Math.max(0, i - 1)], b = P[Math.min(N, i + 1)];
-      let tx = b.x - a.x, ty = b.y - a.y; const l = Math.hypot(tx, ty) || 1; tx /= l; ty /= l;
-      base[i * 2] = P[i].x; base[i * 2 + 1] = P[i].y; nrm[i * 2] = -ty; nrm[i * 2 + 1] = tx; sArr[i] = i / N * len;
-    }
-    path = { pts: base, nrm, len, N, knot: knotS };
-    collectText();
-    U.uKnot.value = knotS; U.uLen.value = len;
-
-    ribbon.children.slice().forEach(c => { c.geometry.dispose(); ribbon.remove(c); });
-    // filaments: one LineSegments geometry holding every strand
-    const STR = coarse || small() ? 22 : 46, V = (N + 1) * 2 * STR;
-    const pos = new Float32Array(V * 3), n2 = new Float32Array(V * 2), s1 = new Float32Array(V), rr = new Float32Array(V), pp = new Float32Array(V), sd = new Float32Array(V);
-    const idx = new Uint32Array(N * 6 * STR);
-    let k = 0;
-    for (let j = 0; j < STR; j++) {
-      const r = (Math.random() * 2 - 1) * (Math.random() < .3 ? 1 : .6), ph = Math.random() * 6.283;
-      for (let i = 0; i <= N; i++) for (let e = 0; e < 2; e++) {
-        const v = (j * (N + 1) + i) * 2 + e;
-        pos[v * 3] = base[i * 2]; pos[v * 3 + 1] = base[i * 2 + 1]; sd[v] = e ? 1 : -1;
-        n2[v * 2] = nrm[i * 2]; n2[v * 2 + 1] = nrm[i * 2 + 1]; s1[v] = sArr[i]; rr[v] = r; pp[v] = ph;
-        if (i < N && e === 0) { idx[k++] = v; idx[k++] = v + 1; idx[k++] = v + 2; idx[k++] = v + 1; idx[k++] = v + 3; idx[k++] = v + 2; }
-      }
-    }
-    const g = new T.BufferGeometry();
-    g.setAttribute('position', new T.BufferAttribute(pos, 3)); g.setAttribute('nrm', new T.BufferAttribute(n2, 2));
-    g.setAttribute('s', new T.BufferAttribute(s1, 1)); g.setAttribute('r', new T.BufferAttribute(rr, 1)); g.setAttribute('ph', new T.BufferAttribute(pp, 1)); g.setAttribute('side', new T.BufferAttribute(sd, 1));
-    g.setIndex(new T.BufferAttribute(idx, 1));
-    const lines = new T.Mesh(g, lineMat); lines.frustumCulled = false;
-
-    // soft glow bands along the centreline
-    const gp = new Float32Array((N + 1) * 2 * 3), gn = new Float32Array((N + 1) * 2 * 2), gs = new Float32Array((N + 1) * 2), gside = new Float32Array((N + 1) * 2);
-    const gi = [];
-    for (let i = 0; i <= N; i++) for (let e = 0; e < 2; e++) {
-      const v = i * 2 + e;
-      gp[v * 3] = base[i * 2]; gp[v * 3 + 1] = base[i * 2 + 1]; gn[v * 2] = nrm[i * 2]; gn[v * 2 + 1] = nrm[i * 2 + 1]; gs[v] = sArr[i]; gside[v] = e ? 1 : -1;
-      if (i < N && e === 0) gi.push(v, v + 1, v + 2, v + 1, v + 3, v + 2);
-    }
-    const gg = new T.BufferGeometry();
-    gg.setAttribute('position', new T.BufferAttribute(gp, 3)); gg.setAttribute('nrm', new T.BufferAttribute(gn, 2));
-    gg.setAttribute('s', new T.BufferAttribute(gs, 1)); gg.setAttribute('side', new T.BufferAttribute(gside, 1));
-    gg.setIndex(gi);
-    glowBands.forEach(m => { const mesh = new T.Mesh(gg, m); mesh.frustumCulled = false; ribbon.add(mesh); });
-    ribbon.add(lines);
-  }
-  const sampleAt = (s, out) => {
-    const { pts, nrm, len, N } = path; if (!pts) return out.set(-9999, -9999);
-    const f = Math.max(0, Math.min(N - 0.001, s / len * N)), i = Math.floor(f), t = f - i;
-    out.x = pts[i * 2] + (pts[i * 2 + 2] - pts[i * 2]) * t; out.y = pts[i * 2 + 1] + (pts[i * 2 + 3] - pts[i * 2 + 1]) * t;
-    out.nx = nrm[i * 2]; out.ny = nrm[i * 2 + 1]; return out;
-  };
+  function rebuild() { buildRibbon(); collectText(); }
 
   /* =====================================================================
      2. Home: the chrome crown and the shapes (perspective scene, scrolls with the hero)
@@ -485,7 +424,7 @@
     dCam.aspect = w / h; dCam.updateProjectionMatrix();
     unitsPerPx = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / h;   // world units per CSS px at the crown's depth
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
-    U.uSpread.value = small() ? 70 : 140;
+    U.uSpread.value = small() ? 95 : 230;
     if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.scale.setScalar(.7); } else { pivot.position.set(2.7, .55, 0); pivot.scale.setScalar(1); }
     placeHeroShapes(shapes);
     rebuild();
@@ -543,6 +482,7 @@
   let flowT = 0, flowSpeed = 1, lastMove = -1e9;
   addEventListener('scroll', () => { lastMove = performance.now(); }, { passive: true });
   document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !reduce) { clock.getDelta(); requestAnimationFrame(frame); } });
+  const SV = [0, 0, 0, 0, 0, 0];
   const v3 = new T.Vector3(), tmp = new T.Vector3(), smp = { x: 0, y: 0, nx: 0, ny: 0, set(a, b) { this.x = a; this.y = b; return this; } };
 
   function frame() {
@@ -559,11 +499,12 @@
     U.uTime.value = flowT;
     if (px >= 0) U.uMouse.value.set(px, py + scrollY);
     root.style.setProperty('--dot-y', (-scrollY * .25).toFixed(1) + 'px');
-    if (path.pts) for (let i = 0; i < SP; i++) {
-      spS[i] += dt * spV[i] * flowSpeed / path.len; if (spS[i] > 1) spS[i] -= 1;   // always forward, down the line
-      sampleAt(spS[i] * path.len, smp);
-      const w = Math.sin(flowT * .4 + i) * U.uSpread.value * .8 * spO[i];
-      spPos[i * 3] = smp.x + smp.nx * w; spPos[i * 3 + 1] = smp.y + smp.ny * w;
+    morph(t);
+    for (let i = 0; i < SP; i++) {
+      spS[i] += dt * spV[i] * flowSpeed; if (spS[i] > 1) spS[i] -= 1;   // always forward, down the line
+      spl(spS[i], SV);
+      const w = Math.sin(flowT * .4 + i) * U.uSpread.value * cur.k * .8 * spO[i];
+      spPos[i * 3] = SV[0] + SV[4] * w; spPos[i * 3 + 1] = SV[1] + SV[5] * w;
       spA[i] = (.3 + .7 * Math.abs(Math.sin(t * 1.7 + i * 1.3))) * Math.min(1, spS[i] * 20, (1 - spS[i]) * 20) * (inText(spPos[i * 3], spPos[i * 3 + 1]) ? .08 : 1);
     }
     spGeo.attributes.position.needsUpdate = true; spGeo.attributes.a.needsUpdate = true;
