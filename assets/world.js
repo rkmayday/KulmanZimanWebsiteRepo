@@ -451,7 +451,7 @@
     if (isHome) {
       // crown: follows the cursor, spins with momentum, jumps when crowned
       if (!dragging) { spinVel *= 0.965; spinVel += (0.006 - spinVel) * 0.02; spin += spinVel * (reduce ? 0 : 1); }
-      crown.rotation.y = spin;
+      crown.rotation.y = spin + scrollY * .0045;   // spins as you scroll
       const hov = !dragging && !coarse && hitCrown();
       hoverScale += ((hov || dragging ? 1.06 : 1) - hoverScale) * 0.12;
       pivot.rotation.y += ((cx * 0.9) - pivot.rotation.y) * 0.07;

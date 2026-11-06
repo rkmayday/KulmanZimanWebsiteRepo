@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Synthra — Sample AI Agent Site</title>
+<meta name="description" content="Synthra is a fictional AI agent company: a sample concept site built by Kulman Ziman.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070f;--panel:#0c1120;--line:#1a2340;--fg:#e8edff;--mut:#8b95b8;--c1:#5ef0ff;--c2:#8b5cff;
+  --display:"Space Grotesk",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--display);overflow-x:hidden}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+a{color:inherit}
+.kz{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;padding:8px max(16px,env(safe-area-inset-left));font:500 12px var(--mono);background:#ff6b1a;color:#120a04}
+.kz a{font-weight:700}
+.wrap{width:min(1180px,100%);margin:auto;padding-inline:max(18px,env(safe-area-inset-left))}
+nav.top{display:flex;align-items:center;justify-content:space-between;padding-block:18px}
+.logo{font-weight:700;font-size:20px;display:flex;gap:10px;align-items:center}
+.logo i{width:22px;height:22px;border-radius:7px;background:conic-gradient(from 200deg,var(--c1),var(--c2),var(--c1))}
+nav.top ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;color:var(--mut)}
+nav.top ul a{text-decoration:none}@media (max-width:700px){nav.top ul{display:none}}
+.btn{display:inline-flex;gap:8px;align-items:center;border:0;cursor:pointer;font:700 15px var(--display);padding:12px 20px;border-radius:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#05070f;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
+.k{font:500 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--c1)}
+h1{font-size:clamp(2.5rem,5.6vw,4.6rem);line-height:1;letter-spacing:-.035em;margin:14px 0 16px}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(1.9rem,3.6vw,2.8rem);line-height:1.05;letter-spacing:-.025em;margin:10px 0 12px}
+.lede{color:var(--mut);font-size:1.08rem;max-width:50ch}
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;padding-block:20px 50px}
+@media (max-width:920px){.hero{grid-template-columns:1fr}}
+.stage{position:relative;aspect-ratio:1.05;max-width:100%;border-radius:26px;overflow:hidden;background:radial-gradient(70% 60% at 50% 45%,#121b3d,#05070f);box-shadow:inset 0 0 0 1px var(--line);touch-action:pan-y}
+.stage canvas{display:block;width:100%;height:100%;cursor:grab}
+.tag{position:absolute;pointer-events:none;font:500 11px var(--mono);padding:4px 8px;border-radius:8px;background:rgba(12,17,32,.85);box-shadow:inset 0 0 0 1px var(--line);transform:translate(-50%,-160%);white-space:nowrap;transition:box-shadow .3s,color .3s}
+.tag.on{color:var(--c1);box-shadow:inset 0 0 0 1px var(--c1)}
+.hint{position:absolute;left:14px;top:12px;font:500 11px var(--mono);color:var(--mut)}
+.console{margin-top:22px;padding:16px;border-radius:18px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.console form{display:flex;gap:8px}
+.console input{flex:1;min-width:0;font:15px var(--display);color:var(--fg);background:#070b17;border:0;border-radius:10px;padding:12px;box-shadow:inset 0 0 0 1px var(--line)}
+.console input:focus{outline:none;box-shadow:inset 0 0 0 1px var(--c1)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.chips button{font:12px var(--mono);border:0;border-radius:99px;padding:6px 10px;background:#111936;color:var(--mut);cursor:pointer}
+.chips button:hover{color:var(--fg)}
+.log{list-style:none;margin:12px 0 0;padding:0;font:13px/1.5 var(--mono);color:var(--mut);min-height:120px}
+.log li{display:flex;gap:8px;opacity:0;transform:translateY(6px);animation:in .4s forwards}
+.log li b{color:var(--c1);font-weight:500;min-width:62px}
+.log li.done b{color:#7dffb0}
+@keyframes in{to{opacity:1;transform:none}}
+section{padding-block:70px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+@media (max-width:860px){.grid3{grid-template-columns:1fr}}
+.card{padding:22px;border-radius:20px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);transition:transform .3s,box-shadow .3s}
+.card:hover{transform:translateY(-5px);box-shadow:inset 0 0 0 1px var(--c2),0 20px 40px -20px rgba(139,92,255,.5)}
+.card h3{margin:6px 0}.card p{color:var(--mut);margin:0}
+.card .n{font:500 12px var(--mono);color:var(--c2)}
+.price{font:700 2.2rem var(--display)}.price small{font-size:.9rem;color:var(--mut)}
+footer{padding:40px 0 60px;color:var(--mut);text-align:center;font-size:.9rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--c1);color:#05070f;font-weight:700;padding:12px 18px;border-radius:12px;transition:.3s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="kz"><span>Sample concept by Kulman Ziman. Synthra is a fictional AI company, not a client project and not for sale.</span><a href="{{HOME}}#proof">← Back to Kulman Ziman</a></div>
+<div class="wrap">
+  <nav class="top"><span class="logo"><i></i>Synthra</span><ul><li><a href="#demo">Live demo</a></li><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li></ul><a class="btn" href="#pricing">Get early access</a></nav>
+  <div class="hero" id="demo">
+    <div>
+      <span class="k">AI agents for IT and operations</span>
+      <h1>The busywork, <em>handled by an agent.</em></h1>
+      <p class="lede">Synthra connects to the tools your team already uses and works through tasks step by step, asking a person only when it matters.</p>
+      <div class="console">
+        <form id="task"><input id="task-in" placeholder="Give the agent a task…" aria-label="Task for the agent" autocomplete="off"><button class="btn" type="submit">Run</button></form>
+        <div class="chips" id="chips"></div>
+        <ol class="log" id="log" aria-live="polite"></ol>
+      </div>
+    </div>
+    <div class="stage" id="stage"><span class="hint">Drag to rotate · click a tool</span></div>
+  </div>
+</div>
+
+<section id="features"><div class="wrap">
+  <span class="k">What it does</span><h2>One agent. Every tool in reach.</h2>
+  <div class="grid3">
+    <div class="card"><span class="n">01</span><h3>Plans before it acts</h3><p>Breaks a request into clear steps you can read and approve.</p></div>
+    <div class="card"><span class="n">02</span><h3>Works across your stack</h3><p>Email, calendar, CRM, docs, chat and your database, in one flow.</p></div>
+    <div class="card"><span class="n">03</span><h3>Knows when to ask</h3><p>Pauses for a person on anything sensitive, with the context ready.</p></div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <span class="k">Pricing</span><h2>Start small. Scale when it works.</h2>
+  <div class="grid3">
+    <div class="card"><h3>Starter</h3><div class="price">$0<small>/month</small></div><p>1 agent, 100 tasks a month.</p></div>
+    <div class="card"><h3>Team</h3><div class="price">$49<small>/seat</small></div><p>Unlimited agents, shared playbooks, audit log.</p></div>
+    <div class="card"><h3>Enterprise</h3><div class="price">Custom</div><p>SSO, on-premise connectors, dedicated support.</p></div>
+  </div>
+  <p style="text-align:center;margin-top:34px"><button class="btn" id="join">Get early access</button></p>
+</div></section>
+<footer>Synthra is a sample concept designed and built by <a href="{{HOME}}">Kulman Ziman</a>. The agent demo is simulated.</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="{{THREE}}"></script>
+<script>
+(() => {
+  const T = THREE, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const toast = m => { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); };
+  document.getElementById('join').onclick = () => toast('Sample site: sign-up is not active');
+
+  const stage = document.getElementById('stage');
+  const r = new T.WebGLRenderer({ antialias: true, alpha: true }); r.setPixelRatio(Math.min(devicePixelRatio, 2)); stage.prepend(r.domElement);
+  const scene = new T.Scene(), cam = new T.PerspectiveCamera(40, 1, .1, 100);
+  const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+  new ResizeObserver(fit).observe(stage); fit();
+  const world = new T.Group(); scene.add(world);
+  const C1 = new T.Color(0x5ef0ff), C2 = new T.Color(0x8b5cff);
+
+  // the agent core
+  const core = new T.Mesh(new T.IcosahedronGeometry(1, 1), new T.MeshBasicMaterial({ color: 0x5ef0ff, wireframe: true, transparent: true, opacity: .55 }));
+  const inner = new T.Mesh(new T.IcosahedronGeometry(.62, 2), new T.MeshBasicMaterial({ color: 0x8b5cff, transparent: true, opacity: .85 }));
+  const halo = new T.Mesh(new T.SphereGeometry(1.45, 32, 16), new T.ShaderMaterial({ transparent: true, depthWrite: false, blending: T.AdditiveBlending, side: T.BackSide,
+    vertexShader: 'varying vec3 n; void main(){ n=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+    fragmentShader: 'varying vec3 n; void main(){ float a=pow(.75-abs(n.z),2.)*1.4; gl_FragColor=vec4(vec3(.35,.6,1.)*a,a); }' }));
+  world.add(core, inner, halo);
+  // the tools, orbiting on a tilted ring
+  const TOOLS = [['Email', /mail|inbox|reply|send/], ['Calendar', /meet|book|schedul|calendar/], ['CRM', /customer|lead|deal|crm|client/], ['Docs', /doc|report|draft|write|summar/], ['Chat', /team|slack|chat|notify|message/], ['Database', /data|ticket|query|record|sql|log/]];
+  const tagLayer = stage;
+  const nodes = TOOLS.map(([name], i) => {
+    const a = i / TOOLS.length * Math.PI * 2;
+    const m = new T.Mesh(new T.OctahedronGeometry(.22, 0), new T.MeshBasicMaterial({ color: 0x8b95b8 }));
+    m.position.set(Math.cos(a) * 2.6, Math.sin(a * 2) * .5, Math.sin(a) * 2.6);
+    const lineGeo = new T.BufferGeometry().setFromPoints([new T.Vector3(), m.position.clone()]);
+    const line = new T.Line(lineGeo, new T.LineBasicMaterial({ color: 0x2a3766, transparent: true, opacity: .8 }));
+    world.add(m, line);
+    const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = name; tagLayer.append(tag);
+    return { name, m, line, tag, glow: 0 };
+  });
+  // pulses that travel from the core to a tool
+  const pulses = [];
+  const pulseGeo = new T.SphereGeometry(.07, 12, 8);
+  const fire = n => { for (let k = 0; k < 5; k++) { const p = new T.Mesh(pulseGeo, new T.MeshBasicMaterial({ color: 0x5ef0ff })); world.add(p); pulses.push({ p, n, t: -k * .12 }); } n.glow = 1; };
+  // background dust
+  const dg = new T.BufferGeometry(), da = new Float32Array(900);
+  for (let i = 0; i < 900; i++) da[i] = (Math.random() - .5) * 16;
+  dg.setAttribute('position', new T.BufferAttribute(da, 3));
+  scene.add(new T.Points(dg, new T.PointsMaterial({ color: 0x4a5a9a, size: .03 })));
+
+  // drag + click
+  const o = { yaw: 0, pitch: .3, vy: 0, drag: false, moved: 0 };
+  const el = r.domElement, ray = new T.Raycaster(), nd = new T.Vector2();
+  el.addEventListener('pointerdown', e => { o.drag = true; o.moved = 0; o.x = e.clientX; o.y = e.clientY; el.setPointerCapture(e.pointerId); el.style.cursor = 'grabbing'; });
+  el.addEventListener('pointermove', e => { if (!o.drag) return; const dx = e.clientX - o.x; o.moved += Math.abs(dx); o.vy = dx * .008; o.yaw += o.vy; o.pitch = Math.max(-.3, Math.min(.9, o.pitch + (e.clientY - o.y) * .004)); o.x = e.clientX; o.y = e.clientY; });
+  el.addEventListener('pointerup', e => {
+    o.drag = false; el.style.cursor = 'grab'; if (o.moved > 5) return;
+    const rc = el.getBoundingClientRect(); nd.set((e.clientX - rc.left) / rc.width * 2 - 1, -((e.clientY - rc.top) / rc.height) * 2 + 1);
+    ray.setFromCamera(nd, cam); const h = ray.intersectObjects(nodes.map(n => n.m))[0];
+    if (h) { const n = nodes.find(n => n.m === h.object); fire(n); say('ping', n.name + ' connected and ready'); }
+  });
+
+  // the task runner (simulated plan)
+  const log = document.getElementById('log');
+  const say = (b, text, done) => { const li = document.createElement('li'); if (done) li.className = 'done'; li.innerHTML = '<b></b><span></span>'; li.firstChild.textContent = b; li.lastChild.textContent = text; log.append(li); while (log.children.length > 7) log.firstChild.remove(); };
+  const EX = ['Summarize today’s support tickets and post them to the team', 'Book a meeting with Dana next week and email her the agenda', 'Draft the weekly report from the CRM deals'];
+  const chips = document.getElementById('chips');
+  EX.forEach(x => { const b = document.createElement('button'); b.type = 'button'; b.textContent = x; b.onclick = () => run(x); chips.append(b); });
+  let busy = false;
+  function run(task) {
+    if (busy) return; busy = true; log.innerHTML = '';
+    const used = nodes.filter((n, i) => TOOLS[i][1].test(task.toLowerCase()));
+    if (!used.length) used.push(nodes[3], nodes[4]);
+    const steps = [['plan', 'Breaking “' + task.slice(0, 48) + (task.length > 48 ? '…' : '') + '” into steps']]
+      .concat(used.map(n => [n.name.toLowerCase(), 'Working in ' + n.name]))
+      .concat([['check', 'Reviewing the result before sending'], ['done', 'Finished in ' + (2 + used.length) + ' steps. Nothing needed a person.']]);
+    steps.forEach((s, i) => setTimeout(() => {
+      say(s[0], s[1], s[0] === 'done');
+      const n = used.find(n => n.name.toLowerCase() === s[0]); if (n) fire(n);
+      if (s[0] === 'plan') coreKick = 1;
+      if (i === steps.length - 1) busy = false;
+    }, i * 900));
+  }
+  document.getElementById('task').onsubmit = e => { e.preventDefault(); const v = document.getElementById('task-in').value.trim(); if (v) run(v); };
+
+  let coreKick = 0;
+  const clock = new T.Clock(), v = new T.Vector3();
+  setTimeout(() => run(EX[0]), 900);
+  (function loop() {
+    const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
+    if (!o.drag) { o.yaw += o.vy; o.vy *= .94; if (!reduce) o.yaw += dt * .15; }
+    cam.position.set(Math.sin(o.yaw) * 7 * Math.cos(o.pitch), 7 * Math.sin(o.pitch), Math.cos(o.yaw) * 7 * Math.cos(o.pitch)); cam.lookAt(0, 0, 0);
+    coreKick *= .95;
+    core.rotation.y += dt * (.3 + coreKick * 4); core.rotation.x += dt * .1;
+    inner.scale.setScalar(1 + Math.sin(t * 2) * .04 + coreKick * .3);
+    inner.material.color.copy(C2).lerp(C1, .5 + .5 * Math.sin(t));
+    nodes.forEach(n => {
+      n.glow *= .97; n.m.rotation.y += dt;
+      n.m.material.color.setRGB(.55 + n.glow * .4, .58 + n.glow * .4, .72 + n.glow * .28);
+      n.line.material.color.setRGB(.16 + n.glow * .2, .22 + n.glow * .7, .4 + n.glow * .6);
+      n.m.getWorldPosition(v).project(cam);
+      n.tag.style.left = ((v.x + 1) / 2 * 100) + '%'; n.tag.style.top = ((1 - v.y) / 2 * 100) + '%';
+      n.tag.classList.toggle('on', n.glow > .2);
+    });
+    for (let i = pulses.length - 1; i >= 0; i--) { const P = pulses[i]; P.t += dt * 1.4;
+      if (P.t >= 1) { world.remove(P.p); pulses.splice(i, 1); continue; }
+      P.p.visible = P.t > 0; P.p.position.copy(P.n.m.position).multiplyScalar(Math.max(0, P.t)); }
+    r.render(scene, cam);
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>

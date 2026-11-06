@@ -25,10 +25,10 @@ THREE = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
 FONTS = ("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
          "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
 # Pages that live on the current site but are not part of this rebuild
-EXTERNAL = {"/fitness-sample": f"{SITE}/fitness-sample", "/ironpath-app": f"{SITE}/ironpath-app"}
+EXTERNAL = {}
 
 NAV = [("home", "/", "Home"), ("products", "/products", "Pricing"), ("about", "/about", "About"),
-       ("affiliates", "/affiliates", "Affiliates"), ("help", "/help", "Help")]
+       ("affiliates", "/affiliates", "Affiliates"), ("help", "/help", "Help"), ("legal", "/legal", "Legal")]
 
 ORG = {
     "@context": "https://schema.org", "@type": "Organization", "name": "Kulman Ziman", "url": SITE,
@@ -39,7 +39,7 @@ ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
         "fill='%23071648'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23d4af37' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
 ICON_NOIR = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
-             "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
+             "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23ff6b1a' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
 # Themes share every page and feature; they differ in colours, the 3D world and a few lines of copy.
 THEMES = {
@@ -53,9 +53,9 @@ THEMES = {
             '/assets/world.js': '/assets/world-noir.js',
             'Scroll down<br>&amp; dive in': 'Scroll to<br>follow the line',
             '<canvas id="world"': '<div class="dots" aria-hidden="true"></div>\n<canvas id="world"',
-            'Drag the crown · Click it · Pop the bubbles': 'Drag the crown · Click it · Shatter the shapes',
+            'Drag the crown · Click it · Pop the bubbles': 'Drag the crown · Click it · Scroll to spin it',
             'value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)">':
-                'value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d">',
+                'value="#ff6b1a" checked aria-label="Orange"><span style="--c:#ff6b1a">',
             'value="#c9ced8" aria-label="Silver"><span style="--c:linear-gradient(135deg,#7d8496,#f4f6fa,#c9ced8)">':
                 'value="#ffffff" aria-label="White"><span style="--c:#ffffff">',
         },
@@ -205,6 +205,13 @@ def build(preview=False, theme="royal"):
             # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages and GitHub Pages all serve
             # products.html at /products with no trailing slash
             out = out_dir / f"{page.stem}.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(html)
+        print("built", out.relative_to(ROOT))
+    # the four sample sites: standalone pages with their own branding
+    for sp in sorted((SRC / "samples").glob("*.html")):
+        html = sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", THREE)
+        out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
         print("built", out.relative_to(ROOT))
