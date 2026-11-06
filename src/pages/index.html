@@ -8,24 +8,27 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
 <main id="main">
 
 <!-- HERO: the gold-and-silver centrepiece is rendered by world.js behind this -->
-<section class="hero">
+<section class="hero" data-dock="Home" id="top">
   <div class="wrap hero-grid">
+    <ul class="hero-tags">
+      <li class="live">Taking new projects</li>
+      <li>$300 flat, one-time</li>
+      <li>3 rounds of refinement</li>
+      <li>Done within 1 month or refunded</li>
+    </ul>
     <div class="hero-copy">
-      <span class="eyebrow">Custom websites &amp; software, built to order</span>
       <h1 class="extrude">Your business, <em>crowned</em> online.</h1>
-      <p class="lede">One flat $300. Three rounds of refinement with you. Finished within a month, or your money back. In writing.</p>
+      <p class="lede">Custom websites and software, built to order. One flat $300, three rounds of refinement with you, finished within a month or your money back. In writing.</p>
       <div class="btn-row">
         <a class="btn" href="{{CHECKOUT}}">Get a $300 website
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
         <a class="btn ghost" href="#start">Send us your brief first</a>
       </div>
-      <div class="badge-row">
-        <span class="chip"><i></i>Taking new projects</span>
-        <span class="chip">One-time payment</span>
-        <span class="chip">Refund guarantee</span>
-      </div>
     </div>
-    <div class="hero-hint" aria-hidden="true"><i></i>Scroll to dive · click the gem</div>
+    <div class="hero-foot">
+      <a class="dive" href="#featured-product"><i aria-hidden="true"></i><span>Scroll down<br>&amp; dive in</span></a>
+      <span class="play-hint" aria-hidden="true">Drag the crown · Click it · Pop the bubbles</span>
+    </div>
   </div>
 </section>
 
@@ -57,7 +60,7 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
 </section>
 
 <!-- PRODUCT: flips in 3D to show what's included -->
-<section class="section" id="featured-product">
+<section class="section" id="featured-product" data-dock="Pricing">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Featured product</span>
@@ -123,7 +126,7 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
 </section>
 
 <!-- PROCESS: a 3D staircase -->
-<section class="section" id="selling-points">
+<section class="section" id="selling-points" data-dock="Process">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">How it works</span>
@@ -227,7 +230,7 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
 </section>
 
 <!-- PLAYGROUND -->
-<section class="section" id="playground">
+<section class="section" id="playground" data-dock="Try it">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Try it</span>
@@ -350,7 +353,7 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Professional
 </section>
 
 <!-- START / BRIEF -->
-<section class="section" id="start">
+<section class="section" id="start" data-dock="Contact">
   <div class="wrap cta-grid">
     <div class="reveal" style="display:grid;gap:22px;align-content:start">
       <span class="eyebrow">Get started</span>

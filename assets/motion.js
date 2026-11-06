@@ -51,6 +51,33 @@
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll); onScroll();
 
+  /* ---------- 3b. Section dock with a sliding highlight (scrollspy) ---------- */
+  const docked = $$('[data-dock]');
+  if (docked.length >= 3) {
+    const dock = document.createElement('nav');
+    dock.className = 'dock'; dock.setAttribute('aria-label', 'Sections');
+    const pill = document.createElement('span'); pill.className = 'pill'; pill.setAttribute('aria-hidden', 'true'); dock.append(pill);
+    const links = docked.map(sec => {
+      if (!sec.id) sec.id = sec.dataset.dock.toLowerCase().replace(/[^a-z]+/g, '-');
+      const a = document.createElement('a'); a.href = '#' + sec.id; a.textContent = sec.dataset.dock; dock.append(a); return a;
+    });
+    document.body.append(dock);
+    let current = -1;
+    const place = i => {
+      if (i === current) return; current = i;
+      links.forEach((a, j) => { a.classList.toggle('on', j === i); if (j === i) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+      const a = links[i]; pill.style.width = a.offsetWidth + 'px'; pill.style.transform = `translateX(${a.offsetLeft}px)`;
+    };
+    const spy = () => {
+      let i = 0;
+      docked.forEach((sec, j) => { if (sec.getBoundingClientRect().top < innerHeight * 0.45) i = j; });
+      place(i);
+    };
+    addEventListener('scroll', spy, { passive: true }); addEventListener('resize', () => { current = -1; spy(); });
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { current = -1; spy(); });
+    spy();
+  }
+
   /* ---------- 4. Count-up numbers ---------- */
   const counters = $$('[data-count]');
   const count = el => {

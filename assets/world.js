@@ -1,275 +1,436 @@
 // Kulman Ziman — the 3D world behind every page.
-// A royal-blue night with a gold-and-silver centrepiece, orbiting website panels,
-// and a scroll-driven camera dive through floating coins, rings, gems and gold dust.
-// Needs THREE (r128 UMD). If WebGL is unavailable the CSS gradient on #world remains.
+// Home: one gold crown floating over mirror water under a vivid royal sky, with glass bubbles.
+//   - the crown turns toward the cursor, can be dragged to spin (with momentum), and a click crowns it
+//   - bubbles drift away from the cursor and pop when clicked, then rise again
+//   - scrolling dives the camera through the water into a deep royal sea (light rays, gold specks, sinking coins)
+// Inner pages start just under the surface and dive as you scroll.
+// Needs THREE r128 (UMD). Without WebGL the CSS gradient on #world remains.
 (() => {
   const canvas = document.getElementById('world');
   if (!canvas || !window.THREE) return;
   const T = window.THREE;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const coarse = matchMedia('(pointer: coarse)').matches;
-  const small = () => innerWidth < 900;
   const isHome = !!document.querySelector('.hero');
+  const small = () => innerWidth < 900;
 
   let renderer;
-  try {
-    renderer = new T.WebGLRenderer({ canvas, antialias: !coarse, alpha: true, powerPreference: 'high-performance' });
-  } catch (e) { return; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, coarse ? 1.25 : 1.75));
+  try { renderer = new T.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: 'high-performance' }); }
+  catch (e) { return; }
+  const DPR = Math.min(devicePixelRatio || 1, coarse ? 1.3 : 1.75);
+  renderer.setPixelRatio(DPR);
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 1.05;
+  renderer.autoClear = false;
 
+  const WY = -1.4;                                  // water level
+  const COL = {
+    skyTop: new T.Color(0x0b27d4), skyMid: new T.Color(0x3d63ff), horizon: new T.Color(0xffcf73), sun: new T.Color(0xffd36b),
+    haze: new T.Color(0xaab8ff), deep: new T.Color(0x0b1f9a), abyss: new T.Color(0x020624), water: new T.Color(0x0a1a8c)
+  };
   const scene = new T.Scene();
-  scene.fog = new T.FogExp2(0x040b30, 0.022);
-  const camera = new T.PerspectiveCamera(40, 1, 0.1, 200);
-  camera.position.set(0, 0, 16);
+  scene.fog = new T.Fog(COL.haze.clone(), 20, 95);
+  const camera = new T.PerspectiveCamera(36, 1, 0.1, 400);
 
-  /* ---------- studio environment for real metal reflections ---------- */
-  const env = new T.Scene();
-  const skyGeo = new T.SphereGeometry(50, 32, 16);
-  const cols = [];
-  const pos = skyGeo.attributes.position;
-  const top = new T.Color(0x9fb6ff), mid = new T.Color(0x1d3fae), bot = new T.Color(0x02061c), c = new T.Color();
-  for (let i = 0; i < pos.count; i++) {
-    const y = pos.getY(i) / 50;
-    if (y > 0) c.copy(mid).lerp(top, Math.pow(y, 1.5)); else c.copy(mid).lerp(bot, Math.min(1, -y * 1.6));
-    cols.push(c.r, c.g, c.b);
-  }
-  skyGeo.setAttribute('color', new T.Float32BufferAttribute(cols, 3));
-  env.add(new T.Mesh(skyGeo, new T.MeshBasicMaterial({ vertexColors: true, side: T.BackSide })));
-  const panelLight = (color, intensity, x, y, z, w, h) => {
-    const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: new T.Color(color).multiplyScalar(intensity), side: T.DoubleSide }));
-    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
-  };
-  panelLight(0xffffff, 6, 0, 30, 10, 30, 12);    // big soft key from above
-  panelLight(0xfff0c8, 4, -30, 6, 12, 10, 24);   // warm strip left
-  panelLight(0xcfe0ff, 4, 30, 2, 8, 10, 24);     // cool strip right
-  panelLight(0xffffff, 2.5, 0, -6, 35, 40, 4);   // horizon glint
-  const pmrem = new T.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(env, 0.03).texture;
-
-  scene.add(new T.AmbientLight(0x3050c0, 0.4));
-  const key = new T.DirectionalLight(0xfff2d6, 1.4); key.position.set(5, 8, 10); scene.add(key);
-  const rim = new T.PointLight(0x5b82ff, 3, 40); rim.position.set(-8, 2, 4); scene.add(rim);
-  const glow = new T.PointLight(0xffd36b, 2.2, 30); glow.position.set(6, -2, 6); scene.add(glow);
-
-  /* ---------- materials ---------- */
-  const gold = new T.MeshStandardMaterial({ color: 0xe0b94a, metalness: 1, roughness: 0.2 });
-  const goldBrushed = new T.MeshStandardMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.38 });
-  const silver = new T.MeshStandardMaterial({ color: 0xe6e9f0, metalness: 1, roughness: 0.14 });
-  const royal = new T.MeshPhysicalMaterial({ color: 0x1d3fae, metalness: 0.35, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.08, flatShading: true });
-
-  /* ---------- centerpiece ---------- */
-  const hero = new T.Group();
-  scene.add(hero);
-  const gem = new T.Mesh(new T.IcosahedronGeometry(1.25, 0), royal);
-  const gemEdges = new T.LineSegments(new T.EdgesGeometry(gem.geometry), new T.LineBasicMaterial({ color: 0xf6e3a1, transparent: true, opacity: 0.9 }));
-  gem.add(gemEdges);
-  hero.add(gem);
-  const ring1 = new T.Mesh(new T.TorusGeometry(2.25, 0.16, 48, 200), gold);
-  const ring2 = new T.Mesh(new T.TorusGeometry(2.85, 0.05, 24, 220), silver);
-  const ring3 = new T.Mesh(new T.TorusGeometry(3.35, 0.025, 16, 240), goldBrushed);
-  ring1.rotation.x = 1.2; ring2.rotation.set(0.4, 0.9, 0); ring3.rotation.set(-0.5, -0.4, 0.2);
-  hero.add(ring1, ring2, ring3);
-  // studs on the gold ring, like a crown
-  for (let i = 0; i < 12; i++) {
-    const a = (i / 12) * Math.PI * 2;
-    const s = new T.Mesh(new T.SphereGeometry(i % 3 === 0 ? 0.2 : 0.12, 24, 16), i % 3 === 0 ? silver : gold);
-    s.position.set(Math.cos(a) * 2.25, Math.sin(a) * 2.25, 0);
-    ring1.add(s);
-  }
-
-  /* ---------- orbiting website panels (canvas-drawn screens) ---------- */
-  const sites = [
-    { bg: '#06103a', fg: '#f4f6fa', acc: '#d4af37', kick: 'FITNESS', h: ['Stronger', 'every week.'], cta: 'Start free week' },
-    { bg: '#fbf7ef', fg: '#141826', acc: '#1d3fae', kick: 'LOCAL SERVICES', h: ['Fresh bread', 'every morning.'], cta: 'Get a quote' },
-    { bg: '#ffffff', fg: '#0b1440', acc: '#4169e1', kick: 'TECHNOLOGY', h: ['Software that', 'just works.'], cta: 'Start free trial' },
-    { bg: '#0d1f6e', fg: '#f4f6fa', acc: '#c9ced8', kick: 'CREATORS', h: ['Learn it.', 'Share it.'], cta: 'Join the course' },
-    { bg: '#1a1204', fg: '#f6e3a1', acc: '#d4af37', kick: 'KULMAN ZIMAN', h: ['$300.', 'Three rounds.'], cta: 'Get your website' }
-  ];
-  const drawSite = (cv, s) => {
-    const g = cv.getContext('2d'), W = cv.width, H = cv.height;
-    g.fillStyle = s.bg; g.fillRect(0, 0, W, H);
-    const grd = g.createRadialGradient(W * .8, H * .35, 10, W * .8, H * .35, W * .5);
-    grd.addColorStop(0, s.acc + '55'); grd.addColorStop(1, s.acc + '00'); g.fillStyle = grd; g.fillRect(0, 0, W, H);
-    g.fillStyle = 'rgba(128,128,140,.18)'; g.fillRect(0, 0, W, 34);
-    ['#ff5f57', '#febc2e', '#28c840'].forEach((col, i) => { g.fillStyle = col; g.beginPath(); g.arc(20 + i * 18, 17, 5.5, 0, 7); g.fill(); });
-    g.fillStyle = 'rgba(128,128,140,.25)'; g.beginPath(); g.roundRect ? g.roundRect(W / 2 - 110, 9, 220, 16, 6) : g.rect(W / 2 - 110, 9, 220, 16); g.fill();
-    g.fillStyle = s.fg; g.font = '600 18px "Bodoni Moda", Georgia, serif'; g.fillText(s.kick === 'KULMAN ZIMAN' ? 'Kulman Ziman' : 'Your Business', 28, 72);
-    g.fillStyle = s.acc; g.font = '600 12px "IBM Plex Mono", monospace'; g.fillText(s.kick, 28, 128);
-    g.fillStyle = s.fg; g.font = '600 46px "Bodoni Moda", Georgia, serif'; g.fillText(s.h[0], 26, 180); g.fillText(s.h[1], 26, 228);
-    g.fillStyle = s.acc; g.beginPath(); g.roundRect ? g.roundRect(28, 256, 170, 40, 20) : g.rect(28, 256, 170, 40); g.fill();
-    g.fillStyle = s.bg === '#ffffff' || s.bg === '#fbf7ef' ? '#ffffff' : '#10142a'; g.font = '700 15px "Manrope", sans-serif'; g.fillText(s.cta, 46, 281);
-    g.fillStyle = s.acc + '33'; g.beginPath(); g.roundRect ? g.roundRect(W - 190, 100, 160, 200, 18) : g.rect(W - 190, 100, 160, 200); g.fill();
-    g.fillStyle = s.acc; for (let i = 0; i < 5; i++) { const h = 40 + ((i * 37) % 5) * 22; g.fillRect(W - 172 + i * 28, 280 - h, 18, h); }
-  };
-  const panels = [];
-  const panelGroup = new T.Group();
-  hero.add(panelGroup);
-  const textures = [];
-  sites.forEach((s, i) => {
-    const cv = document.createElement('canvas'); cv.width = 640; cv.height = 400; drawSite(cv, s);
-    const tex = new T.CanvasTexture(cv); tex.encoding = T.sRGBEncoding; tex.anisotropy = 4; textures.push([tex, cv, s]);
-    const p = new T.Group();
-    const frame = new T.Mesh(new T.BoxGeometry(2.3, 1.5, 0.09), i % 2 ? silver : gold);
-    const screen = new T.Mesh(new T.PlaneGeometry(2.14, 1.34), new T.MeshBasicMaterial({ map: tex, toneMapped: false }));
-    screen.position.z = 0.047;
-    p.add(frame, screen);
-    p.userData = { a: (i / sites.length) * Math.PI * 2, s: 1, target: 1, frame };
-    panelGroup.add(p); panels.push(p);
-  });
-  // redraw screens once web fonts arrive
-  document.fonts && document.fonts.ready.then(() => textures.forEach(([tex, cv, s]) => { drawSite(cv, s); tex.needsUpdate = true; }));
-
-  /* ---------- the dive: floating objects down the page ---------- */
-  const DEPTH = isHome ? 70 : 45;
-  const field = new T.Group(); scene.add(field);
-  const coinGeo = new T.CylinderGeometry(0.6, 0.6, 0.09, 48);
-  const ringGeo = new T.TorusGeometry(0.62, 0.07, 16, 64);
-  const gemGeo = new T.OctahedronGeometry(0.5, 0);
-  const ballGeo = new T.SphereGeometry(0.38, 32, 16);
-  const kinds = [[coinGeo, gold], [ringGeo, silver], [gemGeo, royal], [ballGeo, silver], [coinGeo, goldBrushed], [ringGeo, gold]];
-  const count = coarse ? 34 : 80;
-  const rand = (a, b) => a + Math.random() * (b - a);
-  const floaters = [];
-  for (let i = 0; i < count; i++) {
-    const [geo, mat] = kinds[i % kinds.length];
-    const m = new T.Mesh(geo, mat);
-    const front = Math.random() < 0.3;
-    const side = Math.random() < 0.5 ? -1 : 1;
-    m.position.set(front ? side * rand(9.5, 13) : rand(-26, 26), rand(-DEPTH - 6, 4), front ? rand(1, 5) : rand(-30, -10));
-    const sc = front ? rand(0.6, 1.1) : rand(0.9, 2.2);
-    m.scale.setScalar(sc);
-    m.rotation.set(rand(0, 6), rand(0, 6), rand(0, 6));
-    m.userData = { rx: rand(-.6, .6), ry: rand(-.8, .8), bob: rand(0, 6), y0: m.position.y };
-    field.add(m); floaters.push(m);
-  }
-  // the finale: a slow-turning gold ring constellation near the bottom of the page
-  const finale = new T.Group();
-  finale.position.set(isHome ? -4 : 4, -DEPTH + 2, -6);
-  for (let i = 0; i < 3; i++) {
-    const r = new T.Mesh(new T.TorusGeometry(3 + i * 0.9, 0.08 + (2 - i) * 0.04, 24, 200), i === 1 ? silver : gold);
-    r.rotation.set(i * 0.7, i * 0.5, 0); finale.add(r);
-  }
-  scene.add(finale);
-
-  /* ---------- gold dust + silver stars ---------- */
-  const dot = (() => {
-    const cv = document.createElement('canvas'); cv.width = cv.height = 64; const g = cv.getContext('2d');
-    const r = g.createRadialGradient(32, 32, 0, 32, 32, 32); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.25, 'rgba(255,255,255,.6)'); r.addColorStop(1, 'rgba(255,255,255,0)');
-    g.fillStyle = r; g.fillRect(0, 0, 64, 64); return new T.CanvasTexture(cv);
+  /* ---------- reflections: a painted studio environment in the brand colours ---------- */
+  // Drawn on a 2D canvas (equirectangular) and pre-filtered with PMREM: robust on every GPU.
+  const envCanvas = document.createElement('canvas'); envCanvas.width = 1024; envCanvas.height = 512;
+  (() => {
+    const g = envCanvas.getContext('2d'), W = 1024, H = 512;
+    const sky = g.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#fff6e6'); sky.addColorStop(0.3, '#ffe2a6'); sky.addColorStop(0.44, '#f2c76a');
+    sky.addColorStop(0.5, '#2f54ff'); sky.addColorStop(0.56, '#0b1f8a'); sky.addColorStop(0.75, '#5a4520'); sky.addColorStop(1, '#1a1206');
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    const soft = (x, y, w, h, color, blur) => { g.save(); g.filter = `blur(${blur}px)`; g.fillStyle = color; g.fillRect(x, y, w, h); g.restore(); };
+    soft(360, 10, 340, 90, '#ffffff', 14);          // big key light overhead
+    soft(150, 110, 70, 240, '#ffffff', 10);          // strip left
+    soft(790, 100, 70, 250, '#fff4d8', 10);          // strip right
+    soft(0, 252, W, 10, '#9fb4ff', 4);               // royal-blue horizon line
+    soft(0, 330, W, 40, '#ffd36b', 16);              // warm floor bounce
   })();
-  const dust = (n, color, size) => {
-    const geo = new T.BufferGeometry(), arr = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) { arr[i * 3] = rand(-22, 22); arr[i * 3 + 1] = rand(-DEPTH - 10, 12); arr[i * 3 + 2] = rand(-28, 9); }
-    geo.setAttribute('position', new T.BufferAttribute(arr, 3));
-    const pts = new T.Points(geo, new T.PointsMaterial({ color, size, map: dot, transparent: true, depthWrite: false, blending: T.AdditiveBlending, sizeAttenuation: true }));
-    scene.add(pts); return pts;
-  };
-  const goldDust = dust(coarse ? 900 : 2600, 0xffd36b, 0.13);
-  const silverDust = dust(coarse ? 500 : 1400, 0xcfd8ff, 0.08);
+  const envTex = new T.CanvasTexture(envCanvas);
+  envTex.mapping = T.EquirectangularReflectionMapping; envTex.encoding = T.sRGBEncoding;
+  const pmrem = new T.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromEquirectangular(envTex).texture;
+  envTex.dispose(); pmrem.dispose();
 
-  /* ---------- layout, input, scroll ---------- */
+  scene.add(new T.HemisphereLight(0x9fb4ff, 0x0a1a6a, 0.6));
+  const key = new T.DirectionalLight(0xfff1d0, 1.6); key.position.set(4, 10, 6); scene.add(key);
+  const fill = new T.PointLight(0x5b82ff, 2.2, 30); fill.position.set(-6, 2, 5); scene.add(fill);
+
+  /* ---------- everything above the water lives in `top` so it can be mirrored for reflections ---------- */
+  const top = new T.Group(); scene.add(top);
+  const under = new T.Group(); scene.add(under);
+
+  // sky dome
+  const sky = new T.Mesh(new T.SphereGeometry(180, 48, 24), new T.ShaderMaterial({
+    side: T.BackSide, depthWrite: false, fog: false,
+    uniforms: { a: { value: COL.skyTop }, b: { value: COL.skyMid }, c: { value: COL.horizon }, g: { value: COL.sun }, sd: { value: new T.Vector3(0.18, 0.05, -1).normalize() } },
+    vertexShader: 'varying vec3 d; void main(){ d = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+    fragmentShader: `uniform vec3 a,b,c,g,sd; varying vec3 d;
+      void main(){ float h=d.y;
+        vec3 col=mix(c,b,smoothstep(0.,.16,h)); col=mix(col,a,smoothstep(.16,.62,h));
+        col=mix(col,b*.55,(1.-smoothstep(-.25,0.,h)));
+        float s=max(dot(normalize(d),sd),0.);
+        col+=g*(pow(s,40.)*1.4+pow(s,6.)*.35);
+        gl_FragColor=vec4(col,1.); }`
+  }));
+  top.add(sky);
+
+  // silver dunes on the horizon
+  const duneMat = new T.MeshStandardMaterial({ color: 0x9aa8ff, roughness: 0.75, metalness: 0.15 });
+  [[-34, -48, 34, 5.5, 12], [6, -62, 46, 7.5, 14], [42, -52, 30, 5, 12], [-60, -70, 40, 8, 14], [70, -78, 44, 9, 14]].forEach(([x, z, sx, sy, sz]) => {
+    const d = new T.Mesh(new T.SphereGeometry(1, 48, 24), duneMat); d.scale.set(sx, sy, sz); d.position.set(x, WY - 0.6, z); top.add(d);
+  });
+
+  /* ---------- the crown ---------- */
+  const gold = new T.MeshStandardMaterial({ color: 0xffc23d, metalness: 1, roughness: 0.18, envMapIntensity: 1.5 });
+  const goldSoft = new T.MeshStandardMaterial({ color: 0xf0b030, metalness: 1, roughness: 0.3, envMapIntensity: 1.4 });
+  const silver = new T.MeshStandardMaterial({ color: 0xe8ecf8, metalness: 1, roughness: 0.08, envMapIntensity: 1.3 });
+  const velvet = new T.MeshStandardMaterial({ color: 0x0c1c9a, roughness: 1, metalness: 0, side: T.BackSide, envMapIntensity: 0.35 });
+  const sapphire = new T.MeshPhysicalMaterial({ color: 0x1f46ff, metalness: 0.25, roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.04, flatShading: true, emissive: 0x0a1680, emissiveIntensity: 0.4 });
+
+  const pivot = new T.Group();       // position + follow-the-cursor tilt
+  const crown = new T.Group();       // spin
+  pivot.add(crown);
+  const crownHits = [];
+  const gems = [];
+  const tips = [];
+  if (isHome) {
+    top.add(pivot);
+    const POINTS = 8, R0 = 1.34, R1 = 1.18;
+    const band = new T.CylinderGeometry(R0, R1, 1, 192, 14, true);
+    const p = band.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const y = p.getY(i), k = y + 0.5, a = Math.atan2(p.getZ(i), p.getX(i));
+      const peak = Math.pow(Math.abs(Math.cos(a * POINTS / 2)), 5);
+      p.setY(i, -0.5 + k * (0.62 + peak * 0.78));
+    }
+    band.computeVertexNormals();
+    const outer = new T.Mesh(band, gold), inner = new T.Mesh(band, velvet);
+    crown.add(outer, inner); crownHits.push(outer);
+    const rimLow = new T.Mesh(new T.TorusGeometry(R1 + 0.01, 0.075, 20, 160), gold); rimLow.rotation.x = Math.PI / 2; rimLow.position.y = -0.5;
+    const rimMid = new T.Mesh(new T.TorusGeometry(1.27, 0.035, 12, 160), silver); rimMid.rotation.x = Math.PI / 2; rimMid.position.y = -0.2;
+    crown.add(rimLow, rimMid); crownHits.push(rimLow);
+    for (let i = 0; i < POINTS; i++) {
+      const a = (i / POINTS) * Math.PI * 2;
+      const tipY = -0.5 + 1.4;
+      const pearl = new T.Mesh(new T.SphereGeometry(0.1, 24, 16), silver);
+      pearl.position.set(Math.cos(a) * R0, tipY + 0.07, Math.sin(a) * R0); crown.add(pearl); tips.push(pearl);
+      // a sapphire set in a gold bezel under each point
+      const g = new T.Group();
+      const stone = new T.Mesh(new T.OctahedronGeometry(0.17, 0), sapphire.clone()); stone.scale.set(1, 1.25, 0.55);
+      const bezel = new T.Mesh(new T.TorusGeometry(0.19, 0.03, 12, 40), goldSoft);
+      g.add(stone, bezel);
+      const r = 1.3;
+      g.position.set(Math.cos(a) * r, 0.05, Math.sin(a) * r);
+      g.lookAt(Math.cos(a) * 5, 0.05, Math.sin(a) * 5);
+      crown.add(g); gems.push(stone);
+      // small silver studs between the gems
+      const b = a + Math.PI / POINTS;
+      const stud = new T.Mesh(new T.SphereGeometry(0.055, 16, 12), silver);
+      stud.position.set(Math.cos(b) * 1.27, -0.2 + 0.0, Math.sin(b) * 1.27); crown.add(stud);
+    }
+  }
+  // the floating sapphire above the crown
+  const orb = new T.Mesh(new T.IcosahedronGeometry(0.34, 0), sapphire);
+  orb.add(new T.LineSegments(new T.EdgesGeometry(orb.geometry), new T.LineBasicMaterial({ color: 0xffe7a3 })));
+  if (isHome) { pivot.add(orb); crownHits.push(orb); }
+
+  /* ---------- glass bubbles ---------- */
+  const glass = new T.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.05, roughness: 0.02, clearcoat: 1, clearcoatRoughness: 0, transparent: true, opacity: 0.2, envMapIntensity: 3.2, depthWrite: false });
+  const rimMat = new T.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: T.AdditiveBlending, uniforms: { t: { value: 0 } },
+    vertexShader: 'varying vec3 n; varying vec3 v; void main(){ vec4 mv=modelViewMatrix*vec4(position,1.); n=normalize(normalMatrix*normal); v=normalize(-mv.xyz); gl_Position=projectionMatrix*mv; }',
+    fragmentShader: `uniform float t; varying vec3 n; varying vec3 v;
+      void main(){ float f=pow(1.-abs(dot(n,v)),2.4);
+        vec3 c=mix(vec3(.25,.45,1.),vec3(1.,.8,.35),.5+.5*sin(f*7.+t+n.y*3.));
+        c=mix(c,vec3(.92,.95,1.),.3);
+        gl_FragColor=vec4(c*f*1.5,f); }`
+  });
+  const bubbles = [];
+  if (isHome) {
+    [[-3.6, 1.6, -2, 0.62], [5.6, 0.1, 1.2, 0.44], [-1.4, -0.55, 3, 0.3], [6.6, 2.9, -5, 0.8], [-6.2, 0.4, -7, 0.95], [1.2, 3.3, -3, 0.36]].forEach(([x, y, z, r]) => {
+      const g = new T.Group();
+      g.add(new T.Mesh(new T.SphereGeometry(1, 48, 32), glass));
+      const rim = new T.Mesh(new T.SphereGeometry(1.005, 48, 32), rimMat); g.add(rim);
+      g.scale.setScalar(r); g.position.set(x, y, z);
+      g.userData = { home: new T.Vector3(x, y, z), r, push: new T.Vector3(), phase: Math.random() * 6, popped: 0, s: 1 };
+      top.add(g); bubbles.push(g);
+    });
+  }
+
+  /* ---------- water with real (rippled) reflections ---------- */
+  const rt = new T.WebGLRenderTarget(2, 2, { minFilter: T.LinearFilter, magFilter: T.LinearFilter });
+  rt.texture.encoding = T.sRGBEncoding;
+  const waterMat = new T.ShaderMaterial({
+    side: T.DoubleSide,
+    uniforms: { tR: { value: rt.texture }, t: { value: 0 }, res: { value: new T.Vector2(1, 1) }, cam: { value: new T.Vector3() },
+      deep: { value: COL.water }, haze: { value: COL.haze }, gold: { value: COL.sun }, fogN: { value: 20 }, fogF: { value: 95 } },
+    vertexShader: 'varying vec3 w; void main(){ vec4 p=modelMatrix*vec4(position,1.); w=p.xyz; gl_Position=projectionMatrix*viewMatrix*p; }',
+    fragmentShader: `uniform sampler2D tR; uniform float t,fogN,fogF; uniform vec2 res; uniform vec3 cam,deep,haze,gold; varying vec3 w;
+      void main(){
+        vec2 p=w.xz;
+        vec2 n=vec2(sin(p.x*.8+t*1.2)+.6*sin(p.y*1.6-t*.9)+.25*sin((p.x+p.y)*3.3+t*2.1),
+                    cos(p.y*1.0+t*1.0)+.6*cos(p.x*1.4+t*.7)+.25*cos((p.x-p.y)*2.9-t*1.8));
+        float dist=length(w-cam);
+        if(gl_FrontFacing){
+          vec2 uv=gl_FragCoord.xy/res + n*.010*(1.-smoothstep(8.,55.,dist));
+          vec3 refl=texture2D(tR,uv).rgb;
+          vec3 vd=normalize(cam-w);
+          float fr=.35+.65*pow(1.-max(vd.y,0.),2.5);
+          vec3 col=mix(deep,refl,clamp(fr,0.,.94));
+          float sp=pow(max(0.,n.x*n.y*.5),5.); col+=gold*sp*.35;
+          col=mix(col,haze,smoothstep(fogN,fogF,dist));
+          gl_FragColor=vec4(col,1.);
+        } else {
+          // the surface seen from below: shimmering light
+          float c=.5+.5*sin(n.x*2.2+n.y*1.7+t);
+          vec3 col=mix(vec3(.12,.25,.95),vec3(.75,.85,1.),pow(c,3.)*.8);
+          col=mix(col,vec3(.03,.08,.4),smoothstep(6.,40.,dist));
+          gl_FragColor=vec4(col,1.);
+        }
+      }`
+  });
+  const water = new T.Mesh(new T.PlaneGeometry(500, 500, 1, 1), waterMat);
+  water.rotation.x = -Math.PI / 2; water.position.y = WY; scene.add(water);
+
+  /* ---------- the deep: light rays, gold specks, sinking coins ---------- */
+  const rayMat = new T.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: T.AdditiveBlending, fog: false, side: T.DoubleSide, uniforms: { t: { value: 0 } },
+    vertexShader: 'varying vec2 u; void main(){ u=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+    fragmentShader: 'uniform float t; varying vec2 u; void main(){ float a=pow(u.y,2.2)*(1.-abs(u.x-.5)*2.); a*=.55+.45*sin(t*.7+u.y*4.); gl_FragColor=vec4(vec3(.55,.68,1.)*a*.22,a*.22); }'
+  });
+  const rays = [];
+  for (let i = 0; i < 9; i++) {
+    const r = new T.Mesh(new T.PlaneGeometry(2.4 + Math.random() * 3, 34), rayMat);
+    r.position.set(-16 + i * 4 + Math.random() * 2, WY - 17, -6 - Math.random() * 14);
+    r.rotation.z = -0.25 + Math.random() * 0.1;
+    r.userData.p = Math.random() * 6; under.add(r); rays.push(r);
+  }
+  const DEPTH = 58;
+  const dot = (() => { const cv = document.createElement('canvas'); cv.width = cv.height = 64; const g = cv.getContext('2d'); const r = g.createRadialGradient(32, 32, 0, 32, 32, 32); r.addColorStop(0, '#fff'); r.addColorStop(.3, 'rgba(255,255,255,.55)'); r.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 64, 64); return new T.CanvasTexture(cv); })();
+  const specks = (n, color, size) => {
+    const geo = new T.BufferGeometry(), a = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) { a[i * 3] = (Math.random() - .5) * 50; a[i * 3 + 1] = WY - 1 - Math.random() * (DEPTH + 10); a[i * 3 + 2] = -32 + Math.random() * 38; }
+    geo.setAttribute('position', new T.BufferAttribute(a, 3));
+    const pts = new T.Points(geo, new T.PointsMaterial({ color, size, map: dot, transparent: true, depthWrite: false, blending: T.AdditiveBlending }));
+    under.add(pts); return pts;
+  };
+  const goldSpecks = specks(coarse ? 700 : 1800, 0xffd36b, 0.14);
+  const silverSpecks = specks(coarse ? 400 : 1000, 0xcdd8ff, 0.09);
+  const coinGeo = new T.CylinderGeometry(0.55, 0.55, 0.08, 56);
+  const coins = [];
+  for (let i = 0; i < 10; i++) {
+    const c = new T.Mesh(coinGeo, i % 3 ? gold : silver);
+    const side = i % 2 ? 1 : -1;
+    c.position.set(side * (6 + Math.random() * 7), WY - 4 - (i / 10) * DEPTH, -4 - Math.random() * 10);
+    c.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+    c.userData = { v: 0.15 + Math.random() * 0.2, rx: Math.random() * .8, rz: .3 + Math.random() * .6 };
+    under.add(c); coins.push(c);
+  }
+
+  /* ---------- sparkle bursts (pooled) ---------- */
+  const MAXP = 360;
+  const pGeo = new T.BufferGeometry();
+  const pPos = new Float32Array(MAXP * 3), pLife = new Float32Array(MAXP), pCol = new Float32Array(MAXP * 3), pVel = new Float32Array(MAXP * 3);
+  pGeo.setAttribute('position', new T.BufferAttribute(pPos, 3));
+  pGeo.setAttribute('life', new T.BufferAttribute(pLife, 1));
+  pGeo.setAttribute('col', new T.BufferAttribute(pCol, 3));
+  const sparks = new T.Points(pGeo, new T.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: T.AdditiveBlending, uniforms: { px: { value: DPR } },
+    vertexShader: 'attribute float life; attribute vec3 col; varying float l; varying vec3 c; uniform float px; void main(){ l=life; c=col; vec4 mv=modelViewMatrix*vec4(position,1.); gl_PointSize=px*life*90./-mv.z; gl_Position=projectionMatrix*mv; }',
+    fragmentShader: 'varying float l; varying vec3 c; void main(){ float d=length(gl_PointCoord-.5); float a=smoothstep(.5,0.,d)*l; gl_FragColor=vec4(c*a*1.6,a); }'
+  }));
+  sparks.frustumCulled = false; scene.add(sparks);
+  let pNext = 0;
+  const burst = (at, n, color, speed) => {
+    const c = new T.Color(color);
+    for (let i = 0; i < n; i++) {
+      const j = pNext; pNext = (pNext + 1) % MAXP;
+      pPos[j * 3] = at.x; pPos[j * 3 + 1] = at.y; pPos[j * 3 + 2] = at.z;
+      const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), s = speed * (0.4 + Math.random() * 0.8);
+      pVel[j * 3] = Math.sin(ph) * Math.cos(th) * s; pVel[j * 3 + 1] = Math.cos(ph) * s + speed * 0.5; pVel[j * 3 + 2] = Math.sin(ph) * Math.sin(th) * s;
+      pLife[j] = 1; const v = 0.75 + Math.random() * 0.25; pCol[j * 3] = c.r * v; pCol[j * 3 + 1] = c.g * v; pCol[j * 3 + 2] = c.b * v;
+    }
+  };
+
+  /* ---------- layout ---------- */
   const layout = () => {
     const w = innerWidth, h = innerHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
-    if (isHome) {
-      if (small()) { hero.position.set(0, -1.2, -3); hero.scale.setScalar(0.62); }
-      else { hero.position.set(4.6, 0.2, 0); hero.scale.setScalar(1); }
-    } else { hero.position.set(small() ? 2.5 : 6.5, 1, -6); hero.scale.setScalar(small() ? 0.4 : 0.6); }
+    const bw = Math.max(2, Math.floor(w * DPR * 0.5)), bh = Math.max(2, Math.floor(h * DPR * 0.5));
+    rt.setSize(bw, bh);
+    waterMat.uniforms.res.value.set(w * DPR, h * DPR);
+    if (small()) { pivot.position.set(0.3, 2.35, -1.5); pivot.scale.setScalar(0.7); }
+    else { pivot.position.set(2.7, 0.55, 0); pivot.scale.setScalar(1); }
   };
   layout(); addEventListener('resize', layout);
 
+  /* ---------- input ---------- */
   let mx = 0, my = 0, cx = 0, cy = 0, px = -1, py = -1;
-  addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; px = e.clientX; py = e.clientY; }, { passive: true });
-
-  let scrollT = 0, lastScroll = scrollY, vel = 0;
-  const readScroll = () => { const max = document.documentElement.scrollHeight - innerHeight; scrollT = max > 0 ? scrollY / max : 0; };
-  addEventListener('scroll', readScroll, { passive: true }); readScroll();
-
-  // hover + click on 3D objects (only where nothing interactive is under the pointer)
   const ray = new T.Raycaster(), ndc = new T.Vector2();
-  const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav'));
-  let hovered = null, burst = 0;
-  const pick = () => {
-    if (px < 0) return null;
-    ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1);
-    ray.setFromCamera(ndc, camera);
-    const hits = ray.intersectObjects([gem, ...panels.map(p => p.children[0])], false);
-    return hits[0] ? hits[0].object : null;
+  const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav,.dock,.hero-tags'));
+  const setRay = () => { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); };
+  const hitCrown = () => { if (!isHome || px < 0) return null; setRay(); return ray.intersectObjects(crownHits, true)[0] || null; };
+  const hitBubble = () => { if (!isHome || px < 0) return null; setRay(); const h = ray.intersectObjects(bubbles.filter(b => !b.userData.popped).map(b => b.children[0]), false)[0]; return h ? h.object.parent : null; };
+
+  let spin = 0, spinVel = 0.25, jump = 0, jumpVel = 0, glow = 0, hoverScale = 1;
+  let dragging = false, dragMoved = 0, lastX = 0;
+  addEventListener('pointermove', e => {
+    mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; px = e.clientX; py = e.clientY;
+    if (dragging) { const dx = e.clientX - lastX; lastX = e.clientX; dragMoved += Math.abs(dx); spinVel = dx * 0.012; spin += dx * 0.012; }
+  }, { passive: true });
+  addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || interactive(e.target)) return;
+    px = e.clientX; py = e.clientY;
+    if (hitCrown()) { dragging = true; dragMoved = 0; lastX = e.clientX; document.documentElement.classList.add('grabbing'); }
+  });
+  addEventListener('pointerup', () => { if (dragging) { dragging = false; document.documentElement.classList.remove('grabbing'); } });
+  const coronation = () => {
+    spinVel += 0.32; jumpVel = 0.11; glow = 1;
+    tips.forEach(t => burst(t.getWorldPosition(new T.Vector3()), 10, 0xffd36b, 0.05));
+    burst(orb.getWorldPosition(new T.Vector3()), 40, 0xe8eeff, 0.06);
+  };
+  const pop = b => {
+    const u = b.userData; if (u.popped) return;
+    u.popped = 1; burst(b.position.clone(), 46, 0xcfdcff, 0.05 + u.r * 0.04); burst(b.position.clone(), 18, 0xffd36b, 0.04);
+    setTimeout(() => { u.popped = 0; u.s = 0; b.position.set(u.home.x, WY - 0.8, u.home.z); }, 2200);
   };
   addEventListener('click', e => {
-    if (interactive(e.target)) return;
-    const o = pick(); if (!o) return;
-    if (o === gem) { burst = 1; }
-    else { const pg = document.getElementById('playground'); pg ? pg.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }) : (location.href = document.querySelector('.brand').getAttribute('href') + '#playground'); }
+    if (!isHome || interactive(e.target)) return;
+    px = e.clientX; py = e.clientY;
+    if (dragMoved > 6) { dragMoved = 0; return; }
+    const b = hitBubble(); if (b) return pop(b);
+    if (hitCrown()) coronation();
   });
+
+  let scrollY0 = scrollY;
+  const camTarget = new T.Vector3();
+  const camPath = () => {
+    const s = scrollY, vh = innerHeight;
+    const max = Math.max(1, document.documentElement.scrollHeight - vh);
+    if (isHome) {
+      const diveEnd = vh * 0.9;
+      if (s < diveEnd) {
+        const k = s / diveEnd, e = k * k * (3 - 2 * k);
+        return { y: 1.0 + (WY - 0.9 - 1.0) * e, look: 0.25 + (WY - 1.6 - 0.25) * e, z: 12 - e * 2 };
+      }
+      const k = (s - diveEnd) / Math.max(1, max - diveEnd);
+      const y = WY - 0.9 - k * DEPTH;
+      return { y, look: y - 0.6, z: 10 };
+    }
+    const k = s / max, y = WY - 1.2 - k * DEPTH;
+    return { y, look: y + 0.9 - k * 1.5, z: 10 };
+  };
+  let cam = camPath();
+  camera.position.set(0, cam.y, cam.z);
 
   /* ---------- loop ---------- */
   const clock = new T.Clock();
   let running = true;
-  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) { clock.getDelta(); requestAnimationFrame(frame); } });
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running && !reduce) { clock.getDelta(); requestAnimationFrame(frame); } });
+  const v3 = new T.Vector3(), tmp = new T.Vector3();
 
   function frame() {
     if (!running) return;
     const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
-    // scroll velocity → warp
-    const ds = scrollY - lastScroll; lastScroll = scrollY;
-    vel += (ds - vel) * 0.12;
-    const warp = Math.min(Math.abs(vel) / 40, 1);
-    camera.fov += ((40 + warp * 14) - camera.fov) * 0.1; camera.updateProjectionMatrix();
+    cx += (mx - cx) * 0.06; cy += (my - cy) * 0.06;
 
-    cx += (mx - cx) * 0.05; cy += (my - cy) * 0.05;
-    const camY = -scrollT * DEPTH;
-    camera.position.x = cx * 2.2;
-    camera.position.y += ((camY - cy * 1.4) - camera.position.y) * 0.08;
-    camera.position.z = 16 - warp * 2;
-    camera.lookAt(cx * 0.6, camera.position.y + cy * 0.6, 0);
+    // camera follows the scroll path, with gentle cursor parallax
+    const want = camPath();
+    cam.y += (want.y - cam.y) * (reduce ? 1 : 0.09); cam.look += (want.look - cam.look) * (reduce ? 1 : 0.09); cam.z += (want.z - cam.z) * 0.09;
+    camera.position.set(cx * 0.9, cam.y - cy * 0.35, cam.z);
+    camTarget.set(cx * 0.3, cam.look, 0); camera.lookAt(camTarget);
+    const below = camera.position.y < WY;
+    const depthK = below ? Math.min(1, (WY - camera.position.y) / DEPTH) : 0;
 
-    // centerpiece
-    const spin = 1 + warp * 4 + burst * 12;
-    burst *= 0.96;
-    gem.rotation.x += dt * 0.35 * spin; gem.rotation.y += dt * 0.5 * spin;
-    gem.scale.setScalar(1 + burst * 0.35 + Math.sin(t * 2) * 0.02);
-    ring1.rotation.z += dt * 0.25 * spin; ring2.rotation.z -= dt * 0.18 * spin; ring3.rotation.z += dt * 0.1 * spin;
-    hero.rotation.y = cx * 0.5; hero.rotation.x = cy * 0.3;
-    hero.position.y += Math.sin(t * 0.8) * 0.002;
-    gemEdges.material.opacity = 0.6 + Math.sin(t * 3) * 0.3;
+    // atmosphere: sky haze above water, deep royal → abyss below
+    if (below) { scene.fog.color.copy(COL.deep).lerp(COL.abyss, depthK); scene.fog.near = 1; scene.fog.far = 34; }
+    else { scene.fog.color.copy(COL.haze); scene.fog.near = 20; scene.fog.far = 95; }
+    renderer.setClearColor(below ? scene.fog.color : COL.haze, 1);
+    sky.visible = !below;
 
-    // panels: hover detection
-    const hit = interactive(document.elementFromPoint(px, py)) ? null : pick();
-    const hp = hit && hit !== gem ? hit.parent : null;
-    if (hp !== hovered) { hovered = hp; }
-    document.documentElement.style.cursor = hit && !coarse ? 'pointer' : '';
-    const orbitSpeed = hovered ? 0.04 : 0.16 + warp * 0.6;
-    panels.forEach((p, i) => {
-      const u = p.userData; u.a += dt * orbitSpeed;
-      const R = small() ? 4.4 : 5.2;
-      p.position.set(Math.cos(u.a) * R, Math.sin(u.a * 2 + i) * 0.5 + Math.sin(u.a) * 1.2, Math.sin(u.a) * R * 0.55);
-      p.lookAt(camera.position);
-      u.target = p === hovered ? 1.35 : 1; u.s += (u.target - u.s) * 0.12; p.scale.setScalar(u.s * (small() ? 0.85 : 1));
+    if (isHome) {
+      // crown: follows the cursor, spins with momentum, jumps when crowned
+      if (!dragging) { spinVel *= 0.965; spinVel += (0.006 - spinVel) * 0.02; spin += spinVel * (reduce ? 0 : 1); }
+      crown.rotation.y = spin;
+      const hov = !dragging && !coarse && hitCrown();
+      hoverScale += ((hov || dragging ? 1.06 : 1) - hoverScale) * 0.12;
+      pivot.rotation.y += ((cx * 0.9) - pivot.rotation.y) * 0.07;
+      pivot.rotation.x += ((0.28 + cy * 0.4) - pivot.rotation.x) * 0.07;
+      pivot.rotation.z = Math.sin(t * 0.6) * 0.04;
+      jumpVel -= 0.006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > 0.02 ? -jumpVel * 0.35 : 0; }
+      crown.position.y = Math.sin(t * 1.1) * 0.08 + jump;
+      crown.scale.setScalar(hoverScale);
+      orb.position.y = 1.55 + Math.sin(t * 1.6) * 0.1 + jump * 1.4; orb.rotation.y += dt * (0.8 + spinVel * 8); orb.rotation.x += dt * 0.3;
+      glow *= 0.96;
+      gems.forEach((g, i) => { g.material.emissiveIntensity = 0.4 + glow * 2.5 + Math.max(0, Math.sin(t * 2 + i)) * 0.25; });
+      document.documentElement.classList.toggle('over-crown', !!hov);
+
+      // bubbles: bob, drift away from the cursor, pop on click, rise again
+      const hb = coarse ? null : hitBubble();
+      document.documentElement.classList.toggle('over-bubble', !!hb && !hov);
+      if (px >= 0) setRay();
+      bubbles.forEach(b => {
+        const u = b.userData;
+        u.s += ((u.popped ? 0 : 1) - u.s) * (u.popped ? 0.5 : 0.04);
+        b.scale.setScalar(Math.max(0.0001, u.r * u.s));
+        b.visible = u.s > 0.01;
+        const target = tmp.copy(u.home); target.y += Math.sin(t * 0.8 + u.phase) * 0.25;
+        if (px >= 0 && !coarse) {
+          // distance from the bubble to the pointer ray
+          ray.ray.closestPointToPoint(b.position, v3);
+          const d = v3.distanceTo(b.position), reach = u.r * 2.6;
+          if (d < reach) { const f = (1 - d / reach) * 0.08; u.push.add(tmp.copy(b.position).sub(v3).normalize().multiplyScalar(f)); }
+        }
+        u.push.multiplyScalar(0.92);
+        target.add(u.push.clone().multiplyScalar(6));
+        b.position.lerp(target, u.popped ? 0 : 0.05);
+        b.children[1].rotation.y = t * 0.3;
+      });
+      rimMat.uniforms.t.value = t;
+    }
+
+    // the deep
+    rays.forEach(r => { r.material.uniforms.t.value = t; r.position.x += Math.sin(t * 0.3 + r.userData.p) * 0.004; r.lookAt(camera.position.x, r.position.y, camera.position.z); r.rotation.z = Math.sin(t * .25 + r.userData.p) * .08; });
+    goldSpecks.position.y = Math.sin(t * 0.2) * 0.4; goldSpecks.rotation.y = t * 0.01; silverSpecks.rotation.y = -t * 0.008;
+    coins.forEach(c => {
+      const u = c.userData; c.position.y -= dt * u.v * (reduce ? 0 : 1); c.rotation.x += dt * u.rx; c.rotation.z += dt * u.rz;
+      if (c.position.y < WY - DEPTH - 8) c.position.y = WY - 2;
     });
+    under.visible = below || camera.position.y < WY + 2;
 
-    // floaters
-    floaters.forEach(m => {
-      const u = m.userData;
-      m.rotation.x += dt * u.rx * (1 + warp * 6); m.rotation.y += dt * u.ry * (1 + warp * 6);
-      m.position.y = u.y0 + Math.sin(t * 0.6 + u.bob) * 0.35;
-    });
-    finale.rotation.y += dt * 0.15; finale.rotation.x = Math.sin(t * 0.3) * 0.3;
-    finale.children.forEach((r, i) => { r.rotation.z += dt * (0.2 + i * 0.1) * (i % 2 ? -1 : 1); });
-    goldDust.rotation.y = t * 0.01 + cx * 0.05; silverDust.rotation.y = -t * 0.006;
-    goldDust.position.y = Math.sin(t * 0.2) * 0.5;
-    rim.position.x = -8 + Math.sin(t * 0.5) * 3; glow.position.y = camera.position.y - 2 + Math.cos(t * 0.4) * 2;
-    key.position.y = camera.position.y + 8;
+    // sparks
+    for (let j = 0; j < MAXP; j++) {
+      if (pLife[j] <= 0) continue;
+      pLife[j] -= dt * 0.9; if (pLife[j] < 0) pLife[j] = 0;
+      pVel[j * 3 + 1] -= dt * 0.06;
+      pPos[j * 3] += pVel[j * 3]; pPos[j * 3 + 1] += pVel[j * 3 + 1]; pPos[j * 3 + 2] += pVel[j * 3 + 2];
+      pVel[j * 3] *= 0.96; pVel[j * 3 + 2] *= 0.96;
+    }
+    pGeo.attributes.position.needsUpdate = true; pGeo.attributes.life.needsUpdate = true; pGeo.attributes.col.needsUpdate = true;
 
-    renderer.render(scene, camera);
+    key.position.set(4, camera.position.y + 10, 6);
+    fill.position.set(-6 + Math.sin(t * .4) * 2, camera.position.y + 1, 5);
+    waterMat.uniforms.t.value = t; waterMat.uniforms.cam.value.copy(camera.position);
+
+    // pass 1: the mirrored world, for the water's reflection
+    if (!below) {
+      water.visible = false; under.visible = false; sparks.visible = false;
+      top.scale.y = -1; top.position.y = 2 * WY; top.updateMatrixWorld(true);
+      renderer.setRenderTarget(rt); renderer.setClearColor(COL.haze, 1); renderer.clear(); renderer.render(scene, camera);
+      top.scale.y = 1; top.position.y = 0; top.updateMatrixWorld(true);
+      water.visible = true; sparks.visible = true; under.visible = camera.position.y < WY + 2;
+      renderer.setClearColor(COL.haze, 1);
+    }
+    // pass 2: the real world
+    renderer.setRenderTarget(null); renderer.clear(); renderer.render(scene, camera);
     if (!reduce) requestAnimationFrame(frame);
   }
   if (reduce) {
-    // one still frame, re-rendered on scroll/resize so the camera still follows the page
     const still = () => { running = true; frame(); };
     addEventListener('scroll', still, { passive: true }); addEventListener('resize', still);
   }

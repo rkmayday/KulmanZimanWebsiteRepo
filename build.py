@@ -81,7 +81,8 @@ def nav(active):
     <a class="brand" href="/" aria-label="Kulman Ziman home"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
     <nav aria-label="Main"><ul class="nav-links">{links}</ul></nav>
     <div class="nav-cta">
-      <a class="btn small" href="{CHECKOUT}">Get your website · $300</a>
+      <a class="btn ghost" href="/#start">Send a brief</a>
+      <a class="btn small" href="{CHECKOUT}">Get started · $300</a>
       <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
     </div>
   </div>
@@ -144,8 +145,8 @@ def build(preview=False):
         body = text[m.end():].replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
         inner = nav(meta.get("nav", "")) + body + FOOTER
         if preview and page.stem == "index":
-            # the preview host adds the document skeleton around its main page
-            html = head_tags(meta) + BODY_START + inner
+            # the preview host adds the document skeleton around its main page; it gets a short name
+            html = head_tags(dict(meta, title="Kulman Ziman Preview")) + BODY_START + inner
         else:
             html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
                     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
