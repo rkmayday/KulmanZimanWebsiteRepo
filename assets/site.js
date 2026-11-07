@@ -163,5 +163,21 @@ window.kzGmail = (to, subject = '', body = '') => {
     addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(fan); }, { passive: true }); fan();
   }
 
+
+  // labels decode like a terminal when they first appear
+  const decode = el => {
+    if (el._dec || el.children.length || reduce) return; el._dec = true;
+    const final = el.textContent, G = '01<>/\\[]{}#=+*_-:', N = 26; let f = 0;
+    el.setAttribute('aria-label', final);
+    const tick = () => { const k = f / N;
+      el.textContent = [...final].map((c, i) => c === ' ' || i / final.length < k ? c : G[(Math.random() * G.length) | 0]).join('');
+      if (f++ < N) requestAnimationFrame(tick); else { el.textContent = final; el.removeAttribute('aria-label'); } };
+    tick();
+  };
+  if ('IntersectionObserver' in window && !reduce) {
+    const dio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { decode(e.target); dio.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('.eyebrow, .hero-tags li, .s-ind').forEach(el => dio.observe(el));
+  }
+
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
