@@ -806,21 +806,3 @@ footer h4{font-size:.78rem}
 .mail-alt a{color:var(--ink-2)}
 .s-ember{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#ffe2b8,#f0a050 28%,#c8743a 55%,#5a2a10 80%);box-shadow:0 0 30px 6px rgba(240,140,60,.45),0 0 0 8px rgba(200,116,58,.12),0 0 0 16px rgba(200,116,58,.06)}
 .s-path{width:62px;height:62px;border-radius:50%;background:conic-gradient(from 200deg,transparent 0 18%,#c7f36b 18% 82%,transparent 82%);-webkit-mask:radial-gradient(circle,transparent 56%,#000 58%);mask:radial-gradient(circle,transparent 56%,#000 58%);filter:drop-shadow(0 0 10px rgba(199,243,107,.6))}
-
-/* THE LEAP (home): pinned scene, the bear crosses it as you scroll */
-.leap{position:relative;height:280vh;z-index:2}
-.leap-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#030403}
-.leap-stage::before,.leap-stage::after{content:"";position:absolute;left:0;right:0;height:18vh;z-index:1;pointer-events:none}
-.leap-stage::before{top:0;background:linear-gradient(#050505,transparent)}
-.leap-stage::after{bottom:0;background:linear-gradient(transparent,#050505)}
-.leap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.leap-copy{position:absolute;left:0;right:0;bottom:clamp(48px,9vh,100px);z-index:2;display:grid;gap:16px;max-width:1240px;margin-inline:auto;pointer-events:none;
-  opacity:calc(1 - max(0, var(--lp,0) - .7) * 3.3)}
-.leap-copy h2{font-size:clamp(2.2rem,5vw,4.4rem);line-height:.98;max-width:12ch;text-shadow:0 4px 30px rgba(0,0,0,.6)}
-.leap-copy .lede{max-width:46ch;text-shadow:0 2px 18px rgba(0,0,0,.8)}
-.leap-cue{position:absolute;right:max(20px,4vw);bottom:clamp(60px,12vh,120px);z-index:2;display:flex;align-items:center;gap:12px;font:500 .78rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);opacity:calc(1 - var(--lp,0) * 4)}
-.leap-cue i{width:1px;height:46px;background:linear-gradient(#c6ff3d,transparent);animation:leap-cue 1.8s ease-in-out infinite}
-@keyframes leap-cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-.leap.no-gl{height:auto}.leap.no-gl .leap-stage{position:relative;height:auto;padding-block:120px}.leap.no-gl .leap-copy{position:relative;bottom:auto}
-@media (max-width:720px){.leap{height:240vh}.leap-cue{display:none}.leap-copy{bottom:56px}}
-@media (prefers-reduced-motion:reduce){.leap{height:auto}.leap-stage{position:relative}.leap-cue i{animation:none}}

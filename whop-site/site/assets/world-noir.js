@@ -540,6 +540,10 @@
       pivot.rotation.y += ((cx * .9) - pivot.rotation.y) * .07; pivot.rotation.x += ((.28 + cy * .4) - pivot.rotation.x) * .07; pivot.rotation.z = Math.sin(t * .6) * .04;
       jumpVel -= .006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > .02 ? -jumpVel * .35 : 0; }
       crown.position.y = Math.sin(t * 1.1) * .08 + jump; crown.scale.setScalar(hoverScale);
+      // scrolling down: the crown shrinks, spins away and is gone by ~60% of a screen
+      const away = Math.min(1, Math.max(0, scrollY / (innerHeight * .6))), ease = away * away * (3 - 2 * away);
+      pivot.scale.setScalar(Math.max(.0001, 1 - ease)); pivot.visible = ease < .995;
+      crown.rotation.y += ease * 2.4;
       orb.position.y = 1.55 + Math.sin(t * 1.6) * .1 + jump * 1.4; orb.rotation.y += dt * (.8 + spinVel * 8); orb.rotation.x += dt * .3;
       glow *= .96; gems.forEach((g, i) => { g.material.emissiveIntensity = .5 + glow * 3 + Math.max(0, Math.sin(t * 2 + i)) * .3; });
       root.classList.toggle('over-crown', !!hov);
