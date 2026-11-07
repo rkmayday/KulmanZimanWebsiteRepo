@@ -325,3 +325,15 @@ h1,h2{font-weight:var(--hw,500)}
 .card,.hs-card,.story-media,.stats{background:linear-gradient(165deg,color-mix(in srgb,var(--fg) 6%,var(--panel)),var(--panel) 55%)}
 .card{border-radius:26px}
 @media (prefers-reduced-motion:reduce){.dive-pill i{animation:none}}
+
+/* richer showcase art: fine grid, a soft orb, glass sheen and gradient numerals */
+.art::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(transparent 0 calc(100% - 1px),color-mix(in srgb,var(--fg) 7%,transparent) 0) 0 0/100% 28px,
+             linear-gradient(90deg,transparent 0 calc(100% - 1px),color-mix(in srgb,var(--fg) 7%,transparent) 0) 0 0/28px 100%,
+             linear-gradient(160deg,color-mix(in srgb,#fff 14%,transparent),transparent 40%);
+  -webkit-mask:radial-gradient(90% 90% at var(--ax,70%) var(--ay,30%),#000,transparent 80%);mask:radial-gradient(90% 90% at var(--ax,70%) var(--ay,30%),#000,transparent 80%)}
+.art .glyph{z-index:1;background:linear-gradient(180deg,var(--fg),color-mix(in srgb,var(--fg) 45%,transparent));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:var(--hw,500)}
+.hs-card{transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s}
+.hs-card:hover{transform:translateY(-8px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 45%,transparent),0 40px 70px -40px rgba(0,0,0,.6)}
+.hs-card:hover .art::before{transform:scale(1.15)}
+.art::before{transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}

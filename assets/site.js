@@ -154,5 +154,14 @@ window.kzGmail = (to, subject = '', body = '') => {
     a.href = 'mailto:' + a.getAttribute('href').replace(/^mailto:/, '').split('?')[0] + '?subject=' + encodeURIComponent('Website brief — ' + (g('business') || g('name'))) + '&body=' + encodeURIComponent(body);
   }));
 
+  // proof: fan the stacked screens out as they scroll into view
+  const stack = $('.stack');
+  if (stack && !reduce) {
+    let raf = 0;
+    const fan = () => { raf = 0; const r = stack.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * .75)));
+      stack.style.setProperty('--sp', (p * p * (3 - 2 * p)).toFixed(3)); };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(fan); }, { passive: true }); fan();
+  }
+
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();

@@ -257,3 +257,13 @@ h3{font-weight:600;font-variation-settings:normal}
 #industries .art.art-shot{filter:none;background:radial-gradient(80% 80% at 70% 20%,rgba(198,255,61,.22),transparent 60%),#0b0d0b}
 .art-shot .win{background:#0b0b0b;overflow:hidden;padding-top:26px}
 .art-shot .win img{display:block;width:100%;height:100%;object-fit:cover;object-position:left top;border-radius:2px 2px 0 0}
+
+/* proof: four live screens fanned in 3D, spreading out as the section scrolls in (--sp set by site.js) */
+.stack{--sp:0;position:relative;height:clamp(240px,31vw,440px);perspective:1700px;margin:10px 0 100px;pointer-events:none}
+.stack img{position:absolute;left:50%;top:50%;width:min(52%,600px);height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:18px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14),0 50px 90px -30px rgba(0,0,0,.95),0 0 80px -40px rgba(198,255,61,.5);
+  transform:translate(-50%,-50%) translateX(calc(var(--o) * (12% + var(--sp) * 29%))) translateY(calc(var(--a) * (8px - var(--sp) * 8px))) translateZ(calc(var(--a) * -110px)) rotateY(calc(var(--o) * -10deg + (1 - var(--sp)) * -16deg));
+  transition:transform .2s linear;will-change:transform}
+.stack img:nth-child(2),.stack img:nth-child(3){z-index:2}
+@media (max-width:720px){.stack{display:none}}
+@media (prefers-reduced-motion:reduce){.stack{--sp:1}.stack img{transition:none}}
