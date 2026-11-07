@@ -256,7 +256,7 @@
 
   const stage = new T.Group(); scene.add(stage);          // moves up as the page scrolls
   const pivot = new T.Group(), crown = new T.Group(); pivot.add(crown); stage.add(pivot);
-  let dissolving = false, dis = 0;   // scroll dissolve state for the crown
+  let dissolving = false, dis = 0, lastSY = scrollY, goingDown = scrollY > 6;   // scroll dissolve state for the crown
   const setSee = on => { crown.userData.see = on; crown.traverse(o => { if (o.isMesh || o.isLineSegments) { o.material.transparent = on; if (!on) o.material.opacity = 1; o.material.needsUpdate = true; } }); };
   const crownHits = [], gems = [], tips = [], shapes = [];
   const orb = new T.Mesh(new T.IcosahedronGeometry(.34, 0), limeGem);
@@ -542,8 +542,10 @@
       pivot.rotation.y += ((cx * .9) - pivot.rotation.y) * .07; pivot.rotation.x += ((.28 + cy * .4) - pivot.rotation.x) * .07; pivot.rotation.z = Math.sin(t * .6) * .04;
       jumpVel -= .006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > .02 ? -jumpVel * .35 : 0; }
       crown.position.y = Math.sin(t * 1.1) * .08 + jump; crown.scale.setScalar(hoverScale);
-      // the moment the page scrolls, the crown dissolves into lime sparks; back at the very top it re-forms
-      const wantGone = scrollY > 6 ? 1 : 0;
+      // the moment the page scrolls down, the crown dissolves into lime sparks; scrolling back up re-forms it
+      const dY = scrollY - lastSY; lastSY = scrollY;
+      if (dY > .5) goingDown = true; else if (dY < -.5) goingDown = false;
+      const wantGone = scrollY > 6 && goingDown ? 1 : 0;      // scrolling down: dissolve. scrolling back up: it re-forms
       if (wantGone && !dissolving) {
         dissolving = true;
         if (!crown.userData.own) { crown.userData.own = true; crown.traverse(o => { if (o.isMesh || o.isLineSegments) o.material = o.material.clone(); }); }
