@@ -256,6 +256,8 @@
 
   const stage = new T.Group(); scene.add(stage);          // moves up as the page scrolls
   const pivot = new T.Group(), crown = new T.Group(); pivot.add(crown); stage.add(pivot);
+  let dissolving = false, dis = 0;   // scroll dissolve state for the crown
+  const setSee = on => { crown.userData.see = on; crown.traverse(o => { if (o.isMesh || o.isLineSegments) { o.material.transparent = on; if (!on) o.material.opacity = 1; o.material.needsUpdate = true; } }); };
   const crownHits = [], gems = [], tips = [], shapes = [];
   const orb = new T.Mesh(new T.IcosahedronGeometry(.34, 0), limeGem);
   orb.add(new T.LineSegments(new T.EdgesGeometry(orb.geometry), new T.LineBasicMaterial({ color: 0xffffff })));
@@ -540,10 +542,20 @@
       pivot.rotation.y += ((cx * .9) - pivot.rotation.y) * .07; pivot.rotation.x += ((.28 + cy * .4) - pivot.rotation.x) * .07; pivot.rotation.z = Math.sin(t * .6) * .04;
       jumpVel -= .006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > .02 ? -jumpVel * .35 : 0; }
       crown.position.y = Math.sin(t * 1.1) * .08 + jump; crown.scale.setScalar(hoverScale);
-      // scrolling down: the crown shrinks, spins away and is gone by ~60% of a screen
-      const away = Math.min(1, Math.max(0, scrollY / (innerHeight * .6))), ease = away * away * (3 - 2 * away);
-      pivot.scale.setScalar(Math.max(.0001, 1 - ease)); pivot.visible = ease < .995;
-      crown.rotation.y += ease * 2.4;
+      // the moment the page scrolls, the crown dissolves into lime sparks; back at the very top it re-forms
+      const wantGone = scrollY > 6 ? 1 : 0;
+      if (wantGone && !dissolving) {
+        dissolving = true;
+        if (!crown.userData.own) { crown.userData.own = true; crown.traverse(o => { if (o.isMesh || o.isLineSegments) o.material = o.material.clone(); }); }
+        setSee(true);
+        if (!reduce) { tips.forEach(tp => burst(tp.getWorldPosition(new T.Vector3()), 14, LIME, .06));
+          burst(crown.getWorldPosition(new T.Vector3()), 70, LIME, .07); burst(crown.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, .5, 0)), 30, 0xffffff, .05); }
+      } else if (!wantGone && dissolving) dissolving = false;
+      dis += ((dissolving ? 1 : 0) - dis) * (reduce ? 1 : Math.min(1, dt * (dissolving ? 7 : 3)));
+      const keep = 1 - dis;
+      if (crown.userData.own) crown.traverse(o => { if (o.isMesh || o.isLineSegments) o.material.opacity = keep; });
+      if (!dissolving && dis < .003 && crown.userData.see) setSee(false);   // fully back: solid again
+      pivot.scale.setScalar(Math.max(.0001, 1 + dis * .25)); pivot.visible = keep > .01;
       orb.position.y = 1.55 + Math.sin(t * 1.6) * .1 + jump * 1.4; orb.rotation.y += dt * (.8 + spinVel * 8); orb.rotation.x += dt * .3;
       glow *= .96; gems.forEach((g, i) => { g.material.emissiveIntensity = .5 + glow * 3 + Math.max(0, Math.sin(t * 2 + i)) * .3; });
       root.classList.toggle('over-crown', !!hov);
