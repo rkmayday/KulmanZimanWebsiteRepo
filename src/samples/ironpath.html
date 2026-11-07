@@ -165,7 +165,7 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
   });
   const grid = new T.GridHelper(6, 12, 0x2c3a32, 0x1a221e); grid.position.y = -1; B.scene.add(grid);
   const daysEl = document.getElementById('days'), totalEl = document.getElementById('week-total');
-  const renderTotal = () => { const t = vol.reduce((a, b) => a + b, 0); totalEl.textContent = 'This week: ' + t.toLocaleString() + ' kg lifted across ' + vol.filter(v => v).length + ' sessions.'; };
+  const renderTotal = () => { const t = vol.reduce((a, b) => a + b, 0); totalEl.textContent = 'This week: ' + t.toLocaleString() + ' kg lifted across ' + vol.filter(v => v).length + (vol.filter(v => v).length === 1 ? ' session.' : ' sessions.'); };
   const log = i => { vol[i] += 1500 + Math.round(Math.random() * 1500); renderTotal(); bars[i].userData.flash = 1; };
   DAYS.forEach(d => { const b = document.createElement('span'); b.textContent = d; daysEl.append(b); });
   // the week fills in on its own, one day at a time

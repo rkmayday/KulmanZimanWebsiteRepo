@@ -73,6 +73,10 @@
       docked.forEach((sec, j) => { if (sec.getBoundingClientRect().top < innerHeight * 0.45) i = j; });
       place(i);
     };
+    // show the dock only between the hero and the footer, so it never covers the hero or the footer links
+    const foot = document.querySelector('footer');
+    const vis = () => { const past = scrollY > innerHeight * .6, nearFoot = foot && foot.getBoundingClientRect().top < innerHeight - 40; dock.classList.toggle('show', past && !nearFoot); };
+    addEventListener('scroll', vis, { passive: true }); vis();
     addEventListener('scroll', spy, { passive: true }); addEventListener('resize', () => { current = -1; spy(); });
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { current = -1; spy(); });
     spy();

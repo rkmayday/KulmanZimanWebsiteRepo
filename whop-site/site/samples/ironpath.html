@@ -115,7 +115,7 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
 <footer class="kfoot"><div class="wrap"><div class="cols"><div><div class="logo" style="margin-bottom:12px">IRON<span>PATH</span></div><p style="margin:0;max-width:34ch">Strength training that adapts to you, week by week.</p></div><div><h4>Product</h4><ul><li><a href="#plans">Plans</a></li><li><a href="#programs">Programs</a></li><li><a href="#week">Your week</a></li></ul></div><div><h4>Company</h4><ul><li><a href="#coaches">Coaches</a></li><li><a href="#reviews">Reviews</a></li></ul></div><div><h4>Help</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="#how">How it works</a></li></ul></div></div><div class="base"><span>Ironpath is a fictional sample. Prices and plans are illustrative.</span><span>Designed and built by <a href="/" style="color:var(--acc)">Kulman Ziman</a></span></div></div></footer>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/assets/three.min.js"></script>
 <script>
 (() => {
   const T = THREE, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -165,7 +165,7 @@ footer{padding:40px 0 60px;color:var(--mut);font-size:.9rem;text-align:center}
   });
   const grid = new T.GridHelper(6, 12, 0x2c3a32, 0x1a221e); grid.position.y = -1; B.scene.add(grid);
   const daysEl = document.getElementById('days'), totalEl = document.getElementById('week-total');
-  const renderTotal = () => { const t = vol.reduce((a, b) => a + b, 0); totalEl.textContent = 'This week: ' + t.toLocaleString() + ' kg lifted across ' + vol.filter(v => v).length + ' sessions.'; };
+  const renderTotal = () => { const t = vol.reduce((a, b) => a + b, 0); totalEl.textContent = 'This week: ' + t.toLocaleString() + ' kg lifted across ' + vol.filter(v => v).length + (vol.filter(v => v).length === 1 ? ' session.' : ' sessions.'); };
   const log = i => { vol[i] += 1500 + Math.round(Math.random() * 1500); renderTotal(); bars[i].userData.flash = 1; };
   DAYS.forEach(d => { const b = document.createElement('span'); b.textContent = d; daysEl.append(b); });
   // the week fills in on its own, one day at a time

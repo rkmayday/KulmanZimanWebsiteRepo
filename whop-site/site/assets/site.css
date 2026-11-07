@@ -245,7 +245,7 @@ p{margin:0}
 .founder{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;padding:28px;border-radius:26px}
 .portrait{width:120px;height:150px;border-radius:16px;position:relative;overflow:hidden;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:2.6rem;color:#1a1204;background:var(--gold-grad);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 14px 30px -8px rgba(0,0,0,.6)}
 .portrait.silver{background:var(--silver-grad);color:#10142a}
-.portrait::after{content:"Photo coming soon";position:absolute;bottom:8px;left:0;right:0;text-align:center;font:600 .58rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.portrait::after{content:none;position:absolute;bottom:8px;left:0;right:0;text-align:center;font:600 .58rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
 .founder .role{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-hi);margin:6px 0 10px}
 .founder p{font-size:.96rem;color:var(--ink-2)}
 .founder a.mail{display:inline-block;margin-top:12px;font-size:.9rem;color:var(--silver-hi);font-weight:700;overflow-wrap:anywhere}
@@ -781,3 +781,28 @@ html.intro-hold #kz-intro,html.intro-hold #kz-intro *{animation-play-state:runni
 @keyframes ki-fill{0%,40%{opacity:0;clip-path:inset(0 round 0)}41%,48%{opacity:1;clip-path:inset(0 round 0)}72%{opacity:1;clip-path:inset(calc(50% - 78px) calc(50% - 78px) round 40px)}80%,100%{opacity:0;clip-path:inset(calc(50% - 68px) calc(50% - 68px) round 34px)}}
 @keyframes ki-badge{0%{transform:scale(.4);opacity:0}14%{transform:scale(1);opacity:1}38%{background:var(--gold);box-shadow:0 0 50px color-mix(in srgb,var(--gold) 55%,transparent)}44%,70%{background:#0b0b0b;box-shadow:0 0 0 rgba(0,0,0,0)}78%{background:var(--gold);transform:scale(1);opacity:1;box-shadow:0 0 60px color-mix(in srgb,var(--gold) 70%,transparent)}100%{transform:scale(.3);opacity:0}}
 @keyframes ki-logo{0%,38%{background:#0a0a0a}44%,70%{background:var(--gold)}78%,100%{background:#0a0a0a}}
+
+/* v4 polish */
+/* the section dock: hidden over the hero and footer, never on phones (the menu button covers navigation there) */
+.dock{opacity:0;visibility:hidden;translate:0 16px;transition:opacity .35s,visibility .35s,translate .45s var(--ease)}
+.dock.show{opacity:1;visibility:visible;translate:0 0}
+@media (max-width:720px){.dock{display:none}footer{padding-bottom:40px}}
+/* small labels were under 12px */
+.eyebrow{font-size:.8rem}
+footer h4{font-size:.78rem}
+.founder .role{font-size:.78rem}
+/* scroll cue: no underline */
+.dive,.dive span{text-decoration:none}
+/* tighter rhythm on phones: sections were separated by 180px of empty space */
+@media (max-width:720px){
+  .section{padding-block:72px}
+  .section-head{margin-bottom:40px}
+  footer{padding-top:64px}
+  footer .grid{grid-template-columns:1fr 1fr;gap:32px 20px}
+  footer .grid > :first-child{grid-column:1/-1}
+}
+/* brief forms: a plain email fallback for people who do not use Gmail */
+.mail-alt{display:block;margin-top:6px;font-size:.84rem;color:var(--ink-3)}
+.mail-alt a{color:var(--ink-2)}
+.s-ember{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#ffe2b8,#f0a050 28%,#c8743a 55%,#5a2a10 80%);box-shadow:0 0 30px 6px rgba(240,140,60,.45),0 0 0 8px rgba(200,116,58,.12),0 0 0 16px rgba(200,116,58,.06)}
+.s-path{width:62px;height:62px;border-radius:50%;background:conic-gradient(from 200deg,transparent 0 18%,#c7f36b 18% 82%,transparent 82%);-webkit-mask:radial-gradient(circle,transparent 56%,#000 58%);mask:radial-gradient(circle,transparent 56%,#000 58%);filter:drop-shadow(0 0 10px rgba(199,243,107,.6))}

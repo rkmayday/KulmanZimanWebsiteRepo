@@ -1,4 +1,5 @@
 /* Shared polish for the sample sites. Each sample sets --acc, --bg, --panel, --line, --fg, --mut, --display, --mono. */
+html,body{overflow-x:clip;max-width:100%}
 .kp{position:fixed;left:0;top:0;height:3px;width:100%;z-index:60;transform-origin:0 50%;transform:scaleX(var(--p,0));background:var(--acc);box-shadow:0 0 12px var(--acc);pointer-events:none}
 nav.top{display:block;position:sticky;top:0;z-index:15;padding-block:0;transition:background .3s,box-shadow .3s,backdrop-filter .3s}
 nav.top > .navin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}

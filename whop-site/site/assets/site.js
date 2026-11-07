@@ -146,5 +146,13 @@ window.kzGmail = (to, subject = '', body = '') => {
     toast('Opening Gmail…');
   });
 
+  // "Use your usual email app": the same brief as a plain mailto: link
+  $$('[data-brief-mailto]').forEach(a => a.addEventListener('click', () => {
+    const form = a.closest('form'); if (!form) return;
+    const f = new FormData(form), g = k => f.get(k) || '';
+    const body = [`Name: ${g('name')}`, `Business: ${g('business')}`, `Industry: ${g('industry')}`, `Domain I'd like: ${g('domain') || 'Not sure yet'}`, '', 'What I need:', g('details')].join('\n');
+    a.href = 'mailto:' + a.getAttribute('href').replace(/^mailto:/, '').split('?')[0] + '?subject=' + encodeURIComponent('Website brief — ' + (g('business') || g('name'))) + '&body=' + encodeURIComponent(body);
+  }));
+
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();

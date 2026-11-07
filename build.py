@@ -21,7 +21,7 @@ SRC = ROOT / "src"
 SITE = "https://kulmanziman.shop"
 CHECKOUT = "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"
 EMAIL = "info.kulmanziman@gmail.com"
-THREE = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+THREE = "/assets/three.min.js"  # self-hosted Three.js r128, no third-party CDN to fail
 FONTS = ("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
          "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
 # Pages that live on the current site but are not part of this rebuild
@@ -53,7 +53,6 @@ THEMES = {
             '/assets/world.js': '/assets/world-noir.js',
             'Scroll down<br>&amp; dive in': 'Scroll to<br>follow the line',
             '<canvas id="world"': '<div class="dots" aria-hidden="true"></div>\n<canvas id="world"',
-            'Drag the crown · Click it · Pop the bubbles': 'Drag the crown · Click it · Scroll to spin it',
             'value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)">':
                 'value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d">',
             'value="#c9ced8" aria-label="Silver"><span style="--c:linear-gradient(135deg,#7d8496,#f4f6fa,#c9ced8)">':
@@ -238,7 +237,7 @@ def build(preview=False, theme="royal"):
         print("built", out.relative_to(ROOT))
     # the four sample sites: standalone pages with their own branding
     for sp in sorted((SRC / "samples").glob("*.html")):
-        html = gmail_links(sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", THREE).replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
+        html = gmail_links(sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
