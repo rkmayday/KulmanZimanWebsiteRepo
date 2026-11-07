@@ -444,7 +444,8 @@
     unitsPerPx = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / h;   // world units per CSS px at the crown's depth
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
     U.uSpread.value = small() ? 70 : 230; U.uDimIn.value = small() ? .06 : .22;
-    if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.scale.setScalar(.7); } else { pivot.position.set(2.7, .55, 0); pivot.scale.setScalar(1); }
+    if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.userData.base = .7; } else { pivot.position.set(2.7, .55, 0); pivot.userData.base = 1; }
+    pivot.scale.setScalar(pivot.userData.base);
     placeHeroShapes(shapes);
     rebuild();
     placeDrifters();
@@ -557,7 +558,7 @@
       const keep = 1 - dis;
       if (crown.userData.own) crown.traverse(o => { if (o.isMesh || o.isLineSegments) o.material.opacity = keep; });
       if (!dissolving && dis < .003 && crown.userData.see) setSee(false);   // fully back: solid again
-      pivot.scale.setScalar(Math.max(.0001, 1 + dis * .25)); pivot.visible = keep > .01;
+      pivot.scale.setScalar(Math.max(.0001, (pivot.userData.base || 1) * (1 + dis * .25))); pivot.visible = keep > .01;
       orb.position.y = 1.55 + Math.sin(t * 1.6) * .1 + jump * 1.4; orb.rotation.y += dt * (.8 + spinVel * 8); orb.rotation.x += dt * .3;
       glow *= .96; gems.forEach((g, i) => { g.material.emissiveIntensity = .5 + glow * 3 + Math.max(0, Math.sin(t * 2 + i)) * .3; });
       root.classList.toggle('over-crown', !!hov);

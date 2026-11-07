@@ -172,3 +172,88 @@ html.founder-field .dots{display:none}
 .menu-btn span{background:#fff;height:2px}
 /* the mission sat in a very tall empty section */
 #mission{padding-block:clamp(70px,9vw,120px)}
+
+
+/* =====================================================================
+   Cinematic layer (inspired by peachweb.io): elegant light type, full-screen hero with the copy bottom-left,
+   a "scroll down & dive in" pill, dark glass everywhere, chip rows, real screenshots on the sample cards
+   ===================================================================== */
+:root{--font-display:"Inter Tight","Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --glass-bg:linear-gradient(165deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 60%),rgba(12,14,12,.7);
+  --glass-sh:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.08),0 30px 70px -30px rgba(0,0,0,.9)}
+body{background:radial-gradient(1200px 700px at 85% -10%,rgba(198,255,61,.07),transparent 60%),radial-gradient(900px 700px at -10% 40%,rgba(90,255,170,.045),transparent 60%),#050605}
+h1,h2{font-weight:500;letter-spacing:-.045em;font-variation-settings:normal}
+h1{font-weight:500}
+h3{font-weight:600;font-variation-settings:normal}
+.hero h1{font-weight:500;letter-spacing:-.05em;line-height:.95}
+.mission blockquote{font-weight:400;letter-spacing:-.03em;line-height:1.18}
+.price .amount,.aff .big,.calc .out,.stat b,.strip b,.sheet .n{font-weight:500;letter-spacing:-.06em}
+.portrait{font-weight:500}
+.extrude{text-shadow:none}
+
+/* hero: copy at the bottom left, tags as glass pills, the dive pill bottom right */
+.hero{min-height:calc(100svh - 84px);padding-top:0}
+.hero-grid{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(100svh - 84px);box-sizing:border-box;padding-bottom:clamp(36px,6vh,64px);gap:0}
+.hero-copy{order:1;align-self:stretch;max-width:760px}
+.hero-top{order:2;margin-top:30px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:0;font-size:.76rem}
+.hero-tags li{padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);text-shadow:none}
+.hero-foot{position:absolute;right:max(20px,calc((100vw - 1240px) / 2 + 20px));bottom:clamp(36px,6vh,64px);z-index:3}
+.dive{gap:14px;padding:14px 16px 14px 20px;border-radius:18px;font:500 .92rem/1.25 var(--font-sans);letter-spacing:0;text-transform:none;text-decoration:none;color:#fff;
+  background:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.dive span{order:1}
+.dive i{order:2;width:34px;height:34px;border-radius:11px;background:#c6ff3d;box-shadow:none}
+.dive i::after{border-color:#0a0a0a;top:9px}
+@media (max-width:900px){.hero-grid{min-height:calc(100svh - 84px)}.hero-foot{display:none}}
+
+/* dark glass instead of white cards */
+.sheet,.product,.controls,.faq details,.founder,.box,.condition{
+  --ink:#f5f5f5;--ink-2:#cfcfcf;--ink-3:#a3a3a3;--line:rgba(255,255,255,.12);--gold-hi:#d9ff7a;--edge:rgba(198,255,61,.95);
+  color:var(--ink);background:var(--glass-bg);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:var(--glass-sh);border-radius:26px}
+.panel,.stat,.calc,.brief,.aff,.search input,.profile-card,.strip .cell{background:var(--glass-bg);box-shadow:var(--glass-sh)}
+.faq details[open]{box-shadow:inset 0 0 0 1.5px rgba(198,255,61,.6),0 30px 70px -30px rgba(0,0,0,.9)}
+.faq summary::after{border-color:#c6ff3d}
+.condition svg{stroke:#c6ff3d}
+.sheet .n{-webkit-text-fill-color:#fff;color:#fff}
+.sheet.lit .n{background:none;-webkit-text-fill-color:#c6ff3d;color:#c6ff3d}
+.founder a.mail{color:#fff}
+.founder.linked:hover{box-shadow:inset 0 0 0 1.5px rgba(198,255,61,.7),0 30px 70px -30px rgba(0,0,0,.9)}
+.box.dont .ticks li::before,.ticks.no li::before{background-color:rgba(255,255,255,.85)}
+.controls input:not([type]){background:rgba(255,255,255,.06);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.controls input:not([type]):focus{box-shadow:0 0 0 2px #c6ff3d}
+.seg{background:rgba(255,255,255,.06)}
+.seg input:checked+span{background:#c6ff3d;color:#0a0a0a}
+.swatches input:checked+span{box-shadow:0 0 0 3px #0a0a0a,0 0 0 5px #c6ff3d}
+#industries > .wrap{background:var(--glass-bg);box-shadow:var(--glass-sh);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  --ink:#f5f5f5;--ink-2:#cfcfcf;--ink-3:#a3a3a3;--line:rgba(255,255,255,.12);--gold-hi:#d9ff7a;color:var(--ink)}
+#industries{--ink:#f5f5f5;--ink-2:#cfcfcf;--ink-3:#a3a3a3;--line:rgba(255,255,255,.12);--gold-hi:#d9ff7a;color:var(--ink)}
+#industries h2 em,#industries .h-split em .wi{background:none;-webkit-text-fill-color:#c6ff3d;color:#c6ff3d}
+#industries .tab{background:rgba(255,255,255,.06);color:#cfcfcf;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+#industries .tab[aria-selected=true]{background:#fff;color:#0a0a0a;box-shadow:none}
+#industries .panel{background:rgba(5,6,5,.7)}
+#industries .muted a{color:#d9ff7a}
+@media (max-width:760px),(pointer:coarse){
+  .sheet,.product,.controls,.faq details,.founder,.box,.condition,.panel,.stat,.calc,.brief,.aff,.strip .cell,.profile-card{background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.02) 60%),rgba(14,16,14,.92)}
+}
+
+/* the two loud bands become calm rows of glass chips with a sparkle, like Peach's chip strip */
+.marquee,.marquee.silver{transform:none;margin-top:0;background:transparent;box-shadow:none;padding-block:10px;animation:none}
+.marquees{padding-block:40px 10px}
+.marquee span{font:500 .95rem var(--font-sans);letter-spacing:0;color:#eaffd0;gap:0;padding:10px 18px 10px 14px;margin-right:12px;border-radius:99px;
+  background:rgba(198,255,61,.07);box-shadow:inset 0 0 0 1px rgba(198,255,61,.3)}
+.marquee span::before{content:"✦";color:#c6ff3d;margin-right:10px;font-size:.85em}
+.marquee span::after{content:none}
+.marquee.silver span{color:#fff;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.marquee.silver span::before{color:#fff}
+
+/* sample cards: a real screenshot on top, the story below */
+.sample{padding:0 0 22px;min-height:0;gap:6px;background:var(--glass-bg);box-shadow:var(--glass-sh)}
+.sample .s-shot{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:24px 24px 14px 14px;margin-bottom:12px;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.sample:hover .s-shot{transform:scale(1.035)}
+.sample > :not(.s-shot){margin-inline:22px}
+.sample b{font-weight:500;letter-spacing:-.03em}
+
+/* industry panels: a real screenshot of the matching sample in a browser window */
+#industries .art.art-shot{filter:none;background:radial-gradient(80% 80% at 70% 20%,rgba(198,255,61,.22),transparent 60%),#0b0d0b}
+.art-shot .win{background:#0b0b0b;overflow:hidden;padding-top:26px}
+.art-shot .win img{display:block;width:100%;height:100%;object-fit:cover;object-position:left top;border-radius:2px 2px 0 0}

@@ -241,7 +241,12 @@
   }
 
   // ---------- loop ----------
-  const size = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+  const size = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h;
+    // full-bleed hero: push the scene right of the copy on wide screens, up above it on tall ones
+    const wide = w / h > 1.15;
+    cam.fov = wide ? 38 : 40;
+    if (wide) cam.setViewOffset(w, h, -w * .26, 0, w, h); else cam.clearViewOffset();
+    cam.updateProjectionMatrix(); };
   addEventListener('resize', size); size();
   let visible = true, px = 0, py = 0, tpx = 0, tpy = 0;
   new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(host);

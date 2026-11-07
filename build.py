@@ -22,7 +22,7 @@ SITE = "https://kulmanziman.shop"
 CHECKOUT = "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"
 EMAIL = "info.kulmanziman@gmail.com"
 THREE = "/assets/three.min.js"  # self-hosted Three.js r128, no third-party CDN to fail
-FONTS = ("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
+FONTS = ("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
          "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
 # Pages that live on the current site but are not part of this rebuild
 EXTERNAL = {}
@@ -51,7 +51,7 @@ THEMES = {
             ICON: ICON_NOIR,
             '<link rel="stylesheet" href="/assets/site.css">': '<link rel="stylesheet" href="/assets/site.css">\n<link rel="stylesheet" href="/assets/theme-noir.css">',
             '/assets/world.js': '/assets/world-noir.js',
-            'Scroll down<br>&amp; dive in': 'Scroll to<br>follow the line',
+            
             '<canvas id="world"': '<div class="dots" aria-hidden="true"></div>\n<canvas id="world"',
             'value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)">':
                 'value="#c6ff3d" checked aria-label="Lime"><span style="--c:#c6ff3d">',

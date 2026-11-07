@@ -9,6 +9,11 @@
   // progress bar + stuck header
   const bar = document.createElement('div'); bar.className = 'kp'; bar.setAttribute('aria-hidden', 'true'); document.body.append(bar);
 
+  // hero: a 'scroll down & dive in' pill that jumps to the first section
+  { const hero = $('.hero'), next = $('main section.sec[id]');
+    if (hero) { const a = document.createElement('a'); a.className = 'dive-pill'; a.href = '#' + ((next && next.id) || 'top');
+      a.innerHTML = '<span>Scroll down<br>&amp; dive in</span><i aria-hidden="true">↓</i>'; hero.append(a); } }
+
   // menu (phones)
   const burger = $('.burger');
   burger && burger.addEventListener('click', () => { const open = document.body.classList.toggle('menu-open'); burger.setAttribute('aria-expanded', open); });
