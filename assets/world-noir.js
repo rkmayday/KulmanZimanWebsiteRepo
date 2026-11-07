@@ -256,10 +256,8 @@
 
   const stage = new T.Group(); scene.add(stage);          // moves up as the page scrolls
   const pivot = new T.Group(), crown = new T.Group(); pivot.add(crown); stage.add(pivot);
-  // scroll dissolve state for the crown: it only reacts to a real scroll (not trackpad jitter or a phone's address bar)
-  let gone = scrollY > 30, dis = gone ? 1 : 0, lastSY = scrollY, acc = 0;
+  let disShown = 0;   // how dissolved the crown currently is (0 whole, 1 gone)
   const crownHits = [], gems = [], tips = [], shapes = [];
-  let holo = null, floor = null; const nodes = [];
   const orb = new T.Mesh(new T.IcosahedronGeometry(.34, 0), limeGem);
   orb.add(new T.LineSegments(new T.EdgesGeometry(orb.geometry), new T.LineBasicMaterial({ color: 0xffffff })));
   if (isHome) {
@@ -280,25 +278,6 @@
       g.position.set(Math.cos(a) * 1.3, .05, Math.sin(a) * 1.3); g.lookAt(Math.cos(a) * 5, .05, Math.sin(a) * 5); crown.add(g); gems.push(stone);
       const b = a + Math.PI / POINTS, stud = new T.Mesh(new T.SphereGeometry(.055, 16, 12), chrome); stud.position.set(Math.cos(b) * 1.27, -.2, Math.sin(b) * 1.27); crown.add(stud);
     }
-    // holographic rings, a HUD tick ring and three orbiting nodes: they belong to the crown and dissolve with it
-    holo = new T.Group(); holo.position.y = .15; pivot.add(holo);
-    const hm = op => new T.MeshBasicMaterial({ color: LIME, transparent: true, opacity: op, blending: T.AdditiveBlending, depthWrite: false });
-    const ringA = new T.Mesh(new T.TorusGeometry(2.05, .009, 6, 220), hm(.6)); ringA.rotation.set(Math.PI / 2 + .38, .1, 0);
-    const ringB = new T.Mesh(new T.TorusGeometry(2.35, .006, 6, 220), hm(.38)); ringB.rotation.set(Math.PI / 2 - .3, -.45, 0);
-    const tp = [];
-    for (let i = 0; i < 120; i++) { const a = i / 120 * Math.PI * 2, r2 = i % 10 === 0 ? 1.68 : 1.78; tp.push(new T.Vector3(Math.cos(a) * 1.86, 0, Math.sin(a) * 1.86), new T.Vector3(Math.cos(a) * r2, 0, Math.sin(a) * r2)); }
-    const ticks = new T.LineSegments(new T.BufferGeometry().setFromPoints(tp), new T.LineBasicMaterial({ color: LIME, transparent: true, opacity: .5, blending: T.AdditiveBlending, depthWrite: false }));
-    ticks.position.y = -.78;
-    holo.add(ringA, ringB, ticks);
-    for (let i = 0; i < 3; i++) { const n = new T.Mesh(new T.SphereGeometry(.05, 12, 10), hm(1)); n.add(new T.Mesh(new T.SphereGeometry(.13, 12, 10), hm(.18))); holo.add(n); nodes.push(n); }
-    // a faint lime grid floor under the crown, fading into the dark
-    floor = new T.Mesh(new T.PlaneGeometry(36, 36), new T.ShaderMaterial({
-      transparent: true, depthWrite: false, blending: T.AdditiveBlending, extensions: { derivatives: true },
-      uniforms: { uLime: { value: new T.Color(LIME) }, uA: { value: 1 }, uT: { value: 0 } },
-      vertexShader: 'varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-      fragmentShader: 'uniform vec3 uLime; uniform float uA, uT; varying vec2 vP; float L(float x){ float f = abs(fract(x) - .5); return 1.0 - smoothstep(0.0, fwidth(x) * 1.4, .5 - f); } void main(){ vec2 g = vP / 1.1 + vec2(0.0, uT * .25); float l = max(L(g.x), L(g.y)); float fade = exp(-dot(vP, vP) / 60.0); gl_FragColor = vec4(uLime, l * fade * .32 * uA); }'
-    }));
-    floor.rotation.x = -Math.PI / 2; floor.position.set(2.7, -1.75, -1); stage.add(floor);
     [].forEach(   // the crown stands alone now (shapes removed)
     ([x, y, z, r, kind]) => {
       const m = kind === 'sphere' ? new T.Mesh(new T.SphereGeometry(1, 48, 32), chrome) : new T.Mesh(new T.BoxGeometry(1.5, 1.5, 1.5), ceramic);
@@ -465,7 +444,6 @@
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
     U.uSpread.value = small() ? 70 : 230; U.uDimIn.value = small() ? .06 : .22;
     if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.userData.base = .7; } else { pivot.position.set(2.7, .55, 0); pivot.userData.base = 1; }
-    if (floor) floor.position.set(pivot.position.x, pivot.position.y - 2.3 * pivot.userData.base, pivot.position.z - 1);
     pivot.scale.setScalar(pivot.userData.base);
     placeHeroShapes(shapes);
     rebuild();
@@ -564,27 +542,19 @@
       pivot.rotation.y += ((cx * .9) - pivot.rotation.y) * .07; pivot.rotation.x += ((.28 + cy * .4) - pivot.rotation.x) * .07; pivot.rotation.z = Math.sin(t * .6) * .04;
       jumpVel -= .006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > .02 ? -jumpVel * .35 : 0; }
       crown.position.y = Math.sin(t * 1.1) * .08 + jump; crown.scale.setScalar(hoverScale);
-      // a real scroll down dissolves the crown into lime sparks; a real scroll back up near the top re-forms it
-      const dY = scrollY - lastSY; lastSY = scrollY;
-      if (dY && Math.sign(dY) !== Math.sign(acc)) acc = 0;
-      acc += dY;
-      if (!gone && scrollY > 30 && acc > 24) {
-        gone = true;
-        if (!reduce) { tips.forEach(tp => burst(tp.getWorldPosition(new T.Vector3()), 14, LIME, .06));
-          burst(crown.getWorldPosition(new T.Vector3()), 70, LIME, .07); burst(crown.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, .5, 0)), 30, 0xffffff, .05); }
-      } else if (gone && (scrollY < 10 || (acc < -80 && scrollY < innerHeight * .7))) gone = false;
-      dis += ((gone ? 1 : 0) - dis) * (reduce ? 1 : Math.min(1, dt * (gone ? 9 : 4)));
-      const e = dis * dis * (3 - 2 * dis);
-      pivot.scale.setScalar(Math.max(.0001, (pivot.userData.base || 1) * (1 - e)));
-      crown.rotation.y += e * 3;
-      pivot.visible = e < .995;
-      if (holo) {
-        holo.children[0].rotation.z += dt * .35; holo.children[1].rotation.z -= dt * .22; holo.children[2].rotation.y += dt * .12;
-        nodes.forEach((n, i) => { const ring = holo.children[i % 2], r = i % 2 ? 2.35 : 2.05, a = t * (i % 2 ? -.5 : .7) + i * 2.1;
-          n.position.set(Math.cos(a) * r, Math.sin(a) * r, 0).applyEuler(ring.rotation); n.scale.setScalar(1 + Math.sin(t * 4 + i) * .25); });
+      // scrolling dissolves the crown into lime sparks; it is gone a short way down and re-forms in reverse on the way back up
+      const span = Math.min(320, innerHeight * .38);
+      const target = reduce ? (scrollY > 20 ? 1 : 0) : Math.min(1, Math.max(0, scrollY / span));
+      const prev = disShown;
+      disShown += (target - disShown) * (reduce ? 1 : Math.min(1, dt * 12));
+      const e = disShown * disShown * (3 - 2 * disShown);
+      if (!reduce && disShown > prev + .004 && disShown < .97) {          // shed sparks while it dissolves
+        const n = Math.min(40, Math.ceil((disShown - prev) * 160)), at = crown.getWorldPosition(new T.Vector3());
+        burst(at.add(new T.Vector3((Math.random() - .5) * 2.2 * (pivot.userData.base || 1), (Math.random() - .3) * 1.2, 0)), n, Math.random() < .75 ? LIME : 0xffffff, .05);
       }
-      if (floor) floor.material.uniforms.uA.value = 1 - e;
-      if (floor) floor.material.uniforms.uT.value = t;
+      pivot.scale.setScalar(Math.max(.0001, (pivot.userData.base || 1) * (1 - e)));
+      crown.rotation.y += e * 2.5;
+      pivot.visible = e < .995;
       orb.position.y = 1.55 + Math.sin(t * 1.6) * .1 + jump * 1.4; orb.rotation.y += dt * (.8 + spinVel * 8); orb.rotation.x += dt * .3;
       glow *= .96; gems.forEach((g, i) => { g.material.emissiveIntensity = .5 + glow * 3 + Math.max(0, Math.sin(t * 2 + i)) * .3; });
       root.classList.toggle('over-crown', !!hov);
