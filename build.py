@@ -162,6 +162,7 @@ FOOTER = f"""<footer>
 <script src="/assets/site.js" defer></script>
 <script src="/assets/motion.js" defer></script>
 <script src="/assets/founder-field.js" defer></script>
+<script src="/assets/bear-leap.js" defer></script>
 """
 
 
