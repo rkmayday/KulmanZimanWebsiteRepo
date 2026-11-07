@@ -256,7 +256,7 @@
 
   const stage = new T.Group(); scene.add(stage);          // moves up as the page scrolls
   const pivot = new T.Group(), crown = new T.Group(); pivot.add(crown); stage.add(pivot);
-  let disShown = 0;   // how dissolved the crown currently is (0 whole, 1 gone)
+  let disShown = scrollY > 12 ? 1 : 0, wantGone = scrollY > 12, lastSY = scrollY, acc = 0;   // crown dissolve: 0 whole, 1 gone
   const crownHits = [], gems = [], tips = [], shapes = [];
   const orb = new T.Mesh(new T.IcosahedronGeometry(.34, 0), limeGem);
   orb.add(new T.LineSegments(new T.EdgesGeometry(orb.geometry), new T.LineBasicMaterial({ color: 0xffffff })));
@@ -544,11 +544,14 @@
       pivot.rotation.y += ((cx * .9) - pivot.rotation.y) * .07; pivot.rotation.x += ((.28 + cy * .4) - pivot.rotation.x) * .07; pivot.rotation.z = Math.sin(t * .6) * .04;
       jumpVel -= .006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > .02 ? -jumpVel * .35 : 0; }
       crown.position.y = Math.sin(t * 1.1) * .08 + jump; crown.scale.setScalar(hoverScale);
-      // scrolling dissolves the crown into lime sparks; it is gone a short way down and re-forms in reverse on the way back up
-      const span = Math.min(320, innerHeight * .38);
-      const target = reduce ? (scrollY > 20 ? 1 : 0) : Math.min(1, Math.max(0, scrollY / span));
+      // scrolling down dissolves the crown into lime sparks; scrolling back up brings it back at full size.
+      // 20px of steady movement is needed to change direction, so trackpad jitter cannot make it flicker.
+      const dY = scrollY - lastSY; lastSY = scrollY;
+      if (dY) { if (Math.sign(dY) !== Math.sign(acc)) acc = 0; acc += dY; }
+      if (scrollY < 12) wantGone = false; else if (acc > 20) wantGone = true; else if (acc < -20) wantGone = false;
+      const target = wantGone ? 1 : 0;
       const prev = disShown;
-      disShown += (target - disShown) * (reduce ? 1 : Math.min(1, dt * 12));
+      disShown += (target - disShown) * (reduce ? 1 : Math.min(1, dt * (wantGone ? 10 : 7)));
       const e = disShown * disShown * (3 - 2 * disShown);
       if (!reduce && disShown > prev + .004 && disShown < .97) {          // shed sparks while it dissolves
         const n = Math.min(40, Math.ceil((disShown - prev) * 160)), at = crown.getWorldPosition(new T.Vector3());
