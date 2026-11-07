@@ -443,7 +443,9 @@
     unitsPerPx = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / h;   // world units per CSS px at the crown's depth
     rCam.left = 0; rCam.right = w; rCam.updateProjectionMatrix();
     U.uSpread.value = small() ? 70 : 230; U.uDimIn.value = small() ? .06 : .22;
-    if (small()) { pivot.position.set(.3, 2.35, -1.5); pivot.userData.base = .7; } else { pivot.position.set(2.7, .55, 0); pivot.userData.base = 1; }
+    // bigger crown: sized to the screen, clear of the headline on the left
+    if (small()) { pivot.position.set(-.05, 2.0, -1.5); pivot.userData.base = .9; }
+    else { const wide = Math.min(1, Math.max(0, (w / h - 1.1) / .8)); pivot.position.set(2.2 + wide * 1.1, .75, 0); pivot.userData.base = 1.2 + wide * .3; }
     pivot.scale.setScalar(pivot.userData.base);
     placeHeroShapes(shapes);
     rebuild();
