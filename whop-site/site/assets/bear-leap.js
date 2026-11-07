@@ -1,4 +1,4 @@
-// Home page: a high-tech bear leaps out of dark, lime-lit water and over the viewer as you scroll.
+// Home page: a powerful bronze bear (high-tech lime eyes and light) leaps out of dark, lime-lit water and over the viewer as you scroll.
 // Everything is built here from primitives (no model files). Scroll drives the leap; splashes run in real time.
 (() => {
   const sec = document.querySelector('.leap');
@@ -34,44 +34,65 @@
     const pm = new T.PMREMGenerator(renderer); scene.environment = pm.fromEquirectangular(tex).texture; pm.dispose(); tex.dispose();
   }
   scene.add(new T.HemisphereLight(0x9aa39c, 0x050505, .35));
-  const key = new T.DirectionalLight(0xffffff, 2.2); key.position.set(-4, 8, 6); scene.add(key);
-  const rim = new T.DirectionalLight(0xc6ff3d, 2.6); rim.position.set(3, 2, -8); scene.add(rim);
+  const key = new T.DirectionalLight(0xfff1dc, 2.6); key.position.set(-4, 8, 6); scene.add(key);
+  const rim = new T.DirectionalLight(0xc6ff3d, 1.5); rim.position.set(3, 2, -8); scene.add(rim);
   const under = new T.PointLight(0xc6ff3d, 0, 9, 2); scene.add(under);
 
-  // ---------- the bear ----------
-  const metal = new T.MeshStandardMaterial({ color: 0x1b1e1c, metalness: .92, roughness: .28, flatShading: true, envMapIntensity: 1.25 });
-  const plate = new T.MeshStandardMaterial({ color: 0x4a504c, metalness: 1, roughness: .18, flatShading: true });
+  // ---------- the bear: a powerful grizzly cast in dark bronze. One sculpted body (deep chest, shoulder hump,
+  // thick neck dropping to a low head), heavy front legs with claws. Built by bending spheres, no model files.
+  const bronze = new T.MeshStandardMaterial({ color: 0x9a6534, metalness: 1, roughness: .33, envMapIntensity: 1.8 });
+  const dark = new T.MeshStandardMaterial({ color: 0x5e3c1e, metalness: 1, roughness: .38, envMapIntensity: 1.5 });
+  const ivory = new T.MeshStandardMaterial({ color: 0xeadfc6, metalness: .3, roughness: .35 });
   const glow = new T.MeshBasicMaterial({ color: LIME });
-  const lineMat = new T.LineBasicMaterial({ color: LIME, transparent: true, opacity: .55 });
   const bear = new T.Group();
-  const part = (geo, mat, x, y, z, sx = 1, sy = 1, sz = 1, parent = bear, lines = true) => {
-    const m = new T.Mesh(geo, mat); m.position.set(x, y, z); m.scale.set(sx, sy, sz); parent.add(m);
-    if (lines) { const l = new T.LineSegments(new T.EdgesGeometry(geo, 18), lineMat); m.add(l); }
-    return m;
+  const lerpK = (keys, u) => { for (let i = 1; i < keys.length; i++) if (u <= keys[i][0]) { const [u0, a0] = keys[i - 1], [u1, a1] = keys[i], k = (u - u0) / (u1 - u0), e = k * k * (3 - 2 * k); return a0 + (a1 - a0) * e; } return keys[keys.length - 1][1]; };
+  // shape(u, y, z) bends a unit sphere: u runs tail (-1) to front (+1)
+  const sculpt = (len, keysY, keysZ, keysC, bump, segs = 64) => {
+    const g = new T.SphereGeometry(1, segs, Math.round(segs * .66)); const p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) { const u = p.getX(i), y = p.getY(i), z = p.getZ(i);
+      const ny = y * lerpK(keysY, u), nz = z * lerpK(keysZ, u);
+      p.setXYZ(i, u * len, ny + lerpK(keysC, u) + (bump ? bump(u, y) : 0), nz); }
+    g.computeVertexNormals(); return g;
   };
-  part(new T.IcosahedronGeometry(1, 1), metal, 0, 0, 0, 1.55, .95, .92);              // body
-  part(new T.IcosahedronGeometry(.7, 1), plate, .55, .35, 0, 1.05, .8, .9);           // shoulder plate (hump)
-  const head = new T.Group(); head.position.set(1.5, .42, 0); bear.add(head);
-  part(new T.IcosahedronGeometry(.68, 1), metal, 0, 0, 0, 1.05, .95, .98, head);
-  const snout = new T.CylinderGeometry(.2, .3, .5, 6); snout.rotateZ(-Math.PI / 2);
-  part(snout, plate, .62, -.1, 0, 1, 1, 1, head);
-  part(new T.IcosahedronGeometry(.09, 0), new T.MeshStandardMaterial({ color: 0x050505, metalness: .5, roughness: .2 }), .9, -.06, 0, 1, 1, 1, head, false);
-  part(new T.IcosahedronGeometry(.22, 1), plate, -.1, .62, .36, 1, 1, .55, head);
-  part(new T.IcosahedronGeometry(.22, 1), plate, -.1, .62, -.36, 1, 1, .55, head);
-  const eyeGeo = new T.SphereGeometry(.055, 10, 8);
-  part(eyeGeo, glow, .38, .16, .26, 1.4, 1, 1, head, false);
-  part(eyeGeo, glow, .38, .16, -.26, 1.4, 1, 1, head, false);
-  part(new T.IcosahedronGeometry(.22, 0), metal, -1.55, .25, 0);                      // tail
-  const legGeo = new T.IcosahedronGeometry(.34, 1); legGeo.scale(.78, 1.55, .8); legGeo.translate(0, -.42, 0);
-  const pawGeo = new T.IcosahedronGeometry(.25, 0);
+  const add = (geo, mat, x, y, z, parent = bear, rz = 0) => { const m = new T.Mesh(geo, mat); m.position.set(x, y, z); m.rotation.z = rz; parent.add(m); return m; };
+  // torso + neck: deep forequarters, rounded shoulder hump, neck dropping to a low head
+  add(sculpt(1.75,
+    [[-1, 1.1], [-.75, .9], [-.25, .84], [.25, 1.08], [.62, .86], [1, .62]],      // height
+    [[-1, 1.1], [-.75, .95], [-.25, .9], [.25, 1.0], [.62, .8], [1, .66]],        // width
+    [[-1, .1], [-.4, .08], [.25, .17], [.65, -.04], [1, -.3]],                    // spine line
+    null, 72), bronze, 0, 0, 0);
+  add(new T.SphereGeometry(.15, 16, 12), dark, -1.72, .3, 0);                  // tail
+  // head: broad skull, strong brow, tapering muzzle
+  const head = new T.Group(); head.position.set(1.9, -.36, 0); head.scale.setScalar(1.16); bear.add(head);
+  add(sculpt(.72,
+    [[-1, .8], [-.4, 1.0], [.15, .86], [.55, .58], [1, .46]],
+    [[-1, .9], [-.4, 1.08], [.15, .86], [.55, .52], [1, .42]],
+    [[-1, .03], [0, .06], [.55, -.08], [1, -.12]],
+    (u, y) => y > 0 ? .1 * Math.exp(-Math.pow((u + .1) / .22, 2)) * y : 0, 56), bronze, 0, 0, 0, head);
+  head.children[0].scale.set(1, .6, .64);
+  add(new T.SphereGeometry(.1, 16, 12), new T.MeshStandardMaterial({ color: 0x0b0806, metalness: .4, roughness: .25 }), .72, -.08, 0, head);   // nose
+  [1, -1].forEach(z => { const e = add(new T.SphereGeometry(.14, 16, 12), dark, -.32, .34, z * .3, head); e.scale.set(.55, 1, .5); });            // ears
+  [1, -1].forEach(z => { const e = add(new T.SphereGeometry(.038, 10, 8), glow, .24, .1, z * .25, head); e.scale.set(1.6, 1, 1); });            // eyes
+  // legs: one tapered column each, growing out of the body (u runs paw -1 to shoulder +1)
+  const column = (len, base, keysR, keysX, zr) => {
+    const g = new T.SphereGeometry(1, 40, 40); const p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) { const x = p.getX(i), v = p.getY(i), z = p.getZ(i), r = lerpK(keysR, v) * base;
+      p.setXYZ(i, x * r + lerpK(keysX, v), (v - 1) * len / 2, z * r * zr); }
+    g.computeVertexNormals(); return g;
+  };
+  const frontGeo = column(1.95, .3, [[-1, 1.25], [-.9, 1.05], [-.72, .8], [-.3, .92], [.35, 1.3], [1, 1.2]], [[-1, .12], [-.8, .06], [-.6, 0], [1, 0]], .95);
+  const hindGeo = column(1.85, .3, [[-1, 1.25], [-.9, 1.0], [-.68, .74], [-.15, .88], [.45, 1.55], [1, 1.35]], [[-1, .08], [-.75, -.04], [-.2, -.12], [.4, .04], [1, 0]], .9);
+  const claw = new T.ConeGeometry(.04, .22, 6); claw.rotateZ(-Math.PI / 2 - .55);
   const legs = [];
-  [[.85, .42, 1], [.85, -.42, 1], [-.85, .42, -1], [-.85, -.42, -1]].forEach(([x, z, front]) => {
-    const hip = new T.Group(); hip.position.set(x, -.35, z); bear.add(hip);
-    part(legGeo, metal, 0, 0, 0, 1, 1, 1, hip);
-    part(pawGeo, plate, .08, -.92, 0, 1.2, .62, 1.05, hip);
-    legs.push({ hip, front });
-  });
-  bear.scale.setScalar(1.15);
+  const leg = (x, y, z, front) => {
+    const hip = new T.Group(); hip.position.set(x, y, z); bear.add(hip);
+    add(front ? frontGeo : hindGeo, bronze, 0, 0, 0, hip);
+    add(new T.SphereGeometry(.27, 28, 18), dark, front ? .16 : .1, front ? -1.86 : -1.76, 0, hip).scale.set(1.25, .52, 1.0);   // paw pad
+    if (front) for (let k = 0; k < 4; k++) add(claw, ivory, .46, -1.92, -.17 + k * .113, hip);
+    legs.push({ hip, front: front ? 1 : -1 });
+  };
+  leg(.82, .32, .45, true); leg(.82, .32, -.45, true); leg(-.95, .32, .44, false); leg(-.95, .32, -.44, false);
+  bear.scale.setScalar(1.02);
   scene.add(bear);
 
   // ---------- water ----------
@@ -181,8 +202,8 @@
     // legs: tucked on take-off, stretched in flight, reaching on the way out
     const stretch = Math.sin(Math.min(1, t * 1.6) * Math.PI * .5);
     legs.forEach(({ hip, front }, i) => { const sway = Math.sin(clock * 3 + i) * .05 * (reduce ? 0 : 1);
-      hip.rotation.z = front > 0 ? (.35 + stretch * 1.15 + sway) : (-.45 - stretch * 1.0 + sway); });
-    head.rotation.z = -pitch * .35;
+      hip.rotation.z = front > 0 ? (.2 + stretch * .65 + sway) : (-.25 - stretch * .6 + sway); });
+    head.rotation.z = -.22 - pitch * .25;
     // splash when the bear breaks the surface (either direction)
     if ((lastY < 0) !== (pos.y < 0) && lastY > -8) splash(pos.x, pos.z, 1);
     lastY = pos.y;
