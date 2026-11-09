@@ -454,3 +454,12 @@ html.intro-hold #kz-intro,html.intro-hold #kz-intro *{animation-play-state:runni
 @media (prefers-reduced-motion:reduce){.pv-win,.pv-win img{transition:none}}
 .panel .art{display:none}
 .panel{align-items:center}
+
+/* logo animation, one take: black screen, white KZ. The black closes in around the logo, then lets go of the page. */
+html.intro #kz-intro{background:transparent!important;animation:none!important}
+#kz-intro .ki-frame{display:none!important}
+#kz-intro .ki-fill{background:#0a0a0a!important;animation:mki-fill 2.35s cubic-bezier(.7,0,.25,1) forwards!important}
+#kz-intro .ki-badge{background:transparent!important;box-shadow:none!important;opacity:0;animation:mki-badge 2.35s cubic-bezier(.3,1.25,.5,1) forwards!important}
+#kz-intro .ki-badge i{width:64px;background:#fff!important;animation:none!important}
+@keyframes mki-fill{0%,46%{clip-path:inset(0 round 0);opacity:1}74%{clip-path:inset(calc(50% - 56px) calc(50% - 56px) round 28px);opacity:1}88%,100%{clip-path:inset(calc(50% - 50px) calc(50% - 50px) round 26px);opacity:0}}
+@keyframes mki-badge{0%{transform:scale(.6);opacity:0}16%{transform:scale(1);opacity:1}74%{transform:scale(1);opacity:1}88%,100%{transform:scale(.9);opacity:0}}
