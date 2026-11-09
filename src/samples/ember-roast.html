@@ -44,6 +44,31 @@ h1,h2{letter-spacing:-.02em}
 @media (max-width:560px){.h3d .chip:last-of-type{display:none}}
 .phone{width:min(300px,100%);margin-inline:auto;border-radius:38px;padding:14px;background:#2b1a12;box-shadow:0 40px 80px -30px rgba(43,26,18,.5)}
 .phone > div{border-radius:28px;background:var(--panel);padding:18px;display:grid;gap:10px}
+
+.er-stage{justify-items:center;text-align:center;background:radial-gradient(70% 60% at 50% 35%,#fff9f0,var(--panel) 70%)}
+.er-cup{position:relative;width:min(240px,62vw);height:300px;display:grid;justify-items:center;align-items:end;margin-top:10px}
+.er-glass{position:relative;width:78%;height:calc(var(--sz,1) * 70px + 140px);border-radius:10px 10px 46px 46px;background:linear-gradient(90deg,rgba(255,255,255,.55),rgba(255,255,255,.08) 30%,rgba(255,255,255,.25) 70%,rgba(255,255,255,.6));
+  box-shadow:inset 0 0 0 3px rgba(122,98,83,.25),0 30px 50px -30px rgba(43,26,18,.5);overflow:hidden;transition:height .7s cubic-bezier(.2,.8,.2,1);z-index:2;margin-bottom:14px}
+.er-fill{position:absolute;inset:auto 6px 6px;height:calc(100% - 22px);display:flex;flex-direction:column-reverse;border-radius:6px 6px 40px 40px;overflow:hidden}
+.er-l{flex:none;height:var(--h,0%);transition:height .8s cubic-bezier(.2,.8,.2,1),background .6s}
+.er-esp{background:linear-gradient(180deg,#5a2e14,#2b1408)}
+.er-choc{background:linear-gradient(180deg,#6b3a1e,#4a2410)}
+.er-milk{background:linear-gradient(180deg,var(--mk,#f3e3cc),color-mix(in srgb,var(--mk,#f3e3cc),#c8743a 25%))}
+.er-foam{background:repeating-radial-gradient(circle at 30% 40%,#fffaf2 0 6px,#f7eadb 6px 9px);box-shadow:inset 0 -6px 10px -6px rgba(0,0,0,.12)}
+.er-ice{position:absolute;inset:0;pointer-events:none;opacity:var(--ice,0);transition:opacity .5s}
+.er-ice i{position:absolute;width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(220,240,255,.25));box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7);animation:ericebob 3s ease-in-out infinite}
+.er-ice i:nth-child(1){left:14%;top:18%;transform:rotate(12deg)}.er-ice i:nth-child(2){left:52%;top:30%;transform:rotate(-18deg);animation-delay:-1s}.er-ice i:nth-child(3){left:30%;top:52%;transform:rotate(30deg);animation-delay:-2s}
+@keyframes ericebob{50%{translate:0 -6px}}
+.er-saucer{position:absolute;bottom:0;width:100%;height:22px;border-radius:50%;background:radial-gradient(60% 60% at 50% 40%,#fff,#e9dcc8);box-shadow:0 10px 20px -10px rgba(43,26,18,.4)}
+.er-steam{position:absolute;top:0;left:50%;width:100px;height:70px;transform:translateX(-50%);opacity:var(--steam,1);transition:opacity .5s;z-index:3}
+.er-steam i{position:absolute;bottom:0;width:10px;height:56px;border-radius:50%;background:linear-gradient(transparent,rgba(122,98,83,.28),transparent);filter:blur(3px);animation:ersteam 2.4s ease-in-out infinite}
+.er-steam i:nth-child(1){left:22px}.er-steam i:nth-child(2){left:46px;animation-delay:-.8s}.er-steam i:nth-child(3){left:70px;animation-delay:-1.6s}
+@keyframes ersteam{0%{transform:translateY(16px) scaleX(.6);opacity:0}40%{opacity:1}100%{transform:translateY(-20px) scaleX(1.4) rotate(8deg);opacity:0}}
+.er-name{font:600 1.15rem var(--display)}
+.er-tray{width:100%;display:grid;gap:8px;text-align:left}
+.er-tray .row-ui{animation:pop .4s both}
+.er-tray .total{display:flex;justify-content:space-between;font-weight:700;padding:6px 4px 0}
+@media (prefers-reduced-motion:reduce){.er-steam i,.er-ice i{animation:none}}
 </style>
 </head>
 <body>
@@ -83,6 +108,32 @@ h1,h2{letter-spacing:-.02em}
     <div><b><span data-count="2">2</span></b><span>doors from the roaster</span></div>
   </div>
   <p class="fine" style="margin-top:14px">Figures on this sample site are illustrative.</p>
+</div></section>
+
+<section class="sec" id="build"><div class="wrap">
+  <div class="head"><span class="k">Build your drink</span><h2>Make it <em>exactly</em> how you like it.</h2><p class="lede">Choose a drink, your milk and a size. Watch it come together, then add it to your order.</p></div>
+  <div class="lab">
+    <div class="card">
+      <div><div class="lab-label">Drink</div><div class="seg" id="er-drink" style="margin-top:10px"><button type="button" data-v="latte" aria-pressed="true">Latte</button><button type="button" data-v="flat" aria-pressed="false">Flat white</button><button type="button" data-v="capp" aria-pressed="false">Cappuccino</button><button type="button" data-v="mocha" aria-pressed="false">Mocha</button><button type="button" data-v="cold" aria-pressed="false">Cold brew</button></div></div>
+      <div><div class="lab-label">Milk</div><div class="seg" id="er-milk" style="margin-top:10px"><button type="button" data-v="whole" aria-pressed="true">Whole</button><button type="button" data-v="oat" aria-pressed="false">Oat</button><button type="button" data-v="almond" aria-pressed="false">Almond</button><button type="button" data-v="none" aria-pressed="false">No milk</button></div></div>
+      <div><div class="lab-label">Size</div><div class="seg" id="er-size" style="margin-top:10px"><button type="button" data-v="0" aria-pressed="false">Small</button><button type="button" data-v="1" aria-pressed="true">Regular</button><button type="button" data-v="2" aria-pressed="false">Large</button></div></div>
+      <div><div class="lab-label">Extras</div><div class="seg" id="er-extra" style="margin-top:10px"><button type="button" data-v="shot" aria-pressed="false">Extra shot +$0.75</button><button type="button" data-v="vanilla" aria-pressed="false">Vanilla +$0.50</button></div></div>
+      <div class="lab-stats"><div><b id="er-price">$4.50</b><span>price</span></div><div><b id="er-caf">130mg</b><span>caffeine</span></div><div><b id="er-eta">4 min</b><span>ready in</span></div></div>
+      <button class="btn" type="button" id="er-add">Add to order</button>
+    </div>
+    <div class="card er-stage">
+      <div class="er-cup" id="er-cup" aria-hidden="true">
+        <div class="er-steam"><i></i><i></i><i></i></div>
+        <div class="er-glass"><div class="er-fill">
+          <div class="er-l er-foam"></div><div class="er-l er-milk"></div><div class="er-l er-choc"></div><div class="er-l er-esp"></div>
+          <div class="er-ice"><i></i><i></i><i></i></div>
+        </div></div>
+        <div class="er-saucer"></div>
+      </div>
+      <p class="er-name" id="er-name">Regular whole milk latte</p>
+      <div class="er-tray" id="er-tray"><span class="mut">Your order is empty.</span></div>
+    </div>
+  </div>
 </div></section>
 
 <section class="sec" id="menu"><div class="wrap">
@@ -210,5 +261,44 @@ h1,h2{letter-spacing:-.02em}
 <script src="{{THREE}}"></script>
 <script src="{{ASSETS}}sample-kit.js" defer></script>
 <script src="{{ASSETS}}sample-3d.js" defer></script>
+
+<script>
+// Ember Roast sample: drink builder (nothing is ordered or sent)
+(() => {
+  const $ = s => document.querySelector(s);
+  const D = { latte: { n: 'latte', p: 4.5, esp: 22, milk: 58, foam: 10, choc: 0 }, flat: { n: 'flat white', p: 4.25, esp: 32, milk: 56, foam: 4, choc: 0 },
+    capp: { n: 'cappuccino', p: 4.25, esp: 26, milk: 34, foam: 30, choc: 0 }, mocha: { n: 'mocha', p: 5, esp: 20, milk: 44, foam: 10, choc: 18 }, cold: { n: 'cold brew', p: 4.75, esp: 62, milk: 22, foam: 0, choc: 0, cold: 1 } };
+  const MILK = { whole: ['whole milk', '#f3e3cc'], oat: ['oat milk', '#ead7b4'], almond: ['almond milk', '#efe2cf'], none: ['', ''] };
+  const SIZE = ['Small', 'Regular', 'Large'];
+  const st = { drink: 'latte', milk: 'whole', size: 1, extra: new Set() }, order = [];
+  const money = v => '$' + v.toFixed(2);
+  const seg = (id, key, multi) => document.querySelectorAll(id + ' button').forEach(b => b.addEventListener('click', () => {
+    if (multi) { const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on); on ? st.extra.add(b.dataset.v) : st.extra.delete(b.dataset.v); }
+    else { document.querySelectorAll(id + ' button').forEach(o => o.setAttribute('aria-pressed', o === b)); st[key] = key === 'size' ? +b.dataset.v : b.dataset.v; }
+    render(); }));
+  seg('#er-drink', 'drink'); seg('#er-milk', 'milk'); seg('#er-size', 'size'); seg('#er-extra', 'extra', true);
+  const calc = () => { const d = D[st.drink], noMilk = st.milk === 'none';
+    const price = d.p + st.size * .5 + (st.extra.has('shot') ? .75 : 0) + (st.extra.has('vanilla') ? .5 : 0) + (st.milk === 'oat' || st.milk === 'almond' ? 0 : 0);
+    const caf = (d.cold ? 155 : 130) + st.size * 30 + (st.extra.has('shot') ? 65 : 0);
+    const eta = d.cold ? 2 : 4 + (st.extra.has('shot') ? 1 : 0);
+    const name = `${SIZE[st.size]} ${noMilk ? '' : MILK[st.milk][0] + ' '}${d.n}${st.extra.has('vanilla') ? ' with vanilla' : ''}${st.extra.has('shot') ? ', extra shot' : ''}`.replace(/\s+/g, ' ');
+    return { d, price, caf, eta, name, noMilk }; };
+  function render() {
+    const { d, price, caf, eta, name, noMilk } = calc(), cup = $('#er-cup');
+    const esp = d.esp + (st.extra.has('shot') ? 8 : 0), milk = noMilk ? 0 : d.milk, foam = noMilk ? 0 : d.foam;
+    const set = (sel, h) => cup.querySelector(sel).style.setProperty('--h', h + '%');
+    set('.er-esp', noMilk ? Math.min(92, esp + d.milk * .9) : esp); set('.er-choc', d.choc); set('.er-milk', milk); set('.er-foam', foam);
+    cup.style.setProperty('--mk', MILK[st.milk][1] || '#f3e3cc'); cup.style.setProperty('--sz', st.size);
+    cup.style.setProperty('--ice', d.cold ? 1 : 0); cup.style.setProperty('--steam', d.cold ? 0 : 1);
+    $('#er-price').textContent = money(price); $('#er-caf').textContent = caf + 'mg'; $('#er-eta').textContent = eta + ' min';
+    $('#er-name').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  }
+  $('#er-add').addEventListener('click', () => { const { price, name } = calc(); order.push([name, price]);
+    const total = order.reduce((a, [, p]) => a + p, 0);
+    $('#er-tray').innerHTML = order.map(([n, p]) => `<div class="row-ui"><span>${n}</span><b>${money(p)}</b></div>`).join('') +
+      `<div class="total"><span>${order.length} drink${order.length > 1 ? 's' : ''} · ready in ${4 + order.length} min</span><span>${money(total)}</span></div>`; });
+  render();
+})();
+</script>
 </body>
 </html>

@@ -24,6 +24,30 @@
 .log{font:400 13px/1.7 var(--mono);color:var(--mut)}
 .log b{color:var(--acc);font-weight:500}
 .art-c{--a:radial-gradient(70% 70% at 70% 25%,#5ef0ff40,transparent 60%),radial-gradient(60% 60% at 20% 80%,#8b7bff40,transparent 60%),linear-gradient(150deg,#101a30,#05070f)}
+
+.sy-ask{display:flex;gap:8px}
+.sy-ask input{flex:1;min-width:0;font:inherit;font-size:16px;color:var(--fg);background:var(--panel2);border:0;border-radius:12px;padding:0 14px;height:42px;box-shadow:inset 0 0 0 1px var(--line)}
+.sy-ask input:focus{outline:0;box-shadow:inset 0 0 0 1.5px var(--acc)}
+.sy-log{min-height:260px;max-height:340px;overflow:auto;display:grid;gap:8px;align-content:start;padding:14px;border-radius:14px;background:#060912;box-shadow:inset 0 0 0 1px var(--line);font:400 13px/1.55 var(--mono)}
+.sy-idle{color:var(--mut)}
+.sy-line{display:flex;gap:10px;align-items:flex-start;color:#c9d3ea;animation:pop .35s cubic-bezier(.2,.8,.2,1) both}
+.sy-line .st{flex:none;width:16px;text-align:center;color:var(--mut)}
+.sy-line.done .st{color:var(--acc)}
+.sy-line.run .st::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--acc);border-right-color:transparent;animation:syspin .7s linear infinite}
+@keyframes syspin{to{transform:rotate(360deg)}}
+.sy-line b{color:var(--acc);font-weight:500}
+.sy-line.user{color:var(--fg)}
+.sy-approve{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--acc) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 45%,transparent);color:var(--fg);animation:pop .35s both}
+.sy-graph{width:100%;height:auto;border-radius:16px;background:radial-gradient(70% 70% at 50% 50%,#0f1830,#070a14);box-shadow:inset 0 0 0 1px var(--line)}
+.sy-graph .edge{stroke:#26314f;stroke-width:1.5}
+.sy-graph .edge.on{stroke:var(--acc);stroke-width:2.5;filter:drop-shadow(0 0 6px var(--acc))}
+.sy-graph .pulse{fill:var(--acc)}
+.sy-graph .node circle{fill:#0d1424;stroke:#2a3658;stroke-width:1.5;transition:fill .3s,stroke .3s}
+.sy-graph .node.on circle{fill:#103340;stroke:var(--acc)}
+.sy-graph .node.used circle{stroke:color-mix(in srgb,var(--acc) 60%,#2a3658)}
+.sy-graph .node text{fill:#c9d3ea;font:600 13px var(--body);text-anchor:middle}
+.sy-graph .core circle{fill:url(#sycore);stroke:var(--acc);stroke-width:2}
+.sy-graph .core text{fill:#03141b;font:700 14px var(--display)}
 </style>
 </head>
 <body>
@@ -63,6 +87,24 @@
     <div><b>SOC <em>2</em></b><span>Type II audited</span></div>
   </div>
   <p class="fine" style="margin-top:14px">Figures on this sample site are illustrative.</p>
+</div></section>
+
+<section class="sec" id="agent"><div class="wrap">
+  <div class="head"><span class="k">Live demo</span><h2>Give it a task. <em>Watch it work.</em></h2><p class="lede">Pick a request or type your own. Synthra plans it, uses the right tools and stops to ask before anything sensitive.</p></div>
+  <div class="lab">
+    <div class="card">
+      <div class="lab-label">Try a request</div>
+      <div class="seg" id="sy-presets"><button type="button" data-p="vpn" aria-pressed="false">Reset my VPN access</button><button type="button" data-p="onboard" aria-pressed="false">Onboard Priya on Monday</button><button type="button" data-p="invoices" aria-pressed="false">Reconcile March invoices</button></div>
+      <form class="sy-ask" id="sy-form"><input id="sy-input" placeholder="…or type a task for the agent" aria-label="Task for the agent" maxlength="80"><button class="btn sm" type="submit">Run</button></form>
+      <div class="sy-log" id="sy-log" aria-live="polite"><p class="sy-idle">Waiting for a task.</p></div>
+    </div>
+    <div class="card">
+      <div class="lab-label">Tools in use</div>
+      <svg class="sy-graph" id="sy-graph" viewBox="0 0 520 360" aria-hidden="true"></svg>
+      <div class="lab-stats"><div><b id="sy-steps">0</b><span>steps done</span></div><div><b id="sy-time">0.0s</b><span>agent time</span></div><div><b id="sy-saved">0 min</b><span>saved for your team</span></div></div>
+    </div>
+  </div>
+  <p class="fine" style="margin-top:14px">A simulated demo for this sample site. No real systems are touched.</p>
 </div></section>
 
 <section class="sec" id="product"><div class="wrap">
@@ -195,5 +237,66 @@
 <script src="{{THREE}}"></script>
 <script src="{{ASSETS}}sample-kit.js" defer></script>
 <script src="{{ASSETS}}sample-3d.js" defer></script>
+
+<script>
+// Synthra sample: a simulated agent run (nothing is sent anywhere)
+(() => {
+  const $ = s => document.querySelector(s), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TOOLS = { okta: 'Okta', jira: 'Jira', slack: 'Slack', netsuite: 'NetSuite', workday: 'Workday', gws: 'Google' };
+  const POS = { okta: [90, 70], jira: [260, 40], slack: [430, 70], netsuite: [450, 260], workday: [260, 320], gws: [70, 270] };
+  const PLANS = {
+    vpn: { ask: 'Reset my VPN access, locked out since this morning.', mins: 25, steps: [['okta', 'okta.users.get', 'Verify identity for j.alvarez'], ['okta', 'okta.factors.reset', 'Reset the VPN token', true], ['jira', 'jira.comment', 'Update ticket HELP-2291'], ['slack', 'slack.reply', 'Tell the requester it is fixed']] },
+    onboard: { ask: 'Onboard Priya Shah, starting Monday.', mins: 90, steps: [['workday', 'workday.worker.get', 'Read Priya’s start date and role'], ['okta', 'okta.users.create', 'Create her account and groups', true], ['gws', 'gws.mailbox.create', 'Set up email and calendar'], ['slack', 'slack.invite', 'Add her to 6 team channels'], ['jira', 'jira.issue.create', 'Open a laptop shipment ticket']] },
+    invoices: { ask: 'Reconcile March invoices against the ledger.', mins: 180, steps: [['netsuite', 'netsuite.invoices.list', 'Pull 214 March invoices'], ['netsuite', 'netsuite.ledger.match', 'Match them against the ledger'], ['gws', 'sheets.write', 'Write 3 mismatches to a review sheet'], ['slack', 'slack.post', 'Ask Finance to approve the fixes', true]] }
+  };
+  const pick = txt => { const t = txt.toLowerCase(); if (/vpn|password|access|locked|reset/.test(t)) return 'vpn'; if (/onboard|hire|new|start/.test(t)) return 'onboard'; if (/invoice|ledger|reconcile|finance|expense/.test(t)) return 'invoices';
+    return null; };
+  // graph
+  const g = $('#sy-graph'), NS = 'http://www.w3.org/2000/svg';
+  g.innerHTML = '<defs><radialGradient id="sycore"><stop offset="0" stop-color="#9ff7ff"/><stop offset="1" stop-color="#5ef0ff"/></radialGradient></defs>';
+  const el = (tag, at, parent = g) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); parent.append(e); return e; };
+  const edges = {}, nodes = {};
+  for (const k in POS) edges[k] = el('line', { class: 'edge', x1: 260, y1: 180, x2: POS[k][0], y2: POS[k][1] });
+  for (const k in POS) { const n = el('g', { class: 'node' }); el('circle', { cx: POS[k][0], cy: POS[k][1], r: 34 }, n); const t = el('text', { x: POS[k][0], y: POS[k][1] + 5 }, n); t.textContent = TOOLS[k]; nodes[k] = n; }
+  const core = el('g', { class: 'node core' }); el('circle', { cx: 260, cy: 180, r: 42 }, core); const ct = el('text', { x: 260, y: 185, 'text-anchor': 'middle' }, core); ct.textContent = 'Agent';
+  const pulse = el('circle', { class: 'pulse', r: 5, cx: 260, cy: 180, opacity: 0 });
+  const light = k => { for (const n in nodes) { nodes[n].classList.toggle('on', n === k); edges[n].classList.toggle('on', n === k); } if (k) nodes[k].classList.add('used');
+    if (!k || reduce) { pulse.setAttribute('opacity', 0); return; } const [x, y] = POS[k], t0 = performance.now();
+    const go = now => { const f = ((now - t0) % 900) / 900; pulse.setAttribute('cx', 260 + (x - 260) * f); pulse.setAttribute('cy', 180 + (y - 180) * f); pulse.setAttribute('opacity', 1 - f * .4); if (nodes[k].classList.contains('on')) requestAnimationFrame(go); };
+    requestAnimationFrame(go); };
+  // run
+  const log = $('#sy-log'); let runId = 0;
+  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+  const line = (html, cls = '') => { const p = document.createElement('div'); p.className = 'sy-line ' + cls; p.innerHTML = '<span class="st">' + (cls === 'user' ? '›' : '') + '</span><span>' + html + '</span>'; log.append(p); log.scrollTop = log.scrollHeight; return p; };
+  async function run(key, ask) {
+    const id = ++runId, plan = PLANS[key]; log.innerHTML = ''; for (const n in nodes) nodes[n].classList.remove('used');
+    let steps = 0, t = 0; const clock = setInterval(() => { if (id === runId) $('#sy-time').textContent = (t += .1).toFixed(1) + 's'; }, 100);
+    $('#sy-steps').textContent = 0; $('#sy-saved').textContent = '0 min';
+    line(ask, 'user'); await wait(500); if (id !== runId) return;
+    if (!plan) { line('I can do that, but in this demo try one of the three requests above.'); clearInterval(clock); return; }
+    line('<b>Plan</b> · ' + plan.steps.length + ' steps, ' + [...new Set(plan.steps.map(s => TOOLS[s[0]]))].join(', ')); await wait(500);
+    for (const [tool, call, text, risky] of plan.steps) {
+      if (id !== runId) return;
+      if (risky) {
+        light(null); const box = document.createElement('div'); box.className = 'sy-approve';
+        box.innerHTML = '<span>Approval needed: <b>' + text + '</b></span><button class="btn sm" type="button">Approve</button>'; log.append(box); log.scrollTop = log.scrollHeight;
+        await new Promise(r => box.querySelector('button').addEventListener('click', r, { once: true })); if (id !== runId) return; box.remove();
+        line('<b>approval</b> granted by you', 'done').querySelector('.st').textContent = '✓';
+      }
+      light(tool); const l = line('<b>' + call + '</b> ' + text, 'run'); await wait(900 + Math.random() * 500); if (id !== runId) return;
+      l.className = 'sy-line done'; l.querySelector('.st').textContent = '✓'; $('#sy-steps').textContent = ++steps;
+    }
+    light(null); clearInterval(clock);
+    line('<b>Done.</b> Everything is logged and reversible.', 'done').querySelector('.st').textContent = '✓';
+    let m = 0; const tick = () => { m = Math.min(plan.mins, m + Math.ceil(plan.mins / 30)); $('#sy-saved').textContent = m + ' min'; if (m < plan.mins) requestAnimationFrame(tick); }; tick();
+  }
+  document.querySelectorAll('#sy-presets button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#sy-presets button').forEach(o => o.setAttribute('aria-pressed', o === b)); run(b.dataset.p, PLANS[b.dataset.p].ask); }));
+  $('#sy-form').addEventListener('submit', e => { e.preventDefault(); e.stopImmediatePropagation(); const v = $('#sy-input').value.trim(); if (!v) return;
+    document.querySelectorAll('#sy-presets button').forEach(o => o.setAttribute('aria-pressed', false)); run(pick(v), v); $('#sy-input').value = ''; }, true);
+  // start a demo when it first scrolls into view
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect(); document.querySelector('#sy-presets button').click(); } }, { threshold: .4 }).observe($('#agent'));
+})();
+</script>
 </body>
 </html>

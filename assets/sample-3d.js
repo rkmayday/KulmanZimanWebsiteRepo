@@ -49,7 +49,7 @@
   const face = (w, h, tex, z) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false })); m.position.z = z; return m; };
   const font = (f, size, weight = 600) => `${weight} ${size}px ${tok(f) || 'system-ui'}`;
 
-  let update = () => {}, camBase = new T.Vector3(0, 0, 8), look = new T.Vector3();
+  let update = () => {}, poke = () => {}, camBase = new T.Vector3(0, 0, 8), look = new T.Vector3();
   const kind = host.dataset.scene;
 
   // ---------- Ironpath: activity rings ----------
@@ -73,6 +73,7 @@
     const setArc = (p, a) => { p.arc.geometry.dispose(); p.arc.geometry = new T.TorusGeometry(p.r, tube, 24, Math.max(4, Math.round(160 * a)), Math.max(.001, a * Math.PI * 2));
       const ang = Math.PI / 2 + a * Math.PI * 2; p.capB.position.set(Math.cos(ang) * p.r, Math.sin(ang) * p.r, 0); };
     let t = 0;
+    poke = () => { t = 0; };   // tap: the rings empty and fill again
     camBase.set(0, 0, 7.2);
     update = (dt, s, px, py, time) => {
       t = reduce ? 1 : Math.min(1, t + dt / 2.2);
@@ -118,11 +119,14 @@
       const m = new T.Mesh(geo, glass); m.add(face(W - .04, H - .04, tex, .045)); scene.add(m);
       return { m, i };
     });
+    let shift = 0, shiftT = 0;
+    poke = () => { shiftT += 1; };   // tap: the front card goes to the back
     camBase.set(0, .2, 8.6); look.set(0, 0, -1);
     update = (dt, s, px, py, time) => {
       const spread = 1 + s * .5;
-      cards.forEach(({ m, i }) => { const k = i - 2;
-        m.position.set(k * .62 * spread, -k * .42 * spread + Math.sin(time * .7 + i) * .05, -i * .75 * spread);
+      shift += (shiftT - shift) * Math.min(1, dt * 6);
+      cards.forEach(({ m, i }) => { const n = cards.length, j = ((i - shift) % n + n) % n, k = j - 2, lift = Math.sin(Math.PI * Math.min(1, Math.max(0, j - (n - 1)))) * .6;
+        m.position.set(k * .62 * spread, -k * .42 * spread + Math.sin(time * .7 + i) * .05 + lift, -j * .75 * spread);
         m.rotation.set(.1 + py * .1, -.42 + px * .2, .02); });
     };
   }
@@ -170,11 +174,14 @@
       const m = new T.Mesh(bagGeo, [plain, plain, plain, plain, label, plain]); m.castShadow = true; scene.add(m);
       return m;
     });
+    const hop = [0, 0, 0], hopV = [0, 0, 0];
+    poke = () => { [1, 0, 2].forEach((b, n) => setTimeout(() => { hopV[b] = 4.2; }, n * 110)); };   // tap: the bags hop in a wave
     camBase.set(0, 1.5, 7.4); look.set(0, .86, 0);
     update = (dt, s, px, py, time) => {
+      for (let b = 0; b < 3; b++) { hopV[b] -= 14 * dt; hop[b] = Math.max(0, hop[b] + hopV[b] * dt); if (hop[b] === 0 && hopV[b] < 0) hopV[b] = 0; }
       const turn = px * .35 + s * .6 + Math.sin(time * .25) * .06;
       const spots = [[0, 0, .35, 0], [-1.35, 0, -.35, .42], [1.35, 0, -.35, -.42]];
-      bags.forEach((m, i) => { const [x, y, z, r] = spots[i]; const a = turn; m.position.set(x * Math.cos(a) + z * Math.sin(a), y, -x * Math.sin(a) + z * Math.cos(a)); m.rotation.y = r + a; });
+      bags.forEach((m, i) => { const [x, y, z, r] = spots[i]; const a = turn; m.position.set(x * Math.cos(a) + z * Math.sin(a), y + hop[i], -x * Math.sin(a) + z * Math.cos(a)); m.rotation.y = r + a; m.rotation.z = Math.sin(hop[i] * 1.6) * .08; });
     };
   }
 
@@ -225,6 +232,7 @@
     });
     const mk = (w, h, tex, x, y, z, ry) => { const m = new T.Mesh(slab(w, h, .06, .1), shell); m.add(face(w - .03, h - .03, tex, .05)); m.position.set(x, y, z); m.rotation.y = ry; m.userData.base = [x, y, z]; scene.add(m); return m; };
     const panels = [mk(3, 2.02, ed.tex, -.25, .25, 0, .2), mk(1.75, 1.33, pv.tex, 1.3, -.5, .9, -.25), mk(1.8, .93, tm.tex, -1.25, -1.0, .7, .28)];
+    poke = () => { typed = 0; shipped = false; hold = 0; ed.redraw(); pv.redraw(); tm.redraw(); };   // tap: type it again
     camBase.set(0, .05, 8.4);
     let tick = 0;
     update = (dt, s, px, py, time) => {
@@ -252,6 +260,14 @@
   let visible = true, px = 0, py = 0, tpx = 0, tpy = 0;
   new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(host);
   addEventListener('pointermove', e => { tpx = e.clientX / innerWidth - .5; tpy = e.clientY / innerHeight - .5; }, { passive: true });
+  // drag to spin the scene (momentum, then it eases back); a tap without dragging triggers the scene's reaction
+  let yaw = 0, pitch = 0, vy = 0, vp = 0, dragging = false, moved = 0, lx = 0, ly = 0;
+  host.style.touchAction = 'pan-y';
+  host.addEventListener('pointerdown', e => { if (e.target.closest('.chip,.dive-pill,a,button')) return; dragging = true; moved = 0; lx = e.clientX; ly = e.clientY; host.setPointerCapture(e.pointerId); host.classList.add('grab'); });
+  host.addEventListener('pointermove', e => { if (!dragging) return; const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
+    vy = dx * .006; vp = dy * .004; yaw += vy; pitch = Math.max(-.5, Math.min(.5, pitch + vp)); });
+  const up = () => { if (!dragging) return; dragging = false; host.classList.remove('grab'); if (moved < 6) { poke(); vy += .08; } host.dispatchEvent(new CustomEvent('kz-touched')); };
+  host.addEventListener('pointerup', up); host.addEventListener('pointercancel', up);
   document.fonts && document.fonts.ready.then(() => redraws.forEach(r => r()));
   let last = performance.now(), time = 0;
   function frame(now) {
@@ -262,7 +278,10 @@
     px += (tpx - px) * .05; py += (tpy - py) * .05;
     const r = host.getBoundingClientRect(), s = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height)));
     update(dt, reduce ? 0 : s, reduce ? 0 : px, reduce ? 0 : py, time);
-    cam.position.copy(camBase); cam.position.z += s * 1.2; cam.lookAt(look);
+    if (!dragging) { yaw += vy; pitch += vp; vy *= .93; vp *= .9; yaw *= .985; pitch *= .95; }
+    const off = camBase.clone().sub(look); off.z += s * 1.2;
+    off.applyAxisAngle(new T.Vector3(1, 0, 0), -pitch).applyAxisAngle(new T.Vector3(0, 1, 0), -yaw);
+    cam.position.copy(look).add(off); cam.lookAt(look);
     renderer.render(scene, cam);
   }
   requestAnimationFrame(frame);

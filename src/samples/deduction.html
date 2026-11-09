@@ -27,6 +27,27 @@
 .cal span{padding:10px 0;border-radius:10px;background:color-mix(in srgb,var(--fg) 5%,transparent)}
 .cal span.on{background:var(--acc);color:var(--on-acc);font-weight:700}
 .cal span.dot{box-shadow:inset 0 0 0 1.5px var(--acc2);color:var(--fg)}
+
+.dd-lab{display:grid;gap:14px}
+.dd-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
+.dd-task{color:var(--mut);min-height:1.6em}
+.dd-task b{color:var(--acc)}
+.dd-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:14px}
+@media (max-width:900px){.dd-grid{grid-template-columns:1fr}}
+.dd-editor,.dd-preview{border-radius:20px;overflow:hidden;background:#0b0e1c;box-shadow:inset 0 0 0 1px var(--line),0 40px 80px -50px rgba(0,0,0,.8);display:flex;flex-direction:column;min-height:400px}
+.dd-preview{background:#f5f6fb}
+.dd-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;background:#141831;font:500 12px var(--mono);color:#9aa0c2}
+.dd-preview .dd-bar{background:#e4e6f0;color:#5b6080}
+.dd-bar i{width:10px;height:10px;border-radius:50%;background:#ff6b6b}.dd-bar i:nth-child(2){background:#ffcc4d}.dd-bar i:nth-child(3){background:#5bd18b}
+.dd-bar span{margin-left:8px}.dd-bar em{margin-left:auto;font-style:normal;color:#2fa866}
+.dd-code{position:relative;flex:1;min-height:340px}
+.dd-hl,.dd-code textarea{position:absolute;inset:0;margin:0;padding:16px 18px;font:400 13.5px/1.7 var(--mono);white-space:pre;overflow:auto;tab-size:2;border:0}
+.dd-hl{pointer-events:none;color:#c9cdf0}
+.dd-code textarea{background:transparent;color:transparent;caret-color:#ffcc4d;resize:none;outline:0}
+.dd-code textarea::selection{background:rgba(255,204,77,.25);color:transparent}
+.dd-hl .t{color:#82aaff}.dd-hl .a{color:#c792ea}.dd-hl .s{color:#c3e88d}.dd-hl .c{color:#5f6690}.dd-hl .n{color:#f78c6c}.dd-hl .k{color:#c792ea}
+.dd-preview iframe{flex:1;width:100%;border:0;background:#fff;min-height:340px}
+.dd-err{margin:0;padding:10px 14px;font:500 12.5px var(--mono);color:#b3261e;background:#fdecea}
 </style>
 </head>
 <body>
@@ -66,6 +87,21 @@
     <div><b><span data-count="92">92</span><em>%</em></b><span>finish what they start</span></div>
   </div>
   <p class="fine" style="margin-top:14px">Figures on this sample site are illustrative.</p>
+</div></section>
+
+<section class="sec" id="play"><div class="wrap">
+  <div class="head"><span class="k">Try it now</span><h2>Write code. <em>See it move.</em></h2><p class="lede">This is a real playground. Edit the code on the left and the page on the right updates as you type. Pick a challenge to start.</p></div>
+  <div class="dd-lab">
+    <div class="dd-top"><div class="seg" id="dd-ch"><button type="button" data-c="0" aria-pressed="true">1 · Change the colour</button><button type="button" data-c="1" aria-pressed="false">2 · Make it bounce</button><button type="button" data-c="2" aria-pressed="false">3 · Count the clicks</button></div>
+      <button class="btn ghost sm" type="button" id="dd-reset">Reset</button></div>
+    <p class="dd-task" id="dd-task"></p>
+    <div class="dd-grid">
+      <div class="dd-editor"><div class="dd-bar"><i></i><i></i><i></i><span>index.html</span></div>
+        <div class="dd-code"><pre class="dd-hl" aria-hidden="true"><code id="dd-hl"></code></pre><textarea id="dd-src" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Code editor"></textarea></div></div>
+      <div class="dd-preview"><div class="dd-bar"><i></i><i></i><i></i><span>localhost:5173</span><em id="dd-status">● live</em></div>
+        <iframe id="dd-frame" title="Live preview" sandbox="allow-scripts"></iframe><p class="dd-err" id="dd-err" hidden></p></div>
+    </div>
+  </div>
 </div></section>
 
 <section class="sec" id="teaching"><div class="wrap">
@@ -200,5 +236,73 @@ btn.<span class="f">addEventListener</span>(<span class="s">'click'</span>, () =
 <script src="{{THREE}}"></script>
 <script src="{{ASSETS}}sample-kit.js" defer></script>
 <script src="{{ASSETS}}sample-3d.js" defer></script>
+
+<script>
+// Deduction sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.
+(() => {
+  const $ = s => document.querySelector(s);
+  const CH = [
+    { task: 'Change the button colour: find <b>#12142a</b> in the CSS and try <b>#ffcc4d</b> or any colour you like.',
+      code: `<style>
+  body { font-family: system-ui; display: grid; place-items: center; height: 100vh; margin: 0; background: #f5f6fb; }
+  .card { padding: 32px; border-radius: 20px; background: white; box-shadow: 0 20px 40px rgba(0,0,0,.08); text-align: center; }
+  button { background: #12142a; color: white; border: 0; padding: 14px 26px; border-radius: 99px; font-size: 16px; }
+</style>
+
+<div class="card">
+  <h2>My first app</h2>
+  <button>Ship it</button>
+</div>` },
+    { task: 'Make it bounce: change <b>animation: none</b> to <b>animation: bounce 1s infinite</b>.',
+      code: `<style>
+  body { font-family: system-ui; display: grid; place-items: center; height: 100vh; margin: 0; background: #12142a; }
+  .ball { width: 90px; height: 90px; border-radius: 50%; background: #ffcc4d; animation: none; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-120px); }
+  }
+</style>
+
+<div class="ball"></div>` },
+    { task: 'Count the clicks: click the button in the preview, then change <b>count + 1</b> to <b>count + 10</b>.',
+      code: `<style>
+  body { font-family: system-ui; display: grid; place-items: center; height: 100vh; margin: 0; background: #f5f6fb; }
+  button { font-size: 22px; padding: 18px 30px; border-radius: 16px; border: 0; background: #ffcc4d; }
+</style>
+
+<button id="btn">Clicked 0 times</button>
+
+<script>
+  let count = 0;
+  btn.addEventListener('click', () => {
+    count = count + 1;
+    btn.textContent = 'Clicked ' + count + ' times';
+  });
+<\/script>` }
+  ];
+  const src = $('#dd-src'), hl = $('#dd-hl'), frame = $('#dd-frame'), err = $('#dd-err');
+  const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const highlight = code => esc(code)
+    .replace(/('[^'\n]*'|"[^"\n]*")/g, '\u0001$1\u0002')
+    .replace(/(&lt;\/?)([a-z0-9]+)/gi, '$1<span class=t>$2</span>')
+    .replace(/\u0001/g, '<span class=s>').replace(/\u0002/g, '</span>')
+    .replace(/(#[0-9a-f]{3,8})\b/gi, '<span class=n>$1</span>')
+    .replace(/\b(let|const|function|return|if|else)\b/g, '<span class=k>$1</span>')
+    .replace(/(\/\/[^\n]*)/g, '<span class=c>$1</span>');
+  const BRIDGE = '<script>window.onerror=(m,s,l)=>{parent.postMessage({kzErr:String(m)+" (line "+l+")"},"*")}<\/script>';
+  let timer = 0, cur = 0;
+  const run = () => { err.hidden = true; frame.srcdoc = BRIDGE + src.value; $('#dd-status').textContent = '● live'; };
+  const sync = () => { hl.innerHTML = highlight(src.value) + '\n'; hl.parentElement.scrollTop = src.scrollTop; hl.parentElement.scrollLeft = src.scrollLeft; };
+  addEventListener('message', e => { if (e.source === frame.contentWindow && e.data && e.data.kzErr) { err.textContent = 'Oops: ' + e.data.kzErr; err.hidden = false; $('#dd-status').textContent = '● error'; } });
+  src.addEventListener('input', () => { sync(); $('#dd-status').textContent = '● updating'; clearTimeout(timer); timer = setTimeout(run, 280); });
+  src.addEventListener('scroll', sync);
+  src.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const a = src.selectionStart, b = src.selectionEnd; src.setRangeText('  ', a, b, 'end'); src.dispatchEvent(new Event('input')); } });
+  const load = i => { cur = i; src.value = CH[i].code; $('#dd-task').innerHTML = CH[i].task; sync(); run();
+    document.querySelectorAll('#dd-ch button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === i)); };
+  document.querySelectorAll('#dd-ch button').forEach(b => b.addEventListener('click', () => load(+b.dataset.c)));
+  $('#dd-reset').addEventListener('click', () => load(cur));
+  load(0);
+})();
+</script>
 </body>
 </html>
