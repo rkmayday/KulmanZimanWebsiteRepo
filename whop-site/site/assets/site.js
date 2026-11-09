@@ -120,7 +120,7 @@ window.kzGmail = (to, subject = '', body = '') => {
   // Affiliate calculator
   const r = $('#refs');
   if (r) {
-    const upd = () => { $('#refs-n').textContent = r.value; $('#refs-out').textContent = '$' + (r.value * 60).toLocaleString(); };
+    const upd = () => { $('#refs-n').textContent = r.value; $('#refs-out').textContent = '$' + (r.value * 113.6).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
     r.addEventListener('input', upd); upd();
   }
 

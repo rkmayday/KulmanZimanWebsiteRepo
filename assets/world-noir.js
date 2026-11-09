@@ -511,7 +511,7 @@
   });
 
   const clock = new T.Clock();
-  let running = true, lastScroll = scrollY;
+  let running = true, lastScroll = scrollY, rmLoop = false;
   const dotsEl = document.querySelector('.dots'); let lastDotY = NaN;
   // The ribbon runs on its own clock. It only ever counts forward, so every pattern always travels down the line;
   // scrolling (either way) just makes it count 50% faster, easing in and out.
@@ -552,13 +552,14 @@
     if (showStage) {
       stage.position.y = scrollY * unitsPerPx;
       camera.position.set(cx * .9, 1 - cy * .35, 12); camera.lookAt(cx * .3, .25, 0);
-      if (!dragging) { spinVel *= .965; spinVel += (.006 - spinVel) * .02; spin += spinVel * (reduce ? 0 : 1); }
-      crown.rotation.y = spin + scrollY * .0045;   // spins as you scroll
+      if (!dragging) { spinVel *= .965; spinVel += (.006 - spinVel) * .02; spin += spinVel * (reduce ? .4 : 1); }
+      crown.rotation.y = spin + (reduce ? 0 : scrollY * .0045);   // spins as you scroll
       const hov = !dragging && !coarse && hitCrown();
       hoverScale += ((hov || dragging ? 1.06 : 1) - hoverScale) * .12;
       pivot.rotation.y += ((cx * .9) - pivot.rotation.y) * .07; pivot.rotation.x += ((.28 + cy * .4) - pivot.rotation.x) * .07; pivot.rotation.z = Math.sin(t * .6) * .04;
       jumpVel -= .006; jump += jumpVel; if (jump < 0) { jump = 0; jumpVel = Math.abs(jumpVel) > .02 ? -jumpVel * .35 : 0; }
-      crown.position.y = Math.sin(t * 1.1) * .08 + jump; crown.scale.setScalar(hoverScale);
+      const ct = clock.elapsedTime;   // the crown keeps a slow, gentle float even with reduced motion
+      crown.position.y = Math.sin(ct * 1.1) * (reduce ? .04 : .08) + jump; crown.scale.setScalar(hoverScale);
       // scrolling down dissolves the crown into lime sparks; scrolling back up brings it back at full size.
       // 20px of steady movement is needed to change direction, so trackpad jitter cannot make it flicker.
       const dY = scrollY - lastSY; lastSY = scrollY;
@@ -645,6 +646,7 @@
     if (!reduce && dt > 0) { slowAvg = slowAvg * .95 + dt * .05; slowN++;
       if (slowN > 90 && slowAvg > 1 / 40 && curDpr > 1) { curDpr = Math.max(1, curDpr - .35); renderer.setPixelRatio(curDpr); renderer.setSize(innerWidth, innerHeight, false); U.uDpr.value = curDpr; slowN = 0; slowAvg = 1 / 60; } }
     if (!reduce) requestAnimationFrame(frame);
+    else if (showStage && !rmLoop) { rmLoop = true; requestAnimationFrame(() => { rmLoop = false; frame(); }); }   // reduced motion: only the crown keeps turning
   }
   if (reduce) {
     const still = () => { running = true; frame(); };

@@ -19,7 +19,39 @@ import json, pathlib, re, shutil, sys, urllib.parse
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
 SITE = "https://kulmanziman.shop"
-CHECKOUT = "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"
+CHECKOUT = "/products#packages"   # general "buy" links go to the packages; each package has its own checkout below
+
+# Website packages. Each "checkout" is that package's Whop checkout link.
+# Until a package has its own Whop plan, its button opens the project brief instead (so nobody is charged the wrong amount).
+PACKAGES = [
+    # key, name, price, scope, best-for, checkout link (None = not set up in Whop yet)
+    ("starter", "Starter", 284, "1-page interactive website", "A single page that introduces your business and gets people in touch.", None),
+    ("professional", "Professional", 568, "2–3-page interactive website", "A home page plus your services and a contact or booking page.", None),
+    ("premium", "Premium", 994, "4–7-page interactive website", "A full business site: services, about, gallery, pricing and more.", None),
+]
+PACKAGE_COMMON = ["Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
+                  "Done within one month, or a full refund", "First-year domain paid by us when under $30"]
+
+
+def packages_html():
+    cards = []
+    for key, name, price, scope, best, link in PACKAGES:
+        popular = key == "professional"
+        href = link or "/#start"
+        label = f"Choose {name}" if link else f"Start with {name}"
+        ticks = "".join(f"<li>{t}</li>" for t in [scope] + PACKAGE_COMMON)
+        cards.append(f"""      <article class="pkg reveal{' best' if popular else ''}" id="pkg-{key}">
+        {'<span class="pkg-badge">Most popular</span>' if popular else ''}
+        <span class="eyebrow">{name}</span>
+        <div class="pkg-price"><sup>$</sup>{price}</div>
+        <p class="pkg-scope"><b>{scope}</b><br>{best}</p>
+        <ul class="ticks">{ticks}</ul>
+        <a class="btn{'' if popular else ' ghost'}" href="{href}">{label}</a>
+      </article>""")
+    return ('<div class="pkgs" id="packages">\n' + "\n".join(cards) + '\n    </div>\n'
+            '    <p class="muted reveal pkg-note">One-time payment, no subscription. Hosting and maintenance after delivery are not included. '
+            'Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="/legal#terms">See the terms</a>.</p>')
+
 EMAIL = "info.kulmanziman@gmail.com"
 THREE = "/assets/three.min.js"  # self-hosted Three.js r128, no third-party CDN to fail
 FONTS = ("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
@@ -152,7 +184,7 @@ FOOTER = f"""<footer>
       </div>
       <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
       <div class="reveal"><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
-      <div class="reveal"><h4>Order</h4><ul><li><a href="{CHECKOUT}">Checkout</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
+      <div class="reveal"><h4>Order</h4><ul><li><a href="{CHECKOUT}">Packages &amp; pricing</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
     <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>
@@ -212,7 +244,7 @@ def build(preview=False, theme="royal"):
         text = page.read_text()
         m = re.match(r"---\n(.*?)\n---\n", text, re.S)
         meta = dict(line.split(": ", 1) for line in m.group(1).splitlines())
-        body = text[m.end():].replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
+        body = text[m.end():].replace("{{PACKAGES}}", packages_html()).replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
         inner = nav(meta.get("nav", "")) + body + FOOTER
         if preview and page.stem == "index":
             # the preview host adds the document skeleton around its main page; it gets a short name
