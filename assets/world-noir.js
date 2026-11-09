@@ -150,7 +150,7 @@
   ];
   const cur = { p: KF[0].p.map(q => q.slice()), knot: 1, k: 1 };
   function morph(t) {
-    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const max = Math.max(1, docH - innerHeight);
     const f = Math.min(1, scrollY / max) * (KF.length - 1), i = Math.min(KF.length - 2, Math.floor(f)), k = f - i, e = k * k * (3 - 2 * k);
     const set = small() ? KF_PHONE : KF, A = set[i], B = set[i + 1], W = innerWidth, H = innerHeight;
     cur.knot = A.knot + (B.knot - A.knot) * e; cur.k = A.k + (B.k - A.k) * e;
@@ -449,9 +449,11 @@
   }
 
   let unitsPerPx = 1;
+  let sizedW = 0, sizedH = 0, docH = document.documentElement.scrollHeight;
   const layout = () => {
     const w = innerWidth, h = innerHeight;
-    renderer.setSize(w, h, false);
+    if (w !== sizedW || h !== sizedH) { renderer.setSize(w, h, false); sizedW = w; sizedH = h; }
+    docH = document.documentElement.scrollHeight;
     camera.aspect = w / h; camera.updateProjectionMatrix();
     dCam.aspect = w / h; dCam.updateProjectionMatrix();
     unitsPerPx = 2 * Math.tan(T.MathUtils.degToRad(18)) * 12 / h;   // world units per CSS px at the crown's depth
@@ -467,12 +469,16 @@
   };
   let pending = 0;
   const realResize = (() => { let w = innerWidth, h = innerHeight; return () => { const W = innerWidth, H = innerHeight; if (W === w && Math.abs(H - h) < Math.max(160, h * .25)) return false; w = W; h = H; return true; }; })();
-  const relayout = (force) => { if (force !== true && !realResize()) return; clearTimeout(pending); pending = setTimeout(layout, 120); };
+  const relayout = () => { if (!realResize()) return; clearTimeout(pending); pending = setTimeout(layout, 120); };
+  let textTimer = 0;
+  const refreshText = () => { clearTimeout(textTimer); textTimer = setTimeout(function again() {
+      if (performance.now() - lastMove < 300) { textTimer = setTimeout(again, 200); return; }   // wait until scrolling stops
+      docH = document.documentElement.scrollHeight; collectText(); }, 150); };
   addEventListener('resize', relayout);
-  if ('ResizeObserver' in window) { let bh = document.body.offsetHeight; new ResizeObserver(() => { const nh = document.body.offsetHeight; if (Math.abs(nh - bh) > 4) { bh = nh; relayout(true); } }).observe(document.body); }   // content changed size
-  document.fonts && document.fonts.ready.then(() => relayout(true));
+  if ('ResizeObserver' in window) { let bh = document.body.offsetHeight; new ResizeObserver(() => { const nh = document.body.offsetHeight; if (Math.abs(nh - bh) > 4) { bh = nh; refreshText(); } }).observe(document.body); }   // content changed size: re-measure text only
+  document.fonts && document.fonts.ready.then(refreshText);
   layout();
-  setTimeout(() => relayout(true), 3200);   // once the entrance animations have settled
+  setTimeout(refreshText, 3200);   // once the entrance animations have settled
 
   const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav,.dock,.hero-tags'));
   const setRay = () => { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); };

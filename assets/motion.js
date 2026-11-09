@@ -319,7 +319,8 @@
   };
   const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
   addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', () => { measure(); onScroll(); });
+  let mw = innerWidth;
+  addEventListener('resize', () => { if (innerWidth !== mw) { mw = innerWidth; measure(); } onScroll(); });   // a phone toolbar only changes the height
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { measure(); update(); });
   measure(); update();
 })();
