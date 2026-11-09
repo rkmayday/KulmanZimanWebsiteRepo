@@ -5,3 +5,5 @@ __pycache__/
 preview/
 dist-noir/
 preview-noir/
+dist-mono/
+preview-mono/

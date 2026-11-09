@@ -120,7 +120,15 @@ window.kzGmail = (to, subject = '', body = '') => {
   // Affiliate calculator
   const r = $('#refs');
   if (r) {
-    const upd = () => { $('#refs-n').textContent = r.value; $('#refs-out').textContent = '$' + (r.value * 113.6).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    let rate = 113.6;
+    const money = v => '$' + v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const upd = () => { $('#refs-n').textContent = r.value; $('#refs-out').textContent = money(r.value * rate); };
+    $$('.calc-pkgs [data-commission]').forEach(btn => btn.addEventListener('click', () => {
+      rate = parseFloat(btn.dataset.commission);
+      $$('.calc-pkgs [data-commission]').forEach(o => o.setAttribute('aria-pressed', o === btn));
+      const lab = $('#refs-pkg'), rt = $('#refs-rate'); lab && (lab.textContent = btn.dataset.label); rt && (rt.textContent = money(rate));
+      upd();
+    }));
     r.addEventListener('input', upd); upd();
   }
 

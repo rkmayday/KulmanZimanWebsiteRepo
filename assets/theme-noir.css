@@ -345,3 +345,5 @@ html:has(.pkg-modal[open]){overflow:hidden}
   .pm-fine{font-size:.76rem;margin-top:12px}
   .pm-opt:hover{transform:none}
 }
+.calc-pkgs{margin:0 0 18px}
+.calc-pkgs .tab[aria-pressed=true]{background:#c6ff3d;color:#0a0a0a;box-shadow:none}
