@@ -432,3 +432,8 @@ html.intro-hold #kz-intro,html.intro-hold #kz-intro *{animation-play-state:runni
 @media (max-width:480px){.kz-copy h1{font-size:clamp(1.9rem,8.6vw,2.4rem);max-width:none}}
 .calc-pkgs{margin:0 0 18px}
 .calc-pkgs .tab[aria-pressed=true]{background:var(--ink);color:var(--paper);box-shadow:none}
+/* founder pages: the text column is wider so "Meet Ryder Ziman" / "Meet Rex Kulman" stay on one line */
+@media (min-width:861px){
+  .founder-page .profile{grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr)}
+  .founder-page .profile-copy h1{white-space:nowrap;max-width:none}
+}
