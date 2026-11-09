@@ -179,5 +179,24 @@ window.kzGmail = (to, subject = '', body = '') => {
     document.querySelectorAll('.eyebrow, .hero-tags li, .s-ind').forEach(el => dio.observe(el));
   }
 
+  // "Get started" and every checkout button open the package pop-up over the current page
+  const pm = $('#pkg-modal');
+  if (pm && typeof pm.showModal === 'function') {
+    let opener = null;
+    const close = () => { pm.classList.remove('open'); setTimeout(() => { if (pm.open) pm.close(); }, reduce ? 0 : 220); };
+    document.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey || pm.contains(a)) return;
+      const u = new URL(a.href, location.href);
+      if (u.origin !== location.origin || !/\/get-started(\.html)?$/.test(u.pathname)) return;
+      e.preventDefault(); e.stopImmediatePropagation();
+      nav && nav.classList.remove('open');
+      opener = a; pm.showModal(); requestAnimationFrame(() => pm.classList.add('open'));
+    }, true);
+    pm.addEventListener('click', e => { if (e.target === pm || (e.target.closest && e.target.closest('[data-pm-close]'))) close(); });
+    pm.addEventListener('cancel', e => { e.preventDefault(); close(); });
+    pm.addEventListener('close', () => { opener && opener.focus({ preventScroll: true }); });
+  }
+
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();

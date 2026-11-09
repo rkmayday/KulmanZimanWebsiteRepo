@@ -33,6 +33,32 @@ PACKAGE_COMMON = ["Mobile-friendly design tailored to your industry", "Three rou
                   "Done within one month, or a full refund", "First-year domain paid by us when under $30"]
 
 
+def package_modal():
+    """The "choose your package" pop-up. Any link to /get-started opens it (site.js); the page stays as a no-JS fallback."""
+    rows = []
+    for key, name, price, scope, best, link in PACKAGES:
+        popular = key == "professional"
+        rows.append(f"""      <a class="pm-opt{' best' if popular else ''}" href="{link or '/#start'}">
+        <span class="pm-name">{name}{'<em>Most popular</em>' if popular else ''}</span>
+        <span class="pm-price"><sup>$</sup>{price}</span>
+        <span class="pm-scope">{scope}</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>""")
+    return f"""<dialog class="pkg-modal" id="pkg-modal" aria-labelledby="pm-title">
+  <div class="pm-box">
+    <button class="pm-x" type="button" aria-label="Close" data-pm-close>×</button>
+    <span class="eyebrow">Get started</span>
+    <h2 id="pm-title">Choose your package</h2>
+    <p class="pm-lede">You will go to a secure Whop checkout for the package you pick.</p>
+    <div class="pm-opts">
+{chr(10).join(rows)}
+    </div>
+    <p class="pm-fine">One-time payment. Three rounds of refinement, done within a month or a full refund. Not sure? <a href="/#start" data-pm-close>Send a brief first</a>.</p>
+  </div>
+</dialog>
+"""
+
+
 def packages_html():
     cards = []
     for key, name, price, scope, best, link in PACKAGES:
@@ -245,7 +271,7 @@ def build(preview=False, theme="royal"):
         m = re.match(r"---\n(.*?)\n---\n", text, re.S)
         meta = dict(line.split(": ", 1) for line in m.group(1).splitlines())
         body = text[m.end():].replace("{{PACKAGES}}", packages_html()).replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
-        inner = nav(meta.get("nav", "")) + body + FOOTER
+        inner = nav(meta.get("nav", "")) + body + package_modal() + FOOTER
         if preview and page.stem == "index":
             # the preview host adds the document skeleton around its main page; it gets a short name
             html = head_tags(dict(meta, title=th.get("preview_title", "Kulman Ziman Preview"))) + BODY_START + inner

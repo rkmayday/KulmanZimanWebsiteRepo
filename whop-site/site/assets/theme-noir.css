@@ -305,3 +305,43 @@ h3{font-weight:600;font-variation-settings:normal}
 /* "Get started" inside the phone menu (the top-bar button is hidden on small screens) */
 .nav-links .nav-get{display:none}
 @media (max-width:960px){.nav-links .nav-get{display:block;margin-top:12px}.nav-links .nav-get .btn{display:flex;width:100%;color:#0a0a0a;background:#c6ff3d}}
+
+/* package pop-up: a box over the current page, everything behind it blurred */
+.pkg-modal{width:min(560px,calc(100% - 28px));max-height:calc(100dvh - 40px);margin:auto;padding:0;border:0;background:transparent;color:#f5f5f5;overflow:visible}
+.pkg-modal::backdrop{background:rgba(3,4,3,.45);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2)}
+.pm-box{position:relative;max-height:calc(100dvh - 40px);overflow:auto;padding:clamp(22px,4vw,32px);border-radius:28px;
+  background:linear-gradient(165deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 60%),#0c0e0c;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 40px 120px -20px rgba(0,0,0,.9),0 0 90px -40px rgba(198,255,61,.5)}
+.pkg-modal .pm-box{opacity:0;transform:translateY(14px) scale(.97);transition:opacity .22s ease,transform .3s cubic-bezier(.2,.8,.2,1)}
+.pkg-modal.open .pm-box{opacity:1;transform:none}
+.pkg-modal::backdrop{opacity:0;transition:opacity .22s ease}
+.pkg-modal.open::backdrop{opacity:1}
+.pm-box h2{font-size:clamp(1.7rem,4vw,2.2rem);margin:10px 0 6px;letter-spacing:-.04em}
+.pm-lede{color:#bdbdbd;font-size:.95rem;margin:0 0 18px}
+.pm-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:12px;border:0;cursor:pointer;font-size:1.5rem;line-height:1;color:#fff;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.pm-x:hover{background:rgba(255,255,255,.16)}
+.pm-opts{display:grid;gap:10px}
+.pm-opt{display:grid;grid-template-columns:1fr auto;grid-template-areas:"name price" "scope go";gap:4px 14px;align-items:center;padding:16px 18px;border-radius:18px;text-decoration:none;color:inherit;
+  background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:background .2s,box-shadow .2s,transform .2s}
+.pm-opt:hover,.pm-opt:focus-visible{background:rgba(198,255,61,.08);box-shadow:inset 0 0 0 1.5px #c6ff3d;transform:translateY(-1px);outline:0}
+.pm-opt.best{box-shadow:inset 0 0 0 1.5px rgba(198,255,61,.6);background:rgba(198,255,61,.06)}
+.pm-name{grid-area:name;font:600 1.1rem var(--font-display);letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.pm-name em{font:600 .68rem var(--font-sans);font-style:normal;padding:4px 9px;border-radius:99px;background:#c6ff3d;color:#0a0a0a}
+.pm-price{grid-area:price;font:500 1.9rem/1 var(--font-display);letter-spacing:-.05em;color:#fff}
+.pm-opt.best .pm-price{color:#c6ff3d}
+.pm-price sup{font-size:.5em;vertical-align:top;color:#c6ff3d;margin-right:1px}
+.pm-scope{grid-area:scope;color:#a3a3a3;font-size:.9rem}
+.pm-go{grid-area:go;font-weight:600;font-size:.88rem;color:#c6ff3d}
+.pm-fine{margin:16px 0 0;color:#8f8f8f;font-size:.82rem}
+.pm-fine a{color:#d9ff7a}
+html:has(.pkg-modal[open]){overflow:hidden}
+@media (prefers-reduced-motion:reduce){.pkg-modal .pm-box,.pkg-modal::backdrop{transition:none}}
+@media (max-width:560px){
+  .pm-box{padding:20px 16px 16px;border-radius:24px}
+  .pm-box h2{font-size:1.5rem;margin-top:6px}
+  .pm-lede{font-size:.86rem;margin-bottom:12px}
+  .pm-opt{padding:12px 14px;gap:2px 10px;border-radius:15px}
+  .pm-price{font-size:1.55rem}
+  .pm-scope,.pm-go{font-size:.82rem}
+  .pm-fine{font-size:.76rem;margin-top:12px}
+  .pm-opt:hover{transform:none}
+}
