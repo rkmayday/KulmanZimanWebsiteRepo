@@ -1,0 +1,444 @@
+<title>Kulman Ziman Mono</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A professional, mobile-friendly website built around your business, from $284. Three rounds of refinement, done within one month, or a full refund.">
+<link rel="canonical" href="https://kulmanziman.shop/">
+<meta name="theme-color" content="#ffffff">
+<meta name="google-site-verification" content="5wKKFu7Au6tRw0wMbycFva9GoaTk3sH9IX6nqa0HNWA">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kulman Ziman">
+<meta property="og:title" content="Kulman Ziman Mono">
+<meta property="og:description" content="A professional, mobile-friendly website built around your business, from $284. Three rounds of refinement, done within one month, or a full refund.">
+<meta property="og:url" content="https://kulmanziman.shop/">
+<meta property="og:image" content="https://kulmanziman.shop/og-kulman-ziman.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ffffff'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%230a0a0a' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mono.css">
+<script>document.documentElement.classList.add('js')</script>
+<script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
+(function(){var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
+try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
+var from=null;try{from=sessionStorage.getItem('kz-from');sessionStorage.removeItem('kz-from');}catch(e){}
+if(from==='brand')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
+if(location.hash==='#intro')play=true;
+if(play&&!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('intro','intro-hold');
+setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(function(){r.classList.remove('intro');},2400);}})();</script>
+<script>
+/* Arriving from another page of the site: start at the top (links to a spot on the page, back/forward and reload are left alone) */
+(function () {
+  var nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+  if (location.hash || (nav && nav.type !== 'navigate')) return;
+  var fromSite = false;
+  try { fromSite = sessionStorage.getItem('kz-top') === '1'; sessionStorage.removeItem('kz-top'); } catch (e) {}
+  var moved = false, root = document.documentElement;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) { addEventListener(ev, function () { moved = true; }, { once: true, passive: true }); });
+  function top() {
+    if (moved || (window.scrollY === 0 && !fromSite)) return;
+    var b = root.style.scrollBehavior; root.style.scrollBehavior = 'auto'; window.scrollTo(0, 0); root.style.scrollBehavior = b;
+  }
+  top(); addEventListener('DOMContentLoaded', top); addEventListener('load', top); addEventListener('pageshow', top);
+  [60, 200, 500, 1000].forEach(function (ms) { setTimeout(top, ms); });
+  // a viewer that scrolls the whole frame keeps its own position, so bring the top of this page into view there too
+  if (fromSite && window.top !== window) addEventListener('load', function () { if (!moved) try { root.scrollIntoView({ block: 'start' }); } catch (e) {} });
+})();
+</script>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "Kulman Ziman", "url": "https://kulmanziman.shop", "logo": "https://kulmanziman.shop/assets/wordmark.png", "email": "info.kulmanziman@gmail.com", "foundingDate": "2026-08-24", "founder": [{"@type": "Person", "name": "Rex Kulman"}, {"@type": "Person", "name": "Ryder Ziman"}]}, {"@context": "https://schema.org", "@type": "Product", "name": "Custom website", "brand": {"@type": "Brand", "name": "Kulman Ziman"}, "description": "A custom, mobile-friendly website tailored to your industry, built through three rounds of refinement. Three packages: Starter (1 page), Professional (2\u20133 pages) and Premium (4\u20137 pages).", "offers": {"@type": "AggregateOffer", "lowPrice": "284", "highPrice": "994", "offerCount": "3", "priceCurrency": "USD"}}]</script>
+<a class="skip" href="#main">Skip to content</a>
+<div id="kz-intro" aria-hidden="true"><div class="ki-frame"></div><div class="ki-fill"></div><div class="ki-badge"><i></i></div></div>
+<canvas id="world" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Kulman Ziman home"><img src="assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
+    <nav aria-label="Main"><ul class="nav-links"><li><a href="index.html" aria-current=page>Home</a></li><li><a href="products.html">Pricing</a></li><li><a href="about.html">About</a></li><li><a href="affiliates.html">Affiliates</a></li><li><a href="help.html">Help</a></li><li><a href="legal.html">Legal</a></li><li class="nav-get"><a class="btn" href="get-started.html">Get started</a></li></ul></nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="index.html#start">Send a brief</a>
+      <a class="btn small" href="get-started.html">Get started</a>
+      <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+
+<!-- HERO: the gold-and-silver centrepiece is rendered by world.js behind this -->
+<section class="kz-stage" aria-label="Kulman Ziman">
+  <div class="kz-pin">
+    <div class="kz-grid" aria-hidden="true"></div>
+    <div class="kz-scene" aria-hidden="true"><div class="kz-logo"><div class="kz-half kz-k"></div><div class="kz-half kz-z"></div></div></div>
+    <div class="kz-word" aria-hidden="true">Kulman Ziman</div>
+    <div class="kz-copy"></div>
+    <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+  </div>
+</section>
+<section class="hero" data-dock="Home" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-top">
+      <ul class="hero-tags">
+        <li class="live">Taking new projects</li>
+        <li>From $284, one-time</li>
+        <li>3 rounds of refinement</li>
+        <li>Done within 1 month or refunded</li>
+      </ul>
+    </div>
+    <div class="hero-copy">
+      <h1 class="extrude">Your business, <em>crowned</em> online.</h1>
+      <p class="lede">Custom websites and software, built to order. Three packages from $284, three rounds of refinement with you, finished within a month or your money back. In writing.</p>
+      <div class="btn-row">
+        <a class="btn" href="#featured-product">See the packages
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+        <a class="btn ghost" href="#start">Send us your brief first</a>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <a class="dive" href="#featured-product"><i aria-hidden="true"></i><span>Scroll down<br>&amp; dive in</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE STRIP -->
+<section class="strip" aria-label="Our commitments">
+  <div class="wrap">
+    <div class="cell reveal"><b>$<span data-count="284">284</span></b><span>Starting price, paid once</span></div>
+    <div class="cell reveal"><b><span data-count="3">3</span> rounds</b><span>Concept, iteration, delivery</span></div>
+    <div class="cell reveal"><b>≤ <span data-count="1">1</span> month</b><span>From order to final site</span></div>
+    <div class="cell reveal"><b><span data-count="100">100</span>%</b><span>Refund if we miss it</span></div>
+  </div>
+</section>
+
+<div class="marquees">
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>Booking pages</span><span>Landing pages</span><span>Membership sign-ups</span><span>Portfolios</span><span>Pricing pages</span><span>Quote forms</span><span>Course pages</span><span>Product sites</span>
+  <span>Booking pages</span><span>Landing pages</span><span>Membership sign-ups</span><span>Portfolios</span><span>Pricing pages</span><span>Quote forms</span><span>Course pages</span><span>Product sites</span>
+</div></div>
+<div class="marquee silver" aria-hidden="true"><div class="track">
+  <span>Mobile-friendly</span><span>Tailored to your industry</span><span>Three rounds</span><span>One month</span><span>Refund guarantee</span><span>Custom software</span>
+  <span>Mobile-friendly</span><span>Tailored to your industry</span><span>Three rounds</span><span>One month</span><span>Refund guarantee</span><span>Custom software</span>
+</div></div>
+</div>
+
+<!-- MISSION -->
+<section class="section" id="mission">
+  <div class="wrap mission reveal">
+    <span class="eyebrow">Our mission</span>
+    <blockquote class="words">“To create and sell the software and websites our customers request, with a clear process and honest pricing.”<cite>Rex Kulman &amp; Ryder Ziman, founders</cite></blockquote>
+  </div>
+</section>
+
+<!-- PRODUCT: flips in 3D to show what's included -->
+<section class="section" id="featured-product" data-dock="Pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Packages</span>
+      <h2 class="extrude">Three packages. <em>One honest process.</em></h2>
+      <p class="lede">Pick the size that fits. Every package is designed around your business, refined with you over three rounds and finished within a month, or your money back.</p>
+    </div>
+    <div class="pkgs" id="packages">
+      <article class="pkg reveal" id="pkg-starter">
+        
+        <span class="eyebrow">Starter</span>
+        <div class="pkg-price"><sup>$</sup>284</div>
+        <p class="pkg-scope"><b>1-page interactive website</b><br>A single page that introduces your business and gets people in touch.</p>
+        <ul class="ticks"><li>1-page interactive website</li><li>Interactive, animated website experience</li><li>Mobile-friendly design tailored to your industry</li><li>Three rounds of refinement with you</li><li>Done within one month, or a full refund</li><li>First-year domain paid by us when under $30</li></ul>
+        <a class="btn ghost" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Choose Starter · $284</a>
+      </article>
+      <article class="pkg reveal best" id="pkg-professional">
+        <span class="pkg-badge">Most popular</span>
+        <span class="eyebrow">Professional</span>
+        <div class="pkg-price"><sup>$</sup>568</div>
+        <p class="pkg-scope"><b>2–3-page interactive website</b><br>A home page plus your services and a contact or booking page.</p>
+        <ul class="ticks"><li>2–3-page interactive website</li><li>Interactive, animated website experience</li><li>Mobile-friendly design tailored to your industry</li><li>Three rounds of refinement with you</li><li>Done within one month, or a full refund</li><li>First-year domain paid by us when under $30</li></ul>
+        <a class="btn" href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Choose Professional · $568</a>
+      </article>
+      <article class="pkg reveal" id="pkg-premium">
+        
+        <span class="eyebrow">Premium</span>
+        <div class="pkg-price"><sup>$</sup>994</div>
+        <p class="pkg-scope"><b>4–7-page interactive website</b><br>A full business site: services, about, gallery, pricing and more.</p>
+        <ul class="ticks"><li>4–7-page interactive website</li><li>Interactive, animated website experience</li><li>Mobile-friendly design tailored to your industry</li><li>Three rounds of refinement with you</li><li>Done within one month, or a full refund</li><li>First-year domain paid by us when under $30</li></ul>
+        <a class="btn ghost" href="https://whop.com/checkout/plan_kayas42uF3j2w/">Choose Premium · $994</a>
+      </article>
+    </div>
+    <p class="muted reveal pkg-note">One-time payment, no subscription. Hosting and maintenance after delivery are not included. Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="legal.html#terms">See the terms</a>.</p>
+  </div>
+</section>
+
+<!-- PROCESS: a 3D staircase -->
+<section class="section" id="selling-points" data-dock="Process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 class="extrude">Three rounds. <em>One month.</em> In writing.</h2>
+      <p class="lede">You see the site take shape and say what to change. We commit to finishing every stage within one month of your order. In practice most websites are finished within a couple of days to a week.</p>
+    </div>
+    <div class="steps has-rail">
+      <div class="rail" aria-hidden="true"><i></i></div>
+      <div class="sheet reveal"><div class="n">01</div><h3>Initial concept</h3><p>Send us your specifications. We build a first draft of your site for you to review.</p><span class="when">You reply within 72h</span></div>
+      <div class="sheet reveal"><div class="n">02</div><h3>Second iteration</h3><p>We work your feedback into a refined second version and send it back.</p><span class="when">You reply within 72h</span></div>
+      <div class="sheet reveal"><div class="n">03</div><h3>Final delivery</h3><p>After your last round of revisions we polish everything and deliver the finished code.</p><span class="when">Done within 1 month</span></div>
+    </div>
+    <div class="condition reveal">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.8" aria-hidden="true" style="flex:none"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <p><strong>Full refund if we miss the deadline.</strong> The one-month deadline and the refund apply when you reply to each feedback request within 72 hours. <a class="link-arrow" href="legal.html#refund">Read the refund policy</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="section" id="industries">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Tailored to your industry</span>
+      <h2 class="extrude">Shaped around how <em>your</em> business works.</h2>
+      <p class="lede">Tell us your industry and what you need. We build the pages and features that fit it.</p>
+    </div>
+    <div class="tabs reveal" role="tablist" aria-label="Industries">
+      <button class="tab" role="tab" id="t-fit" aria-controls="p-fit" aria-selected="true">Fitness &amp; Wellness</button>
+      <button class="tab" role="tab" id="t-tech" aria-controls="p-tech" aria-selected="false" tabindex="-1">Technology &amp; IT</button>
+      <button class="tab" role="tab" id="t-local" aria-controls="p-local" aria-selected="false" tabindex="-1">Local Services</button>
+      <button class="tab" role="tab" id="t-create" aria-controls="p-create" aria-selected="false" tabindex="-1">Creators &amp; Education</button>
+    </div>
+    <div class="panel-stage">
+      <div class="panel reveal" role="tabpanel" id="p-fit" aria-labelledby="t-fit">
+        <div>
+          <h3>Fitness &amp; Wellness</h3>
+          <p class="muted" style="margin-bottom:20px">Sites for trainers, gyms, studios and fitness apps that turn visitors into members.</p>
+          <ul class="ticks"><li>Class and session booking pages</li><li>Membership and program sign-up sites</li><li>Trainer and gym landing pages</li><li>Marketing sites for fitness apps</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="samples/ironpath.html">See the fitness sample: Ironpath →</a></p>
+        </div>
+        <div class="art art-shot" aria-hidden="true">
+          <div class="win"><img src="assets/shots/ironpath.jpg" alt="" width="800" height="500" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="p-tech" aria-labelledby="t-tech" hidden>
+        <div>
+          <h3>Technology &amp; IT</h3>
+          <p class="muted" style="margin-bottom:20px">Clear, credible sites for software products, IT providers and startups.</p>
+          <ul class="ticks"><li>Product and SaaS landing pages</li><li>Feature, pricing and comparison pages</li><li>Managed-service and IT support sites</li><li>Documentation and changelog pages</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="samples/synthra.html">See the tech sample: Synthra AI agents →</a></p>
+        </div>
+        <div class="art art-shot" aria-hidden="true">
+          <div class="win"><img src="assets/shots/synthra.jpg" alt="" width="800" height="500" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="p-local" aria-labelledby="t-local" hidden>
+        <div>
+          <h3>Local Services</h3>
+          <p class="muted" style="margin-bottom:20px">Sites that help nearby customers find you, trust you and get in touch.</p>
+          <ul class="ticks"><li>Service and pricing pages</li><li>Quote request and contact forms</li><li>Service-area and opening-hours pages</li><li>Photo galleries of past jobs</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="samples/ember-roast.html">See the local sample: Ember Roast coffee →</a></p>
+        </div>
+        <div class="art art-shot" aria-hidden="true">
+          <div class="win"><img src="assets/shots/ember-roast.jpg" alt="" width="800" height="500" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="panel" role="tabpanel" id="p-create" aria-labelledby="t-create" hidden>
+        <div>
+          <h3>Creators &amp; Education</h3>
+          <p class="muted" style="margin-bottom:20px">Homes on the web for creators, coaches, tutors and course makers.</p>
+          <ul class="ticks"><li>Personal brand and portfolio sites</li><li>Course and program landing pages</li><li>Tutoring and coaching booking pages</li><li>Newsletter and community sign-up pages</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="samples/deduction.html">See the creator sample: Deduction →</a></p>
+        </div>
+        <div class="art art-shot" aria-hidden="true">
+          <div class="win"><img src="assets/shots/deduction.jpg" alt="" width="800" height="500" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+    <p class="muted reveal" style="margin-top:22px;font-size:.92rem">Websites start at $284 with the Starter package. Custom software is scoped per project. Email <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.kulmanziman%40gmail.com" target="_blank" rel="noopener">info.kulmanziman@gmail.com</a> to discuss yours.</p>
+  </div>
+</section>
+
+<!-- PLAYGROUND -->
+<section class="section" id="playground" data-dock="Try it">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Try it</span>
+      <h2 class="extrude">Sketch your homepage <em>right now.</em></h2>
+      <p class="lede">Type your business name, pick a look, and watch a first draft come together. Like it? Send it to us as your brief.</p>
+    </div>
+    <div class="play reveal">
+      <form class="controls" id="play" onsubmit="return false">
+        <label for="pl-name">Business name<input id="pl-name" name="name" value="Northside Fitness" maxlength="28" autocomplete="off"></label>
+        <label for="pl-head">Headline<input id="pl-head" name="headline" value="Stronger every week." maxlength="40" autocomplete="off"></label>
+        <fieldset><legend>Industry</legend>
+          <div class="seg">
+            <label><input type="radio" name="ind" value="fitness" checked><span>Fitness</span></label>
+            <label><input type="radio" name="ind" value="tech"><span>Tech</span></label>
+            <label><input type="radio" name="ind" value="local"><span>Local</span></label>
+            <label><input type="radio" name="ind" value="creator"><span>Creator</span></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Accent colour</legend>
+          <div class="swatches">
+            <label><input type="radio" name="accent" value="#d4af37" checked aria-label="Gold"><span style="--c:linear-gradient(135deg,#8a6a1c,#f6e3a1,#d4af37)"></span></label>
+            <label><input type="radio" name="accent" value="#c9ced8" aria-label="Silver"><span style="--c:linear-gradient(135deg,#7d8496,#f4f6fa,#c9ced8)"></span></label>
+            <label><input type="radio" name="accent" value="#4169e1" aria-label="Royal blue"><span style="--c:#4169e1"></span></label>
+            <label><input type="radio" name="accent" value="#ff7a59" aria-label="Coral"><span style="--c:#ff7a59"></span></label>
+            <label><input type="radio" name="accent" value="#58d39a" aria-label="Green"><span style="--c:#58d39a"></span></label>
+            <label class="custom"><input type="color" name="custom" value="#c084fc" aria-label="Custom colour"><span style="--c:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"></span></label>
+          </div>
+        </fieldset>
+        <div class="two">
+          <fieldset><legend>Type</legend>
+            <div class="seg">
+              <label><input type="radio" name="font" value="serif" checked><span>Classic</span></label>
+              <label><input type="radio" name="font" value="sans"><span>Modern</span></label>
+            </div>
+          </fieldset>
+          <fieldset><legend>Mode</legend>
+            <div class="seg">
+              <label><input type="radio" name="mode" value="dark" checked><span>Dark</span></label>
+              <label><input type="radio" name="mode" value="light"><span>Light</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="btn-row">
+          <button class="btn" type="button" id="play-send">Send this as my brief</button>
+          <button class="btn ghost" type="button" id="play-shuffle">Surprise me</button>
+        </div>
+      </form>
+      <div class="device-stage" aria-label="Live preview">
+        <div class="browser" id="preview">
+          <div class="b-bar"><b></b><b></b><b></b><div class="b-url"><span id="pv-url">northsidefitness</span>.com</div></div>
+          <div class="b-page">
+            <nav class="b-nav"><strong id="pv-logo">Northside Fitness</strong><span id="pv-links">Classes · Coaches · Join</span><em class="b-pill">Book now</em></nav>
+            <div class="b-hero">
+              <div>
+                <small id="pv-kicker">Personal training &amp; classes</small>
+                <h4 id="pv-h">Stronger every week.</h4>
+                <p id="pv-p">Small-group classes and coaching that fit around your life.</p>
+                <div class="b-ctas"><em class="b-btn" id="pv-cta">Start free week</em><em class="b-ghost">See timetable</em></div>
+              </div>
+              <div class="b-visual" id="pv-visual"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="b-cards" id="pv-cards"><div><b>01</b><span>Strength</span></div><div><b>02</b><span>Conditioning</span></div><div><b>03</b><span>Mobility</span></div></div>
+          </div>
+        </div>
+        <p class="muted" style="font-size:.85rem;margin-top:18px;text-align:center">Example business shown. A rough sketch to start the conversation; your real site is designed with you over three rounds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="section" id="proof">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Proof</span>
+      <h2 class="extrude">See the work <em>before</em> you pay for it.</h2>
+      <p class="lede">We launched on August 24, 2026, so instead of a client list we built four complete sample sites, one for each industry we serve. Open one and judge the work yourself. They are our own concepts, not client projects.</p>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <img src="assets/shots/ironpath.jpg" alt="" width="800" height="500" loading="lazy" style="--o:-1.5;--a:1.5">
+      <img src="assets/shots/synthra.jpg" alt="" width="800" height="500" loading="lazy" style="--o:-.5;--a:.5">
+      <img src="assets/shots/ember-roast.jpg" alt="" width="800" height="500" loading="lazy" style="--o:.5;--a:.5">
+      <img src="assets/shots/deduction.jpg" alt="" width="800" height="500" loading="lazy" style="--o:1.5;--a:1.5">
+    </div>
+    <div class="samples">
+      <a class="sample reveal" href="samples/ironpath.html" style="--s1:#c7f36b;--s2:#0b0d0c"><img class="s-shot" src="assets/shots/ironpath.jpg" alt="" width="800" height="500" loading="lazy"><span class="s-ind">Fitness &amp; Wellness</span><b>Ironpath</b><span>Glossy 3D activity rings, a pinned how-it-works story, programs, coaches and pricing.</span><em>Open sample →</em></a>
+      <a class="sample reveal" href="samples/synthra.html" style="--s1:#5ef0ff;--s2:#05070f"><img class="s-shot" src="assets/shots/synthra.jpg" alt="" width="800" height="500" loading="lazy"><span class="s-ind">Technology &amp; IT</span><b>Synthra</b><span>Floating 3D task cards from an AI agent, plus integrations, security and a demo form.</span><em>Open sample →</em></a>
+      <a class="sample reveal" href="samples/ember-roast.html" style="--s1:#c8743a;--s2:#2b1a12"><img class="s-shot" src="assets/shots/ember-roast.jpg" alt="" width="800" height="500" loading="lazy"><span class="s-ind">Local Services</span><b>Ember Roast</b><span>Its own coffee bags in 3D, a full menu, subscriptions, events and a visit page.</span><em>Open sample →</em></a>
+      <a class="sample reveal" href="samples/deduction.html" style="--s1:#ffcc4d;--s2:#0d0f1a"><img class="s-shot" src="assets/shots/deduction.jpg" alt="" width="800" height="500" loading="lazy"><span class="s-ind">Creators &amp; Education</span><b>Deduction</b><span>A 3D code editor that types and ships live, plus a full course curriculum.</span><em>Open sample →</em></a>
+    </div>
+    <div class="proof-links reveal" style="max-width:640px">
+      <a href="products.html#refinement-process">See the refinement process <span>→</span></a>
+      <a href="about.html#team">Meet the founders <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- AFFILIATES -->
+<section class="section" style="padding-block-end:0">
+  <div class="wrap">
+    <div class="aff reveal">
+      <div>
+        <span class="eyebrow">Affiliate program</span>
+        <h2 style="margin:14px 0 10px">Know a business that needs a website?</h2>
+        <p class="lede">A part-time role. Share your link, we handle everything else, and you earn 20% on every qualifying purchase, from $56.80 to $198.80.</p>
+        <p style="margin-top:22px"><a class="btn silver" href="affiliates.html">Become an affiliate</a></p>
+      </div>
+      <div class="big"><span data-count="20">20</span>%</div>
+    </div>
+  </div>
+</section>
+
+<!-- START / BRIEF -->
+<section class="section" id="start" data-dock="Contact">
+  <div class="wrap cta-grid">
+    <div class="reveal" style="display:grid;gap:22px;align-content:start">
+      <span class="eyebrow">Get started</span>
+      <h2 class="extrude">Tell us about your business. <em>We'll take it from there.</em></h2>
+      <p class="lede">We ask every customer to get in touch before or right after paying, so we can confirm your specifications and your domain. Fill in the brief and it opens as a ready-to-send email.</p>
+      <p class="email-big"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.kulmanziman%40gmail.com" target="_blank" rel="noopener">info.kulmanziman@gmail.com</a></p>
+      <div class="btn-row">
+        <a class="btn" href="#featured-product">See the packages</a>
+        <button class="btn ghost" type="button" data-copy="info.kulmanziman@gmail.com">Copy our email</button>
+      </div>
+    </div>
+    <form class="brief reveal" id="brief">
+      <div class="two">
+        <label for="b-name">Your name<input id="b-name" name="name" required autocomplete="name"></label>
+        <label for="b-biz">Business name<input id="b-biz" name="business" autocomplete="organization"></label>
+      </div>
+      <div class="two">
+        <label for="b-ind">Industry
+          <select id="b-ind" name="industry"><option>Fitness &amp; Wellness</option><option>Technology &amp; IT</option><option>Local Services</option><option>Creators &amp; Education</option><option>Something else</option></select>
+        </label>
+        <label for="b-dom">Domain you'd like<input id="b-dom" name="domain" placeholder="yourbusiness.com"></label>
+      </div>
+      <label for="b-det">What should the site do?<textarea id="b-det" name="details" rows="4" required placeholder="Pages you need, sites you like, anything we should know"></textarea></label>
+      <button class="btn" type="submit">Send my brief</button>
+      <small>Opens Gmail with everything filled in. Nothing is stored on this site.</small>
+      <small class="mail-alt">Not on Gmail? <a href='mailto:info.kulmanziman@gmail.com' data-brief-mailto>Use your usual email app</a></small>
+    </form>
+  </div>
+</section>
+</main>
+<dialog class="pkg-modal" id="pkg-modal" aria-labelledby="pm-title">
+  <div class="pm-box">
+    <button class="pm-x" type="button" aria-label="Close" data-pm-close>×</button>
+    <span class="eyebrow">Get started</span>
+    <h2 id="pm-title">Choose your package</h2>
+    <p class="pm-lede">You will go to a secure Whop checkout for the package you pick.</p>
+    <div class="pm-opts">
+      <a class="pm-opt" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">
+        <span class="pm-name">Starter</span>
+        <span class="pm-price"><sup>$</sup>284</span>
+        <span class="pm-scope">1-page interactive website</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>
+      <a class="pm-opt best" href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">
+        <span class="pm-name">Professional<em>Most popular</em></span>
+        <span class="pm-price"><sup>$</sup>568</span>
+        <span class="pm-scope">2–3-page interactive website</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>
+      <a class="pm-opt" href="https://whop.com/checkout/plan_kayas42uF3j2w/">
+        <span class="pm-name">Premium</span>
+        <span class="pm-price"><sup>$</sup>994</span>
+        <span class="pm-scope">4–7-page interactive website</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>
+    </div>
+    <p class="pm-fine">One-time payment. Three rounds of refinement, done within a month or a full refund. Not sure? <a href="index.html#start" data-pm-close>Send a brief first</a>.</p>
+  </div>
+</dialog>
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <a class="brand" href="index.html"><img src="assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
+        <p>Custom websites and software, built to order.</p>
+        <p style="margin-top:14px"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=info.kulmanziman%40gmail.com" target="_blank" rel="noopener">info.kulmanziman@gmail.com</a></p>
+      </div>
+      <div class="reveal"><h4>Site</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">Products &amp; Pricing</a></li><li><a href="about.html">About &amp; Contact</a></li><li><a href="affiliates.html">Affiliate Program</a></li><li><a href="help.html">Help</a></li></ul></div>
+      <div class="reveal"><h4>Founders</h4><ul><li><a href="ryderziman.html">Ryder Ziman</a></li><li><a href="rexkulman.html">Rex Kulman</a></li></ul></div>
+      <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Starter Website (1 page)</a></li><li><a href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Professional Website (2–3 pages)</a></li><li><a href="https://whop.com/checkout/plan_kayas42uF3j2w/">Premium Website (4–7 pages)</a></li><li><a href="legal.html#refund">Refund policy</a></li><li><a href="legal.html">Legal</a></li></ul></div>
+    </div>
+    <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+<script src="assets/mono.js" defer></script>

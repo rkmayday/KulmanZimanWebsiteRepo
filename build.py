@@ -104,7 +104,7 @@ MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
   <div class="kz-pin">
     <div class="kz-grid" aria-hidden="true"></div>
     <div class="kz-scene" aria-hidden="true"><div class="kz-logo"><div class="kz-half kz-k"></div><div class="kz-half kz-z"></div></div></div>
-    <div class="kz-word" aria-hidden="true">Kulman Ziman</div>
+    <img class="kz-word" src="/assets/wordmark.png" alt="" width="1013" height="82" aria-hidden="true">
     <div class="kz-copy"></div>
     <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </div>
@@ -123,7 +123,7 @@ THEMES = {
             '<script src="/assets/three.min.js"></script>\n': '',
             '<script src="/assets/world.js" defer></script>\n': '',
             '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>',
-            '<script src="/assets/founder-field.js" defer></script>\n': '',
+            "else play=type==='navigate'&&!same;": "else play=false;",
             '<section class="hero" data-dock="Home" id="top">': MONO_STAGE + '<section class="hero" data-dock="Home" id="top">',
         },
     },

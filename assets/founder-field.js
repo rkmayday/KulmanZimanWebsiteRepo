@@ -1,8 +1,9 @@
-// Founder pages (noir theme): an interactive lime dot field in place of the flowing light.
+// Founder pages: an interactive dot field (lime on the noir theme, black on the mono theme).
 // Dots light up and lean away from the cursor, lit dots link with fine lines, clicks send ripples,
 // and gentle ripples roll through on their own. Nothing is drawn behind the page's content.
 (() => {
-  if (!document.querySelector('.founder-page') || !document.querySelector('link[href*="theme-noir"]')) return;
+  const mono = !!document.querySelector('link[href*="mono.css"]');
+  if (!document.querySelector('.founder-page') || !(mono || document.querySelector('link[href*="theme-noir"]'))) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('founder-field');
   const cv = document.createElement('canvas');
@@ -10,7 +11,8 @@
   cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none';
   document.body.prepend(cv);
   const g = cv.getContext('2d');
-  const LIME = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#c6ff3d';
+  const LIME = mono ? '#0a0a0a' : (getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#c6ff3d');
+  const BASE = mono ? '0,0,0' : '255,255,255', BASE_A = mono ? .16 : .12;
   const GAP = 26;
   let W = 0, H = 0, dpr = 1, blocks = [];
   const mouse = { x: -1e4, y: -1e4, tx: -1e4, ty: -1e4 };
@@ -75,7 +77,7 @@
       const d = Math.sqrt(d2) || 1;
       px[k] = x0 + dx / d * push; py[k] = y0 + dy / d * push; lit[k] = a * c;
       // base dot
-      g.fillStyle = `rgba(255,255,255,${.12 * c})`; g.fillRect(px[k] - .7, py[k] - .7, 1.4, 1.4);
+      g.fillStyle = `rgba(${BASE},${BASE_A * c})`; g.fillRect(px[k] - .7, py[k] - .7, 1.4, 1.4);
       if (a * c > .04) { g.globalAlpha = Math.min(1, a * c); g.fillStyle = LIME; g.beginPath(); g.arc(px[k], py[k], .8 + 2.6 * a * c, 0, 7); g.fill(); g.globalAlpha = 1; }
     }
     // fine lines between neighbouring lit dots
