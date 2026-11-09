@@ -19,7 +19,7 @@ import json, pathlib, re, shutil, sys, urllib.parse
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
 SITE = "https://kulmanziman.shop"
-CHECKOUT = "/products#packages"   # general "buy" links go to the packages; each package has its own checkout below
+CHECKOUT = "/products"   # general "buy" links open the pricing page at the top; each package has its own checkout below
 
 # Website packages. Each "checkout" is that package's Whop checkout link.
 # Until a package has its own Whop plan, its button opens the project brief instead (so nobody is charged the wrong amount).
