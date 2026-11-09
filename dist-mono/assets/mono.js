@@ -47,7 +47,16 @@
   // scroll + pointer drive the scene
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
   const pinTop = () => parseFloat(getComputedStyle($('.kz-pin', stage)).top) || 0;
-  const readScroll = () => { const r = stage.getBoundingClientRect(), t = pinTop(); target = clamp((t - r.top) / Math.max(1, r.height - (innerHeight - t))); kick(); };
+  // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
+  // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
+  const pin = $('.kz-pin', stage), HOLD = .85;   // the headline is fully in at 85% of the range (see frame)
+  const readScroll = () => {
+    const r = stage.getBoundingClientRect(), t = pinTop(), range = Math.max(1, r.height - (innerHeight - t));
+    target = clamp((t - r.top) / range);
+    const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
+    pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
+    kick();
+  };
   addEventListener('scroll', readScroll, { passive: true });
   addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; tpx = e.clientX / innerWidth - .5; tpy = e.clientY / innerHeight - .5; kick(); }, { passive: true });
 

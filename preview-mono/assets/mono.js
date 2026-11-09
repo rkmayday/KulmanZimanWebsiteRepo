@@ -54,7 +54,7 @@
   const kick = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
   function frame() {
     prog += (target - prog) * .14; px += (tpx - px) * .08; py += (tpy - py) * .08;
-    const p = prog;
+    const p = prog * .87;            // the stage is 13% shorter than the timeline: same animation, half the hold after it
     const a = smooth(p / .42);                    // turn: shows the depth
     const b = smooth((p - .36) / .38);            // split: K and Z slide apart
     const ry = -24 + a * 44 - b * 20 + px * 14;

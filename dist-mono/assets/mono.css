@@ -355,8 +355,8 @@ ul,ol{margin:0}
 .facts dt{font:500 .68rem var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .facts dd{margin:4px 0 0;font-weight:600}
 .contact-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.btn-linkedin{background:#0a66c2}
-.btn-linkedin:hover{background:#004182}
+.btn-linkedin{background:var(--ink)}
+.btn-linkedin:hover{background:#2a2a2a}
 
 /* footer */
 footer{border-top:1px solid var(--line);padding-block:clamp(56px,7vw,90px) 36px;color:var(--ink-3);font-size:.92rem;background:var(--paper)}

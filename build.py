@@ -124,6 +124,7 @@ THEMES = {
             '<script src="/assets/world.js" defer></script>\n': '',
             '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>',
             "else play=type==='navigate'&&!same;": "else play=false;",
+            '<h1 class="extrude">Your business, <em>crowned</em> online.</h1>': '<h1 class="extrude">Websites that work as hard as <em>you do.</em></h1>',
             '<section class="hero" data-dock="Home" id="top">': MONO_STAGE + '<section class="hero" data-dock="Home" id="top">',
         },
     },
