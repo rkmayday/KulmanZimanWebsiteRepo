@@ -247,7 +247,8 @@
     cam.fov = wide ? 38 : 40;
     if (wide) cam.setViewOffset(w, h, -w * .26, 0, w, h); else cam.clearViewOffset();
     cam.updateProjectionMatrix(); };
-  addEventListener('resize', size); size();
+  const realResize = (() => { let w = innerWidth, h = innerHeight; return () => { const W = innerWidth, H = innerHeight; if (W === w && Math.abs(H - h) < Math.max(160, h * .25)) return false; w = W; h = H; return true; }; })();
+  addEventListener('resize', () => { if (realResize()) size(); }); size();
   let visible = true, px = 0, py = 0, tpx = 0, tpy = 0;
   new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(host);
   addEventListener('pointermove', e => { tpx = e.clientX / innerWidth - .5; tpy = e.clientY / innerHeight - .5; }, { passive: true });

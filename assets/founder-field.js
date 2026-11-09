@@ -37,8 +37,9 @@
     }
     return m;
   };
-  addEventListener('resize', () => requestAnimationFrame(measure));
-  if ('ResizeObserver' in window) new ResizeObserver(() => requestAnimationFrame(measure)).observe(document.body);
+  const realResize = (() => { let w = innerWidth, h = innerHeight; return () => { const W = innerWidth, H = innerHeight; if (W === w && Math.abs(H - h) < Math.max(160, h * .25)) return false; w = W; h = H; return true; }; })();
+  addEventListener('resize', () => { if (realResize()) requestAnimationFrame(measure); });
+  if ('ResizeObserver' in window) { let bh = document.body.offsetHeight; new ResizeObserver(() => { const nh = document.body.offsetHeight; if (Math.abs(nh - bh) > 4) { bh = nh; requestAnimationFrame(measure); } }).observe(document.body); }
   document.fonts && document.fonts.ready.then(measure);
   setTimeout(measure, 1500); setTimeout(measure, 3200);
   measure();

@@ -466,12 +466,13 @@
     placeDrifters();
   };
   let pending = 0;
-  const relayout = () => { clearTimeout(pending); pending = setTimeout(layout, 120); };
+  const realResize = (() => { let w = innerWidth, h = innerHeight; return () => { const W = innerWidth, H = innerHeight; if (W === w && Math.abs(H - h) < Math.max(160, h * .25)) return false; w = W; h = H; return true; }; })();
+  const relayout = (force) => { if (force !== true && !realResize()) return; clearTimeout(pending); pending = setTimeout(layout, 120); };
   addEventListener('resize', relayout);
-  if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(document.body);
-  document.fonts && document.fonts.ready.then(relayout);
+  if ('ResizeObserver' in window) { let bh = document.body.offsetHeight; new ResizeObserver(() => { const nh = document.body.offsetHeight; if (Math.abs(nh - bh) > 4) { bh = nh; relayout(true); } }).observe(document.body); }   // content changed size
+  document.fonts && document.fonts.ready.then(() => relayout(true));
   layout();
-  setTimeout(relayout, 3200);   // once the entrance animations have settled
+  setTimeout(() => relayout(true), 3200);   // once the entrance animations have settled
 
   const interactive = el => !el || (el.closest && el.closest('a,button,input,select,textarea,label,summary,p,h1,h2,h3,h4,li,blockquote,.chip,.product,.panel,.sheet,.founder,.stat,.box,.calc,.monitor,.browser,.controls,.brief,.faq,.aff,.prose,.cell,.marquee,nav,.dock,.hero-tags'));
   const setRay = () => { ndc.set(px / innerWidth * 2 - 1, -(py / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); };
@@ -534,7 +535,7 @@
     rCam.top = -scrollY; rCam.bottom = -scrollY - innerHeight; rCam.updateProjectionMatrix();
     U.uTime.value = flowT;
     if (px >= 0) U.uMouse.value.set(px, py + scrollY);
-    if (dotsEl && scrollY !== lastDotY) { lastDotY = scrollY; dotsEl.style.backgroundPosition = '0 ' + (-scrollY * .25).toFixed(1) + 'px'; }
+    if (dotsEl && scrollY !== lastDotY) { lastDotY = scrollY; dotsEl.style.transform = 'translate3d(0,' + ((-scrollY * .25) % 28).toFixed(1) + 'px,0)'; }
     morph(t); uploadRects();
     for (let i = 0; i < SP; i++) {
       spS[i] += dt * spV[i] * flowSpeed; if (spS[i] > 1) spS[i] -= 1;   // always forward, down the line

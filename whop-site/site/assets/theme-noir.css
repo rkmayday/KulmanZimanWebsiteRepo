@@ -282,3 +282,15 @@ h3{font-weight:600;font-variation-settings:normal}
 .pkg .ticks{flex:1;font-size:.93rem}
 .pkg .btn{width:100%}
 .pkg-note{margin-top:20px;font-size:.88rem;max-width:760px}
+
+/* performance: the dot grid slides on the GPU, and big glass panels use a solid tint instead of a live blur
+   (a blur over the moving 3D background has to be recomputed every frame, which stalls phones) */
+.dots{inset:-28px 0;will-change:transform}
+.sheet,.product,.controls,.faq details,.founder,.box,.condition,.pkg,#industries > .wrap,.panel,.stat,.calc,.brief,.aff,.profile-card,.strip .cell,.sample{
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.sheet,.product,.controls,.faq details,.founder,.box,.condition,.pkg,#industries > .wrap{background:linear-gradient(165deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 60%),rgba(10,12,10,.86)}
+.pkg.best{background:radial-gradient(120% 80% at 50% 0%,rgba(198,255,61,.16),transparent 60%),linear-gradient(165deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 60%),rgba(10,12,10,.86)}
+@media (pointer:coarse),(max-width:760px){
+  .hero-tags li,.dive,.chip,.btn.ghost,.nav-links,.nav.scrolled,.dock{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .hero-tags li{background:rgba(20,22,20,.85)}
+}

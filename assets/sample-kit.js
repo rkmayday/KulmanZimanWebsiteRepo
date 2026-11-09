@@ -89,7 +89,8 @@
   const sizeHs = () => hs.forEach(s => { const track = $('.hs-track', s);
     if (reduce || innerWidth <= 860) { s.style.height = ''; s._dist = 0; return; }
     s._dist = Math.max(0, track.scrollWidth - innerWidth); s.style.height = (innerHeight + s._dist) + 'px'; });
-  addEventListener('resize', sizeHs); sizeHs(); document.fonts && document.fonts.ready.then(sizeHs);
+  const realResize = (() => { let w = innerWidth, h = innerHeight; return () => { const W = innerWidth, H = innerHeight; if (W === w && Math.abs(H - h) < Math.max(160, h * .25)) return false; w = W; h = H; return true; }; })();
+  addEventListener('resize', () => { if (realResize()) sizeHs(); }); sizeHs(); document.fonts && document.fonts.ready.then(sizeHs);
 
   // parallax for [data-par], closing band glow, chips in the hero
   const pars = $$('[data-par]'), band = $('.band');
