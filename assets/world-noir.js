@@ -19,6 +19,7 @@
   try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: true, powerPreference: 'high-performance' }); }
   catch (e) { return; }
   const DPR = Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2);
+  let curDpr = DPR, slowAvg = 1 / 60, slowN = 0;
   renderer.setPixelRatio(DPR);
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
@@ -257,6 +258,18 @@
   const stage = new T.Group(); scene.add(stage);          // moves up as the page scrolls
   const pivot = new T.Group(), crown = new T.Group(); pivot.add(crown); stage.add(pivot);
   let disShown = scrollY > 12 ? 1 : 0, wantGone = scrollY > 12, lastSY = scrollY, acc = 0;   // crown dissolve: 0 whole, 1 gone
+  const uDis = { value: disShown }, uDisLime = { value: new T.Color(LIME) };
+  // patch a crown material once (compiled once, so dissolving never stalls): fragments vanish where noise < uDis, with a glowing edge
+  const dissolvable = m => { m = m.clone(); m.onBeforeCompile = sh => {
+      sh.uniforms.uDis = uDis; sh.uniforms.uDisLime = uDisLime;
+      sh.vertexShader = 'varying vec3 vDisP;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nvDisP = transformed;');
+      sh.fragmentShader = 'uniform float uDis; uniform vec3 uDisLime; varying vec3 vDisP;\n' +
+        'float dh(vec3 p){ p = fract(p * .3183099 + .1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }\n' +
+        'float dnoise(vec3 x){ vec3 i = floor(x), f = fract(x); f = f * f * (3.0 - 2.0 * f); return mix(mix(mix(dh(i), dh(i + vec3(1,0,0)), f.x), mix(dh(i + vec3(0,1,0)), dh(i + vec3(1,1,0)), f.x), f.y), mix(mix(dh(i + vec3(0,0,1)), dh(i + vec3(1,0,1)), f.x), mix(dh(i + vec3(0,1,1)), dh(i + vec3(1,1,1)), f.x), f.y), f.z); }\n' +
+        sh.fragmentShader
+          .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\nfloat dn = dnoise(vDisP * 3.2) * .7 + dnoise(vDisP * 9.0) * .3;\nif (dn < uDis * 1.08 - .04) discard;')
+          .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += uDisLime * 1.8 * (1.0 - smoothstep(0.0, .07, dn - (uDis * 1.08 - .04))) * step(.002, uDis);');
+    }; m.customProgramCacheKey = () => 'kz-dissolve-' + m.type; return m; };
   const crownHits = [], gems = [], tips = [], shapes = [];
   const orb = new T.Mesh(new T.IcosahedronGeometry(.34, 0), limeGem);
   orb.add(new T.LineSegments(new T.EdgesGeometry(orb.geometry), new T.LineBasicMaterial({ color: 0xffffff })));
@@ -278,6 +291,7 @@
       g.position.set(Math.cos(a) * 1.3, .05, Math.sin(a) * 1.3); g.lookAt(Math.cos(a) * 5, .05, Math.sin(a) * 5); crown.add(g); gems.push(stone);
       const b = a + Math.PI / POINTS, stud = new T.Mesh(new T.SphereGeometry(.055, 16, 12), chrome); stud.position.set(Math.cos(b) * 1.27, -.2, Math.sin(b) * 1.27); crown.add(stud);
     }
+    crown.traverse(o => { if (o.isMesh) o.material = dissolvable(o.material); });
     [].forEach(   // the crown stands alone now (shapes removed)
     ([x, y, z, r, kind]) => {
       const m = kind === 'sphere' ? new T.Mesh(new T.SphereGeometry(1, 48, 32), chrome) : new T.Mesh(new T.BoxGeometry(1.5, 1.5, 1.5), ceramic);
@@ -498,6 +512,7 @@
 
   const clock = new T.Clock();
   let running = true, lastScroll = scrollY;
+  const dotsEl = document.querySelector('.dots'); let lastDotY = NaN;
   // The ribbon runs on its own clock. It only ever counts forward, so every pattern always travels down the line;
   // scrolling (either way) just makes it count 50% faster, easing in and out.
   let flowT = 0, flowSpeed = 1, lastMove = -1e9;
@@ -519,7 +534,7 @@
     rCam.top = -scrollY; rCam.bottom = -scrollY - innerHeight; rCam.updateProjectionMatrix();
     U.uTime.value = flowT;
     if (px >= 0) U.uMouse.value.set(px, py + scrollY);
-    root.style.setProperty('--dot-y', (-scrollY * .25).toFixed(1) + 'px');
+    if (dotsEl && scrollY !== lastDotY) { lastDotY = scrollY; dotsEl.style.backgroundPosition = '0 ' + (-scrollY * .25).toFixed(1) + 'px'; }
     morph(t); uploadRects();
     for (let i = 0; i < SP; i++) {
       spS[i] += dt * spV[i] * flowSpeed; if (spS[i] > 1) spS[i] -= 1;   // always forward, down the line
@@ -557,8 +572,8 @@
         const n = Math.min(40, Math.ceil((disShown - prev) * 160)), at = crown.getWorldPosition(new T.Vector3());
         burst(at.add(new T.Vector3((Math.random() - .5) * 2.2 * (pivot.userData.base || 1), (Math.random() - .3) * 1.2, 0)), n, Math.random() < .75 ? LIME : 0xffffff, .05);
       }
-      pivot.scale.setScalar(Math.max(.0001, (pivot.userData.base || 1) * (1 - e)));
-      crown.rotation.y += e * 2.5;
+      uDis.value = e;
+      pivot.scale.setScalar(pivot.userData.base || 1);
       pivot.visible = e < .995;
       orb.position.y = 1.55 + Math.sin(t * 1.6) * .1 + jump * 1.4; orb.rotation.y += dt * (.8 + spinVel * 8); orb.rotation.x += dt * .3;
       glow *= .96; gems.forEach((g, i) => { g.material.emissiveIntensity = .5 + glow * 3 + Math.max(0, Math.sin(t * 2 + i)) * .3; });
@@ -626,6 +641,9 @@
     if (!founderPage) renderer.render(rScene, rCam);   // founder pages use the interactive dot field instead
     renderer.clearDepth(); renderer.render(dScene, dCam);
     if (showStage) { renderer.clearDepth(); renderer.render(scene, camera); }
+    // keep it smooth on slower graphics chips: after a run of slow frames, render at a lower resolution
+    if (!reduce && dt > 0) { slowAvg = slowAvg * .95 + dt * .05; slowN++;
+      if (slowN > 90 && slowAvg > 1 / 40 && curDpr > 1) { curDpr = Math.max(1, curDpr - .35); renderer.setPixelRatio(curDpr); renderer.setSize(innerWidth, innerHeight, false); U.uDpr.value = curDpr; slowN = 0; slowAvg = 1 / 60; } }
     if (!reduce) requestAnimationFrame(frame);
   }
   if (reduce) {

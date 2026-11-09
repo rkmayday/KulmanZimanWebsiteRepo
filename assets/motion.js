@@ -180,7 +180,7 @@
 
   /* ---------- 9. Extruded headings follow the pointer ---------- */
   const root = document.documentElement;
-  addEventListener('pointermove', e => {
+  if (!document.querySelector('link[href*="theme-noir"]')) addEventListener('pointermove', e => {
     root.style.setProperty('--ex', ((e.clientX / innerWidth - .5) * -3).toFixed(2));
     root.style.setProperty('--ey', ((e.clientY / innerHeight - .5) * -3 + .6).toFixed(2));
   }, { passive: true });
