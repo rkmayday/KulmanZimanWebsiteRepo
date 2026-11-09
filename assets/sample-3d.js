@@ -14,7 +14,7 @@
 
   let renderer;
   try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, phone ? 1.6 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;

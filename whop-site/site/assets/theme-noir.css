@@ -294,3 +294,10 @@ h3{font-weight:600;font-variation-settings:normal}
   .hero-tags li,.dive,.chip,.btn.ghost,.nav-links,.nav.scrolled,.dock{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
   .hero-tags li{background:rgba(20,22,20,.85)}
 }
+
+/* phones: keep text crisp. No permanent GPU layers or 3D transforms on text (iOS draws those as soft images) */
+@media (pointer:coarse){
+  .tilt{will-change:auto!important;transform:none!important;transform-style:flat!important}
+  .hero h1 .hl{will-change:auto}
+  .dots{will-change:auto}
+}

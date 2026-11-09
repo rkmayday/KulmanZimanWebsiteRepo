@@ -18,8 +18,8 @@
   let renderer;
   try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: true, powerPreference: 'high-performance' }); }
   catch (e) { return; }
-  const DPR = Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2);
-  let curDpr = DPR, slowAvg = 1 / 60, slowN = 0;
+  const DPR = Math.min(devicePixelRatio || 1, 2);   // sharp on phones too (retina screens are 2-3x)
+  let curDpr = DPR, slowAvg = 1 / 60, slowN = 0; const dprFloor = Math.min(DPR, 1.5);   // never drop below 1.5x: that is where it starts to look blurry
   renderer.setPixelRatio(DPR);
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
@@ -651,7 +651,7 @@
     if (showStage) { renderer.clearDepth(); renderer.render(scene, camera); }
     // keep it smooth on slower graphics chips: after a run of slow frames, render at a lower resolution
     if (!reduce && dt > 0) { slowAvg = slowAvg * .95 + dt * .05; slowN++;
-      if (slowN > 90 && slowAvg > 1 / 40 && curDpr > 1) { curDpr = Math.max(1, curDpr - .35); renderer.setPixelRatio(curDpr); renderer.setSize(innerWidth, innerHeight, false); U.uDpr.value = curDpr; slowN = 0; slowAvg = 1 / 60; } }
+      if (slowN > 90 && slowAvg > 1 / 30 && curDpr > dprFloor) { curDpr = Math.max(dprFloor, curDpr - .25); renderer.setPixelRatio(curDpr); renderer.setSize(innerWidth, innerHeight, false); U.uDpr.value = curDpr; slowN = 0; slowAvg = 1 / 60; } }
     if (!reduce) requestAnimationFrame(frame);
     else if (showStage && !rmLoop) { rmLoop = true; requestAnimationFrame(() => { rmLoop = false; frame(); }); }   // reduced motion: only the crown keeps turning
   }

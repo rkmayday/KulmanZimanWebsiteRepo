@@ -344,3 +344,9 @@ h1,h2{font-weight:var(--hw,500)}
   .stuck .top{background:color-mix(in srgb,var(--bg) 94%,transparent)}
   .drawer{background:var(--bg)}
 }
+
+/* phones: crisp text, no permanent transforms on cards or chips */
+@media (pointer:coarse){
+  .tilt,.chip{will-change:auto!important;transform:none!important}
+  .kit .rv{filter:none}
+}
