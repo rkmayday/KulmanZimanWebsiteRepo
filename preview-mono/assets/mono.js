@@ -46,7 +46,8 @@
 
   // scroll + pointer drive the scene
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
-  const readScroll = () => { const r = stage.getBoundingClientRect(); target = clamp(-r.top / Math.max(1, r.height - innerHeight)); kick(); };
+  const pinTop = () => parseFloat(getComputedStyle($('.kz-pin', stage)).top) || 0;
+  const readScroll = () => { const r = stage.getBoundingClientRect(), t = pinTop(); target = clamp((t - r.top) / Math.max(1, r.height - (innerHeight - t))); kick(); };
   addEventListener('scroll', readScroll, { passive: true });
   addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; tpx = e.clientX / innerWidth - .5; tpy = e.clientY / innerHeight - .5; kick(); }, { passive: true });
 
@@ -69,7 +70,7 @@
     logo.style.setProperty('--fv', Math.round(10 + b * 218));                         // the face turns light grey, staying crisp
     fronts.forEach(f => f.style.setProperty('--sx', (25 + a * 45 + px * 25).toFixed(1) + '%'));
     // the name spells out under the logo, then makes room
-    word.style.setProperty('--wl', (1.2 - a * .8).toFixed(3) + 'em');
+    word.style.setProperty('--ws', (1.06 - a * .06).toFixed(4));
     word.style.setProperty('--wo', (1 - smooth((p - .28) / .14)).toFixed(3));
     cue.style.setProperty('--co', (1 - smooth(p / .06)).toFixed(3));
     grid.style.setProperty('--gy', (-p * 140).toFixed(1) + 'px');

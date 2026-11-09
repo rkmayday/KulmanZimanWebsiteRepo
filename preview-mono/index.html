@@ -21,7 +21,7 @@
 (function(){var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
 try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
 var from=null;try{from=sessionStorage.getItem('kz-from');sessionStorage.removeItem('kz-from');}catch(e){}
-if(from==='brand')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
+if(from==='brand')play=true;else if(from==='link')play=false;else play=false;
 if(location.hash==='#intro')play=true;
 if(play&&!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('intro','intro-hold');
 setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(function(){r.classList.remove('intro');},2400);}})();</script>
@@ -68,7 +68,7 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
   <div class="kz-pin">
     <div class="kz-grid" aria-hidden="true"></div>
     <div class="kz-scene" aria-hidden="true"><div class="kz-logo"><div class="kz-half kz-k"></div><div class="kz-half kz-z"></div></div></div>
-    <div class="kz-word" aria-hidden="true">Kulman Ziman</div>
+    <img class="kz-word" src="assets/wordmark.png" alt="" width="1013" height="82" aria-hidden="true">
     <div class="kz-copy"></div>
     <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </div>
@@ -442,3 +442,4 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
 </footer>
 <script src="assets/site.js" defer></script>
 <script src="assets/mono.js" defer></script>
+<script src="assets/founder-field.js" defer></script>

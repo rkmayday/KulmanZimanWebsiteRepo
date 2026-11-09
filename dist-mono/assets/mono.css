@@ -93,7 +93,7 @@ ul,ol{margin:0}
 .js .reveal.in{opacity:1;transform:none}
 
 /* ================= the KZ logo stage (home) ================= */
-.kz-stage{position:relative;height:340vh;background:var(--paper)}
+.kz-stage{position:relative;height:calc(309vh - 9px);background:var(--paper)}
 .kz-pin{position:sticky;top:72px;height:calc(100vh - 72px);height:calc(100svh - 72px);overflow:hidden;display:grid;place-items:center;isolation:isolate}
 .kz-grid{position:absolute;inset:-10%;z-index:-1;pointer-events:none;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;
@@ -127,7 +127,7 @@ ul,ol{margin:0}
 .kz-copy .hero-tags li{padding:8px 13px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2)}
 .kz-copy .hero-tags li.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink);margin-right:8px;vertical-align:1px}
 @media (max-width:720px){
-  .kz-stage{height:280vh}
+  .kz-stage{height:calc(257vh - 9px)}
   .kz-logo{width:86vw}
   .kz-word{top:calc(50% + 29vw);width:62vw}
   .kz-copy .hero-tags{display:none}
