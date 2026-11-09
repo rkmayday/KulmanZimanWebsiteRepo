@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deduction — Sample Coding Course Site</title>
+<meta name="description" content="Deduction is a fictional creator who teaches people to code: a sample concept site built by Kulman Ziman.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0f1a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/sample-kit.css">
+<style>
+:root{--hw:600;--bg:#0d0f1a;--bg2:#10132a;--panel:#141831;--panel2:#1a1f3b;--line:#272d4f;--fg:#f2f3fb;--mut:#9aa0c2;--acc:#ffcc4d;--acc2:#7c9cff;--on-acc:#1a1405;
+  --display:"Sora",system-ui,sans-serif;--body:"Sora",system-ui,sans-serif;--mono:"Fira Code",ui-monospace,monospace;--glass:rgba(20,24,49,.62);color-scheme:dark;
+  --stage:radial-gradient(70% 60% at 55% 35%,#1d2448,#0d0f1a 75%)}
+.logo{font-family:var(--mono);font-weight:500;letter-spacing:-.02em}
+.logo b{color:var(--acc);font-weight:500}
+.code{font:400 13.5px/1.75 var(--mono);color:#c9cdf0;white-space:pre;overflow-x:auto}
+.code .k1{color:#c792ea}.code .s{color:#c3e88d}.code .f{color:#82aaff}.code .c{color:#5f6690}
+.mods{counter-reset:m}
+.art-d{--a:radial-gradient(70% 70% at 70% 30%,#ffcc4d44,transparent 60%),radial-gradient(60% 60% at 20% 80%,#7c9cff44,transparent 60%),linear-gradient(150deg,#1b2147,#0d0f1a)}
+.proj{display:grid;gap:12px}
+.proj .thumb{aspect-ratio:16/10;border-radius:16px;position:relative;overflow:hidden;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.proj .thumb i{position:absolute;border-radius:8px;background:color-mix(in srgb,var(--fg) 12%,transparent)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;font:500 12px var(--mono);text-align:center;color:var(--mut)}
+.cal span{padding:10px 0;border-radius:10px;background:color-mix(in srgb,var(--fg) 5%,transparent)}
+.cal span.on{background:var(--acc);color:var(--on-acc);font-weight:700}
+.cal span.dot{box-shadow:inset 0 0 0 1.5px var(--acc2);color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="notice"><span>Sample concept by Kulman Ziman. Deduction is a fictional creator, not a client project and not for sale.</span><a href="/#proof">← Back to Kulman Ziman</a></div>
+
+<header class="top"><div class="wrap top-in">
+  <a class="logo" href="#top">&lt;Deduction<b>/</b>&gt;</a>
+  <nav aria-label="Main"><ul class="links"><li><a href="#path">The path</a></li><li><a href="#curriculum">Curriculum</a></li><li><a href="#projects">Projects</a></li><li><a href="#teaching">Teaching</a></li><li><a href="#courses">Pricing</a></li><li><a href="#faq">FAQ</a></li></ul></nav>
+  <div class="top-cta"><a class="btn ghost sm" href="#courses">Log in</a><a class="btn sm" href="#courses">Start free</a>
+    <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
+</div></header>
+<nav class="drawer" aria-label="Mobile"><a href="#path">The path</a><a href="#curriculum">Curriculum</a><a href="#projects">Projects</a><a href="#teaching">Teaching</a><a href="#courses">Pricing</a><a href="#faq">FAQ</a><a class="btn" href="#courses">Start free</a></nav>
+
+<main id="top">
+<section class="hero"><div class="wrap hero-in">
+  <div>
+    <span class="k">Learn to code, one small win at a time</span>
+    <h1>From hello to <em>shipping</em> your first app.</h1>
+    <p class="lede">Short lessons, a code playground next to every video and six real projects. No setup, no jargon, no feeling lost.</p>
+    <div class="actions"><a class="btn" href="#courses">Start the first module free <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#curriculum">See the curriculum</a></div>
+    <div class="trust"><div class="faces"><span>TA</span><span>AK</span><span>BW</span><span>+</span></div><span><b style="color:var(--fg)">18,000 learners</b> and counting</span></div>
+  </div>
+  <div class="h3d" data-scene="editor">
+    <canvas></canvas>
+    <div class="chip" style="left:18px;top:18px"><span class="dot"></span><span><b>Lesson 12 · Events</b><small>8 min · playground ready</small></span></div>
+    <div class="chip" style="right:18px;bottom:20px"><span><b>9-day streak</b><small>Keep it going</small></span></div>
+  </div>
+</div></section>
+
+<div class="logos"><p>Our learners now build at</p><div class="lrow"><div><span>Brightline</span><span>Northwind</span><span>Pixelcraft</span><span>Quanta</span><span>Meadow Health</span><span>Orbit Studio</span><span>Fieldnote</span></div></div></div>
+
+<section class="sec tight"><div class="wrap">
+  <div class="stats" data-stagger>
+    <div><b><span data-count="18000">18,000</span></b><span>learners</span></div>
+    <div><b><span data-count="6">6</span></b><span>real projects you build</span></div>
+    <div><b><span data-count="4">4</span> months</b><span>at three hours a week</span></div>
+    <div><b><span data-count="92">92</span><em>%</em></b><span>finish what they start</span></div>
+  </div>
+  <p class="fine" style="margin-top:14px">Figures on this sample site are illustrative.</p>
+</div></section>
+
+<section class="sec" id="teaching"><div class="wrap">
+  <div class="head"><span class="k">The teaching</span><h2>Explained like <em>a friend who codes.</em></h2><p class="lede">Every lesson is short, ends with something working on screen and builds on the one before.</p></div>
+  <div class="bento" data-stagger>
+    <article class="card tilt w4"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg></div><h3>A playground next to every video</h3><p>Pause, type, run. Nothing to install and nothing to configure.</p>
+      <div class="mock code"><span class="k1">const</span> btn = document.<span class="f">querySelector</span>(<span class="s">'#ship'</span>);
+btn.<span class="f">addEventListener</span>(<span class="s">'click'</span>, () =&gt; {
+  card.textContent = <span class="s">'Shipped!'</span>;  <span class="c">// your first win</span>
+});</div></article>
+    <article class="card tilt"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></div><h3>Lessons under 8 minutes</h3><p>Small enough for a lunch break.</p></article>
+    <article class="card tilt"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Weekly live Q&amp;A</h3><p>Bring your bug. We fix it together.</p></article>
+    <article class="card tilt"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><h3>Real code reviews</h3><p>Every project gets feedback from a mentor.</p></article>
+    <article class="card tilt w6"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div><h3>A community that answers</h3><p>4,000 learners in the forum. Most questions get a reply within the hour.</p>
+      <div class="mock"><div class="row-ui"><span>“Why does my button not do anything?”</span><span class="pill">Solved</span></div><div class="row-ui"><span>“Is fetch the same as axios?”</span><span class="pill n">3 replies</span></div></div></article>
+  </div>
+</div></section>
+
+<section class="sec alt" id="path"><div class="wrap">
+  <div class="head"><span class="k">The path</span><h2>Four milestones. <em>Each one ships.</em></h2></div>
+  <div class="story">
+    <div class="story-media">
+      <div class="scene on"><div class="panel-ui"><span class="k">Milestone 1</span><div class="mock code" style="margin:0">&lt;<span class="k1">h1</span>&gt;Hello, I made this.&lt;/<span class="k1">h1</span>&gt;</div><div class="row-ui"><b>Your first page</b><span class="pill">Live</span></div></div></div>
+      <div class="scene"><div class="panel-ui"><span class="k">Milestone 2</span><div class="row-ui"><b>Dark mode toggle</b><span class="pill">Works</span></div><div class="row-ui"><b>Image gallery</b><span class="pill">Works</span></div><div class="row-ui"><b>Tip calculator</b><span class="pill n">In progress</span></div></div></div>
+      <div class="scene"><div class="panel-ui"><span class="k">Milestone 3</span><div class="row-ui"><b>Weather app</b><span>uses a real API</span></div><div class="bar in" style="--v:80%"><i></i></div><span class="fine">Mentor review: “Clean code. Ship it.”</span></div></div>
+      <div class="scene"><div class="panel-ui"><span class="k">Milestone 4</span><div class="row-ui"><b>yourname.dev</b><span class="pill">Deployed</span></div><div class="row-ui"><span>Portfolio projects</span><b>6</b></div><div class="row-ui"><span>Certificate</span><b>Earned</b></div></div></div>
+    </div>
+    <div class="story-steps">
+      <div class="story-step"><span class="n">01</span><h3>Write your first line</h3><p>Lesson one starts from a blank page. Ten minutes later you have a web page online.</p></div>
+      <div class="story-step"><span class="n">02</span><h3>Make it interactive</h3><p>Buttons that do things, forms that answer, pages that react. JavaScript, one small win at a time.</p></div>
+      <div class="story-step"><span class="n">03</span><h3>Build real projects</h3><p>Talk to real APIs and get your code reviewed by a mentor who has shipped for years.</p></div>
+      <div class="story-step"><span class="n">04</span><h3>Ship it</h3><p>Put your portfolio online with your own domain, six projects in it and a certificate to show.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="hs" id="curriculum"><div class="hs-sticky">
+  <div class="wrap"><div class="head row"><div style="display:grid;gap:16px"><span class="k">Curriculum</span><h2>Six stops, <em>from hello to launch.</em></h2></div><p class="lede" style="max-width:34ch">84 lessons. Each module ends with a project you keep.</p></div></div>
+  <div class="hs-track">
+    <article class="hs-card"><div class="hs-art"><div class="art art-d"><span class="glyph">01</span></div></div><div class="hs-body"><h3>Hello, web</h3><p>HTML from zero. Your first page, online on day one.</p><div class="hs-meta"><span>12 lessons</span><span>Free</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art" style="--ax:30%;--ay:70%"><span class="glyph">02</span></div></div><div class="hs-body"><h3>Make it look good</h3><p>CSS layout, colour and type, and making it work on phones.</p><div class="hs-meta"><span>14 lessons</span><span>Project: landing page</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art art-d" style="--ax:50%"><span class="glyph">03</span></div></div><div class="hs-body"><h3>Make it move</h3><p>JavaScript basics through small interactive builds.</p><div class="hs-meta"><span>16 lessons</span><span>Project: tip calculator</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art" style="--ax:80%;--ay:80%"><span class="glyph">04</span></div></div><div class="hs-body"><h3>Talk to the internet</h3><p>Fetch real data from APIs and show it beautifully.</p><div class="hs-meta"><span>14 lessons</span><span>Project: weather app</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art art-d" style="--ax:20%;--ay:20%"><span class="glyph">05</span></div></div><div class="hs-body"><h3>React, gently</h3><p>Components and state, explained without the jargon.</p><div class="hs-meta"><span>16 lessons</span><span>Project: habit tracker</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art" style="--ax:60%;--ay:40%"><span class="glyph">06</span></div></div><div class="hs-body"><h3>Launch</h3><p>Git, deploys, a custom domain and your portfolio.</p><div class="hs-meta"><span>12 lessons</span><span>Project: yourname.dev</span></div></div></article>
+  </div>
+  <div class="hs-progress"><i></i></div>
+</div></section>
+
+<section class="sec" id="projects"><div class="wrap">
+  <div class="head row"><div style="display:grid;gap:16px"><span class="k">Projects</span><h2>Things you will <em>actually build.</em></h2></div><p class="lede" style="max-width:34ch">Six portfolio pieces, each reviewed by a mentor before you ship it.</p></div>
+  <div class="grid" data-stagger>
+    <article class="card tilt proj"><div class="thumb"><i style="left:8%;top:14%;width:50%;height:12%;background:var(--acc)"></i><i style="left:8%;top:34%;width:70%;height:8%"></i><i style="left:8%;top:60%;width:26%;height:14%;border-radius:99px;background:var(--acc2)"></i></div><h3>Landing page</h3><p>A real page for a real (or dream) business.</p></article>
+    <article class="card tilt proj"><div class="thumb"><i style="left:30%;top:20%;width:40%;height:24%;border-radius:50%;background:var(--acc)"></i><i style="left:20%;top:58%;width:60%;height:10%"></i><i style="left:20%;top:74%;width:60%;height:10%"></i></div><h3>Tip calculator</h3><p>Your first app that does maths for you.</p></article>
+    <article class="card tilt proj"><div class="thumb"><i style="left:8%;top:14%;width:40%;height:40%;background:var(--acc2)"></i><i style="left:54%;top:14%;width:38%;height:10%"></i><i style="left:54%;top:30%;width:28%;height:10%"></i><i style="left:8%;top:64%;width:84%;height:22%"></i></div><h3>Weather app</h3><p>Live forecasts from a real API.</p></article>
+    <article class="card tilt proj"><div class="thumb"><i style="left:8%;top:16%;width:84%;height:12%"></i><i style="left:8%;top:36%;width:84%;height:12%;background:var(--acc)"></i><i style="left:8%;top:56%;width:84%;height:12%"></i><i style="left:8%;top:76%;width:60%;height:12%"></i></div><h3>Habit tracker</h3><p>A React app you will actually use.</p></article>
+    <article class="card tilt proj"><div class="thumb"><i style="left:8%;top:12%;width:26%;height:36%"></i><i style="left:37%;top:12%;width:26%;height:36%;background:var(--acc2)"></i><i style="left:66%;top:12%;width:26%;height:36%"></i><i style="left:8%;top:56%;width:84%;height:30%"></i></div><h3>Photo gallery</h3><p>Grids, lightboxes and lazy loading.</p></article>
+    <article class="card tilt proj"><div class="thumb"><i style="left:8%;top:18%;width:22%;height:30%;border-radius:50%;background:var(--acc)"></i><i style="left:36%;top:22%;width:50%;height:10%"></i><i style="left:36%;top:38%;width:36%;height:8%"></i><i style="left:8%;top:62%;width:84%;height:24%"></i></div><h3>yourname.dev</h3><p>Your portfolio, live on your own domain.</p></article>
+  </div>
+</div></section>
+
+<section class="sec alt" id="live"><div class="wrap split">
+  <div><span class="k">Live sessions</span><h2>Stuck? <em>Bring it to Thursday.</em></h2><p class="lede" style="margin-top:16px">Every Thursday at 6pm, Deduction live-debugs learner code on stream. Recordings land in your dashboard an hour later.</p>
+    <ul class="ticks"><li><span><b>Live debugging</b> of real learner projects.</span></li><li><span><b>Career Q&amp;A</b> on the first Thursday of the month.</span></li><li><span><b>Every session recorded</b> and searchable.</span></li></ul></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px"><b>November</b><span class="pill">Next: Thu 6pm</span></div>
+    <div class="cal"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>3</span><span>4</span><span>5</span><span class="dot">6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span class="on">13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span class="dot">20</span><span>21</span><span>22</span><span>23</span></div>
+    <p class="fine" style="margin-top:14px">Outlined days are live sessions. Today is highlighted.</p></div>
+</div></section>
+
+<section class="sec" id="compare"><div class="wrap">
+  <div class="head center"><span class="k">Why Deduction</span><h2>Structure without <em>the bootcamp bill.</em></h2></div>
+  <div class="tablewrap rv"><table class="compare"><thead><tr><th></th><th class="us">Deduction</th><th>Free videos</th><th>Bootcamp</th></tr></thead><tbody>
+    <tr><td>A clear path from zero</td><td class="us"><span class="yes">Yes</span></td><td>You piece it together</td><td>Yes</td></tr>
+    <tr><td>Code playground in every lesson</td><td class="us"><span class="yes">Yes</span></td><td>No</td><td>Sometimes</td></tr>
+    <tr><td>Mentor code reviews</td><td class="us"><span class="yes">Every project</span></td><td>No</td><td>Yes</td></tr>
+    <tr><td>Learn at your own pace</td><td class="us"><span class="yes">Yes</span></td><td>Yes</td><td>Fixed schedule</td></tr>
+    <tr><td>Price</td><td class="us"><span class="yes">$19 a month</span></td><td>Free</td><td>$10,000+</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<section class="sec alt" id="reviews"><div class="wrap">
+  <div class="head center"><span class="k">Learners</span><h2>From stuck <em>to shipping.</em></h2></div>
+  <div class="grid" data-stagger>
+    <div class="card"><div class="stars">★★★★★</div><blockquote>“I tried three courses before. This is the first one where I finished and had something to show.”</blockquote><div class="who"><span class="av">TA</span><span><b>Tom Alvarez</b><span>Career changer</span></span></div></div>
+    <div class="card"><div class="stars">★★★★★</div><blockquote>“The playground next to every video made it click. I never had to set anything up.”</blockquote><div class="who"><span class="av n">AK</span><span><b>Aisha Khan</b><span>Student</span></span></div></div>
+    <div class="card"><div class="stars">★★★★★</div><blockquote>“Six months later I build small tools for my team at work.”</blockquote><div class="who"><span class="av n">BW</span><span><b>Ben Wright</b><span>Operations analyst</span></span></div></div>
+  </div>
+  <p class="fine" style="margin-top:16px;text-align:center">Sample reviews written for this concept.</p>
+</div></section>
+
+<section class="sec" id="courses"><div class="wrap">
+  <div class="head center"><span class="k">Pricing</span><h2>Pick <em>where you are.</em></h2><div class="toggle" role="group" aria-label="Billing period"><button type="button" data-period="m" aria-pressed="true">Monthly</button><button type="button" data-period="y" aria-pressed="false">Yearly · save 25%</button></div></div>
+  <div class="plans" data-stagger>
+    <div class="card plan"><h3>First module</h3><div class="price" data-price-m="Free" data-price-y="Free">Free<small></small></div><ul><li>12 lessons of HTML</li><li>Playground included</li><li>Your first page online</li></ul><a class="btn ghost" href="#courses" data-toast="Sample site: sign-up is not live.">Start free</a></div>
+    <div class="card plan best"><span class="pill badge">Most learners</span><h3>Full path</h3><div class="price" data-price-m="$19" data-price-y="$14">$19<small> /month</small></div><ul><li>All 84 lessons</li><li>6 mentor-reviewed projects</li><li>Weekly live sessions</li><li>Certificate</li></ul><a class="btn" href="#courses" data-toast="Sample site: sign-up is not live.">Start learning</a></div>
+    <div class="card plan"><h3>Lifetime</h3><div class="price" data-price-m="$249" data-price-y="$249">$249<small> once</small></div><ul><li>Everything in Full path</li><li>All future modules</li><li>1:1 portfolio review</li></ul><a class="btn ghost" href="#courses" data-toast="Sample site: sign-up is not live.">Get lifetime</a></div>
+  </div>
+</div></section>
+
+<section class="sec alt" id="faq"><div class="wrap faq-grid">
+  <div class="head" style="margin:0"><span class="k">FAQ</span><h2>Questions, <em>answered.</em></h2><p class="lede">Still unsure? The first module is free, so try it.</p></div>
+  <div class="faq" data-stagger>
+    <details><summary>Do I need any experience?</summary><p>None. Lesson one starts from a blank page.</p></details>
+    <details><summary>How much time does it take?</summary><p>About three hours a week finishes the full path in four months.</p></details>
+    <details><summary>Do I need a powerful computer?</summary><p>No. Everything runs in the browser, even on a Chromebook.</p></details>
+    <details><summary>Is there a certificate?</summary><p>Yes, plus a portfolio of the six projects you built.</p></details>
+    <details><summary>Can I cancel any time?</summary><p>Yes, in two clicks. You keep access until the end of the month.</p></details>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap split">
+  <div><span class="k">One tip a week</span><h2>Learn something <em>every Sunday.</em></h2><p class="lede" style="margin-top:16px">A single, small coding tip in your inbox each week. Two minutes to read, free forever.</p></div>
+  <form class="inline-form"><input type="email" required placeholder="you@example.com" aria-label="Email"><button class="btn" type="submit">Send me tips</button></form>
+</div></section>
+
+<section class="sec" style="padding-top:0"><div class="wrap">
+  <div class="band"><span class="k">Lesson one is free</span><h2>Your first line of code is <em>ten minutes away.</em></h2><a class="btn" href="#courses">Start the first module</a></div>
+</div></section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="#top">&lt;Deduction<b>/</b>&gt;</a><p style="margin-top:14px;max-width:32ch">Learn to code, one small win at a time.</p><div class="socials"><a href="#top" aria-label="YouTube">YT</a><a href="#top" aria-label="Discord">DC</a><a href="#top" aria-label="GitHub">GH</a></div></div>
+    <div><h4>Learn</h4><ul><li><a href="#curriculum">Curriculum</a></li><li><a href="#projects">Projects</a></li><li><a href="#live">Live sessions</a></li></ul></div>
+    <div><h4>Join</h4><ul><li><a href="#courses">Pricing</a></li><li><a href="#reviews">Learners</a></li><li><a href="#top">Community</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="#faq">FAQ</a></li><li><a href="#top">Contact</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="#top">Privacy</a></li><li><a href="#top">Terms</a></li></ul></div>
+  </div>
+  <div class="base"><span>© 2026 Deduction (fictional). Concept site by <a href="/">Kulman Ziman</a>.</span><span>Figures and reviews are illustrative.</span></div>
+</div></footer>
+
+<script src="/assets/three.min.js"></script>
+<script src="/assets/sample-kit.js" defer></script>
+<script src="/assets/sample-3d.js" defer></script>
+</body>
+</html>

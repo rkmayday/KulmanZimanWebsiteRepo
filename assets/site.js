@@ -166,7 +166,7 @@ window.kzGmail = (to, subject = '', body = '') => {
 
   // labels decode like a terminal when they first appear
   const decode = el => {
-    if (el._dec || el.children.length || reduce) return; el._dec = true;
+    if (el._dec || el.children.length || reduce || document.querySelector('link[href*="mono.css"]')) return; el._dec = true;
     const final = el.textContent, G = '01<>/\\[]{}#=+*_-:', N = 26; let f = 0;
     el.setAttribute('aria-label', final);
     const tick = () => { const k = f / N;

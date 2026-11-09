@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Synthra — Sample AI Agent Site</title>
+<meta name="description" content="Synthra is a fictional AI agent company: a sample concept site built by Kulman Ziman.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05070f">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/sample-kit.css">
+<style>
+:root{--hw:500;--bg:#05070f;--bg2:#080b16;--panel:#0c1120;--panel2:#121a2c;--line:#1c2540;--fg:#eef3ff;--mut:#8d98b6;--acc:#5ef0ff;--acc2:#8b7bff;--on-acc:#03141b;
+  --display:"Space Grotesk",system-ui,sans-serif;--body:"Space Grotesk",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;--glass:rgba(14,20,38,.6);color-scheme:dark;
+  --stage:radial-gradient(70% 60% at 60% 35%,#13233f,#05070f 75%)}
+.hero h1 em,.band h2 em{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo i{background:linear-gradient(135deg,var(--acc),var(--acc2))}
+.tools{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.tools{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:480px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tool{display:grid;gap:10px;justify-items:start;padding:18px;border-radius:18px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);font-weight:600;font-size:.95rem}
+.tool i{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font:700 13px var(--mono);font-style:normal;background:var(--panel2);color:var(--acc);box-shadow:inset 0 0 0 1px var(--line)}
+.log{font:400 13px/1.7 var(--mono);color:var(--mut)}
+.log b{color:var(--acc);font-weight:500}
+.art-c{--a:radial-gradient(70% 70% at 70% 25%,#5ef0ff40,transparent 60%),radial-gradient(60% 60% at 20% 80%,#8b7bff40,transparent 60%),linear-gradient(150deg,#101a30,#05070f)}
+</style>
+</head>
+<body>
+<div class="notice"><span>Sample concept by Kulman Ziman. Synthra is a fictional AI company, not a client project and not for sale.</span><a href="/#proof">← Back to Kulman Ziman</a></div>
+
+<header class="top"><div class="wrap top-in">
+  <a class="logo" href="#top"><i></i>Synthra</a>
+  <nav aria-label="Main"><ul class="links"><li><a href="#product">Product</a></li><li><a href="#how">How it works</a></li><li><a href="#cases">Use cases</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#security">Security</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
+  <div class="top-cta"><a class="btn ghost sm" href="#demo">Sign in</a><a class="btn sm" href="#demo">Book a demo</a>
+    <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
+</div></header>
+<nav class="drawer" aria-label="Mobile"><a href="#product">Product</a><a href="#how">How it works</a><a href="#cases">Use cases</a><a href="#integrations">Integrations</a><a href="#security">Security</a><a href="#pricing">Pricing</a><a class="btn" href="#demo">Book a demo</a></nav>
+
+<main id="top">
+<section class="hero"><div class="wrap hero-in">
+  <div>
+    <span class="k">AI agents for IT and operations</span>
+    <h1>The busywork, <em>handled</em> by an agent.</h1>
+    <p class="lede">Synthra plans the task, uses your tools, asks before anything risky and reports back when it is done. Your team keeps the interesting work.</p>
+    <div class="actions"><a class="btn" href="#demo">Book a demo <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#how">Watch it work</a></div>
+    <div class="trust"><div class="faces"><span>NW</span><span>HL</span><span>BL</span><span>+</span></div><span>Running in <b style="color:var(--fg)">600+ operations teams</b></span></div>
+  </div>
+  <div class="h3d" data-scene="cards">
+    <canvas></canvas>
+    <div class="chip" style="left:18px;top:18px"><span class="dot"></span><span><b>Agent running</b><small>5 tasks in progress</small></span></div>
+    <div class="chip" style="right:18px;bottom:22px"><span><b>41 hours saved</b><small>by your team this week</small></span></div>
+  </div>
+</div></section>
+
+<div class="logos"><p>Trusted by operations teams at</p><div class="lrow"><div><span>Northwind</span><span>Helix Labs</span><span>Brightline</span><span>Quanta Freight</span><span>Copperleaf</span><span>Meridian Health</span><span>Atlas Retail</span></div></div></div>
+
+<section class="sec tight"><div class="wrap">
+  <div class="stats" data-stagger>
+    <div><b><span data-count="3.2">3.2</span><em>M</em></b><span>tasks completed</span></div>
+    <div><b><span data-count="41">41</span> hrs</b><span>saved per team, per month</span></div>
+    <div><b><span data-count="99.95">99.95</span><em>%</em></b><span>uptime last 12 months</span></div>
+    <div><b>SOC <em>2</em></b><span>Type II audited</span></div>
+  </div>
+  <p class="fine" style="margin-top:14px">Figures on this sample site are illustrative.</p>
+</div></section>
+
+<section class="sec" id="product"><div class="wrap">
+  <div class="head"><span class="k">Product</span><h2>One agent. <em>Every tool in reach.</em></h2><p class="lede">Synthra works across the apps your team already uses and follows the same runbooks your best people do.</p></div>
+  <div class="bento" data-stagger>
+    <article class="card tilt w4"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div><h3>Plans before it acts</h3><p>Every request becomes a short, readable plan you can check before a single click is made.</p>
+      <div class="mock log"><b>Plan</b> · Reset VPN access for J. Alvarez<br>1. Verify identity in Okta<br>2. Revoke old token, issue new one<br>3. Reply in the ticket with steps</div></article>
+    <article class="card tilt"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><h3>Asks first</h3><p>Anything risky waits for a human to approve.</p></article>
+    <article class="card tilt"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2zM8 7h6"/></svg></div><h3>Learns your runbooks</h3><p>Point it at your docs and it follows them.</p></article>
+    <article class="card tilt"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>Lives in chat</h3><p>Ask in Slack or Teams. Answers arrive in the thread.</p></article>
+    <article class="card tilt w6"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><h3>A full audit log</h3><p>Every step, every tool call and every approval is recorded and searchable.</p>
+      <div class="mock log">09:41:02 <b>okta.users.get</b> j.alvarez ✓<br>09:41:04 <b>approval</b> granted by M. Chen<br>09:41:05 <b>okta.factors.reset</b> ✓<br>09:41:07 <b>jira.comment</b> HELP-2291 ✓</div></article>
+  </div>
+</div></section>
+
+<section class="sec alt" id="how"><div class="wrap">
+  <div class="head"><span class="k">How it works</span><h2>From request to done, <em>step by step.</em></h2></div>
+  <div class="story">
+    <div class="story-media">
+      <div class="scene on"><div class="panel-ui"><span class="k">#it-help</span><div class="row-ui"><span>“Can someone reset my VPN? Locked out since this morning.”</span></div><div class="row-ui" style="background:color-mix(in srgb,var(--acc) 12%,transparent)"><span>On it. I’ll confirm it’s you first.</span></div></div></div>
+      <div class="scene"><div class="panel-ui"><span class="k">Plan · 3 steps</span><div class="row-ui"><b>Verify identity</b><span class="pill">Okta</span></div><div class="row-ui"><b>Reset VPN token</b><span class="pill">Okta</span></div><div class="row-ui"><b>Update the ticket</b><span class="pill">Jira</span></div></div></div>
+      <div class="scene"><div class="panel-ui"><span class="k">Approval needed</span><div class="row-ui"><span>Reset MFA factor for <b>j.alvarez</b></span></div><div class="actions"><span class="btn sm">Approve</span><span class="btn ghost sm">Edit plan</span></div><span class="fine">Requested from the IT on-call</span></div></div>
+      <div class="scene"><div class="panel-ui"><span class="k">Done in 42 seconds</span><div class="row-ui"><b>Identity verified</b><span class="pill">✓</span></div><div class="row-ui"><b>Token reset</b><span class="pill">✓</span></div><div class="row-ui"><b>Ticket closed</b><span class="pill">✓</span></div></div></div>
+    </div>
+    <div class="story-steps">
+      <div class="story-step"><span class="n">01</span><h3>Ask in plain language</h3><p>Message Synthra in Slack, Teams or your helpdesk, the same way you would ask a colleague.</p></div>
+      <div class="story-step"><span class="n">02</span><h3>It plans the work</h3><p>The agent breaks the request into clear steps and picks the tools it needs, following your runbooks.</p></div>
+      <div class="story-step"><span class="n">03</span><h3>You stay in control</h3><p>Anything sensitive waits for approval from the right person, with the exact change spelled out.</p></div>
+      <div class="story-step"><span class="n">04</span><h3>Done, and reported</h3><p>Synthra finishes the job, closes the loop with the requester and logs every step it took.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="hs" id="cases"><div class="hs-sticky">
+  <div class="wrap"><div class="head row"><div style="display:grid;gap:16px"><span class="k">Use cases</span><h2>Built for the work <em>that piles up.</em></h2></div><p class="lede" style="max-width:34ch">Start with one team. Most customers add a second within a month.</p></div></div>
+  <div class="hs-track">
+    <article class="hs-card"><div class="hs-art"><div class="art art-c"><span class="glyph">IT</span></div></div><div class="hs-body"><h3>IT helpdesk</h3><p>Triage tickets, reset access and close the loop with the requester.</p><div class="hs-meta"><span>62% auto-resolved</span><span>Okta · Jira</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art" style="--ax:30%;--ay:70%"><span class="glyph">Sales</span></div></div><div class="hs-body"><h3>Sales operations</h3><p>Update the CRM after calls and draft follow-ups for review.</p><div class="hs-meta"><span>5 hrs/rep/week</span><span>Salesforce</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art art-c" style="--ax:50%"><span class="glyph">Fin</span></div></div><div class="hs-body"><h3>Finance close</h3><p>Reconcile invoices against the ledger and flag mismatches.</p><div class="hs-meta"><span>Close 2 days faster</span><span>NetSuite</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art" style="--ax:80%;--ay:80%"><span class="glyph">HR</span></div></div><div class="hs-body"><h3>People operations</h3><p>Onboard new hires across every account in one request.</p><div class="hs-meta"><span>9 apps per hire</span><span>Workday</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art art-c" style="--ax:20%;--ay:20%"><span class="glyph">Ops</span></div></div><div class="hs-body"><h3>Incident response</h3><p>Gather logs, open the incident and keep the channel updated.</p><div class="hs-meta"><span>MTTA −40%</span><span>Datadog</span></div></div></article>
+    <article class="hs-card"><div class="hs-art"><div class="art" style="--ax:60%;--ay:40%"><span class="glyph">Data</span></div></div><div class="hs-body"><h3>Reporting</h3><p>Pull numbers from three tools into one weekly summary.</p><div class="hs-meta"><span>Every Monday 8am</span><span>Sheets</span></div></div></article>
+  </div>
+  <div class="hs-progress"><i></i></div>
+</div></section>
+
+<section class="sec" id="integrations"><div class="wrap">
+  <div class="head center"><span class="k">Integrations</span><h2>Works with the tools <em>you already pay for.</em></h2><p class="lede">40+ connectors, each with read and write permissions you control.</p></div>
+  <div class="tools" data-stagger>
+    <div class="tool"><i>Sl</i>Slack</div><div class="tool"><i>Te</i>Teams</div><div class="tool"><i>Ji</i>Jira</div><div class="tool"><i>Ok</i>Okta</div><div class="tool"><i>Sf</i>Salesforce</div><div class="tool"><i>Hs</i>HubSpot</div>
+    <div class="tool"><i>Ns</i>NetSuite</div><div class="tool"><i>Gw</i>Google Workspace</div><div class="tool"><i>Zd</i>Zendesk</div><div class="tool"><i>Gh</i>GitHub</div><div class="tool"><i>No</i>Notion</div><div class="tool"><i>Dd</i>Datadog</div>
+  </div>
+</div></section>
+
+<section class="sec alt" id="security"><div class="wrap split">
+  <div><span class="k">Security</span><h2>Powerful, and on <em>a short leash.</em></h2><p class="lede" style="margin-top:16px">Synthra only touches what you allow, and every action is reviewable after the fact.</p>
+    <ul class="ticks"><li><span><b>Scoped permissions.</b> Read and write access per tool, per team.</span></li><li><span><b>Human approvals.</b> Choose which actions always need a person.</span></li><li><span><b>SSO and SCIM.</b> Your identity provider stays in charge.</span></li><li><span><b>Data residency.</b> Keep data in the US or the EU.</span></li></ul></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px"><b>Audit log</b><span class="pill">Live</span></div>
+    <div class="log">09:41:02 <b>okta.users.get</b> j.alvarez ✓<br>09:41:04 <b>approval</b> granted · M. Chen<br>09:41:05 <b>okta.factors.reset</b> ✓<br>09:41:07 <b>jira.comment</b> HELP-2291 ✓<br>09:52:18 <b>netsuite.invoices.list</b> 214 rows ✓<br>09:52:31 <b>approval</b> requested · Finance<br>10:03:44 <b>slack.post</b> #incidents ✓</div></div>
+</div></section>
+
+<section class="sec" id="compare"><div class="wrap">
+  <div class="head center"><span class="k">Why Synthra</span><h2>Faster than scripts. <em>Safer than shortcuts.</em></h2></div>
+  <div class="tablewrap rv"><table class="compare"><thead><tr><th></th><th class="us">Synthra</th><th>Scripts</th><th>Doing it by hand</th></tr></thead><tbody>
+    <tr><td>Handles messy, plain-language requests</td><td class="us"><span class="yes">Yes</span></td><td>No</td><td>Yes</td></tr>
+    <tr><td>Works across many tools</td><td class="us"><span class="yes">40+ connectors</span></td><td>One at a time</td><td>Tab switching</td></tr>
+    <tr><td>Human approval on risky steps</td><td class="us"><span class="yes">Built in</span></td><td>Rarely</td><td>Depends</td></tr>
+    <tr><td>Complete audit trail</td><td class="us"><span class="yes">Every step</span></td><td>Partial</td><td>No</td></tr>
+    <tr><td>Time to first automation</td><td class="us"><span class="yes">One afternoon</span></td><td>Weeks</td><td>—</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<section class="sec alt" id="reviews"><div class="wrap">
+  <div class="head center"><span class="k">Teams</span><h2>What changes when <em>the busywork goes.</em></h2></div>
+  <div class="grid" data-stagger>
+    <div class="card"><div class="stars">★★★★★</div><blockquote>“Password resets went from a day to under a minute. Our queue finally shrank.”</blockquote><div class="who"><span class="av">MC</span><span><b>Marta Chen</b><span>IT lead, Northwind</span></span></div></div>
+    <div class="card"><div class="stars">★★★★★</div><blockquote>“Month-end used to take a week. Synthra flags the mismatches before we even look.”</blockquote><div class="who"><span class="av n">RO</span><span><b>Ravi Osei</b><span>Controller, Copperleaf</span></span></div></div>
+    <div class="card"><div class="stars">★★★★★</div><blockquote>“New hires have every account on day one. Nobody chases access anymore.”</blockquote><div class="who"><span class="av n">LB</span><span><b>Lena Brandt</b><span>People ops, Helix Labs</span></span></div></div>
+  </div>
+  <p class="fine" style="margin-top:16px;text-align:center">Sample reviews written for this concept.</p>
+</div></section>
+
+<section class="sec" id="pricing"><div class="wrap">
+  <div class="head center"><span class="k">Pricing</span><h2>Start small. <em>Scale when it works.</em></h2><div class="toggle" role="group" aria-label="Billing period"><button type="button" data-period="m" aria-pressed="true">Monthly</button><button type="button" data-period="y" aria-pressed="false">Yearly · save 15%</button></div></div>
+  <div class="plans" data-stagger>
+    <div class="card plan"><h3>Starter</h3><div class="price" data-price-m="$0" data-price-y="$0">$0<small> /month</small></div><ul><li>100 tasks a month</li><li>3 connectors</li><li>Slack or Teams</li></ul><a class="btn ghost" href="#demo">Start free</a></div>
+    <div class="card plan best"><span class="pill badge">Most teams</span><h3>Team</h3><div class="price" data-price-m="$29" data-price-y="$25">$29<small> /seat/month</small></div><ul><li>Unlimited tasks</li><li>All 40+ connectors</li><li>Approvals and audit log</li><li>Custom runbooks</li></ul><a class="btn" href="#demo">Book a demo</a></div>
+    <div class="card plan"><h3>Enterprise</h3><div class="price" data-price-m="Custom" data-price-y="Custom">Custom<small></small></div><ul><li>SSO, SCIM and data residency</li><li>Dedicated success manager</li><li>99.95% uptime SLA</li></ul><a class="btn ghost" href="#demo">Talk to sales</a></div>
+  </div>
+</div></section>
+
+<section class="sec alt" id="faq"><div class="wrap faq-grid">
+  <div class="head" style="margin:0"><span class="k">FAQ</span><h2>Questions, <em>answered.</em></h2><p class="lede">Security questionnaires and DPAs are available on request.</p></div>
+  <div class="faq" data-stagger>
+    <details><summary>Does Synthra train on our data?</summary><p>No. Your data is used only to complete your tasks and is never used to train models.</p></details>
+    <details><summary>What happens if the agent gets something wrong?</summary><p>Risky actions need approval, and every step is logged and reversible where the tool allows it.</p></details>
+    <details><summary>How long does setup take?</summary><p>Most teams connect their first tools and automate a first workflow in one afternoon.</p></details>
+    <details><summary>Can we limit what it can touch?</summary><p>Yes. Permissions are set per tool, per team and per action.</p></details>
+    <details><summary>Do you support single sign-on?</summary><p>SAML SSO and SCIM provisioning are included on the Enterprise plan.</p></details>
+  </div>
+</div></section>
+
+<section class="sec" id="demo"><div class="wrap split" style="align-items:start">
+  <div><span class="k">Book a demo</span><h2>See it run on <em>your workflow.</em></h2><p class="lede" style="margin-top:16px">Tell us one task your team repeats every week. We will show Synthra doing it, live, in 30 minutes.</p>
+    <ul class="ticks"><li><span><b>30 minutes,</b> no slides.</span></li><li><span><b>Your tools,</b> in a safe sandbox.</span></li><li><span><b>A pilot plan</b> you can take to your team.</span></li></ul></div>
+  <form class="form card">
+    <div class="two"><label>Name<input required autocomplete="name"></label><label>Work email<input type="email" required autocomplete="email"></label></div>
+    <div class="two"><label>Company<input autocomplete="organization"></label><label>Team size<select><option>1–20</option><option>21–100</option><option>101–500</option><option>500+</option></select></label></div>
+    <label>What should Synthra automate first?<textarea rows="4" placeholder="Password resets, invoice matching, onboarding…"></textarea></label>
+    <button class="btn" type="submit">Request my demo</button>
+  </form>
+</div></section>
+
+<section class="sec" style="padding-top:0"><div class="wrap">
+  <div class="band"><span class="k">Get started</span><h2>Give your team its <em>afternoons back.</em></h2><p class="lede">Free for your first 100 tasks. No credit card.</p><div class="actions" style="justify-content:center"><a class="btn" href="#demo">Book a demo</a><a class="btn ghost" href="#pricing">See pricing</a></div></div>
+</div></section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="#top"><i></i>Synthra</a><p style="margin-top:14px;max-width:32ch">AI agents that handle the busywork in IT and operations.</p><div class="socials"><a href="#top" aria-label="LinkedIn">in</a><a href="#top" aria-label="X">X</a><a href="#top" aria-label="GitHub">GH</a></div></div>
+    <div><h4>Product</h4><ul><li><a href="#product">Overview</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#security">Security</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+    <div><h4>Solutions</h4><ul><li><a href="#cases">IT</a></li><li><a href="#cases">Finance</a></li><li><a href="#cases">People</a></li><li><a href="#cases">Operations</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="#top">About</a></li><li><a href="#top">Careers</a></li><li><a href="#top">Blog</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="#top">Privacy</a></li><li><a href="#top">Terms</a></li><li><a href="#top">DPA</a></li></ul></div>
+  </div>
+  <div class="base"><span>© 2026 Synthra (fictional). Concept site by <a href="/">Kulman Ziman</a>.</span><span>Figures, customers and reviews are illustrative.</span></div>
+</div></footer>
+
+<script src="/assets/three.min.js"></script>
+<script src="/assets/sample-kit.js" defer></script>
+<script src="/assets/sample-3d.js" defer></script>
+</body>
+</html>

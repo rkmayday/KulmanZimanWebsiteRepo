@@ -29,7 +29,7 @@ PACKAGES = [
     ("professional", "Professional", 568, "2–3-page interactive website", "A home page plus your services and a contact or booking page.", "https://whop.com/checkout/plan_nhAPjhAm2Hdoo/"),
     ("premium", "Premium", 994, "4–7-page interactive website", "A full business site: services, about, gallery, pricing and more.", "https://whop.com/checkout/plan_kayas42uF3j2w/"),
 ]
-PACKAGE_COMMON = ["Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
+PACKAGE_COMMON = ["Interactive, animated website experience", "Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
                   "Done within one month, or a full refund", "First-year domain paid by us when under $30"]
 
 
@@ -99,9 +99,35 @@ ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
 ICON_NOIR = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
              "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
+ICON_MONO = ICON_NOIR.replace("%23050505", "%23ffffff").replace("%23c6ff3d", "%230a0a0a")
+MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
+  <div class="kz-pin">
+    <div class="kz-grid" aria-hidden="true"></div>
+    <div class="kz-scene" aria-hidden="true"><div class="kz-logo"><div class="kz-half kz-k"></div><div class="kz-half kz-z"></div></div></div>
+    <div class="kz-word" aria-hidden="true">Kulman Ziman</div>
+    <div class="kz-copy"></div>
+    <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+  </div>
+</section>
+"""
+
 # Themes share every page and feature; they differ in colours, the 3D world and a few lines of copy.
 THEMES = {
     "royal": {"out": "dist", "preview": "preview", "replace": {}},
+    "mono": {
+        "out": "dist-mono", "preview": "preview-mono", "preview_title": "Kulman Ziman Mono",
+        "replace": {
+            '<meta name="theme-color" content="#030820">': '<meta name="theme-color" content="#ffffff">',
+            ICON: ICON_MONO,
+            '<link rel="stylesheet" href="/assets/site.css">': '<link rel="stylesheet" href="/assets/mono.css">',
+            '<script src="/assets/three.min.js"></script>\n': '',
+            '<script src="/assets/world.js" defer></script>\n': '',
+            '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>',
+            '<script src="/assets/founder-field.js" defer></script>\n': '',
+            '<section class="hero" data-dock="Home" id="top">': MONO_STAGE + '<section class="hero" data-dock="Home" id="top">',
+        },
+    },
+
     "noir": {
         "out": "dist-noir", "preview": "preview-noir", "preview_title": "Kulman Ziman Noir",
         "replace": {
@@ -210,7 +236,7 @@ FOOTER = f"""<footer>
       </div>
       <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
       <div class="reveal"><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
-      <div class="reveal"><h4>Order</h4><ul><li><a href="{CHECKOUT}">Packages &amp; pricing</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal#terms">Terms</a></li><li><a href="/legal">Legal</a></li></ul></div>
+      <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Starter Website (1 page)</a></li><li><a href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Professional Website (2–3 pages)</a></li><li><a href="https://whop.com/checkout/plan_kayas42uF3j2w/">Premium Website (4–7 pages)</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
     <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>
