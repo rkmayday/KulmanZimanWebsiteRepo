@@ -301,3 +301,7 @@ h3{font-weight:600;font-variation-settings:normal}
   .hero h1 .hl{will-change:auto}
   .dots{will-change:auto}
 }
+
+/* "Get started" inside the phone menu (the top-bar button is hidden on small screens) */
+.nav-links .nav-get{display:none}
+@media (max-width:960px){.nav-links .nav-get{display:block;margin-top:12px}.nav-links .nav-get .btn{display:flex;width:100%;color:#0a0a0a;background:#c6ff3d}}

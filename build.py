@@ -19,15 +19,15 @@ import json, pathlib, re, shutil, sys, urllib.parse
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
 SITE = "https://kulmanziman.shop"
-CHECKOUT = "/products"   # general "buy" links open the pricing page at the top; each package has its own checkout below
+CHECKOUT = "/get-started"   # every "buy"/"Get started" button opens the package picker; each package card goes to its own Whop checkout
 
 # Website packages. Each "checkout" is that package's Whop checkout link.
 # Until a package has its own Whop plan, its button opens the project brief instead (so nobody is charged the wrong amount).
 PACKAGES = [
     # key, name, price, scope, best-for, checkout link (None = not set up in Whop yet)
-    ("starter", "Starter", 284, "1-page interactive website", "A single page that introduces your business and gets people in touch.", None),
-    ("professional", "Professional", 568, "2–3-page interactive website", "A home page plus your services and a contact or booking page.", None),
-    ("premium", "Premium", 994, "4–7-page interactive website", "A full business site: services, about, gallery, pricing and more.", None),
+    ("starter", "Starter", 284, "1-page interactive website", "A single page that introduces your business and gets people in touch.", "https://whop.com/checkout/plan_PI6FfWmjEqWBP/"),
+    ("professional", "Professional", 568, "2–3-page interactive website", "A home page plus your services and a contact or booking page.", "https://whop.com/checkout/plan_nhAPjhAm2Hdoo/"),
+    ("premium", "Premium", 994, "4–7-page interactive website", "A full business site: services, about, gallery, pricing and more.", "https://whop.com/checkout/plan_kayas42uF3j2w/"),
 ]
 PACKAGE_COMMON = ["Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
                   "Done within one month, or a full refund", "First-year domain paid by us when under $30"]
@@ -38,7 +38,7 @@ def packages_html():
     for key, name, price, scope, best, link in PACKAGES:
         popular = key == "professional"
         href = link or "/#start"
-        label = f"Choose {name}" if link else f"Start with {name}"
+        label = f"Choose {name} · ${price}" if link else f"Start with {name}"
         ticks = "".join(f"<li>{t}</li>" for t in [scope] + PACKAGE_COMMON)
         cards.append(f"""      <article class="pkg reveal{' best' if popular else ''}" id="pkg-{key}">
         {'<span class="pkg-badge">Most popular</span>' if popular else ''}
@@ -163,7 +163,7 @@ def nav(active):
     return f"""<header class="nav">
   <div class="wrap">
     <a class="brand" href="/" aria-label="Kulman Ziman home"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
-    <nav aria-label="Main"><ul class="nav-links">{links}</ul></nav>
+    <nav aria-label="Main"><ul class="nav-links">{links}<li class="nav-get"><a class="btn" href="{CHECKOUT}">Get started</a></li></ul></nav>
     <div class="nav-cta">
       <a class="btn ghost" href="/#start">Send a brief</a>
       <a class="btn small" href="{CHECKOUT}">Get started</a>
