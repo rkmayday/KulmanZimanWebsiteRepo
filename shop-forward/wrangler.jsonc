@@ -1,8 +1,0 @@
-{
-  "name": "kulmanziman-shop-forward",
-  "compatibility_date": "2026-11-01",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "./server/index.js",
-  // every request goes to the forwarder first, so nothing on the old site is served
-  "assets": { "binding": "ASSETS", "run_worker_first": true }
-}
