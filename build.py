@@ -99,6 +99,11 @@ ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
 ICON_NOIR = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
              "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
+# Icon files (static/ is copied to the site root): Google search results only use an icon that is a real file at a fixed address
+ICON_FILES = ('<link rel="icon" href="/favicon.ico" sizes="48x48">\n'
+              '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n'
+              '<link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">\n'
+              '<link rel="apple-touch-icon" href="/apple-touch-icon.png">')
 # Mono tab icon: the real KZ logo shape on a transparent background, black (white when the browser is in dark mode)
 ICON_MONO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3Epath%7Bfill:%230a0a0a%7D@media (prefers-color-scheme:dark)%7Bpath%7Bfill:%23ffffff%7D%7D%3C/style%3E%3Cpath transform='translate(1 14.69) scale(0.1033)' d='M0.00,0.00 L76.00,0.00 L76.00,137.42 L191.48,0.00 L283.45,0.00 L148.67,158.72 L303.05,333.19 L467.61,67.03 L325.06,66.99 L324.97,0.02 L488.00,0.00 L600.65,0.03 L434.59,268.00 L590.03,268.00 L589.94,335.00 L200.04,335.00 L76.00,192.20 L76.00,335.00 L0.00,335.00 Z'/%3E%3C/svg%3E"
 MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
@@ -119,7 +124,7 @@ THEMES = {
         "out": "dist-mono", "preview": "preview-mono", "preview_title": "Kulman Ziman Mono",
         "replace": {
             '<meta name="theme-color" content="#030820">': '<meta name="theme-color" content="#ffffff">',
-            ICON: ICON_MONO,
+            '<link rel="icon" href="' + ICON + '">': ICON_FILES,
             '<link rel="stylesheet" href="/assets/site.css">': '<link rel="stylesheet" href="/assets/mono.css">',
             '<script src="/assets/three.min.js"></script>\n': '',
             '<script src="/assets/world.js" defer></script>\n': '',
@@ -281,6 +286,8 @@ def relativize(html):
             return f'{attr}="index.html{frag}"'
         if path == "" and frag:
             return m.group(0)
+        if "." in path.rsplit("/", 1)[-1]:
+            return f'{attr}="{path.lstrip("/")}{frag}"'
         return f'{attr}="{path.strip("/")}.html{frag}"'
     return re.sub(r'(href|src)="(/[^"/][^"]*|/|/#[^"]*)"', fix, html)
 
@@ -300,6 +307,8 @@ def build(preview=False, theme="royal"):
     if out_dir.exists():
         shutil.rmtree(out_dir)
     shutil.copytree(ROOT / "assets", out_dir / "assets")
+    for f in sorted((ROOT / "static").glob("*")):
+        shutil.copy(f, out_dir / f.name)
     if not preview:
         shutil.copy(ROOT / "assets" / "og.jpg", out_dir / "og-kulman-ziman.jpg")
     pages = sorted((SRC / "pages").glob("*.html"))
