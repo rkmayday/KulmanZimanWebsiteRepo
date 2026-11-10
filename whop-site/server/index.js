@@ -14,6 +14,9 @@ export default {
     const path = url.pathname;
     if (REDIRECTS[path]) return Response.redirect(new URL(REDIRECTS[path] + url.search, url), 301);
     if (path.length > 1 && path.endsWith('/')) return Response.redirect(new URL(path.slice(0, -1) + url.search, url), 301);
+    // Google Search Console ownership check (HTML-file method): answer /google<id>.html with the content Google expects
+    const g = path.match(/^\/(google[0-9a-f]{8,32}\.html)$/);
+    if (g) return new Response('google-site-verification: ' + g[1], { headers: { 'content-type': 'text/html; charset=utf-8' } });
     if (path.endsWith('.html')) {                                   // /about.html -> /about
       const clean = path === '/index.html' ? '/' : path.slice(0, -5);
       return Response.redirect(new URL(clean + url.search, url), 301);
