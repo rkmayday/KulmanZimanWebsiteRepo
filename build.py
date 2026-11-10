@@ -103,7 +103,7 @@ ICON_MONO = ICON_NOIR.replace("%23050505", "%23ffffff").replace("%23c6ff3d", "%2
 MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
   <div class="kz-pin">
     <div class="kz-grid" aria-hidden="true"></div>
-    <div class="kz-scene" aria-hidden="true"><div class="kz-logo"><div class="kz-half kz-k"></div><div class="kz-half kz-z"></div></div></div>
+    <div class="kz-scene" aria-hidden="true"><div class="kz-logo"></div></div>
     <img class="kz-word" src="/assets/wordmark.png" alt="" width="1013" height="82" aria-hidden="true">
     <div class="kz-copy"></div>
     <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>

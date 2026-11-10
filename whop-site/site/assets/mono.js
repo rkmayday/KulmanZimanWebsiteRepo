@@ -22,36 +22,89 @@
   if (heroCopy) [...heroCopy.children].forEach(n => copy.append(n));
   if (heroTags) copy.append(heroTags);
 
-  // build the solid logo: a stack of logo-shaped layers, black on the front and lighter toward the back
+  // the solid logo is drawn on one canvas: a stack of logo-shaped slices, black on the front and lighter toward the back.
+  // (It used to be 60 masked 3D layers in the DOM, which the browser had to repaint on every frame: very laggy.)
   const phone = matchMedia('(max-width: 720px)').matches;
   const N = reduce ? 1 : (phone ? 18 : 30);
-  const fronts = [];
-  const build = half => {
-    for (let i = N - 1; i >= 0; i--) {
-      const l = document.createElement('div'); l.className = 'kz-layer' + (i === 0 ? ' front' : '');
-      const k = i / Math.max(1, N - 1);
-      const c = Math.round(26 + k * 120);                       // #1a1a1a .. #929292
-      l.style.setProperty('--c', i === 0 ? '#0a0a0a' : `rgb(${c},${c},${c})`);
-      l.dataset.i = i; half.append(l); if (!i) fronts.push(l);
+  const scene = $('.kz-scene', stage);
+  const cv = document.createElement('canvas'); cv.className = 'kz-canvas'; scene.prepend(cv);
+  const g = cv.getContext('2d');
+  // KZ outline (from kz-logo.svg, 600x335), cut into the K and the Z the same way the old clip-paths did
+  const KZ = [[0,0],[76,0],[76,137.42],[191.48,0],[283.45,0],[148.67,158.72],[303.05,333.19],[467.61,67.03],[325.06,66.99],[324.97,.02],[488,0],[600.65,.03],[434.59,268],[590.03,268],[589.94,335],[200.04,335],[76,192.2],[76,335],[0,335]];
+  const cut = (pts, keep) => {           // keep the part of the outline on one side of a vertical line
+    const out = [];
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i], b = pts[(i + 1) % pts.length], ia = keep(a[0]), ib = keep(b[0]);
+      if (ia) out.push(a);
+      if (ia !== ib) { const X = keep.x, t = (X - a[0]) / (b[0] - a[0]); out.push([X, a[1] + t * (b[1] - a[1])]); }
     }
+    return out;
   };
-  build($('.kz-k', stage)); build($('.kz-z', stage));
-  const depth = () => logo.offsetWidth * (phone ? .06 : .075);
-  const setDepth = () => { const d = depth(); stage.querySelectorAll('.kz-layer').forEach(l => l.style.setProperty('--z', (-(+l.dataset.i) * d / Math.max(1, N - 1)).toFixed(2) + 'px')); };
-  setDepth();
-  let lastW = innerWidth;
-  addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; setDepth(); } });
+  const left = x => x <= 303.6; left.x = 303.6;
+  const right = x => x >= 302.4; right.x = 302.4;
+  const SHAPES = [{ pts: cut(KZ, left), k: true }, { pts: cut(KZ, right), k: false }];
+  const S = { rx: 0, ry: 0, ls: 1, ly: 0, kx: 0, zx: 0, ho: 1, fv: 10, sx: 40 };
+  let W = 0, H = 0, cw = 0, ch = 0, dpr = 1;
+  const size = () => {
+    dpr = Math.min(2, devicePixelRatio || 1);
+    cw = scene.clientWidth; ch = scene.clientHeight;
+    cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
+    W = logo.offsetWidth; H = W * 335 / 600;
+  };
+  const draw = () => {
+    g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const D = 1500, cx0 = cw / 2, cy0 = ch / 2, depth = W * (phone ? .06 : .075);
+    const ay = S.ry * Math.PI / 180, ax = S.rx * Math.PI / 180, cY = Math.cos(ay), sY = Math.sin(ay), cX = Math.cos(ax), sX = Math.sin(ax);
+    // same maths as the CSS it replaces: translateY(ly) scale(ls) rotateX(rx) rotateY(ry), perspective 1500px
+    const P = (x, y, z) => {
+      const x1 = x * cY + z * sY, z1 = -x * sY + z * cY;
+      const y1 = y * cX - z1 * sX, z2 = y * sX + z1 * cX;
+      const f = D / (D - z2);
+      return [cx0 + x1 * S.ls * f, cy0 + (y1 * S.ls + S.ly) * f];
+    };
+    const fc = S.fv, hi = Math.round(fc + (255 - fc) * .22);
+    for (let i = N - 1; i >= 0; i--) {
+      const front = i === 0;
+      if (!front && S.ho <= .002) continue;
+      const z = -i * depth / Math.max(1, N - 1);
+      const c = Math.round(26 + i / Math.max(1, N - 1) * 120);
+      for (const sh of SHAPES) {
+        const hx = sh.k ? S.kx : S.zx;
+        g.beginPath();
+        sh.pts.forEach(([u, v], j) => { const q = P((u / 600 - .5) * W + hx, (v / 335 - .5) * H, z); j ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); });
+        g.closePath();
+        if (front) {
+          // the soft light sweep across the face (a 115deg gradient on the face, projected)
+          const dx = Math.sin(115 * Math.PI / 180), dy = -Math.cos(115 * Math.PI / 180), len = Math.abs(W * dx) + Math.abs(H * dy);
+          const a = P(-dx * len / 2 + hx, -dy * len / 2, 0), b = P(dx * len / 2 + hx, dy * len / 2, 0);
+          const gr = g.createLinearGradient(a[0], a[1], b[0], b[1]), m = clamp(S.sx / 100), col = `rgb(${fc},${fc},${fc})`;
+          gr.addColorStop(0, col); gr.addColorStop(clamp(m - .14), col); gr.addColorStop(m, `rgb(${hi},${hi},${hi})`); gr.addColorStop(clamp(m + .14), col); gr.addColorStop(1, col);
+          g.globalAlpha = 1; g.fillStyle = gr;
+        } else { g.globalAlpha = S.ho; g.fillStyle = `rgb(${c},${c},${c})`; }
+        g.fill();
+      }
+    }
+    g.globalAlpha = 1;
+  };
+  const pinTop = () => parseFloat(getComputedStyle($('.kz-pin', stage)).top) || 0;
+  let pinT = pinTop();
+  size(); draw();
+  let lastW = innerWidth, lastH = innerHeight;
+  addEventListener('resize', () => {
+    if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 120) return;   // ignore the phone address bar
+    lastW = innerWidth; lastH = innerHeight; size(); draw(); pinT = pinTop();
+  });
 
   if (reduce) { document.documentElement.classList.add('no-kz'); return; }
 
   // scroll + pointer drive the scene
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
-  const pinTop = () => parseFloat(getComputedStyle($('.kz-pin', stage)).top) || 0;
   // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
   // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
   const pin = $('.kz-pin', stage), HOLD = .85;   // the headline is fully in at 85% of the range (see frame)
   const readScroll = () => {
-    const r = stage.getBoundingClientRect(), t = pinTop(), range = Math.max(1, r.height - (innerHeight - t));
+    const r = stage.getBoundingClientRect(), t = pinT, range = Math.max(1, r.height - (innerHeight - t));
     target = clamp((t - r.top) / range);
     const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
@@ -69,15 +122,11 @@
     const ry = -24 + a * 44 - b * 20 + px * 14;
     const rx = 12 - a * 16 + b * 4 - py * 10;
     const spread = innerWidth * (phone ? .62 : .45);
-    logo.style.setProperty('--ry', ry.toFixed(2) + 'deg');
-    logo.style.setProperty('--rx', rx.toFixed(2) + 'deg');
-    logo.style.setProperty('--ls', (1 - b * .3).toFixed(4));
-    logo.style.setProperty('--ly', (-b * 24).toFixed(1) + 'px');
-    logo.style.setProperty('--kx', (-b * spread).toFixed(1) + 'px');
-    logo.style.setProperty('--zx', (b * spread).toFixed(1) + 'px');
-    logo.style.setProperty('--ho', (1 - smooth(b * 1.6)).toFixed(3));                 // the sides fade away first
-    logo.style.setProperty('--fv', Math.round(10 + b * 218));                         // the face turns light grey, staying crisp
-    fronts.forEach(f => f.style.setProperty('--sx', (25 + a * 45 + px * 25).toFixed(1) + '%'));
+    S.ry = ry; S.rx = rx; S.ls = 1 - b * .3; S.ly = -b * 24; S.kx = -b * spread; S.zx = b * spread;
+    S.ho = 1 - smooth(b * 1.6);                       // the sides fade away first
+    S.fv = Math.round(10 + b * 218);                  // the face turns light grey, staying crisp
+    S.sx = 25 + a * 45 + px * 25;
+    draw();
     // the name spells out under the logo, then makes room
     word.style.setProperty('--ws', (1.06 - a * .06).toFixed(4));
     word.style.setProperty('--wo', (1 - smooth((p - .28) / .14)).toFixed(3));
