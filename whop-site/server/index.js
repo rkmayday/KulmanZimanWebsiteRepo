@@ -1,8 +1,11 @@
 // Whop hosting (Cloudflare Workers runtime): serve the static site at clean addresses.
-//   kulmanziman.shop/about        -> about.html
-//   kulmanziman.shop/ryderziman   -> ryderziman.html
-//   kulmanziman.shop/samples/...  -> samples/....html
+//   kulmanziman.com/about        -> about.html
+//   kulmanziman.com/ryderziman   -> ryderziman.html
+//   kulmanziman.com/samples/...  -> samples/....html
 // and forward the old live-site links to the new Ironpath sample.
+//
+// Clean addresses ask for the exact .html file FIRST: the host may answer any unknown address with the
+// home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
 const REDIRECTS = { '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath' };
 
 export default {
@@ -11,10 +14,14 @@ export default {
     const path = url.pathname;
     if (REDIRECTS[path]) return Response.redirect(new URL(REDIRECTS[path] + url.search, url), 301);
     if (path.length > 1 && path.endsWith('/')) return Response.redirect(new URL(path.slice(0, -1) + url.search, url), 301);
-    let res = await env.ASSETS.fetch(request);
-    if (res.status === 404 && !path.split('/').pop().includes('.')) {
-      res = await env.ASSETS.fetch(new Request(new URL(path + '.html' + url.search, url), request));
+    if (path.endsWith('.html')) {                                   // /about.html -> /about
+      const clean = path === '/index.html' ? '/' : path.slice(0, -5);
+      return Response.redirect(new URL(clean + url.search, url), 301);
     }
-    return res;
+    if (path !== '/' && !path.split('/').pop().includes('.')) {
+      const page = await env.ASSETS.fetch(new Request(new URL(path + '.html', url), request));
+      if (page.status === 200) return page;
+    }
+    return env.ASSETS.fetch(request);
   }
 };
