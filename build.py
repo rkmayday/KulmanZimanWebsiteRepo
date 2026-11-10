@@ -90,7 +90,7 @@ NAV = [("home", "/", "Home"), ("products", "/products", "Pricing"), ("about", "/
 
 ORG = {
     "@context": "https://schema.org", "@type": "Organization", "name": "Kulman Ziman", "url": SITE,
-    "logo": f"{SITE}/assets/wordmark.png", "email": EMAIL, "foundingDate": "2026-08-24",
+    "logo": f"{SITE}/logo-512.png", "email": EMAIL, "foundingDate": "2026-08-24",
     "founder": [{"@type": "Person", "name": "Rex Kulman"}, {"@type": "Person", "name": "Ryder Ziman"}],
 }
 ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
@@ -122,6 +122,10 @@ THEMES = {
     "royal": {"out": "dist", "preview": "preview", "replace": {}},
     "mono": {
         "out": "dist-mono", "preview": "preview-mono", "preview_title": "Kulman Ziman Mono",
+        # leftovers from the earlier designs (royal / noir) and retired experiments: not shipped with the white site
+        "prune": ["site.css", "motion.js", "world.js", "world-noir.js", "theme-noir.css", "three.min.js", "kz-logo.png",
+                  "sample-3d.js", "sample-kit.css", "sample-kit.js", "og.jpg", "email"],
+        "strip_comments": True,
         "replace": {
             '<meta name="theme-color" content="#030820">': '<meta name="theme-color" content="#ffffff">',
             '<link rel="icon" href="' + ICON + '">': ICON_FILES,
@@ -242,7 +246,7 @@ FOOTER = f"""<footer>
     <div class="grid">
       <div class="reveal">
         <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
-        <p>Custom websites and software, built to order.</p>
+        <p>Custom websites, built to order.</p>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
       <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
@@ -313,9 +317,11 @@ def build(preview=False, theme="royal"):
     shutil.copytree(ROOT / "assets", out_dir / "assets")
     for f in sorted((ROOT / "static").glob("*")):
         shutil.copy(f, out_dir / f.name)
+    for name in th.get("prune", []):
+        t = out_dir / "assets" / name
+        shutil.rmtree(t) if t.is_dir() else t.unlink(missing_ok=True)
     if not preview:
         shutil.copy(ROOT / "assets" / "og-kz.jpg", out_dir / "og-kz.jpg")              # link-preview image
-        shutil.copy(ROOT / "assets" / "og.jpg", out_dir / "og-kulman-ziman.jpg")        # old address, kept for links already shared
     pages = sorted((SRC / "pages").glob("*.html"))
     for page in pages:
         text = page.read_text()
@@ -333,6 +339,8 @@ def build(preview=False, theme="royal"):
         for a, b in th["replace"].items():
             html = html.replace(a, b)
         html = gmail_links(html)
+        if th.get("strip_comments"):
+            html = re.sub(r"<!--(?!\[).*?-->\n?", "", html, flags=re.S)
         html = relativize(html) if preview else bust(html)
         # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages, GitHub Pages and Whop all serve
         # products.html at /products with no trailing slash
