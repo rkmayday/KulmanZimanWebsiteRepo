@@ -120,7 +120,15 @@ window.kzGmail = (to, subject = '', body = '') => {
   // Affiliate calculator
   const r = $('#refs');
   if (r) {
-    const upd = () => { $('#refs-n').textContent = r.value; $('#refs-out').textContent = '$' + (r.value * 113.6).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    let rate = 113.6;
+    const money = v => '$' + v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const upd = () => { $('#refs-n').textContent = r.value; $('#refs-out').textContent = money(r.value * rate); };
+    $$('.calc-pkgs [data-commission]').forEach(btn => btn.addEventListener('click', () => {
+      rate = parseFloat(btn.dataset.commission);
+      $$('.calc-pkgs [data-commission]').forEach(o => o.setAttribute('aria-pressed', o === btn));
+      const lab = $('#refs-pkg'), rt = $('#refs-rate'); lab && (lab.textContent = btn.dataset.label); rt && (rt.textContent = money(rate));
+      upd();
+    }));
     r.addEventListener('input', upd); upd();
   }
 
@@ -166,7 +174,7 @@ window.kzGmail = (to, subject = '', body = '') => {
 
   // labels decode like a terminal when they first appear
   const decode = el => {
-    if (el._dec || el.children.length || reduce) return; el._dec = true;
+    if (el._dec || el.children.length || reduce || document.querySelector('link[href*="mono.css"]')) return; el._dec = true;
     const final = el.textContent, G = '01<>/\\[]{}#=+*_-:', N = 26; let f = 0;
     el.setAttribute('aria-label', final);
     const tick = () => { const k = f / N;

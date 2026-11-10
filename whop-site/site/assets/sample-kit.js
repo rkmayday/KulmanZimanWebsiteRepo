@@ -14,6 +14,11 @@
     if (hero) { const a = document.createElement('a'); a.className = 'dive-pill'; a.href = '#' + ((next && next.id) || 'top');
       a.innerHTML = '<span>Scroll down<br>&amp; dive in</span><i aria-hidden="true">↓</i>'; hero.append(a); } }
 
+  // hero 3D: a hint that it can be played with, which fades after the first touch
+  { const h = $('.h3d'); if (h && !reduce) { const hint = document.createElement('span'); hint.className = 'spin-hint';
+      hint.innerHTML = '<i aria-hidden="true"></i>Drag to spin · tap to play'; h.append(hint);
+      h.addEventListener('kz-touched', () => hint.classList.add('gone'), { once: true }); setTimeout(() => hint.classList.add('gone'), 9000); } }
+
   // menu (phones)
   const burger = $('.burger');
   burger && burger.addEventListener('click', () => { const open = document.body.classList.toggle('menu-open'); burger.setAttribute('aria-expanded', open); });

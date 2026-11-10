@@ -350,3 +350,34 @@ h1,h2{font-weight:var(--hw,500)}
   .tilt,.chip{will-change:auto!important;transform:none!important}
   .kit .rv{filter:none}
 }
+
+/* ===== hands-on hero: drag to spin, tap to play ===== */
+.h3d{cursor:grab}
+.h3d.grab{cursor:grabbing}
+.spin-hint{position:absolute;z-index:3;left:50%;bottom:clamp(18px,4vh,30px);transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;
+  font:500 12px var(--mono);letter-spacing:.06em;color:var(--fg);background:var(--glass);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--fg) 14%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);pointer-events:none;transition:opacity .6s}
+.spin-hint i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--acc);animation:spinhint 1.6s ease-in-out infinite}
+@keyframes spinhint{50%{transform:translateX(6px)}}
+.spin-hint.gone{opacity:0}
+@media (max-width:900px){.spin-hint{left:auto;right:16px;transform:none;bottom:auto;top:calc(min(52vh,450px) - 52px)}}
+
+/* ===== the "lab": one big interactive section per sample ===== */
+.lab{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px;align-items:stretch}
+@media (max-width:960px){.lab{grid-template-columns:1fr}}
+.lab .card{display:grid;gap:18px;align-content:start}
+.lab-label{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:0;cursor:pointer;padding:10px 14px;border-radius:12px;font:600 14px var(--body);color:var(--fg);background:color-mix(in srgb,var(--fg) 6%,transparent);box-shadow:inset 0 0 0 1px var(--line);transition:background .25s,color .25s,transform .2s}
+.seg button:hover{transform:translateY(-1px)}
+.seg button[aria-pressed=true]{background:var(--acc);color:var(--on-acc);box-shadow:none}
+.range{display:grid;gap:8px}
+.range input{width:100%;accent-color:var(--acc)}
+.range b{font:700 1.4rem var(--display);color:var(--fg)}
+.lab-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.lab-stats div{padding:14px;border-radius:14px;background:color-mix(in srgb,var(--fg) 5%,transparent)}
+.lab-stats b{display:block;font:800 1.6rem/1 var(--display);letter-spacing:-.03em;color:var(--fg);font-variant-numeric:tabular-nums}
+.lab-stats span{font-size:.78rem;color:var(--mut)}
+@keyframes pop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:none}}
+.pop{animation:pop .5s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion:reduce){.pop,.spin-hint i{animation:none}}

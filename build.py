@@ -18,7 +18,7 @@ import json, pathlib, re, shutil, sys, urllib.parse
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
-SITE = "https://kulmanziman.shop"
+SITE = "https://kulmanziman.com"
 CHECKOUT = "/get-started"   # every "buy"/"Get started" button opens the package picker; each package card goes to its own Whop checkout
 
 # Website packages. Each "checkout" is that package's Whop checkout link.

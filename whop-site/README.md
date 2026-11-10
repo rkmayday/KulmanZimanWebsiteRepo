@@ -1,16 +1,20 @@
-# kulmanziman.shop on Whop
+# kulmanziman.com on Whop
 
-`site/` holds the finished black-and-lime website. `server/index.js` is the Cloudflare worker that serves it at clean
-addresses (`/about`, `/ryderziman`, `/rexkulman`, `/samples/...`) and forwards the old fitness links. No Python is needed to deploy.
+`site/` holds the finished website (the white "mono" design). `server/index.js` is the Cloudflare worker that serves it at clean
+addresses (`/about`, `/products`, `/ryderziman`, `/samples/...`) and forwards the old `/fitness-sample` and `/ironpath-app` links.
+
+First time (creates the Whop website app, deploys, and attaches the domain):
 
 ```bash
 npm install
 ```
 
 ```bash
-whop apps deploy --app app_uSQNScwPPUo9Fo
+whop apps deploy --app app_XXXXXXXX
 ```
 
-`whop apps deploy` runs `npm run build` (Vite + @cloudflare/vite-plugin + whop()), packs `dist/whop-build.zip` and uploads it.
+```bash
+whop domains update kulmanziman.com --website '{"app_id":"app_XXXXXXXX"}'
+```
 
-After editing pages in the repo, refresh `site/` with `npm run sync` (needs Python 3), then deploy again.
+Later updates: `npm run sync` (needs Python 3) then `whop apps deploy`.

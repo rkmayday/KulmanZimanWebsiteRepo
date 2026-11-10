@@ -1,11 +1,11 @@
 {
-  "name": "kulmanziman-shop",
+  "name": "kulmanziman-com",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "vite build",
     "deploy": "whop apps deploy",
-    "sync": "python3 ../build.py --theme noir && rm -rf site && cp -R ../dist-noir site && rm -f site/_redirects site/vercel.json"
+    "sync": "python3 ../build.py --theme mono && rm -rf site && cp -R ../dist-mono site && rm -f site/_redirects site/vercel.json"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.67.0",
