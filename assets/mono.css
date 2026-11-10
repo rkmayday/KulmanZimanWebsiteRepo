@@ -94,19 +94,19 @@ ul,ol{margin:0}
 
 /* ================= the KZ logo stage (home) ================= */
 .kz-stage{position:relative;height:calc(309vh - 9px);background:var(--paper)}
-.kz-pin{position:sticky;top:72px;height:calc(100vh - 72px);height:calc(100svh - 72px);overflow:hidden;display:grid;place-items:center;isolation:isolate}
+.kz-pin{--lw:min(66vw,820px,max(260px,calc((50vh - 138px) * 2.75)));--lw:min(66vw,820px,max(260px,calc((50svh - 138px) * 2.75)));position:sticky;top:72px;height:calc(100vh - 72px);height:calc(100svh - 72px);overflow:hidden;display:grid;place-items:center;isolation:isolate}
 .kz-grid{position:absolute;inset:-10%;z-index:-1;pointer-events:none;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;
   -webkit-mask-image:radial-gradient(60% 55% at 50% 48%,#000 20%,transparent 75%);mask-image:radial-gradient(60% 55% at 50% 48%,#000 20%,transparent 75%);
   transform:translate3d(0,var(--gy,0px),0)}
 .kz-scene{position:absolute;inset:0;display:grid;place-items:center;perspective:1500px;pointer-events:none}
 .kz-canvas{position:absolute;inset:0;width:100%;height:100%}
-.kz-logo{width:min(66vw,820px);aspect-ratio:600/335;visibility:hidden}   /* sizes the canvas logo; the drawing is in .kz-canvas */
-.kz-word{position:absolute;left:50%;top:calc(50% + min(21vw,262px));width:min(40vw,440px);height:auto;filter:brightness(0);opacity:var(--wo,1);will-change:transform,opacity;
+.kz-logo{width:var(--lw);aspect-ratio:600/335;visibility:hidden}   /* sizes the canvas logo; the drawing is in .kz-canvas */
+.kz-word{position:absolute;left:50%;top:calc(50% + var(--lw) * .32);width:calc(var(--lw) * .537);height:auto;filter:brightness(0);opacity:var(--wo,1);will-change:transform,opacity;
   transform:translateX(-50%) scale(var(--ws,1));pointer-events:none}
-.kz-cue{position:absolute;bottom:clamp(22px,4vh,40px);left:50%;transform:translateX(-50%);display:grid;justify-items:center;gap:10px;
+.kz-cue{position:absolute;top:calc(50% + var(--lw) * .364 + 18px);left:50%;transform:translateX(-50%);display:grid;justify-items:center;gap:10px;
   font:500 .72rem var(--font-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);opacity:var(--co,1);pointer-events:none}
-.kz-cue i{width:1px;height:44px;background:linear-gradient(var(--ink),transparent);transform-origin:top;animation:kz-cue 1.8s var(--ease) infinite}
+.kz-cue i{width:1px;height:34px;background:linear-gradient(var(--ink),transparent);transform-origin:top;animation:kz-cue 1.8s var(--ease) infinite}
 @keyframes kz-cue{0%{transform:scaleY(0)}60%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
 .kz-copy{position:relative;z-index:2;display:grid;gap:22px;justify-items:center;text-align:center;width:min(880px,100%);padding-inline:20px;
   opacity:var(--o2,0);transform:translateY(var(--y2,40px));pointer-events:none}
@@ -119,8 +119,9 @@ ul,ol{margin:0}
 .kz-copy .hero-tags li.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink);margin-right:8px;vertical-align:1px}
 @media (max-width:720px){
   .kz-stage{height:calc(257vh - 9px)}
-  .kz-logo{width:86vw}
-  .kz-word{top:calc(50% + 29vw);width:62vw}
+  .kz-pin{--lw:86vw}
+  .kz-word{top:calc(50% + var(--lw) * .337);width:calc(var(--lw) * .72)}
+  .kz-cue{top:calc(50% + var(--lw) * .4 + 18px)}
   .kz-copy .hero-tags{display:none}
 }
 .no-kz .kz-stage{height:auto}
