@@ -156,6 +156,7 @@ def head_tags(meta):
 <link rel="canonical" href="{canonical}">
 <meta name="theme-color" content="#030820">
 <meta name="google-site-verification" content="5wKKFu7Au6tRw0wMbycFva9GoaTk3sH9IX6nqa0HNWA">
+<meta name="google-site-verification" content="yGr2c2aswouMfP4rX4NCS5or-65btTR6U0RR6o_cVeE">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kulman Ziman">
 <meta property="og:title" content="{title}">
