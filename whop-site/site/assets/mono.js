@@ -103,10 +103,14 @@
   // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
   // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
   const pin = $('.kz-pin', stage), HOLD = .85;   // the headline is fully in at 85% of the range (see frame)
+  // REST: a short still moment once the headline is fully in, so it can be read before the page moves on
+  // (matches the extra 25vh added to .kz-stage in mono.css)
+  const REST = .25;
   const readScroll = () => {
-    const r = stage.getBoundingClientRect(), t = pinT, range = Math.max(1, r.height - (innerHeight - t));
-    target = clamp((t - r.top) / range);
-    const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
+    const r = stage.getBoundingClientRect(), t = pinT, rest = innerHeight * REST;
+    const range = Math.max(1, r.height - (innerHeight - t) - rest), y = t - r.top;   // range = the animation part
+    target = clamp(y / range);
+    const H = (1 - HOLD) * range, h = clamp(y - HOLD * range - rest, 0, H);
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
     kick();
   };
