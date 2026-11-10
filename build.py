@@ -168,7 +168,11 @@ def head_tags(meta):
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{meta['description']}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{SITE}/og-kulman-ziman.jpg">
+<meta property="og:image" content="{SITE}/og-kz.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Kulman Ziman: custom websites, built to order.">
+<meta name="twitter:image" content="{SITE}/og-kz.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{ICON}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -310,7 +314,8 @@ def build(preview=False, theme="royal"):
     for f in sorted((ROOT / "static").glob("*")):
         shutil.copy(f, out_dir / f.name)
     if not preview:
-        shutil.copy(ROOT / "assets" / "og.jpg", out_dir / "og-kulman-ziman.jpg")
+        shutil.copy(ROOT / "assets" / "og-kz.jpg", out_dir / "og-kz.jpg")              # link-preview image
+        shutil.copy(ROOT / "assets" / "og.jpg", out_dir / "og-kulman-ziman.jpg")        # old address, kept for links already shared
     pages = sorted((SRC / "pages").glob("*.html"))
     for page in pages:
         text = page.read_text()
