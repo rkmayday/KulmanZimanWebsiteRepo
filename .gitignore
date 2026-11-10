@@ -7,3 +7,4 @@ dist-noir/
 preview-noir/
 dist-mono/
 preview-mono/
+*.zip
