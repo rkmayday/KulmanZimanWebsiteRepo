@@ -99,7 +99,8 @@ ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
 ICON_NOIR = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
              "fill='%23050505'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='%23c6ff3d' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
 
-ICON_MONO = ICON_NOIR.replace("%23050505", "%23ffffff").replace("%23c6ff3d", "%230a0a0a")
+# Mono tab icon: the real KZ logo shape on a transparent background, black (white when the browser is in dark mode)
+ICON_MONO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3Epath%7Bfill:%230a0a0a%7D@media (prefers-color-scheme:dark)%7Bpath%7Bfill:%23ffffff%7D%7D%3C/style%3E%3Cpath transform='translate(1 14.69) scale(0.1033)' d='M0.00,0.00 L76.00,0.00 L76.00,137.42 L191.48,0.00 L283.45,0.00 L148.67,158.72 L303.05,333.19 L467.61,67.03 L325.06,66.99 L324.97,0.02 L488.00,0.00 L600.65,0.03 L434.59,268.00 L590.03,268.00 L589.94,335.00 L200.04,335.00 L76.00,192.20 L76.00,335.00 L0.00,335.00 Z'/%3E%3C/svg%3E"
 MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
   <div class="kz-pin">
     <div class="kz-grid" aria-hidden="true"></div>
