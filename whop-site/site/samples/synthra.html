@@ -20,12 +20,12 @@
 .sy-orbits{transform-origin:100px 100px;animation:syturn 40s linear infinite}
 @keyframes syturn{to{transform:rotate(360deg)}}
 .sy-ring{fill:none;stroke:#eef3ff;stroke-opacity:.85;stroke-width:2.4;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--i))}
-.sy-sat{fill:#5ef0ff;opacity:var(--i);filter:drop-shadow(0 0 4px #5ef0ff)}
-.sy-core{fill:#5ef0ff;transform-origin:100px 100px;transform:scale(calc(var(--i) * (1 - var(--a) * .4)));filter:drop-shadow(0 0 14px #5ef0ff)}
+.sy-sat{fill:#5ef0ff;opacity:var(--i)}
+.sy-core{fill:#5ef0ff;transform-origin:100px 100px;transform:scale(calc(var(--i) * (1 - var(--a) * .4)))}
 .sy-halo{transform-origin:100px 100px;transform:scale(calc(var(--i) * (1 + var(--a)))) ;opacity:.55;animation:syhalo 3.4s ease-in-out infinite}
 @keyframes syhalo{50%{opacity:.25}}
 .sy-stars{position:absolute;inset:-10%;background-image:radial-gradient(1.2px 1.2px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 20%,#fff,transparent),radial-gradient(1.4px 1.4px at 40% 80%,#9ff7ff,transparent),radial-gradient(1px 1px at 85% 65%,#fff,transparent),radial-gradient(1px 1px at 10% 70%,#fff,transparent),radial-gradient(1.2px 1.2px at 55% 45%,#fff,transparent);
-  background-size:340px 300px;opacity:calc(.5 * var(--i));transform:translate(calc(var(--mx) * 40px),calc(var(--my) * 40px - var(--p) * 120px)) scale(calc(1 + var(--a) * .6))}
+  background-size:340px 300px;opacity:calc(.5 * var(--i));will-change:transform;transform:translate(calc(var(--mx) * 40px),calc(var(--my) * 40px - var(--p) * 120px)) scale(calc(1 + var(--a) * .6))}
 @media (prefers-reduced-motion:reduce){.sy-orbits,.sy-halo{animation:none}}
 
 
