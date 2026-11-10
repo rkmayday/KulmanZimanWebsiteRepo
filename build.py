@@ -284,6 +284,15 @@ def relativize(html):
     return re.sub(r'(href|src)="(/[^"/][^"]*|/|/#[^"]*)"', fix, html)
 
 
+def bust(html):
+    """Add ?v=<content hash> to /assets/*.css and *.js links, so browsers never mix an old cached file with a new page."""
+    import hashlib
+    def fix(m):
+        f = ROOT / m.group(1).lstrip("/")
+        return m.group(0) if not f.exists() else f'{m.group(1)}?v={hashlib.md5(f.read_bytes()).hexdigest()[:8]}"'
+    return re.sub(r'(/assets/[\w./-]+\.(?:css|js))"', fix, html)
+
+
 def build(preview=False, theme="royal"):
     th = THEMES[theme]
     out_dir = ROOT / (th["preview"] if preview else th["out"])
@@ -309,20 +318,18 @@ def build(preview=False, theme="royal"):
         for a, b in th["replace"].items():
             html = html.replace(a, b)
         html = gmail_links(html)
-        if preview:
-            html = relativize(html)
-
-            out = out_dir / f"{page.stem}.html"
-        else:
-            # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages and GitHub Pages all serve
-            # products.html at /products with no trailing slash
-            out = out_dir / f"{page.stem}.html"
+        html = relativize(html) if preview else bust(html)
+        # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages, GitHub Pages and Whop all serve
+        # products.html at /products with no trailing slash
+        out = out_dir / f"{page.stem}.html"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
         print("built", out.relative_to(ROOT))
     # the four sample sites: standalone pages with their own branding
     for sp in sorted((SRC / "samples").glob("*.html")):
         html = gmail_links(sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
+        if not preview:
+            html = bust(html)
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
