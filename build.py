@@ -336,6 +336,7 @@ def build(preview=False, theme="royal"):
         print("built", out.relative_to(ROOT))
     if not preview:
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
+        urls += "".join(f"<url><loc>{SITE}/samples/{sp.stem}</loc></url>" for sp in sorted((SRC / "samples").glob("*.html")))
         (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
         (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
         (out_dir / "vercel.json").write_text('{"cleanUrls": true, "trailingSlash": false}\n')
