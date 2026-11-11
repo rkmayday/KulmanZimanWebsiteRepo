@@ -1,0 +1,48 @@
+// Smooth, slightly slower scrolling for mouse wheels and trackpads on computers.
+// Phones and tablets keep their own native momentum scrolling, and it is switched off for "reduce motion".
+(() => {
+  const mq = q => matchMedia(q).matches;
+  if (mq('(prefers-reduced-motion: reduce)') || !mq('(hover: hover) and (pointer: fine)')) return;
+
+  const EASE = .075;   // how quickly the page catches up each frame (lower = smoother, longer glide)
+  const SPEED = .85;   // distance per wheel step compared with the browser's normal amount (lower = slower)
+  const root = document.documentElement;
+  let target = scrollY, cur = scrollY, raf = 0, last = 0;
+
+  const max = () => root.scrollHeight - innerHeight;
+  const go = y => scrollTo({ top: y, behavior: 'instant' });
+
+  function frame(t) {
+    const dt = last ? Math.min(50, t - last) : 16.7; last = t;
+    cur += (target - cur) * (1 - Math.pow(1 - EASE, dt / 16.7));   // same feel at 60 Hz and 120 Hz
+    if (Math.abs(target - cur) < .5) { cur = target; raf = 0; last = 0; } else raf = requestAnimationFrame(frame);
+    go(Math.round(cur * 2) / 2);
+  }
+
+  // Let the browser handle anything that scrolls on its own: open pop-ups, the mobile menu, scrollable boxes
+  const ownScroller = (e, dy) => {
+    if (document.querySelector('dialog[open]')) return true;
+    for (const el of e.composedPath()) {
+      if (!(el instanceof Element) || el === root || el === document.body) break;
+      const st = getComputedStyle(el);
+      if (/(auto|scroll)/.test(st.overflowY) && el.scrollHeight > el.clientHeight + 1 &&
+          (dy < 0 ? el.scrollTop > 0 : el.scrollTop + el.clientHeight < el.scrollHeight - 1)) return true;
+    }
+    return false;
+  };
+
+  addEventListener('wheel', e => {
+    if (e.ctrlKey || e.defaultPrevented) return;                          // pinch-zoom
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;                  // sideways swipes
+    let dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
+    if (!dy || ownScroller(e, dy) || getComputedStyle(document.body).overflow === 'hidden') return;
+    e.preventDefault();
+    if (!raf) { cur = target = scrollY; }
+    target = Math.max(0, Math.min(max(), target + dy * SPEED));
+    if (!raf) raf = requestAnimationFrame(frame);
+  }, { passive: false });
+
+  // Keyboard, scrollbar dragging and link jumps scroll natively: keep up with them
+  addEventListener('scroll', () => { if (!raf) cur = target = scrollY; }, { passive: true });
+  addEventListener('resize', () => { target = Math.min(target, max()); });
+})();
