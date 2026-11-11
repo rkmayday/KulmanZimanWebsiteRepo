@@ -49,7 +49,15 @@ main h2{font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:.95}
 /* speed stripes on the far right of the opening, clear of the headline */
 .pin::after{content:"";position:absolute;top:0;bottom:0;right:-6vw;width:16vw;pointer-events:none;opacity:calc(var(--ec,0) * .9);
   background:linear-gradient(112deg,transparent 0 34%,var(--acc) 34% 36%,transparent 36% 44%,var(--acc) 44% 64%,transparent 64%)}
-@media (max-width:1100px){.pin::after{display:none}}
+@media (max-width:899px){.pin::after{display:none}}
+/* wide screens: headline on the left like a sportswear page, stripes on the right */
+@media (min-width:900px){
+  .stage.x3d .copy{width:min(1180px,100%);justify-items:start;text-align:left;padding-right:calc(min(1180px,100%) * .34);padding-left:max(22px,env(safe-area-inset-left))}
+  .stage.x3d .copy h1{font-size:clamp(3rem,6vw,5.6rem);max-width:12ch;margin-inline:0}
+  .stage.x3d .copy .lede{margin-inline:0}
+  .stage.x3d .copy .actions{justify-content:flex-start}
+  .pin::after{right:-6vw;width:62vw;background:linear-gradient(112deg,transparent 0 60%,var(--acc) 60% 61.6%,transparent 61.6% 67%,var(--acc) 67% 80%,transparent 80%)}
+}
 /* the method section: a lime band with slanted edges */
 #about{background:var(--acc);color:#0a0b0a;clip-path:polygon(0 5%,100% 0,100% 95%,0 100%);padding-block:clamp(120px,14vw,190px);--fg:#0a0b0a;--mut:#2e3a16;--line:rgba(10,11,10,.25)}
 #about .statement{font-size:clamp(1.9rem,4vw,3.4rem);line-height:1;max-width:22ch}

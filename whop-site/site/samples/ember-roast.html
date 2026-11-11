@@ -147,6 +147,8 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 .er-pour svg{width:100%;height:auto;overflow:visible;cursor:pointer;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .er-pour.live{pointer-events:auto}
 .er-pour.live svg:hover{transform:rotate(-2deg) translateY(-4px)}
+.er-cup3d{display:block;width:100%;aspect-ratio:400/470;cursor:pointer}
+.er-pour.has3d svg{display:none}
 .er-p-hint{font:500 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mut);opacity:0;transition:opacity .6s}
 .er-pour.done .er-p-hint{opacity:1}
 .er-p-shadow{fill:rgba(43,26,18,.16);filter:blur(6px)}
@@ -316,7 +318,7 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
     if (ec > .97 && !played) { played = true; play(); }
     if (ec < .15 && played) { played = false; clearTimeout(t); pour.classList.remove('pour', 'done'); } };
   new MutationObserver(check).observe(stage, { attributes: true, attributeFilter: ['style'] });
-  pour.querySelector('svg').addEventListener('click', () => { if (pour.classList.contains('live')) play(); });
+  pour.addEventListener('click', () => { if (pour.classList.contains('live')) play(); });
 })();
 </script>
 
