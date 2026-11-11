@@ -54,7 +54,7 @@
 .sy-graph .core text{fill:#03141b;font:700 14px var(--display)}
 
 .x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
-.mark.has-3d .sy-mark{display:none}
+.mark.has-3d .sy-mark,.mark.has-3d .sy-stars{display:none}
 .x3d-wait .sy-mark{visibility:hidden}
 </style>
 <script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
@@ -83,14 +83,14 @@
         <circle class="sy-core" cx="100" cy="100" r="21"/>
       </svg>
     </div>
-    <div class="wordmark" aria-hidden="true">Synthra</div>
+    <div class="wordmark" aria-hidden="true">Welcome to <b>Synthra</b></div>
     <div class="copy">
       <span class="k">AI agents for IT and operations</span>
       <h1>The busywork, <em>handled.</em></h1>
       <p class="lede">Synthra plans the task, uses your tools, asks before anything risky and reports back when it is done.</p>
       <div class="actions"><a class="btn" href="#pricing">Book a demo <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#agent">Watch it work</a></div>
     </div>
-    <div class="cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+    <div class="cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
   </div>
 </section>
 
@@ -144,7 +144,7 @@
 <script src="{{ASSETS}}smooth.js" defer></script>
 <script src="{{THREE}}" defer></script>
 <script src="{{ASSETS}}sample3d.js" defer></script>
-<script src="{{ASSETS}}synthra-orbit.js" defer></script>
+<script src="{{ASSETS}}synthra-orb.js" defer></script>
 
 <script>
 // Synthra sample: a simulated agent run (nothing is sent anywhere)

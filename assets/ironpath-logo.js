@@ -32,7 +32,8 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   return ({ i, p, a, mx, my, halfW, logo }) => {
     const e = easeOut(i);
     // draw the path 4-44%: the ball rides the growing tip and arrives at the top
-    const d = sm((p - .04) / .4), u = Math.max(.002, d);
+    // draws itself as the page opens (and the scroll can only take it further)
+    const d = Math.max(sm(i * 1.05), sm((p - .04) / .4)), u = Math.max(.002, d);
     tube.geometry.setDrawRange(0, Math.floor(u * SEG) * RAD * 6);
     const tip = path.getPointAt(u); capB.position.copy(tip); ball.position.copy(tip);
     ball.scale.setScalar(.6 + .4 * d);

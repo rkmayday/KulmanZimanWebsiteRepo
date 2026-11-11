@@ -64,12 +64,17 @@ p{margin:0}
 .copy.live{pointer-events:auto}
 .copy .lede{margin-inline:auto}
 .copy .actions{justify-content:center}
-.cue{position:absolute;left:50%;bottom:clamp(20px,4vh,36px);transform:translateX(-50%);display:grid;justify-items:center;gap:10px;font:500 11px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--mut);
-  opacity:calc(var(--i,1) - var(--p,0) * 14);pointer-events:none}
-.cue i{width:1px;height:40px;background:linear-gradient(var(--fg),transparent);transform-origin:top;animation:cue 1.9s cubic-bezier(.2,.8,.2,1) infinite}
-@keyframes cue{0%{transform:scaleY(0)}60%{transform:scaleY(1);opacity:1}100%{opacity:0}}
-.wordmark{position:absolute;left:0;right:0;bottom:clamp(76px,13vh,130px);text-align:center;font:600 clamp(.9rem,1.6vw,1.2rem)/1 var(--display);letter-spacing:.42em;padding-left:.42em;text-transform:uppercase;
-  opacity:calc(var(--i,1) - var(--a,0) * 1.6);pointer-events:none}
+.cue{position:absolute;left:50%;bottom:clamp(18px,4vh,40px);transform:translateX(-50%) translateY(calc((1 - var(--i,1)) * 16px));display:flex;align-items:center;gap:12px;padding:12px 22px 12px 18px;border-radius:99px;
+  font:600 14px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--fg);background:var(--glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--fg) 28%,transparent),0 12px 30px -16px rgba(0,0,0,.5);opacity:calc(var(--i,1) - var(--p,0) * 14);pointer-events:none;white-space:nowrap}
+/* a bouncing arrow so it is obvious to scroll straight away */
+.cue i{order:-1;width:22px;height:22px;border-radius:50%;background:var(--acc);display:grid;place-items:center;animation:cue 1.4s cubic-bezier(.45,0,.55,1) infinite}
+.cue i::after{content:"";width:7px;height:7px;border-right:2px solid var(--on-acc);border-bottom:2px solid var(--on-acc);transform:translateY(-2px) rotate(45deg)}
+@keyframes cue{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}
+@media (max-width:720px){.cue{bottom:calc(76px + env(safe-area-inset-bottom,0px));font-size:13px}}
+.wordmark{position:absolute;left:0;right:0;top:clamp(26px,7vh,80px);text-align:center;padding-inline:22px;font:var(--hw,600) clamp(2rem,5.4vw,4.4rem)/1 var(--display);letter-spacing:-.03em;text-wrap:balance;
+  opacity:calc(var(--i,1) - var(--a,0) * 1.6);transform:translateY(calc((1 - var(--i,1)) * 24px));pointer-events:none}
+.wordmark b{font-weight:inherit;color:var(--acc)}
 @media (max-width:720px){.stage{height:250vh}}
 .no-stage .stage{height:auto}
 .no-stage .pin{position:relative;height:auto;padding-block:40px 80px;display:grid;gap:30px}
@@ -146,7 +151,7 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}.cue i,.pop{animation:none}}
 
 /* phones & touch: readable small labels and comfortable tap targets */
-@media (max-width:1024px){.lab-label,.cue span,.cue,.ip-day small{font-size:12px!important}}
+@media (max-width:1024px){.lab-label,.ip-day small{font-size:12px!important}}
 @media (pointer:coarse){
   input[type=range]{height:34px;touch-action:pan-y}
   nav a{padding-block:10px}
