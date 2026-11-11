@@ -122,9 +122,10 @@
     const c = (HOLD - SPLIT) * Ra / Ls, k = 1 - sEnd;
     const uH = k < 1e-4 ? c : (1 - Math.sqrt(Math.max(0, 1 - 2 * k * c))) / k;
     const yHold = y0 + uH * Ls, H = Math.max(1, Rt - yHold), h = clamp(y - yHold, 0, H);
-    pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
+    // from the stop at the headline the scene moves exactly with the page: no scroll room at all
+    pin.style.transform = h > 0 ? `translate3d(0,${(-h).toFixed(1)}px,0)` : '';
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
-    const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    const mb = Math.round(-H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
     // ...exactly where the animation has finished and before the page starts moving on
     stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);
