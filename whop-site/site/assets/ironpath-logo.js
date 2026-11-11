@@ -1,5 +1,5 @@
 // Ironpath sample: the logo in 3D. A polished steel path draws itself upward with the lime ball riding its tip,
-// then the finished logo flies up into its place in the menu bar as the headline comes in.
+// then the finished logo swells slightly, turns, shrinks and fades away as the headline comes in.
 window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   const LIME = '#c7f36b';
   const key = new T.DirectionalLight('#ffffff', 3); key.position.set(-3, 5, 6); scene.add(key);
@@ -27,12 +27,12 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   capA.position.copy(P[0]);
   const glow = new T.Sprite(new T.SpriteMaterial({ map: soft('rgba(199,243,107,.9)', 'rgba(199,243,107,0)'), blending: T.AdditiveBlending, depthWrite: false, transparent: true }));
   glow.scale.set(1.6, 1.6, 1); logo3.add(glow);
-  const total = tube.geometry.index.count;
+  steel.transparent = ball.material.transparent = true;
 
   return ({ i, p, a, mx, my, halfW, logo }) => {
     const e = easeOut(i);
-    // draw the path 4-50%: the ball rides the growing tip and arrives at the top
-    const d = sm((p - .04) / .46), u = Math.max(.002, d);
+    // draw the path 4-44%: the ball rides the growing tip and arrives at the top
+    const d = sm((p - .04) / .4), u = Math.max(.002, d);
     tube.geometry.setDrawRange(0, Math.floor(u * SEG) * RAD * 6);
     const tip = path.getPointAt(u); capB.position.copy(tip); ball.position.copy(tip);
     ball.scale.setScalar(.6 + .4 * d);
@@ -40,13 +40,12 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
     glow.position.copy(tip); glow.material.opacity = (.35 + .5 * Math.sin(Math.PI * arrive)) * e;
     ball.material.emissiveIntensity = .35 + .9 * Math.sin(Math.PI * arrive);
 
-    // fly into the menu-bar logo 50-70%
-    const f = sm((p - .5) / .2), S0 = Math.min(1, halfW * .8 / 1.75) * (.8 + .2 * e);
-    const tx = logo ? logo.x : 0, ty = logo ? logo.y : 0, ts = logo ? logo.s * .3 : .1;
-    logo3.position.set(mix(0, tx, f), mix(-.1, ty, f), mix(0, 0, f));
-    logo3.scale.setScalar(mix(S0, ts, f));
-    logo3.rotation.set(mix(.3 - .3 * a + my * .2, 0, f), mix(-.9 + .9 * a + mx * .4, 0, f), 0);
-    logo3.visible = f < .985;
+    // then it fades away 42-76%: a slight swell, a gentle turn, shrinking and fading together (like Ember's bean)
+    const pop = cl((p - .42) / .34), f = sm(pop), S0 = Math.min(1, halfW * .8 / 1.75) * (.8 + .2 * e);
+    logo3.position.set(0, -.1 + f * .25, -f * 1.2);
+    logo3.scale.setScalar(S0 * (1 + .08 * Math.sin(Math.PI * cl(pop / .4))) * (1 - .45 * f));
+    logo3.rotation.set(.3 - .3 * a + my * .2 - f * .25, -.9 + .9 * a + mx * .4 + f * .6, 0);
+    steel.opacity = ball.material.opacity = 1 - f; logo3.visible = f < .99;
     glow.material.opacity *= 1 - f;
   };
-}, { z: 9, exposure: 1.1, copy: [.6, .16], env: { low: '#060706', high: '#d9e2dc' } });
+}, { z: 9, exposure: 1.1, copy: [.58, .22], env: { low: '#060706', high: '#d9e2dc' } });
