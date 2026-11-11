@@ -142,53 +142,7 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 @media (prefers-reduced-motion:reduce){main .btn,.seg button,.er-link span{transition:none}}
 
 
-/* ===== after the bean: headline on the left, a coffee pour on the right (plays once the animation finishes) ===== */
-.er-pour{position:absolute;z-index:2;opacity:var(--ec,0);pointer-events:none;display:grid;justify-items:center;gap:6px}
-.er-pour svg{width:100%;height:auto;overflow:visible;cursor:pointer;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-.er-pour.live{pointer-events:auto}
-.er-pour.live svg:hover{transform:rotate(-2deg) translateY(-4px)}
-.er-cup3d{display:block;width:100%;aspect-ratio:400/470;cursor:pointer}
-.er-pour.has3d svg{display:none}
-.er-p-hint{font:500 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--mut);opacity:0;transition:opacity .6s}
-.er-pour.done .er-p-hint{opacity:1}
-.er-p-shadow{fill:rgba(43,26,18,.16);filter:blur(6px)}
-.er-p-surface{transform-box:fill-box;transform-origin:50% 50%;transform:translateY(150px) scale(.6)}
-.er-p-stream{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);opacity:0}
-.er-p-flow{stroke:#c98a55;stroke-width:2;stroke-dasharray:10 18;stroke-linecap:round;opacity:.7}
-.er-p-kettle{transform:translate(90px,-90px);opacity:0}
-.er-p-ripple{fill:none;stroke:#f1c99c;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
-.er-p-steam path{fill:none;stroke:#7a6253;stroke-opacity:.4;stroke-width:4;stroke-linecap:round;opacity:0}
-.er-pour.pour .er-p-kettle{animation:erKettle 4.4s cubic-bezier(.2,.8,.2,1) both}
-.er-pour.pour .er-p-stream{animation:erStream 4.4s linear both}
-.er-pour.pour .er-p-flow{animation:erFlow .35s linear 12}
-.er-pour.pour .er-p-surface{animation:erFill 4.4s cubic-bezier(.3,.6,.3,1) both}
-.er-pour.pour .er-p-ripple{animation:erRipple .7s ease-out .8s 4}
-.er-pour.pour .er-p-ripple.r2{animation-delay:1.15s}
-.er-pour.done .er-p-surface{transform:none}
-.er-pour.done .er-p-steam path{animation:erSteam 3.4s ease-in-out infinite}
-.er-pour.done .er-p-steam path:nth-child(2){animation-delay:-1.1s}.er-pour.done .er-p-steam path:nth-child(3){animation-delay:-2.2s}
-@keyframes erKettle{0%{transform:translate(90px,-90px);opacity:0}10%,78%{transform:none;opacity:1}100%{transform:translate(90px,-90px);opacity:0}}
-@keyframes erStream{0%,10%{transform:scaleY(0);opacity:1}18%{transform:scaleY(1);opacity:1}72%{transform:scaleY(1) scaleX(1);opacity:1}82%,100%{transform:scaleY(1) scaleX(.15);opacity:0}}
-@keyframes erFlow{to{stroke-dashoffset:-28}}
-@keyframes erFill{0%,14%{transform:translateY(150px) scale(.6)}80%,100%{transform:none}}
-@keyframes erRipple{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.5);opacity:0}}
-@keyframes erSteam{0%{opacity:0;transform:translateY(10px)}35%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
 @media (max-width:600px){main .k{width:auto;white-space:normal;letter-spacing:.12em;font-size:10.5px;line-height:1.4;text-align:center}}
-/* wide screens: headline left, cup right */
-@media (min-width:900px){
-  .stage.er3d .copy{width:min(1180px,100%);justify-items:start;text-align:left;padding-right:calc(min(1180px,100%) * .46 + 22px);padding-left:max(22px,env(safe-area-inset-left))}
-  .stage.er3d .copy .lede{margin-inline:0}
-  .stage.er3d .copy .actions{justify-content:flex-start}
-  .stage.er3d .copy h1{font-size:clamp(2.6rem,5vw,5rem)}
-  .er-pour{width:min(36vw,440px);right:max(22px,calc((100vw - 1180px) / 2 + 22px));top:50%;transform:translateY(calc(-50% + (1 - var(--ec,0)) * 30px))}
-}
-/* phones and tablets: the cup sits above the headline */
-@media (max-width:899px){
-  .stage.er3d .copy{margin-top:min(30vh,240px)}
-  .er-pour{width:min(46vw,230px);top:3vh;left:50%;transform:translateX(-50%)}
-  .er-p-hint{display:none}
-}
-@media (prefers-reduced-motion:reduce){.er-pour .er-p-surface{transform:none}.er-pour .er-p-steam path{opacity:.5}.er-pour *{animation:none!important}}
 .x3d-wait .er-bean,.x3d-wait .er-steamx{visibility:hidden}
 </style>
 <script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
@@ -216,30 +170,6 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
       <h1>Your usual, <em>ready when you walk in.</em></h1>
       <p class="lede">Small-batch coffee roasted every Tuesday, two doors down. Sit in with a pastry, or order ahead and skip the line.</p>
       <div class="actions"><a class="btn" href="#pricing">Order ahead <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#build">Build your drink</a></div>
-    </div>
-    <div class="er-pour" aria-hidden="true">
-      <svg viewBox="0 0 400 470">
-        <defs>
-          <linearGradient id="erCup" x1="0" x2="1"><stop offset="0" stop-color="#fffaf3"/><stop offset=".55" stop-color="#f6ecdf"/><stop offset="1" stop-color="#ddcbb4"/></linearGradient>
-          <radialGradient id="erCrema" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#d79a63"/><stop offset=".55" stop-color="#a5612f"/><stop offset="1" stop-color="#5a2e14"/></radialGradient>
-          <linearGradient id="erStream" x1="0" x2="1"><stop offset="0" stop-color="#3a1d0c"/><stop offset=".45" stop-color="#7a4321"/><stop offset="1" stop-color="#2b1408"/></linearGradient>
-          <clipPath id="erOpening"><ellipse cx="200" cy="246" rx="104" ry="14"/></clipPath>
-        </defs>
-        <ellipse class="er-p-shadow" cx="200" cy="412" rx="170" ry="20"/>
-        <ellipse cx="200" cy="400" rx="150" ry="22" fill="#f3e7d6"/><ellipse cx="200" cy="396" rx="150" ry="20" fill="#fdf8f1"/><ellipse cx="200" cy="396" rx="96" ry="12" fill="#efe2d0"/>
-        <ellipse cx="200" cy="246" rx="104" ry="14" fill="#3b2217"/>
-        <g clip-path="url(#erOpening)"><g class="er-p-surface"><ellipse cx="200" cy="246" rx="104" ry="14" fill="url(#erCrema)"/>
-          <ellipse class="er-p-ripple" cx="203" cy="246" rx="40" ry="6"/><ellipse class="er-p-ripple r2" cx="203" cy="246" rx="40" ry="6"/></g></g>
-        <g class="er-p-stream"><rect x="199" y="78" width="8" height="250" rx="4" fill="url(#erStream)"/><line class="er-p-flow" x1="202" y1="80" x2="202" y2="326"/></g>
-        <path class="er-p-cup" d="M90 246 C92 330 120 388 150 392 L250 392 C280 388 308 330 310 246 A110 16 0 0 1 90 246 Z" fill="url(#erCup)"/>
-        <ellipse cx="200" cy="246" rx="110" ry="16" fill="none" stroke="#fffdf9" stroke-width="3"/>
-        <path d="M304 270 C362 266 364 336 288 348" fill="none" stroke="#efe2d0" stroke-width="17" stroke-linecap="round"/>
-        <path d="M304 270 C356 268 356 330 290 342" fill="none" stroke="#fffaf3" stroke-width="6" stroke-linecap="round" opacity=".8"/>
-        <g class="er-p-kettle"><path d="M420 -20 C352 34 316 44 268 56 C240 63 222 66 208 76" fill="none" stroke="#2b1a12" stroke-width="15" stroke-linecap="round"/>
-          <path d="M412 -14 C350 34 318 42 270 52" fill="none" stroke="#6b4a36" stroke-width="3" stroke-linecap="round"/></g>
-        <g class="er-p-steam"><path d="M170 228 C158 204 182 190 170 164 C160 144 172 130 168 116"/><path d="M204 222 C192 196 218 182 204 154 C194 134 208 120 204 104"/><path d="M238 228 C226 204 250 190 238 164 C228 144 240 130 236 116"/></g>
-      </svg>
-      <span class="er-p-hint">Tap the cup to pour again</span>
     </div>
     <div class="cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </div>
@@ -306,21 +236,6 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 <script src="{{THREE}}" defer></script>
 <script src="{{ASSETS}}ember-bean.js" defer></script>
 
-<script>
-// Ember Roast sample: the coffee pour plays once the opening animation has finished; tap the cup to pour again
-(() => {
-  const stage = document.querySelector('.stage'), pour = document.querySelector('.er-pour');
-  if (!stage || !pour) return;
-  let played = false, t = 0;
-  const play = () => { clearTimeout(t); pour.classList.remove('pour', 'done'); void pour.offsetWidth; pour.classList.add('pour'); t = setTimeout(() => pour.classList.add('done'), 3600); };
-  const check = () => { const ec = parseFloat(stage.style.getPropertyValue('--ec')) || 0;
-    pour.classList.toggle('live', ec > .9);
-    if (ec > .97 && !played) { played = true; play(); }
-    if (ec < .15 && played) { played = false; clearTimeout(t); pour.classList.remove('pour', 'done'); } };
-  new MutationObserver(check).observe(stage, { attributes: true, attributeFilter: ['style'] });
-  pour.addEventListener('click', () => { if (pour.classList.contains('live')) play(); });
-})();
-</script>
 
 <script>
 // Ember Roast sample: drink builder (nothing is ordered or sent)

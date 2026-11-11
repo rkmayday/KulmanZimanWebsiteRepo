@@ -65,7 +65,7 @@ window.S3D = (build, opt = {}) => {
     const a = sm(p / .22), b = cl((p - .22) / .48), out = sm((p - .56) / .28), c = sm((p - (opt.copy || [.6, .18])[0]) / (opt.copy || [.6, .18])[1]);
     stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
     const sig = [i, p, mx, my, W, H].map(x => x.toFixed(4)).join();
-    if (sig === last) return; last = sig;
+    if (sig === last && !opt.live) return; last = sig;            // opt.live: things move on their own, draw every frame
     const z = opt.z || 9; camera.position.set(0, 0, z); camera.lookAt(0, 0, 0);
     const halfH = Math.tan(FOV / 2 * Math.PI / 180) * z, halfW = halfH * W / H;
     // the headline block's half-size in scene units (at depth 0)
