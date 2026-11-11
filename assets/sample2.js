@@ -53,9 +53,11 @@
     target = clamp((nh - r.top) / range);
     // after the reveal, the scene speeds up gradually into normal scrolling (no jolt at the hand-off)
     const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
-    pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
-    // easing in only covers half the ramp: pull the next section up by that half so it arrives right behind (no empty gap)
-    const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    // a short speed-up (about 140px), then the scene moves exactly with the page: no slow, dead-feeling scroll
+    const Rm = Math.min(H, 140), f = h < Rm ? (h * h) / (2 * Rm) : h - Rm / 2;
+    pin.style.transform = h > 0 ? `translate3d(0,${(-f).toFixed(1)}px,0)` : '';
+    // the next section follows right behind the headline (no empty band)
+    const mb = Math.round(Rm / 2 - H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     stage.dataset.stopY = Math.round(scrollY + r.top - nh + STOP * range);
     kick();
   };
