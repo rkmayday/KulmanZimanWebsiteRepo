@@ -132,6 +132,8 @@
     kick();
   };
   addEventListener('scroll', readScroll, { passive: true });
+  stage.__refreshStop = readScroll;                             // smooth.js asks for a fresh stop point before every wheel step
+  if (window.ResizeObserver) new ResizeObserver(readScroll).observe(stage);
   addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; tpx = e.clientX / innerWidth - .5; tpy = e.clientY / innerHeight - .5; kick(); }, { passive: true });
 
   const kick = () => { if (!running) { running = true; requestAnimationFrame(frame); } };

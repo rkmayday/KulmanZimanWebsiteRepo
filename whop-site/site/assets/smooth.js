@@ -39,18 +39,20 @@
     e.preventDefault();
     // after stopping at the end of an opening animation, the rest of that flick (trackpad momentum) is ignored
     const now = performance.now(), gap = now - lastWheel, abs = Math.abs(dy); lastWheel = now;
-    // ...but only briefly: any new swipe (a pause, a stronger push, or after 3 seconds) scrolls on as normal
-    if (held) { const fresh = gap > 320 || abs > lastAbs * 1.4 + 6 || now > heldUntil; lastAbs = abs; if (!fresh) return; held = false; }
+    // ...but only briefly: any new swipe (a pause, a stronger push, or after 6 seconds) scrolls on as normal
+    // (trackpad momentum only ever slows down, so a clearly stronger push is a new swipe; small jitters are not)
+    if (held) { const fresh = gap > 320 || (abs > lastAbs * 2 + 12 && abs > 24) || now > heldUntil; lastAbs = Math.min(lastAbs || abs, abs); if (!fresh) return; held = false; }
     lastAbs = abs;
     if (!raf) { cur = target = scrollY; }
     const from = target;
     target = Math.max(0, Math.min(max(), target + dy * SPEED));
     // stop points: one scroll plays an opening animation and stops when it is done, instead of flying past it
     for (const el of document.querySelectorAll('[data-stop-y]')) {
+      if (el.__refreshStop) el.__refreshStop();                       // always use the stop point for the page as it is now
       const s = +el.dataset.stopY;
-      if (dy > 0 && from < s - 2 && target > s) { target = s; held = true; heldUntil = now + 3000; }
+      if (dy > 0 && from < s - 2 && target > s) { target = s; held = true; heldUntil = now + 6000; }
       // scrolling back up (demos): stop at the finished headline instead of rewinding the whole animation
-      if (dy < 0 && el.dataset.stopUp && from > s + 2 && target < s) { target = s; held = true; heldUntil = now + 3000; }
+      if (dy < 0 && el.dataset.stopUp && from > s + 2 && target < s) { target = s; held = true; heldUntil = now + 6000; }
     }
     if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });
