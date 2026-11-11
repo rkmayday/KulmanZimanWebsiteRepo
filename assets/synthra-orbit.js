@@ -33,14 +33,14 @@ window.S3D && S3D(({ T, scene, cl, sm, C, soft }) => {
 
   return ({ i, p, mx, my, W, H, halfH }) => {
     const now = performance.now() / 1000, e = sm(i);
-    // one simple motion: as you scroll it turns gently and the core brightens, then it swells a little,
-    // shrinks and fades away while the headline comes in (the same finish as Ember and Ironpath)
+    // one simple motion: as you scroll it turns gently and the core brightens, then it zooms in until it fills the
+    // whole screen and stays there, very faint, behind the headline and everything else
     const turn = sm(p / .36), pop = cl((p - .34) / .34), sp = sm(pop);
     const px = 2 * halfH / H, svgPx = Math.min(.7 * W, 560) / 200;    // scene units per pixel, pixels per SVG unit
-    mark.scale.setScalar(svgPx * px / U * (.85 + .15 * e) * (1 + .08 * Math.sin(Math.PI * cl(pop / .4))) * (1 - .5 * sp) * U / .01);
-    mark.position.set(mx * -.25, my * .25 + .1 * Math.sin(now * .7) * (1 - sp), 0);
+    mark.scale.setScalar(svgPx * px / U * (.85 + .15 * e) * (1 + 2.6 * sp) * U / .01);
+    mark.position.set(mx * -.25 * (1 - .6 * sp), my * .25 * (1 - .6 * sp) + .1 * Math.sin(now * .7) * (1 - sp), 0);
     mark.rotation.set(-.25 * turn + my * .15, .55 * turn + mx * .3, 0);
-    const op = cl(e * (1 - sp));
+    const op = cl(e * (1 - .86 * sp));                              // settles at about 14% behind the words
     orbits.rotation.z = -(now / 40) * Math.PI * 2;
     rings.forEach(r => {
       r.tube.geometry.setDrawRange(0, Math.floor(e * SEG) * RAD * 6);   // the rings draw themselves as the page opens
