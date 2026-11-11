@@ -41,7 +41,9 @@
     const now = performance.now(), gap = now - lastWheel, abs = Math.abs(dy); lastWheel = now;
     // ...but only briefly: any new swipe (a pause, a stronger push, or after 6 seconds) scrolls on as normal
     // (trackpad momentum only ever slows down, so a clearly stronger push is a new swipe; small jitters are not)
-    if (held) { const fresh = gap > 320 || (abs > lastAbs * 2 + 12 && abs > 24) || now > heldUntil; lastAbs = Math.min(lastAbs || abs, abs); if (!fresh) return; held = false; }
+    // a mouse-wheel click moves in fixed steps (100 or 120); trackpad momentum is a smooth run of uneven values
+    const notch = e.deltaMode !== 0 || (abs >= 100 && (abs % 100 === 0 || (e.wheelDeltaY && Math.abs(e.wheelDeltaY) % 120 === 0)));
+    if (held) { const fresh = gap > 320 || (abs > lastAbs * 2 + 12 && abs > 24) || (notch && gap > 100) || now > heldUntil; lastAbs = Math.min(lastAbs || abs, abs); if (!fresh) return; held = false; }
     lastAbs = abs;
     if (!raf) { cur = target = scrollY; }
     const from = target;
