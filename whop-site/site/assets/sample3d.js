@@ -60,8 +60,8 @@ window.S3D = (build, opt = {}) => {
   const frame = () => {
     let i = v('--i'), p = v('--p'); const mx = v('--mx'), my = v('--my');
     if (reduce) { i = 1; p = 1; }
-    // shared timeline: turn 0-22%, main action 22-70%, objects move aside 56-84%, headline 80-92%
-    const a = sm(p / .22), b = cl((p - .22) / .48), out = sm((p - .56) / .28), c = sm((p - .8) / .12);
+    // shared timeline: wind-up 0-22%, main action 22-62%, headline 60-78%
+    const a = sm(p / .22), b = cl((p - .22) / .48), out = sm((p - .56) / .28), c = sm((p - .6) / .18);
     stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
     const sig = [i, p, mx, my, W, H].map(x => x.toFixed(4)).join();
     if (sig === last) return; last = sig;

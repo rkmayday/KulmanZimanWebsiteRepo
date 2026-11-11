@@ -143,45 +143,35 @@
   const draw = () => {
     let i = v('--i'), p = v('--p'); const mx = v('--mx'), my = v('--my');
     if (reduce) { i = 1; p = .2; }
-    // our own timeline (the stage is taller on this page): the crack moves at the same pace as the turn before it
-    // turn 0-22%, crack 22-70% (same pace as the turn), halves move aside 64-88%, headline 72-90%
-    const a = sm(p / .22), b = cl((p - .22) / .48), c = sm((p - .8) / .12);
+    // simple and readable in one scroll: turn 0-25%, crack 20-60%, the halves pop and vanish 55-72%, headline 66-82%
+    const a = sm(p / .25), b = cl((p - .2) / .4), pop = cl((p - .55) / .17), c = sm((p - .66) / .16);
     stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
-    const out = sm((p - .56) / .28);                  // halves clear the way for the headline as it rises
     const sig = [i, a, b, c, p, mx, my, W, H].map(x => x.toFixed(4)).join();
     if (sig === last) return; last = sig;
 
-    // fit: keep the whole bean comfortably inside the frame on any screen shape
     const asp = W / H, fitZ = Math.max(7.2, 2.15 / (Math.tan(14 * Math.PI / 180) * Math.min(1, asp)));
-    camera.position.set(0, 0, fitZ * (1.06 - .1 * a + .1 * out)); camera.lookAt(0, 0, 0);
-    const halfW = Math.tan(14 * Math.PI / 180) * camera.position.z * asp;
+    camera.position.set(0, 0, fitZ * (1.06 - .1 * a)); camera.lookAt(0, 0, 0);
 
-    // the bean arrives, turns to show its crease, trembles, then cracks open
+    // the bean arrives, turns to show its crease, then cracks open
     bean.scale.setScalar(.72 + .28 * easeOut(i));
     bean.position.y = (1 - easeOut(i)) * -.35;
     bean.rotation.set(.32 - .18 * a + my * .25, -.75 + 1.0 * a + mx * .45 - .2 * b, .5 - .38 * a);
-    const o = sm((b - .14) / .7);                          // the halves open steadily, not in a snap
-    const halfH = Math.tan(14 * Math.PI / 180) * camera.position.z;
-    // keep the halves clear of the headline block: beside it when there is room, else in opposite corners
-    const tw = (copyBox.w / W) * halfW, th = (copyBox.h / H) * halfH, halfSize = .5;    // half-sizes in scene units
-    const sideX = tw + halfSize + .25, tall = sideX > halfW * .95;
-    const tx = tall ? Math.min(halfW * .72, Math.max(halfW * .55, halfW - halfSize * .6)) : Math.min(halfW * .85, Math.max(sideX, halfW * .62));
-    const ty = tall ? Math.min(halfH * .8, th + halfSize * .9) : 0;
-    const spread = o * .5 + out * (tx - .5);
-    L.position.set(-spread, -o * .12 + out * ty, o * .15); R.position.set(spread, o * .08 - out * ty, o * .15);
-    L.rotation.set(o * .1, -o * .78, o * .3); R.rotation.set(-o * .08, o * .72, -o * .26);   // show the glossy shell and the broken inside together
-    const shrink = 1 - (tall ? .42 : .14) * out; L.scale.setScalar(shrink); R.scale.setScalar(shrink);
+    const o = sm((b - .1) / .8);
+    const spread = o * .5 + easeOut(pop) * .3;
+    L.position.set(-spread, -o * .12, o * .15); R.position.set(spread, o * .08, o * .15);
+    L.rotation.set(o * .1, -o * .78, o * .3); R.rotation.set(-o * .08, o * .72, -o * .26);
+    // pop: a little swell, then they shrink away to nothing
+    const sc = pop < .3 ? 1 + .1 * sm(pop / .3) : 1.1 * (1 - sm((pop - .3) / .7));
+    L.scale.setScalar(sc); R.scale.setScalar(sc); L.visible = R.visible = sc > .005;
 
-    // shards and dust fly out and fall, then fade
-    const s = cl((b - .12) / .88), fade = 1 - sm((s - .6) / .4);
-    shards.forEach(m => { const u = m.userData; m.visible = s > 0 && fade > .01;
-      m.position.set(u.o.x + u.v.x * s * 1.3, u.o.y + u.v.y * s * 1.2 - 2.4 * s * s, u.o.z + u.v.z * s);
-      m.rotation.set(u.s.x * s, u.s.y * s, u.s.z * s); m.scale.setScalar(fade); });
+    // no flying shards: just a soft puff of roast dust as it cracks
+    shards.forEach(m => { m.visible = false; });
+    const s = cl((b - .12) / .88), fade = 1 - sm((s - .5) / .5);
     for (let k = 0; k < DUST; k++) { dpos[k * 3] = dO[k * 3] + dV[k * 3] * s * 1.2; dpos[k * 3 + 1] = dO[k * 3 + 1] + dV[k * 3 + 1] * s - 1.8 * s * s; dpos[k * 3 + 2] = dO[k * 3 + 2] + dV[k * 3 + 2] * s; }
-    dg.attributes.position.needsUpdate = true; dust.material.opacity = s > 0 ? .9 * fade : 0;
+    dg.attributes.position.needsUpdate = true; dust.material.opacity = s > 0 ? .6 * fade : 0;
 
     // the ember: a warm flash from inside the crack
-    const gl = Math.sin(Math.PI * cl((b - .06) / .6)) * (1 - out);
+    const gl = Math.sin(Math.PI * cl((b - .06) / .6)) * (1 - pop);
     ember.intensity = gl * 9; ember.position.set(0, 0, .25);
     glow.material.opacity = gl * .55; glow.position.copy(bean.position).setZ(.2);
     shadow.material.opacity = .8 * (1 - o) * easeOut(i);

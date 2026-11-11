@@ -125,6 +125,8 @@
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    // one scroll gesture stops here, when the logo animation has finished (smooth.js)
+    stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);
     kick();
   };
   addEventListener('scroll', readScroll, { passive: true });
@@ -132,7 +134,7 @@
 
   const kick = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
   function frame() {
-    prog += (target - prog) * .14; px += (tpx - px) * .08; py += (tpy - py) * .08;
+    prog += (target - prog) * .32; px += (tpx - px) * .08; py += (tpy - py) * .08;
     const p = prog * .87;            // the stage is 13% shorter than the timeline: same animation, half the hold after it
     const a = smooth(p / .42);                    // turn: shows the depth
     const b = smooth((p - .36) / .38);            // split: K and Z slide apart
