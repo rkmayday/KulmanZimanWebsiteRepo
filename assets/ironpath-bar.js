@@ -66,7 +66,7 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, rnd, C, canvasTex, soft }) 
     // otherwise a smaller bar in the space under the headline
     const sxBeside = tw + .32, roomy = (sxBeside + endOut) < halfW * .97;
     let sxT, sT, yT;
-    if (roomy) { sxT = sxBeside; sT = .82; yT = -th + .02; const bottom = halfH - .12; if (-yT + R * sT > bottom) sT = Math.max(.45, (bottom + yT) / R); }
+    if (roomy) { sxT = sxBeside; sT = .8; yT = -th - .16; const bottom = halfH - .12; if (-yT + R * sT > bottom) sT = Math.max(.45, (bottom + yT) / R); }
     else { sxT = 1.0; const space = halfH - th - .14; sT = Math.min(fitS, Math.max(.22, space / (2 * R + .1))); yT = -th - .06 - R * sT; }
     // the bar arrives, turns from end-on to a three-quarter view while it spins
     const e = easeOut(i), sx = mix(1.0, sxT, out), sc = mix(fitS, sT, out);
