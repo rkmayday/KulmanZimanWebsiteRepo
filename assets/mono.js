@@ -126,7 +126,9 @@
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
-    stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);
+    // ...the point where the K and Z have reached their final places and the headline is fully in (timeline .85)
+    const cS = (.85 - SPLIT) * Ra / Ls, uS = k < 1e-4 ? cS : (1 - Math.sqrt(Math.max(0, 1 - 2 * k * cS))) / k;
+    stage.dataset.stopY = Math.round(scrollY + r.top - t + y0 + Math.min(1, uS) * Ls);
     kick();
   };
   addEventListener('scroll', readScroll, { passive: true });
