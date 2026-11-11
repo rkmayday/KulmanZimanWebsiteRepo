@@ -102,16 +102,29 @@
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
   // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
   // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
-  const pin = $('.kz-pin', stage), HOLD = .85;   // the headline is fully in at 85% of the range (see frame)
-  // REST: a short still moment once the headline is fully in, so it can be read before the page moves on
-  // (matches the extra 25vh added to .kz-stage in mono.css)
-  const REST = .25;
+  const pin = $('.kz-pin', stage), HOLD = .72;   // the scene starts moving with the page while the headline finishes fading in
+  // No dead scroll after the reveal: the logo turns at a steady pace, then once the K and Z start to separate
+  // each bit of scrolling moves them a little less (the pace eases down smoothly), and the page starts carrying
+  // the scene away while the split is still finishing, so something is always moving.
+  // EXTRA matches the extra height given to .kz-stage in mono.css for this eased part.
+  let lastMb = null;
+  const EXTRA = .36, SPLIT = .36 / .87;          // SPLIT: where the K and Z start to separate, on the timeline
   const readScroll = () => {
-    const r = stage.getBoundingClientRect(), t = pinT, rest = innerHeight * REST;
-    const range = Math.max(1, r.height - (innerHeight - t) - rest), y = t - r.top;   // range = the animation part
-    target = clamp(y / range);
-    const H = (1 - HOLD) * range, h = clamp(y - HOLD * range - rest, 0, H);
+    const r = stage.getBoundingClientRect(), t = pinT, y = t - r.top;
+    const Rt = Math.max(1, r.height - (innerHeight - t));          // whole pinned scroll
+    const Ra = Math.max(1, Rt - innerHeight * EXTRA);               // pace of the turn (unchanged)
+    const y0 = SPLIT * Ra, Ls = Math.max(1, Rt - y0);               // eased part: from the split to the end
+    // end pace as a share of the start pace, chosen so the timeline ends exactly at the end of the stage
+    const sEnd = clamp(2 * (1 - SPLIT) * Ra / Ls - 1, .15, 1);
+    const ease = u => u - (1 - sEnd) * u * u / 2;                     // pace falls in a straight line from 1 to sEnd
+    target = y <= y0 ? clamp(y / Ra) : clamp(SPLIT + (Ls / Ra) * ease(clamp((y - y0) / Ls)));
+    // hand-off: from the moment the headline is fully in, the scene starts moving with the page (speed 0 -> normal)
+    const c = (HOLD - SPLIT) * Ra / Ls, k = 1 - sEnd;
+    const uH = k < 1e-4 ? c : (1 - Math.sqrt(Math.max(0, 1 - 2 * k * c))) / k;
+    const yHold = y0 + uH * Ls, H = Math.max(1, Rt - yHold), h = clamp(y - yHold, 0, H);
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
+    // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
+    const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     kick();
   };
   addEventListener('scroll', readScroll, { passive: true });
