@@ -142,6 +142,13 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 @media (prefers-reduced-motion:reduce){main .btn,.seg button,.er-link span{transition:none}}
 
 
+/* after the bean: the headline sits on the left and coffee beans keep falling on the right (ember-bean.js) */
+@media (min-width:900px){
+  .stage.er3d .copy{width:min(1180px,100%);justify-items:start;text-align:left;padding-right:calc(min(1180px,100%) * .46 + 22px);padding-left:max(22px,env(safe-area-inset-left))}
+  .stage.er3d .copy .lede{margin-inline:0}
+  .stage.er3d .copy .actions{justify-content:flex-start}
+  .stage.er3d .copy h1{font-size:clamp(2.6rem,5vw,5rem)}
+}
 @media (max-width:600px){main .k{width:auto;white-space:normal;letter-spacing:.12em;font-size:10.5px;line-height:1.4;text-align:center}}
 .x3d-wait .er-bean,.x3d-wait .er-steamx{visibility:hidden}
 </style>
