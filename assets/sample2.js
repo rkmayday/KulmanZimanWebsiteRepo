@@ -62,6 +62,8 @@
     kick();
   };
   addEventListener('scroll', read, { passive: true });
+  stage.__refreshStop = read;                                   // smooth.js asks for a fresh stop point before every wheel step
+  if (window.ResizeObserver) new ResizeObserver(read).observe(stage);   // e.g. the 3D version makes the stage taller after it loads
   let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; nh = navH(); read(); } });
   addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; tmx = e.clientX / innerWidth - .5; tmy = e.clientY / innerHeight - .5; kick(); }, { passive: true });
   // phones: a gentle tilt follows the device instead of a cursor (only where allowed without a prompt)
