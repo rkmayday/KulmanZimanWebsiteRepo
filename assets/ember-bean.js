@@ -158,8 +158,7 @@
     // the bean arrives, turns to show its crease, trembles, then cracks open
     bean.scale.setScalar(.72 + .28 * easeOut(i));
     bean.position.y = (1 - easeOut(i)) * -.35;
-    const t1 = cl(b / .16), shake = Math.sin(b * 150) * .03 * Math.sin(Math.PI * t1);
-    bean.rotation.set(.32 - .18 * a + my * .25 + shake, -.75 + 1.0 * a + mx * .45 - .2 * b, .5 - .38 * a + shake * .6);
+    bean.rotation.set(.32 - .18 * a + my * .25, -.75 + 1.0 * a + mx * .45 - .2 * b, .5 - .38 * a);
     const o = sm((b - .14) / .7);                          // the halves open steadily, not in a snap
     const halfH = Math.tan(14 * Math.PI / 180) * camera.position.z;
     // keep the halves clear of the headline block: beside it when there is room, else in opposite corners

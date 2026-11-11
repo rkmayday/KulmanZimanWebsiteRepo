@@ -133,7 +133,7 @@ THEMES = {
             '<link rel="stylesheet" href="/assets/site.css">': '<link rel="stylesheet" href="/assets/mono.css">',
             '<script src="/assets/three.min.js"></script>\n': '',
             '<script src="/assets/world.js" defer></script>\n': '',
-            '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>',
+            '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>\n<script src="/assets/smooth.js" defer></script>',
             '<h1 class="extrude">Your business, <em>crowned</em> online.</h1>': '<h1 class="extrude">Websites made to <br><em>level up</em> your business.</h1>',
             '<section class="hero" data-dock="Home" id="top">': MONO_STAGE + '<section class="hero" data-dock="Home" id="top">',
         },
