@@ -22,9 +22,9 @@
   background-image:linear-gradient(rgba(199,243,107,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(199,243,107,.18) 1px,transparent 1px);background-size:60px 60px;background-position:0 calc(var(--p) * 900px);
   -webkit-mask-image:linear-gradient(transparent,#000 60%);mask-image:linear-gradient(transparent,#000 60%);opacity:calc(var(--a) * (1 - var(--b) * .6))}
 
-/* the real 3D kettlebell (ironpath-kettlebell.js) replaces the flat path when WebGL is available; one scroll to play */
+/* the 3D logo (ironpath-logo.js) replaces the flat path when WebGL is available; one scroll to play */
 .x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
-.mark.has-3d .ip-mark{display:none}
+.mark.has-3d .ip-mark,.mark.has-3d .ip-glow{display:none}
 .stage.x3d{height:280vh}
 @media (max-width:720px){.stage.x3d{height:240vh}}
 .stage.x3d .copy{opacity:var(--ec,0);transform:translateY(calc((1 - var(--ec,0)) * 36px))}
@@ -57,7 +57,7 @@
 <nav class="drawer" aria-label="Mobile"><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<section class="stage" aria-label="Ironpath" data-hold=".86">
+<section class="stage" aria-label="Ironpath" data-hold=".8">
   <div class="pin">
     <div class="mark" aria-hidden="true">
       <div class="ip-floor"></div>
@@ -132,7 +132,7 @@
 <script src="{{ASSETS}}smooth.js" defer></script>
 <script src="{{THREE}}" defer></script>
 <script src="{{ASSETS}}sample3d.js" defer></script>
-<script src="{{ASSETS}}ironpath-kettlebell.js" defer></script>
+<script src="{{ASSETS}}ironpath-logo.js" defer></script>
 
 <script>
 // Ironpath sample: live plan builder (pure sample logic; nothing is saved or sent)
