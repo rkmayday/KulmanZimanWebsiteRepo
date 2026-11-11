@@ -46,8 +46,11 @@
     const from = target;
     target = Math.max(0, Math.min(max(), target + dy * SPEED));
     // stop points: one scroll plays an opening animation and stops when it is done, instead of flying past it
-    if (dy > 0) for (const el of document.querySelectorAll('[data-stop-y]')) {
-      const s = +el.dataset.stopY; if (from < s - 2 && target > s) { target = s; held = true; heldUntil = now + 3000; }
+    for (const el of document.querySelectorAll('[data-stop-y]')) {
+      const s = +el.dataset.stopY;
+      if (dy > 0 && from < s - 2 && target > s) { target = s; held = true; heldUntil = now + 3000; }
+      // scrolling back up (demos): stop at the finished headline instead of rewinding the whole animation
+      if (dy < 0 && el.dataset.stopUp && from > s + 2 && target < s) { target = s; held = true; heldUntil = now + 3000; }
     }
     if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });

@@ -58,7 +58,7 @@
     pin.style.transform = h > 0 ? `translate3d(0,${(-f).toFixed(1)}px,0)` : '';
     // the next section follows right behind the headline (no empty band)
     const mb = Math.round(Rm / 2 - H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
-    stage.dataset.stopY = Math.round(scrollY + r.top - nh + STOP * range);
+    stage.dataset.stopY = Math.round(scrollY + r.top - nh + STOP * range); stage.dataset.stopUp = '1';   // also stops here on the way back up
     kick();
   };
   addEventListener('scroll', read, { passive: true });
