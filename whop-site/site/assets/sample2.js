@@ -44,6 +44,9 @@
   let nh = navH(), target = 0, prog = 0, mx = 0, my = 0, tmx = 0, tmy = 0, running = false, last = 0;
   const t0 = performance.now(), INTRO = 1600;
   const HOLD = parseFloat(stage.dataset.hold) || .86;
+  // where one scroll gesture stops (smooth.js): right after the opening animation, with the headline fully in.
+  // Pages set data-stop to the point on their timeline where that happens.
+  const STOP = Math.min(HOLD, parseFloat(stage.dataset.stop) || .76);
   let lastMb = null;
   const read = () => {
     const r = stage.getBoundingClientRect(), range = Math.max(1, r.height - (innerHeight - nh));
@@ -53,6 +56,7 @@
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
     // easing in only covers half the ramp: pull the next section up by that half so it arrives right behind (no empty gap)
     const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    stage.dataset.stopY = Math.round(scrollY + r.top - nh + STOP * range);
     kick();
   };
   addEventListener('scroll', read, { passive: true });

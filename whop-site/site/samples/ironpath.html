@@ -45,7 +45,7 @@
 
 .x3d-wait .ip-mark{visibility:hidden}
 </style>
-<script>document.documentElement.classList.add('x3d-wait');setTimeout(function(){document.documentElement.classList.remove('x3d-wait')},4000)</script>
+<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
@@ -57,7 +57,7 @@
 <nav class="drawer" aria-label="Mobile"><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<section class="stage" aria-label="Ironpath" data-hold=".8">
+<section class="stage" aria-label="Ironpath" data-hold=".8" data-stop=".77">
   <div class="pin">
     <div class="mark" aria-hidden="true">
       <div class="ip-floor"></div>
@@ -128,8 +128,8 @@
   <nav><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a></nav><span>© 2026 Ironpath (fictional)</span></div></footer>
 <div class="badge">A one-page Starter site ($284) by Kulman Ziman <a href="/#proof">← Back</a></div>
 
-<script src="/assets/sample2.js?v=c57a56e6" defer></script>
-<script src="/assets/smooth.js?v=ae34b63d" defer></script>
+<script src="/assets/sample2.js?v=a7cd079a" defer></script>
+<script src="/assets/smooth.js?v=8db21ff8" defer></script>
 <script src="/assets/three.min.js?v=eb854986" defer></script>
 <script src="/assets/sample3d.js?v=0492b8d7" defer></script>
 <script src="/assets/ironpath-logo.js?v=84e0daaa" defer></script>
