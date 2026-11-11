@@ -53,6 +53,7 @@ window.S3D = (build, opt = {}) => {
 
   const ctx = { T, scene, camera, renderer, stage, cl, sm, easeOut, mix, noise, fbm, rnd, C, canvasTex, soft, reduce };
   const draw = build(ctx);
+  const brand = document.querySelector('.nav .brand svg'), markR = () => mark.getBoundingClientRect();
 
   // ---------- one frame ----------
   const v = k => parseFloat(stage.style.getPropertyValue(k)) || 0;
@@ -61,7 +62,7 @@ window.S3D = (build, opt = {}) => {
     let i = v('--i'), p = v('--p'); const mx = v('--mx'), my = v('--my');
     if (reduce) { i = 1; p = 1; }
     // shared timeline: wind-up 0-22%, main action 22-62%, headline 60-78%
-    const a = sm(p / .22), b = cl((p - .22) / .48), out = sm((p - .56) / .28), c = sm((p - .6) / .18);
+    const a = sm(p / .22), b = cl((p - .22) / .48), out = sm((p - .56) / .28), c = sm((p - (opt.copy || [.6, .18])[0]) / (opt.copy || [.6, .18])[1]);
     stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
     const sig = [i, p, mx, my, W, H].map(x => x.toFixed(4)).join();
     if (sig === last) return; last = sig;
@@ -69,7 +70,11 @@ window.S3D = (build, opt = {}) => {
     const halfH = Math.tan(FOV / 2 * Math.PI / 180) * z, halfW = halfH * W / H;
     // the headline block's half-size in scene units (at depth 0)
     const tw = copy.w / W * halfW, th = copy.h / H * halfH;
-    draw({ i, p, a, b, out, c, mx, my, W, H, halfW, halfH, tw, th });
+    // the nav logo's centre and size in scene units (for objects that fly into it)
+    let logo = null;
+    if (brand) { const m = markR(), r = brand.getBoundingClientRect();
+      logo = { x: ((r.left + r.width / 2 - m.left) / W * 2 - 1) * halfW, y: -((r.top + r.height / 2 - m.top) / H * 2 - 1) * halfH, s: r.width / W * 2 * halfW }; }
+    draw({ i, p, a, b, out, c, mx, my, W, H, halfW, halfH, tw, th, logo });
     renderer.render(scene, camera);
   };
 

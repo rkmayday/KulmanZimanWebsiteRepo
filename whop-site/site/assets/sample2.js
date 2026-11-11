@@ -53,8 +53,6 @@
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
     // easing in only covers half the ramp: pull the next section up by that half so it arrives right behind (no empty gap)
     const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
-    // one scroll gesture stops here, when the animation has finished (smooth.js)
-    stage.dataset.stopY = Math.round(scrollY + r.top - nh + HOLD * range);
     kick();
   };
   addEventListener('scroll', read, { passive: true });
