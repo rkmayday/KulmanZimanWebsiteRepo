@@ -43,13 +43,16 @@
   const navH = () => parseFloat(getComputedStyle(pin).top) || 0;
   let nh = navH(), target = 0, prog = 0, mx = 0, my = 0, tmx = 0, tmy = 0, running = false, last = 0;
   const t0 = performance.now(), INTRO = 1600;
-  const HOLD = .86;
+  const HOLD = parseFloat(stage.dataset.hold) || .86;
+  let lastMb = null;
   const read = () => {
     const r = stage.getBoundingClientRect(), range = Math.max(1, r.height - (innerHeight - nh));
     target = clamp((nh - r.top) / range);
     // after the reveal, the scene speeds up gradually into normal scrolling (no jolt at the hand-off)
     const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
     pin.style.transform = h > 0 ? `translate3d(0,${(-(h * h) / (2 * H)).toFixed(1)}px,0)` : '';
+    // easing in only covers half the ramp: pull the next section up by that half so it arrives right behind (no empty gap)
+    const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     kick();
   };
   addEventListener('scroll', read, { passive: true });
