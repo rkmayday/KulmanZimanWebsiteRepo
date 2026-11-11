@@ -7,7 +7,7 @@
   const EASE = .075;   // how quickly the page catches up each frame (lower = smoother, longer glide)
   const SPEED = .85;   // distance per wheel step compared with the browser's normal amount (lower = slower)
   const root = document.documentElement;
-  let target = scrollY, cur = scrollY, raf = 0, last = 0, held = false, lastWheel = 0;
+  let target = scrollY, cur = scrollY, raf = 0, last = 0, held = false, heldUntil = 0, lastAbs = 0, lastWheel = 0;
 
   const max = () => root.scrollHeight - innerHeight;
   const go = y => scrollTo({ top: y, behavior: 'instant' });
@@ -38,14 +38,16 @@
     if (!dy || ownScroller(e, dy) || getComputedStyle(document.body).overflow === 'hidden') return;
     e.preventDefault();
     // after stopping at the end of an opening animation, the rest of that flick (trackpad momentum) is ignored
-    const now = performance.now(), gap = now - lastWheel; lastWheel = now;
-    if (held) { if (gap < 220) return; held = false; }
+    const now = performance.now(), gap = now - lastWheel, abs = Math.abs(dy); lastWheel = now;
+    // ...but only briefly: any new swipe (a pause, a stronger push, or after 1.5 seconds) scrolls on as normal
+    if (held) { const fresh = gap > 160 || abs > lastAbs * 1.25 + 4 || now > heldUntil; lastAbs = abs; if (!fresh) return; held = false; }
+    lastAbs = abs;
     if (!raf) { cur = target = scrollY; }
     const from = target;
     target = Math.max(0, Math.min(max(), target + dy * SPEED));
     // stop points: one scroll plays an opening animation and stops when it is done, instead of flying past it
     if (dy > 0) for (const el of document.querySelectorAll('[data-stop-y]')) {
-      const s = +el.dataset.stopY; if (from < s - 2 && target > s) { target = s; held = true; }
+      const s = +el.dataset.stopY; if (from < s - 2 && target > s) { target = s; held = true; heldUntil = now + 1500; }
     }
     if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });
