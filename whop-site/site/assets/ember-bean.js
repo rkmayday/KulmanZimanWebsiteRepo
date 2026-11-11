@@ -63,8 +63,8 @@
   const crease = y => .075 * Math.sin(y * 2.3);            // the S-shaped crease down the flat face
   const crackX = (y, z) => crease(y) + .04 * noise(y * 7, z * 7, 1.3) + .022 * noise(y * 17, z * 17, 4.1) + .009 * noise(y * 45, z * 45, 8.7);
   const ROAST_D = C('#160904'), ROAST_L = C('#46230f'), CHAFF = C('#a27748'), INNER_D = C('#5a3218'), INNER_L = C('#a8733f');
-  const beanHalf = side => {                                // side -1 = left half, +1 = right half
-    const g = new T.SphereGeometry(1, 150, 112), P = g.attributes.position, n = P.count, col = new Float32Array(n * 3), inner = new Uint8Array(n);
+  const beanHalf = (side, sw = 150, sh = 112) => {                                // side -1 = left half, +1 = right half
+    const g = new T.SphereGeometry(1, sw, sh), P = g.attributes.position, n = P.count, col = new Float32Array(n * 3), inner = new Uint8Array(n);
     const c = new T.Color();
     for (let i = 0; i < n; i++) {
       const x = P.getX(i), y = P.getY(i), z = P.getZ(i);
@@ -112,6 +112,14 @@
     m.userData = { o: new T.Vector3(crease(y), y * 1.1, z), v: new T.Vector3(dir * (.6 + rnd() * 1.6), .4 + rnd() * 1.8, .4 + rnd() * 1.6), s: new T.Vector3(rnd() * 9 - 4.5, rnd() * 9 - 4.5, rnd() * 9 - 4.5) };
     m.visible = false; bean.add(m); shards.push(m);
   }
+  // whole beans that keep falling on the right of the headline once the opening has finished
+  const fallOut = outside.clone(), fallIn = inside.clone(); fallOut.transparent = fallIn.transparent = false; fallOut.opacity = fallIn.opacity = 1;
+  const fgL = beanHalf(-1, 56, 42), fgR = beanHalf(1, 56, 42), falling = [];
+  for (let k = 0; k < 14; k++) {
+    const g = new T.Group(); g.add(new T.Mesh(fgL, [fallOut, fallIn]), new T.Mesh(fgR, [fallOut, fallIn]));
+    g.userData = { u: rnd(), z: -1.6 + rnd() * 2, sp: .07 + rnd() * .05, ph: rnd(), s: .17 + rnd() * .1, ax: new T.Vector3(rnd() - .5, rnd() - .5, rnd() - .5).normalize(), rs: .6 + rnd() * 1.2 };
+    g.visible = false; scene.add(g); falling.push(g);
+  }
   const DUST = 700, dg = new T.BufferGeometry(), dpos = new Float32Array(DUST * 3), dcol = new Float32Array(DUST * 3), dO = [], dV = [];
   for (let k = 0; k < DUST; k++) {
     const y = (rnd() * 2 - 1) * .9; dO.push(crease(y) + (rnd() - .5) * .05, y * 1.1, rnd() * .4 - .15);
@@ -148,8 +156,9 @@
     // turn 0-18%, a quicker crack 14-44%, then a long, gentle pop-out 40-74%, headline 58-80% (the scroll stops at 81%)
     const a = sm(p / .18), b = cl((p - .14) / .3), pop = cl((p - .4) / .34), c = sm((p - .58) / .22);
     stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
+    const rain = sm((p - .62) / .2);                        // the falling beans fade in with the headline
     const sig = [i, a, b, c, p, mx, my, W, H].map(x => x.toFixed(4)).join();
-    if (sig === last) return; last = sig;
+    if (sig === last && !(rain > 0)) return; last = sig;
 
     const asp = W / H, fitZ = Math.max(7.2, 2.15 / (Math.tan(14 * Math.PI / 180) * Math.min(1, asp)));
     camera.position.set(0, 0, fitZ * (1.06 - .1 * a)); camera.lookAt(0, 0, 0);
@@ -177,6 +186,18 @@
     ember.intensity = gl * 9; ember.position.set(0, 0, .25);
     glow.material.opacity = gl * .55; glow.position.copy(bean.position).setZ(.2);
     shadow.material.opacity = .8 * (1 - o) * easeOut(i);
+    // falling beans: on wide screens they fill the right side, on phones they drift down the two edges
+    const now = performance.now() / 1000, wide = W >= 900, hw = Math.tan(14 * Math.PI / 180) * camera.position.z * W / H, hh = hw * H / W;
+    falling.forEach((g, k) => { const u = g.userData; g.visible = rain > .01;
+      if (!g.visible) return;
+      const d = camera.position.z - u.z, sx = d / camera.position.z;          // keep beans further back inside the frame too
+      const x = wide ? mix(.12, .92, u.u) * hw * sx : (k % 2 ? 1 : -1) * mix(.62, .95, u.u) * hw * sx;
+      const q = (now * u.sp + u.ph) % 1, span = 2 * hh * sx + 1;
+      g.position.set(x + Math.sin(now * .7 + k) * .08, span / 2 - q * span, u.z);
+      g.setRotationFromAxisAngle(u.ax, now * u.rs + k);
+      g.scale.setScalar(u.s * (wide ? 1 : .75) * (.6 + .4 * rain));
+    });
+    fallOut.opacity = fallIn.opacity = 1;
     renderer.render(scene, camera);
   };
 
