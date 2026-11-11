@@ -42,7 +42,7 @@
   if (reduce) { root.classList.add('no-stage'); stage.style.cssText += ';--i:1;--p:1;--a:1;--b:1;--c:1'; return; }
   const navH = () => parseFloat(getComputedStyle(pin).top) || 0;
   let nh = navH(), target = 0, prog = 0, mx = 0, my = 0, tmx = 0, tmy = 0, running = false, last = 0;
-  const t0 = performance.now(), INTRO = 1600;
+  let t0 = performance.now(); const INTRO = 1600;
   const HOLD = parseFloat(stage.dataset.hold) || .86;
   // where one scroll gesture stops (smooth.js): right after the opening animation, with the headline fully in.
   // Pages set data-stop to the point on their timeline where that happens.
@@ -84,4 +84,18 @@
     if (i < 1 || Math.abs(target - prog) > .0004 || Math.abs(tmx - mx) > .001 || Math.abs(tmy - my) > .001) requestAnimationFrame(frame); else running = false;
   }
   read(); prog = target; kick();
+
+  // the top-left logo replays the opening, like the Kulman Ziman logo does on the main site: a frame closes in,
+  // the logo pops up in a badge, and the page opens again from the top with its animation
+  const brand = $('.nav .brand');
+  brand && brand.addEventListener('click', e => {
+    e.preventDefault();
+    if ($('.sx-intro')) return;
+    const ov = document.createElement('div'); ov.className = 'sx-intro'; ov.setAttribute('aria-hidden', 'true');
+    ov.innerHTML = '<div class="sx-frame"></div><div class="sx-fill"></div><div class="sx-badge"></div>';
+    const logo = brand.querySelector('svg'); if (logo) ov.querySelector('.sx-badge').appendChild(logo.cloneNode(true));
+    document.body.appendChild(ov);
+    setTimeout(() => { scrollTo({ top: 0, behavior: 'instant' }); read(); prog = target; t0 = performance.now(); kick(); }, 1050);
+    setTimeout(() => ov.remove(), 2450);
+  });
 })();
