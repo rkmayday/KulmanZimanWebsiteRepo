@@ -102,7 +102,7 @@
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
   // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
   // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
-  const pin = $('.kz-pin', stage), HOLD = .72;   // the scene starts moving with the page while the headline finishes fading in
+  const pin = $('.kz-pin', stage), HOLD = .85;   // the scene starts moving with the page once the K and Z are in place and the headline is fully in
   // No dead scroll after the reveal: the logo turns at a steady pace, then once the K and Z start to separate
   // each bit of scrolling moves them a little less (the pace eases down smoothly), and the page starts carrying
   // the scene away while the split is still finishing, so something is always moving.
@@ -126,9 +126,8 @@
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     const mb = Math.round(-H / 2); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
-    // ...the point where the K and Z have reached their final places and the headline is fully in (timeline .85)
-    const cS = (.85 - SPLIT) * Ra / Ls, uS = k < 1e-4 ? cS : (1 - Math.sqrt(Math.max(0, 1 - 2 * k * cS))) / k;
-    stage.dataset.stopY = Math.round(scrollY + r.top - t + y0 + Math.min(1, uS) * Ls);
+    // ...exactly where the animation has finished and before the page starts moving on
+    stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);
     kick();
   };
   addEventListener('scroll', readScroll, { passive: true });
