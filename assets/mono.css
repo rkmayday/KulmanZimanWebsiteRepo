@@ -250,6 +250,10 @@ ul,ol{margin:0}
 .brief input,.brief select,.brief textarea,.search input{width:100%;font:inherit;font-size:16px;font-weight:500;color:var(--ink);background:var(--paper);border:0;border-radius:12px;padding:13px 15px;box-shadow:inset 0 0 0 1px var(--line-2);transition:box-shadow .2s}
 .brief input:focus,.brief select:focus,.brief textarea:focus,.search input:focus{outline:0;box-shadow:inset 0 0 0 2px var(--ink)}
 .brief small{color:var(--ink-3);font-size:.82rem}
+.brief .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.brief-done{display:grid;gap:6px;padding:26px 4px;font-size:1rem;color:var(--ink-2)}.brief-done b{font-size:1.3rem;color:var(--ink)}
+.brief-fail{display:grid;gap:8px;padding:16px;border-radius:12px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-2)}.brief-fail b{color:var(--ink)}.brief-fail .btn-row{margin-top:4px}
+.brief-done[hidden],.brief-fail[hidden],.brief [hidden]{display:none!important}
 .mail-alt a{color:var(--ink)}
 
 /* founders */
@@ -455,3 +459,12 @@ html.intro #kz-intro{background:transparent!important;animation:none!important}
 #kz-intro .ki-badge i{width:64px;background:#fff!important;animation:none!important}
 @keyframes mki-fill{0%,46%{clip-path:inset(0 round 0);opacity:1}74%{clip-path:inset(calc(50% - 56px) calc(50% - 56px) round 28px);opacity:1}88%,100%{clip-path:inset(calc(50% - 50px) calc(50% - 50px) round 26px);opacity:0}}
 @keyframes mki-badge{0%{transform:scale(.6);opacity:0}16%{transform:scale(1);opacity:1}74%{transform:scale(1);opacity:1}88%,100%{transform:scale(.9);opacity:0}}
+
+/* phones & touch: readable small labels and comfortable tap targets (desktop look unchanged) */
+@media (max-width:1024px){
+  details summary .cat,dl dt,dt,.s-ind{font-size:12px!important}
+}
+@media (pointer:coarse){
+  input[type=range]{height:34px;touch-action:pan-y}
+  footer a{display:inline-block;padding-block:7px}
+}

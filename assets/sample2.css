@@ -144,3 +144,10 @@ p{margin:0}
 .pop{animation:pop .5s cubic-bezier(.2,.8,.2,1) both}
 
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}.cue i,.pop{animation:none}}
+
+/* phones & touch: readable small labels and comfortable tap targets */
+@media (max-width:1024px){.lab-label,.cue span,.cue,.ip-day small{font-size:12px!important}}
+@media (pointer:coarse){
+  input[type=range]{height:34px;touch-action:pan-y}
+  nav a{padding-block:10px}
+}

@@ -30,7 +30,8 @@ PACKAGES = [
     ("premium", "Premium", 994, "4–7-page interactive website", "A full business site: services, about, gallery, pricing and more.", "https://whop.com/checkout/plan_kayas42uF3j2w/"),
 ]
 PACKAGE_COMMON = ["Interactive, animated website experience", "Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
-                  "Done within one month, or a full refund", "First-year domain paid by us when under $30"]
+                  "Fast turnaround: on time, or a full refund", "First-year domain paid by us when under $30",
+                  "Fully handed over to you: yours to own"]
 
 
 def package_modal():
@@ -53,7 +54,7 @@ def package_modal():
     <div class="pm-opts">
 {chr(10).join(rows)}
     </div>
-    <p class="pm-fine">One-time payment. Three rounds of refinement, done within a month or a full refund. Not sure? <a href="/#start" data-pm-close>Send a brief first</a>.</p>
+    <p class="pm-fine">One-time payment. Three rounds of refinement, delivered on time or a full refund. Not sure? <a href="/#start" data-pm-close>Send a brief first</a>.</p>
   </div>
 </dialog>
 """
@@ -133,7 +134,7 @@ THEMES = {
             '<script src="/assets/three.min.js"></script>\n': '',
             '<script src="/assets/world.js" defer></script>\n': '',
             '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>',
-            '<h1 class="extrude">Your business, <em>crowned</em> online.</h1>': '<h1 class="extrude">Websites made to <br><em>level up</em> your business.</h1>',
+            '<h1 class="extrude">Your business, <em>crowned</em> online.</h1>': '<h1 class="extrude">Hyper-interactive websites made to <em>level up</em> your business.</h1>',
             '<section class="hero" data-dock="Home" id="top">': MONO_STAGE + '<section class="hero" data-dock="Home" id="top">',
         },
     },

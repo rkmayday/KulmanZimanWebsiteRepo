@@ -141,17 +141,39 @@ window.kzGmail = (to, subject = '', body = '') => {
     try { await navigator.clipboard.writeText(b.dataset.copy); toast('Email copied'); } catch { window.kzGmail(b.dataset.copy); }
   }));
 
-  // Project brief: turns the "contact us before you pay" step into a 30-second form that opens a pre-filled email
+  // Project brief: sent straight to our inbox (FormSubmit, no account needed). If that service is unreachable,
+  // it falls back to opening a pre-filled Gmail draft, so a brief is never lost.
   const brief = $('#brief');
-  brief && brief.addEventListener('submit', e => {
+  brief && brief.addEventListener('submit', async e => {
     e.preventDefault();
-    const f = new FormData(brief);
-    const body = [
-      `Name: ${f.get('name')}`, `Business: ${f.get('business')}`, `Industry: ${f.get('industry')}`,
-      `Domain I'd like: ${f.get('domain') || 'Not sure yet'}`, '', 'What I need:', f.get('details')
-    ].join('\n');
-    window.kzGmail('info.kulmanziman@gmail.com', 'Website brief — ' + (f.get('business') || f.get('name')), body);
-    toast('Opening Gmail…');
+    const f = new FormData(brief), g = k => (f.get(k) || '').toString().trim();
+    if (g('_honey')) return;                                         // spam bots fill the hidden field
+    const subject = 'Website brief — ' + (g('business') || g('name'));
+    const btn = $('button[type=submit]', brief), label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending…';
+    let sent = false;
+    try {
+      const r = await fetch('https://formsubmit.co/ajax/info.kulmanziman@gmail.com', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: g('name'), email: g('email'), business: g('business') || '-', industry: g('industry'),
+          domain: g('domain') || 'Not sure yet', details: g('details'), _subject: subject, _replyto: g('email'), _template: 'table', _captcha: 'false' })
+      });
+      const d = await r.json().catch(() => ({}));
+      sent = r.ok && String(d.success) === 'true';
+    } catch (err) { sent = false; }
+    btn.disabled = false; btn.textContent = label;
+    if (sent) {
+      const done = $('.brief-done', brief); $('[data-brief-email]', done).textContent = g('email') || 'your email';
+      [...brief.children].forEach(c => { if (c !== done) c.hidden = true; }); done.hidden = false; toast('Brief sent');
+    } else {
+      // browsers block pop-ups that don't come straight from a click, so offer one-click links instead of opening Gmail ourselves
+      const to = 'info.kulmanziman@gmail.com', body = [`Name: ${g('name')}`, `Email: ${g('email')}`, `Business: ${g('business')}`, `Industry: ${g('industry')}`,
+        `Domain I'd like: ${g('domain') || 'Not sure yet'}`, '', 'What I need:', g('details')].join('\n');
+      const fail = $('.brief-fail', brief);
+      $('[data-brief-gmail]', fail).href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      $('[data-brief-app]', fail).href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      fail.hidden = false; fail.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   });
 
   // "Use your usual email app": the same brief as a plain mailto: link
