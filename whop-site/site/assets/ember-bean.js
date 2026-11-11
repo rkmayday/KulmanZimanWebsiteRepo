@@ -9,7 +9,7 @@
   let renderer;
   try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return; }
   if (!renderer.getContext()) return;
-  mark.classList.add('has-3d'); mark.prepend(canvas);
+  mark.classList.add('has-3d'); stage.classList.add('er3d'); mark.prepend(canvas);
   renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
   renderer.physicallyCorrectLights = true;
 
@@ -128,41 +128,52 @@
   shadow.scale.set(2.4, .42, 1); shadow.position.set(0, -1.62, -.5); scene.add(shadow);
 
   // ---------- size ----------
-  let W = 0, H = 0;
+  let W = 0, H = 0; const copyBox = { w: 0, h: 0 }, copyEl = stage.querySelector('.copy');
   const size = () => { const r = mark.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height);
+    if (copyEl) {                                            // width of the actual words and buttons, not their boxes
+      const textW = el => { const rg = document.createRange(); rg.selectNodeContents(el); return rg.getBoundingClientRect().width; };
+      const acts = copyEl.querySelector('.actions'), aw = acts ? (() => { const bs = [...acts.children].map(e => e.getBoundingClientRect()); return Math.max(...bs.map(b => b.right)) - Math.min(...bs.map(b => b.left)); })() : 0;
+      copyBox.w = Math.max(aw, ...[...copyEl.children].filter(e => e !== acts).map(textW)); copyBox.h = copyEl.getBoundingClientRect().height; }
     renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
 
   // ---------- one frame, from the scroll variables ----------
   const v = k => parseFloat(stage.style.getPropertyValue(k)) || 0;
   let last = '';
   const draw = () => {
-    let i = v('--i'), a = v('--a'), b = v('--b'), c = v('--c'), p = v('--p'); const mx = v('--mx'), my = v('--my');
-    if (reduce) { i = 1; a = .55; b = 0; c = 0; p = .3; }
+    let i = v('--i'), p = v('--p'); const mx = v('--mx'), my = v('--my');
+    if (reduce) { i = 1; p = .2; }
+    // our own timeline (the stage is taller on this page): the crack moves at the same pace as the turn before it
+    // turn 0-22%, crack 22-70% (same pace as the turn), halves move aside 64-88%, headline 72-90%
+    const a = sm(p / .22), b = cl((p - .22) / .48), c = sm((p - .8) / .12);
+    stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
+    const out = sm((p - .56) / .28);                  // halves clear the way for the headline as it rises
     const sig = [i, a, b, c, p, mx, my, W, H].map(x => x.toFixed(4)).join();
     if (sig === last) return; last = sig;
 
     // fit: keep the whole bean comfortably inside the frame on any screen shape
     const asp = W / H, fitZ = Math.max(7.2, 2.15 / (Math.tan(14 * Math.PI / 180) * Math.min(1, asp)));
-    camera.position.set(0, 0, fitZ * (1.06 - .1 * a + .1 * c)); camera.lookAt(0, 0, 0);
+    camera.position.set(0, 0, fitZ * (1.06 - .1 * a + .1 * out)); camera.lookAt(0, 0, 0);
     const halfW = Math.tan(14 * Math.PI / 180) * camera.position.z * asp;
 
     // the bean arrives, turns to show its crease, trembles, then cracks open
     bean.scale.setScalar(.72 + .28 * easeOut(i));
     bean.position.y = (1 - easeOut(i)) * -.35;
-    const t1 = cl(b / .14), shake = Math.sin(b * 260) * .03 * Math.sin(Math.PI * t1);
+    const t1 = cl(b / .16), shake = Math.sin(b * 150) * .03 * Math.sin(Math.PI * t1);
     bean.rotation.set(.32 - .18 * a + my * .25 + shake, -.75 + 1.0 * a + mx * .45 - .2 * b, .5 - .38 * a + shake * .6);
-    const o = easeOut((b - .1) / .55);
-    const out = easeOut((p - .44) / .26);                  // halves clear the way for the headline as it rises
-    const halfH = Math.tan(14 * Math.PI / 180) * camera.position.z, tall = asp < .85;
-    // wide screens: halves move out to either side of the headline; tall screens (phones): to opposite corners
-    const tx = tall ? halfW * .64 : Math.max(.5, halfW * .74), ty = tall ? halfH * .64 : 0;
+    const o = sm((b - .14) / .7);                          // the halves open steadily, not in a snap
+    const halfH = Math.tan(14 * Math.PI / 180) * camera.position.z;
+    // keep the halves clear of the headline block: beside it when there is room, else in opposite corners
+    const tw = (copyBox.w / W) * halfW, th = (copyBox.h / H) * halfH, halfSize = .5;    // half-sizes in scene units
+    const sideX = tw + halfSize + .25, tall = sideX > halfW * .95;
+    const tx = tall ? Math.min(halfW * .72, Math.max(halfW * .55, halfW - halfSize * .6)) : Math.min(halfW * .85, Math.max(sideX, halfW * .62));
+    const ty = tall ? Math.min(halfH * .8, th + halfSize * .9) : 0;
     const spread = o * .5 + out * (tx - .5);
     L.position.set(-spread, -o * .12 + out * ty, o * .15); R.position.set(spread, o * .08 - out * ty, o * .15);
     L.rotation.set(o * .1, -o * .78, o * .3); R.rotation.set(-o * .08, o * .72, -o * .26);   // show the glossy shell and the broken inside together
     const shrink = 1 - (tall ? .42 : .14) * out; L.scale.setScalar(shrink); R.scale.setScalar(shrink);
 
     // shards and dust fly out and fall, then fade
-    const s = cl((b - .08) / .9), fade = 1 - sm((s - .55) / .45);
+    const s = cl((b - .12) / .88), fade = 1 - sm((s - .6) / .4);
     shards.forEach(m => { const u = m.userData; m.visible = s > 0 && fade > .01;
       m.position.set(u.o.x + u.v.x * s * 1.3, u.o.y + u.v.y * s * 1.2 - 2.4 * s * s, u.o.z + u.v.z * s);
       m.rotation.set(u.s.x * s, u.s.y * s, u.s.z * s); m.scale.setScalar(fade); });
@@ -170,7 +181,7 @@
     dg.attributes.position.needsUpdate = true; dust.material.opacity = s > 0 ? .9 * fade : 0;
 
     // the ember: a warm flash from inside the crack
-    const gl = Math.sin(Math.PI * cl((b - .04) / .55)) * (1 - out);
+    const gl = Math.sin(Math.PI * cl((b - .06) / .6)) * (1 - out);
     ember.intensity = gl * 9; ember.position.set(0, 0, .25);
     glow.material.opacity = gl * .55; glow.position.copy(bean.position).setZ(.2);
     shadow.material.opacity = .8 * (1 - o) * easeOut(i);

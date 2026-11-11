@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#f6efe4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f6efe4'/%3E%3Cg transform='rotate(28 50 50)'%3E%3Cpath d='M50%208%20A30%2042%200%200%200%2050%2092%20C60%2070%2040%2030%2050%208%20Z' fill='%232b1a12'/%3E%3Cpath d='M50%208%20A30%2042%200%200%201%2050%2092%20C60%2070%2040%2030%2050%208%20Z' fill='%23c8743a'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..900,0..100,0..1;1,9..144,400..900,0..100,0..1&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/sample2.css?v=f7e49744">
 <style>
 :root{--bg:#f6efe4;--bg2:#efe5d6;--fg:#2b1a12;--mut:#7a6253;--line:#e1d2bd;--acc:#c8743a;--on-acc:#fff8f0;--panel:#fbf7f0;--panel2:#f2e8da;--glass:rgba(255,250,242,.75);--display:"Fraunces",Georgia,serif;--body:"DM Sans",system-ui,sans-serif;--mono:"DM Mono",ui-monospace,monospace;--hw:500;color-scheme:light}
@@ -28,10 +28,15 @@ h1 em,h2 em{font-style:italic}
 .er-steamx path:nth-child(2){animation-delay:-1.8s}
 @keyframes ersteamx{50%{transform:translateY(-6px);stroke-opacity:.2}}
 @media (max-width:720px){.er-bean{width:70vw}}
-/* the real 3D bean (ember-bean.js) replaces the flat one when the device supports WebGL */
+/* the real 3D bean (ember-bean.js) replaces the flat one when the device supports WebGL.
+   Its stage is taller so the crack plays at the same pace as the turn; the headline follows the bean's own timeline */
+.stage.er3d{height:480vh}
+@media (max-width:720px){.stage.er3d{height:380vh}}
+.stage.er3d .copy{opacity:var(--ec,0);transform:translateY(calc((1 - var(--ec,0)) * 36px))}
+.stage.er3d .wordmark{opacity:calc(var(--i,1) - var(--ea,0) * 1.6)}
 .er-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
 .mark.has-3d .er-bean{display:none}
-.mark.has-3d .er-steamx{transform:translateY(calc(-1 * min(24vw,210px) - var(--a) * 40px))}
+.mark.has-3d .er-steamx{transform:translateY(calc(-1 * min(24vw,210px) - var(--ea,0) * 40px));opacity:calc(var(--i) - var(--ea,0) * 1.4)}
 @media (prefers-reduced-motion:reduce){.er-glow,.er-steamx path{animation:none}}
 
 
@@ -60,6 +65,82 @@ h1 em,h2 em{font-style:italic}
 .er-tray .total{display:flex;justify-content:space-between;font-weight:700;padding:6px 4px 0}
 @media (prefers-reduced-motion:reduce){.er-steam i,.er-ice i{animation:none}}
 
+/* ===== after the bean: retro print style (hard offset shadows, inked borders, chunky uppercase links) ===== */
+main{overflow-x:clip}
+:root{--dk:#24150e;--cream:#f6efe4;--ink:2px solid var(--fg)}
+main .sec{border-top:0!important}
+.sec.dk,.foot{background:var(--dk);color:var(--cream);--fg:#f6efe4;--mut:#cdb8a3;--line:rgba(246,239,228,.18);--panel:#2f1c13;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .9 0 0 0 0 .8 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* torn paper edge where dark sections meet the light ones */
+.sec.dk::before,.sec.dk::after{content:"";position:absolute;left:0;right:0;height:clamp(22px,3vw,40px);background:inherit;background-color:var(--dk);pointer-events:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40V27.6L0 27.6L6 28.2L12 29.8L20 27.1L32 29.1L40 28.7L52 29.1L58 31.9L64 30.3L76 26.6L84 24.6L92 23.1L100 21.4L110 18.8L118 15.8L126 15.6L132 16.0L140 15.8L152 17.4L164 17.6L176 17.0L184 18.1L192 15.1L202 15.5L212 15.4L222 14.8L228 13.5L240 15.2L250 17.0L262 20.3L268 22.3L278 21.9L288 22.7L300 19.7L306 21.6L318 18.7L324 15.8L334 16.7L346 15.5L358 18.3L368 16.6L380 18.6L386 19.2L394 20.0L402 19.4L414 17.3L426 15.6L438 17.0L448 19.9L460 22.7L470 25.1L480 27.9L492 31.3L500 29.4L508 30.2L516 29.3L524 29.7L530 28.8L540 29.8L550 30.7L556 29.3L568 30.0L580 30.0L592 30.1L598 32.7L610 28.4L620 27.5L626 24.0L634 23.7L644 21.7L650 21.5L662 18.4L672 21.3L682 20.8L688 22.7L700 22.7L710 21.8L716 23.8L726 22.2L734 21.5L742 22.0L752 18.7L758 20.5L768 21.5L774 21.1L784 21.8L792 22.2L800 23.6L810 24.1L818 24.2L830 22.0L838 18.5L850 16.0L856 16.7L866 13.3L874 13.3L884 12.5L894 14.8L904 12.9L910 13.8L918 14.6L930 15.4L936 14.7L946 15.1L952 14.8L958 14.9L966 13.6L974 14.2L984 14.8L1000 19.2V40Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 40' preserveAspectRatio='none'%3E%3Cpath d='M0 40V27.6L0 27.6L6 28.2L12 29.8L20 27.1L32 29.1L40 28.7L52 29.1L58 31.9L64 30.3L76 26.6L84 24.6L92 23.1L100 21.4L110 18.8L118 15.8L126 15.6L132 16.0L140 15.8L152 17.4L164 17.6L176 17.0L184 18.1L192 15.1L202 15.5L212 15.4L222 14.8L228 13.5L240 15.2L250 17.0L262 20.3L268 22.3L278 21.9L288 22.7L300 19.7L306 21.6L318 18.7L324 15.8L334 16.7L346 15.5L358 18.3L368 16.6L380 18.6L386 19.2L394 20.0L402 19.4L414 17.3L426 15.6L438 17.0L448 19.9L460 22.7L470 25.1L480 27.9L492 31.3L500 29.4L508 30.2L516 29.3L524 29.7L530 28.8L540 29.8L550 30.7L556 29.3L568 30.0L580 30.0L592 30.1L598 32.7L610 28.4L620 27.5L626 24.0L634 23.7L644 21.7L650 21.5L662 18.4L672 21.3L682 20.8L688 22.7L700 22.7L710 21.8L716 23.8L726 22.2L734 21.5L742 22.0L752 18.7L758 20.5L768 21.5L774 21.1L784 21.8L792 22.2L800 23.6L810 24.1L818 24.2L830 22.0L838 18.5L850 16.0L856 16.7L866 13.3L874 13.3L884 12.5L894 14.8L904 12.9L910 13.8L918 14.6L930 15.4L936 14.7L946 15.1L952 14.8L958 14.9L966 13.6L974 14.2L984 14.8L1000 19.2V40Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+.sec.dk::before{bottom:calc(100% - 1px)}
+.sec.dk::after{top:calc(100% - 1px);transform:scale(-1,-1);z-index:1}
+.sec.dk:has(+ .foot)::after,main > .sec.dk:last-child::after{display:none}
+/* headings */
+main h2,.statement{font-family:var(--display);font-weight:700;font-variation-settings:"SOFT" 60;letter-spacing:-.025em;line-height:1.02}
+main h2{font-size:clamp(2.2rem,4.8vw,3.8rem);text-transform:none}
+main h2 em{color:var(--acc)}
+.sec.dk h2 em{color:#e9a06a}
+.statement{font-size:clamp(1.9rem,3.8vw,3.1rem);max-width:22ch;line-height:1.12}
+.sec.dk .statement span{color:#cdb8a3;font-weight:500}
+/* kicker tags become inked pills */
+main .k{justify-self:start;width:max-content;max-width:100%;padding:8px 14px 8px 12px;border:var(--ink);border-radius:99px;color:var(--fg);font-weight:500;background:transparent;border-width:1.5px}
+.sec.dk .k{background:var(--dk)}
+/* buttons: square-ish, inked, with a hard shadow that presses in */
+main .btn,.er-form button{height:54px;padding:0 26px;border:var(--ink);border-color:#24150e;border-radius:12px;background:var(--acc);color:#fff8f0;
+  font:600 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;box-shadow:4px 4px 0 #24150e;transition:transform .15s,box-shadow .15s,background .2s}
+main .btn:hover,.er-form button:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #24150e}
+main .btn:active,.er-form button:active{transform:translate(4px,4px);box-shadow:1px 1px 0 #24150e}
+main .btn.ghost{background:var(--cream);color:#24150e}
+main .btn.sm{height:46px;padding:0 18px;font-size:12px}
+.sec.dk .btn{border-color:var(--cream);box-shadow:4px 4px 0 var(--acc)}
+.sec.dk .btn:hover{box-shadow:5px 5px 0 var(--acc)}
+.sec.dk .btn:active{box-shadow:1px 1px 0 var(--acc)}
+/* links: uppercase, thick underline, arrow that slides */
+.er-link{display:inline-flex;align-items:center;gap:10px;font:500 13px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--fg);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px;transition:color .2s}
+.er-link span{display:inline-block;text-decoration:none;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.er-link:hover{color:var(--acc)}
+.er-link:hover span{transform:translateX(6px)}
+.er-links{display:flex;flex-wrap:wrap;gap:18px 34px;margin-top:clamp(40px,5vw,60px)}
+/* cards with an inked border and offset shadow */
+.feats{gap:clamp(18px,2.4vw,28px)}
+.feat{border:var(--ink);border-radius:16px;padding:26px 24px 28px;background:var(--panel);box-shadow:5px 5px 0 var(--acc)}
+.feat .n{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff8f0;font-weight:500;letter-spacing:0;font-size:14px;border:var(--ink)}
+.feat h3{font:700 1.5rem/1.1 var(--display);font-variation-settings:"SOFT" 100;margin:0}
+.lab .card{border:var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--fg);background:var(--panel)}
+.lab .card.er-stage{box-shadow:6px 6px 0 var(--acc)}
+.seg button{border:1.5px solid var(--fg);box-shadow:none;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:10px 13px;border-radius:10px;transition:transform .15s,box-shadow .15s,background .2s,color .2s}
+.seg button:hover{background:color-mix(in srgb,var(--fg) 7%,transparent)}
+.seg button[aria-pressed=true]{background:var(--acc);color:#fff8f0;border-color:var(--acc)}
+.lab-stats{border:var(--ink);gap:2px;background:var(--fg)}
+.lab-stats b{font-weight:800}
+.er-tray .row-ui{border:1.5px dashed color-mix(in srgb,var(--fg) 45%,transparent);background:transparent;font-family:var(--mono);font-size:.82rem}
+/* pricing: three separate tickets */
+.tiers{border:0;gap:clamp(18px,2.4vw,30px)}
+.tier,.tier + .tier{border:2px solid var(--cream)!important;border-radius:18px;background:var(--panel);box-shadow:6px 6px 0 var(--acc)}
+.tier.best{background:var(--acc);box-shadow:6px 6px 0 var(--cream);position:relative}
+.tier.best .k,.tier.best li,.tier.best li::before,.tier.best .price small{color:#fff8f0}
+.tier.best .btn{background:var(--dk);border-color:var(--dk);box-shadow:5px 5px 0 var(--cream)}
+.tier .price{font-weight:800;font-variation-settings:"SOFT" 100}
+.tier .k{padding:6px 10px 6px 9px;border-color:var(--cream);box-shadow:none;background:transparent}
+.tier.best .k{border-color:#fff8f0}
+.er-stamp{position:absolute;top:-16px;right:18px;padding:7px 12px;border-radius:8px;background:var(--cream);color:var(--dk);font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;border:2px solid var(--dk)}
+/* review: a framed card */
+.er-quote{position:relative;max-width:820px;padding:clamp(28px,4vw,50px);border:var(--ink);border-radius:20px;background:var(--panel);box-shadow:6px 6px 0 var(--acc)}
+.er-quote .quote{font-weight:600;font-variation-settings:"SOFT" 100}
+/* sign-up */
+.cta h2{font-size:clamp(2.4rem,6vw,4.8rem)}
+.er-form input{height:54px;min-width:min(320px,80vw);padding:0 18px;border-radius:12px;border:2px solid var(--cream);font:500 15px var(--mono);color:var(--dk);background:var(--cream);box-shadow:4px 4px 0 var(--acc);outline:0}
+.er-form input:focus-visible{box-shadow:5px 5px 0 var(--acc),0 0 0 4px rgba(200,116,58,.45)}
+.er-form button{border-color:var(--cream);box-shadow:4px 4px 0 var(--acc)}
+/* footer */
+.foot{color:#cdb8a3;border-top:0;padding-block:56px 100px}
+.foot .brand{color:var(--cream)}
+.foot nav a{color:var(--cream);font:500 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.foot nav a:hover{color:#e9a06a}
+@media (max-width:720px){@media (prefers-reduced-motion:reduce){main .btn,.seg button,.er-link span{transition:none}}
+
 </style>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
@@ -72,7 +153,7 @@ h1 em,h2 em{font-style:italic}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a><a class="btn sm" href="#pricing">Order ahead</a></nav>
 
 <main>
-<section class="stage" aria-label="Ember Roast">
+<section class="stage" aria-label="Ember Roast" data-hold=".93">
   <div class="pin">
     <div class="mark" aria-hidden="true">
       <div class="er-glow"></div>
@@ -90,9 +171,10 @@ h1 em,h2 em{font-style:italic}
   </div>
 </section>
 
-<section class="sec" id="about"><div class="wrap">
+<section class="sec dk" id="about"><div class="wrap">
   <p class="statement rv">We roast on Tuesday and pour all week, <span>so the coffee in your cup is never more than a few days from the roaster.</span></p>
   <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat"><span class="n">01</span><h3>Three farms, by name</h3><p>We buy directly from three growers we visit every harvest, and roast each lot to bring out what makes it different.</p></div><div class="feat"><span class="n">02</span><h3>Dialled in daily</h3><p>Every morning before the doors open, so your usual tastes the same every single day.</p></div><div class="feat"><span class="n">03</span><h3>Order ahead</h3><p>Your drink is on the counter with your name on it when you arrive. Every tenth one is on us.</p></div></div>
+  <div class="er-links rv"><a class="er-link" href="#build">Build your drink <span>→</span></a><a class="er-link" href="#pricing">Get beans delivered <span>→</span></a></div>
 </div></section>
 
 <section class="sec" id="build"><div class="wrap">
@@ -122,21 +204,22 @@ h1 em,h2 em{font-style:italic}
 </div></section>
 
 
-<section class="sec" id="pricing"><div class="wrap">
+<section class="sec dk" id="pricing"><div class="wrap">
   <div class="head rv"><span class="k">Pricing</span><h2>Fresh beans, <em>at your door.</em></h2></div>
-  <div class="tiers" data-stagger><div class="tier"><span class="k">Every two weeks</span><div class="price">$18<small> /bag</small></div><ul><li>One 250 g bag</li><li>Roaster’s choice</li><li>Free local delivery</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div><div class="tier best"><span class="k">Weekly</span><div class="price">$16<small> /bag</small></div><ul><li>One 250 g bag a week</li><li>Tasting notes card</li><li>10% off in the shop</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div><div class="tier"><span class="k">Office</span><div class="price">$70<small> /week</small></div><ul><li>2 kg of whole bean</li><li>Brew guide for your machine</li><li>Quarterly cupping</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div></div>
-  <p class="fine" style="margin-top:16px">Prices on this sample site are illustrative.</p>
+  <div class="tiers" data-stagger><div class="tier"><span class="k">Every two weeks</span><div class="price">$18<small> /bag</small></div><ul><li>One 250 g bag</li><li>Roaster’s choice</li><li>Free local delivery</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div><div class="tier best"><span class="er-stamp">Best value</span><span class="k">Weekly</span><div class="price">$16<small> /bag</small></div><ul><li>One 250 g bag a week</li><li>Tasting notes card</li><li>10% off in the shop</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div><div class="tier"><span class="k">Office</span><div class="price">$70<small> /week</small></div><ul><li>2 kg of whole bean</li><li>Brew guide for your machine</li><li>Quarterly cupping</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div></div>
+  <p class="fine" style="margin-top:28px">Prices on this sample site are illustrative.</p>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <p class="quote rv">“Order ahead is a lifesaver. My oat latte is on the counter when I walk in, every single morning.”</p>
-  <div class="who rv"><b>Hannah Cole</b> · Weekday regular</div>
+  <div class="er-quote rv"><p class="quote">Order ahead is a lifesaver. My oat latte is on the counter when I walk in, every single morning.</p>
+  <div class="who"><b>Hannah Cole</b> · Weekday regular</div></div>
   <p class="fine" style="margin-top:14px">Sample review written for this concept.</p>
 </div></section>
 
-<section class="sec"><div class="wrap cta">
+<section class="sec dk"><div class="wrap cta">
   <h2 class="rv">Your usual is <em>waiting.</em></h2>
-  <form class="rv" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><input type="email" required placeholder="you@example.com" aria-label="Email" style="height:50px;min-width:min(300px,80vw);padding:0 20px;border-radius:99px;border:0;font:inherit;font-size:16px;color:var(--fg);background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)"><button class="btn" type="submit">Get the Tuesday letter</button></form>
+  <form class="rv er-form" style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center"><input type="email" required placeholder="you@example.com" aria-label="Email"><button class="btn" type="submit">Get the Tuesday letter</button></form>
+  <a class="er-link rv" href="#build">Or build your drink now <span>→</span></a>
 </div></section>
 </main>
 
@@ -144,9 +227,9 @@ h1 em,h2 em{font-style:italic}
   <nav><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a></nav><span>© 2026 Ember Roast (fictional)</span></div></footer>
 <div class="badge">A one-page Starter site ($284) by Kulman Ziman <a href="/#proof">← Back</a></div>
 
-<script src="/assets/sample2.js?v=2d1112d3" defer></script>
+<script src="/assets/sample2.js?v=b0b0e502" defer></script>
 <script src="/assets/three.min.js?v=eb854986" defer></script>
-<script src="/assets/ember-bean.js?v=d77e96ec" defer></script>
+<script src="/assets/ember-bean.js?v=c21ca39a" defer></script>
 
 <script>
 // Ember Roast sample: drink builder (nothing is ordered or sent)
