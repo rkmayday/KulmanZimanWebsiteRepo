@@ -124,7 +124,7 @@ THEMES = {
     "mono": {
         "out": "dist-mono", "preview": "preview-mono", "preview_title": "Kulman Ziman Mono",
         # leftovers from the earlier designs (royal / noir) and retired experiments: not shipped with the white site
-        "prune": ["site.css", "motion.js", "world.js", "world-noir.js", "theme-noir.css", "three.min.js", "kz-logo.png",
+        "prune": ["site.css", "motion.js", "world.js", "world-noir.js", "theme-noir.css", "kz-logo.png",
                   "sample-3d.js", "sample-kit.css", "sample-kit.js", "og.jpg", "email"],
         "strip_comments": True,
         "replace": {
