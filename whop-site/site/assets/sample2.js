@@ -66,7 +66,7 @@
   const kick = () => { if (!running && onScreen) { running = true; last = 0; requestAnimationFrame(frame); } };
   function frame(now) {
     const dt = last ? now - last : 16.7; last = now;
-    const f = Math.max(1, dt / 16.7), k1 = 1 - Math.pow(.86, f), k2 = 1 - Math.pow(.92, f);
+    const f = Math.max(1, dt / 16.7), k1 = 1 - Math.pow(.62, f), k2 = 1 - Math.pow(.92, f);
     prog += (target - prog) * k1; mx += (tmx - mx) * k2; my += (tmy - my) * k2;
     const i = smooth((now - t0) / INTRO), p = prog;
     set('--i', i.toFixed(4)); set('--p', p.toFixed(4));

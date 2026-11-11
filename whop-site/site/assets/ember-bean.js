@@ -2,14 +2,15 @@
 // Everything is driven by the stage's scroll variables (--i --p --a --b --c --mx --my, set by sample2.js),
 // so it is smooth, exact and fully reversible. Falls back to the flat SVG bean if WebGL is unavailable.
 (() => {
+  const fail = () => { document.documentElement.classList.remove('x3d-wait'); };
   const stage = document.querySelector('.stage'), mark = stage && stage.querySelector('.mark');
-  if (!stage || !mark || !window.THREE) return;
+  if (!stage || !mark || !window.THREE) return fail();
   const T = THREE, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canvas = document.createElement('canvas'); canvas.className = 'er-3d';
   let renderer;
-  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return; }
-  if (!renderer.getContext()) return;
-  mark.classList.add('has-3d'); stage.classList.add('er3d'); mark.prepend(canvas);
+  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return fail(); }
+  if (!renderer.getContext()) return fail();
+  fail(); mark.classList.add('has-3d'); stage.classList.add('er3d'); mark.prepend(canvas);
   renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
   renderer.physicallyCorrectLights = true;
 
@@ -134,7 +135,7 @@
       const textW = el => { const rg = document.createRange(); rg.selectNodeContents(el); return rg.getBoundingClientRect().width; };
       const acts = copyEl.querySelector('.actions'), aw = acts ? (() => { const bs = [...acts.children].map(e => e.getBoundingClientRect()); return Math.max(...bs.map(b => b.right)) - Math.min(...bs.map(b => b.left)); })() : 0;
       copyBox.w = Math.max(aw, ...[...copyEl.children].filter(e => e !== acts).map(textW)); copyBox.h = copyEl.getBoundingClientRect().height; }
-    renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
+    renderer.setPixelRatio(Math.min(1.5, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
 
   // ---------- one frame, from the scroll variables ----------
   const v = k => parseFloat(stage.style.getPropertyValue(k)) || 0;

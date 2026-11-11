@@ -22,6 +22,13 @@
   background-image:linear-gradient(rgba(199,243,107,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(199,243,107,.18) 1px,transparent 1px);background-size:60px 60px;background-position:0 calc(var(--p) * 900px);
   -webkit-mask-image:linear-gradient(transparent,#000 60%);mask-image:linear-gradient(transparent,#000 60%);opacity:calc(var(--a) * (1 - var(--b) * .6))}
 
+/* the real 3D barbell (ironpath-bar.js) replaces the flat path when WebGL is available; one scroll to play */
+.x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mark.has-3d .ip-mark{display:none}
+.stage.x3d{height:280vh}
+@media (max-width:720px){.stage.x3d{height:240vh}}
+.stage.x3d .copy{opacity:var(--ec,0);transform:translateY(calc((1 - var(--ec,0)) * 36px))}
+.stage.x3d .wordmark{opacity:calc(var(--i,1) - var(--ea,0) * 1.6)}
 
 .ip-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 .ip-day{display:grid;gap:6px;align-content:start;padding:12px 8px;border-radius:14px;min-height:118px;background:color-mix(in srgb,var(--fg) 4%,transparent);box-shadow:inset 0 0 0 1px var(--line)}
@@ -36,7 +43,9 @@
 .ip-gridlines line{stroke:var(--line);stroke-dasharray:4 6}
 .ip-axis{display:flex;justify-content:space-between;font:500 11px var(--mono);color:var(--mut);margin-top:-8px}
 
+.x3d-wait .ip-mark{visibility:hidden}
 </style>
+<script>document.documentElement.classList.add('x3d-wait');setTimeout(function(){document.documentElement.classList.remove('x3d-wait')},4000)</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
@@ -48,7 +57,7 @@
 <nav class="drawer" aria-label="Mobile"><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<section class="stage" aria-label="Ironpath">
+<section class="stage" aria-label="Ironpath" data-hold=".93">
   <div class="pin">
     <div class="mark" aria-hidden="true">
       <div class="ip-floor"></div>
@@ -119,8 +128,11 @@
   <nav><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a></nav><span>© 2026 Ironpath (fictional)</span></div></footer>
 <div class="badge">A one-page Starter site ($284) by Kulman Ziman <a href="/#proof">← Back</a></div>
 
-<script src="/assets/sample2.js?v=b0b0e502" defer></script>
+<script src="/assets/sample2.js?v=c57a56e6" defer></script>
 <script src="/assets/smooth.js?v=490e0b9a" defer></script>
+<script src="/assets/three.min.js?v=eb854986" defer></script>
+<script src="/assets/sample3d.js?v=7ac9052c" defer></script>
+<script src="/assets/ironpath-bar.js?v=442aa735" defer></script>
 
 <script>
 // Ironpath sample: live plan builder (pure sample logic; nothing is saved or sent)
