@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0a0b0a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0b0a'/%3E%3Cpath d='M18 78 L42 50 L58 64 L82 28' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='82' cy='28' r='8' fill='%23c7f36b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ASSETS}}sample2.css">
 <style>
 :root{--bg:#0a0b0a;--bg2:#0f110f;--fg:#eef3ef;--mut:#8a978f;--line:#222823;--acc:#c7f36b;--on-acc:#0a0b0a;--panel:#111411;--panel2:#171b17;--glass:rgba(17,20,17,.7);--display:"Archivo",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--hw:600;color-scheme:dark}
@@ -29,6 +29,57 @@
 @media (max-width:720px){.stage.x3d{height:240vh}}
 .stage.x3d .copy{opacity:var(--ec,0);transform:translateY(calc((1 - var(--ec,0)) * 36px))}
 .stage.x3d .wordmark{opacity:calc(var(--i,1) - var(--ea,0) * 1.6)}
+
+/* ===== athletic sportswear style: fast italic type, slanted shapes, speed stripes ===== */
+:root{--sport:italic 900 1em/1 var(--display)}
+.copy h1,main h2,.statement,.quote,.feat h3,.tier .price,.lab-stats b{font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase;letter-spacing:-.01em}
+.copy h1{font-size:clamp(2.5rem,5.6vw,4.9rem);line-height:.95;max-width:13ch;margin-inline:auto}
+.copy .lede{margin-top:6px}
+main h2{font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:.95}
+.k,.lab-label{font-family:var(--display);font-style:italic;font-weight:800;font-stretch:90%;letter-spacing:.26em;color:var(--acc)}
+.k::before{width:18px;height:3px;border-radius:0;transform:skewX(-20deg)}
+/* buttons: a slanted shape behind straight text */
+.btn{position:relative;isolation:isolate;background:transparent!important;color:#0a0b0a;border-radius:0;font-family:var(--display);font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:14px;padding:0 30px}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--acc);transform:skewX(-14deg);transition:background .2s,transform .25s cubic-bezier(.2,.8,.2,1)}
+.btn:hover::before{transform:skewX(-14deg) scaleX(1.04)}
+.btn.ghost{color:var(--fg);box-shadow:none!important}
+.btn.ghost::before{background:transparent;border:2px solid var(--fg)}
+.btn.ghost:hover::before{background:color-mix(in srgb,var(--fg) 10%,transparent)}
+.btn.sm{font-size:12px;padding:0 20px}
+/* speed stripes on the far right of the opening, clear of the headline */
+.pin::after{content:"";position:absolute;top:0;bottom:0;right:-6vw;width:16vw;pointer-events:none;opacity:calc(var(--ec,0) * .9);
+  background:linear-gradient(112deg,transparent 0 34%,var(--acc) 34% 36%,transparent 36% 44%,var(--acc) 44% 64%,transparent 64%)}
+@media (max-width:1100px){.pin::after{display:none}}
+/* the method section: a lime band with slanted edges */
+#about{background:var(--acc);color:#0a0b0a;clip-path:polygon(0 5%,100% 0,100% 95%,0 100%);padding-block:clamp(120px,14vw,190px);--fg:#0a0b0a;--mut:#2e3a16;--line:rgba(10,11,10,.25)}
+#about .statement{font-size:clamp(1.9rem,4vw,3.4rem);line-height:1;max-width:22ch}
+#about .statement span{color:#2e3a16}
+#about .feat{border-top:3px solid #0a0b0a}
+#about .feat .n{color:#0a0b0a;font:italic 900 15px var(--display);letter-spacing:.2em}
+#about .feat .n::after{content:" —"}
+#about .feat h3{font-size:clamp(1.7rem,2.6vw,2.3rem);line-height:1;margin:4px 0}
+#about .feat p{color:#1f2810}
+main .sec + .sec{border-top:0}
+/* builder: squared, slanted controls */
+.card{border-radius:4px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.seg button{border-radius:0;transform:skewX(-10deg);font-style:italic;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.seg button[aria-pressed=true]{background:var(--acc);color:#0a0b0a}
+.lab-stats{border-radius:0}
+.lab-stats b{font-size:1.9rem;color:var(--acc)}
+.ip-day{border-radius:2px}
+/* pricing: tickets with a cut corner */
+.tiers{border:0;gap:18px}
+.tier,.tier + .tier{border:0;background:var(--panel);clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,0 100%);border-left:0}
+.tier.best{background:var(--acc);color:#0a0b0a;--fg:#0a0b0a;--mut:#2e3a16}
+.tier.best .k,.tier.best li::before{color:#0a0b0a}
+.tier.best .btn{color:var(--acc)}.tier.best .btn::before{background:#0a0b0a}
+.tier .price{font-size:clamp(2.8rem,4.4vw,3.6rem)}
+.tier li::before{content:"/ ";color:var(--acc);font-weight:900}
+/* review and sign-up */
+.quote{font-size:clamp(1.8rem,3.6vw,3rem);line-height:1.02;max-width:24ch}
+.cta h2{font-size:clamp(2.8rem,7vw,6rem);max-width:none}
+.cta input{border-radius:0!important;transform:skewX(-10deg)}
+.foot nav a{font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
 
 .ip-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 .ip-day{display:grid;gap:6px;align-content:start;padding:12px 8px;border-radius:14px;min-height:118px;background:color-mix(in srgb,var(--fg) 4%,transparent);box-shadow:inset 0 0 0 1px var(--line)}
