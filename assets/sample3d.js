@@ -3,14 +3,15 @@
 // scroll position, pointer or size changes. Everything is driven by the stage's scroll variables (set by sample2.js),
 // so it is smooth, exact and reversible. If WebGL is unavailable the page keeps its flat SVG version.
 window.S3D = (build, opt = {}) => {
+  const fail = () => { document.documentElement.classList.remove('x3d-wait'); };
   const stage = document.querySelector('.stage'), mark = stage && stage.querySelector('.mark');
-  if (!stage || !mark || !window.THREE) return;
+  if (!stage || !mark || !window.THREE) return fail();
   const T = THREE, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canvas = document.createElement('canvas'); canvas.className = 'x-3d';
   let renderer;
-  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return; }
-  if (!renderer.getContext()) return;
-  mark.classList.add('has-3d'); stage.classList.add('x3d'); mark.prepend(canvas);
+  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return fail(); }
+  if (!renderer.getContext()) return fail();
+  fail(); mark.classList.add('has-3d'); stage.classList.add('x3d'); mark.prepend(canvas);
   renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = opt.exposure || 1.05;
   renderer.physicallyCorrectLights = true;
 
@@ -48,7 +49,7 @@ window.S3D = (build, opt = {}) => {
       const textW = el => { const rg = document.createRange(); rg.selectNodeContents(el); return rg.getBoundingClientRect().width; };
       const acts = copyEl.querySelector('.actions'), aw = acts ? (() => { const bs = [...acts.children].map(e => e.getBoundingClientRect()); return Math.max(...bs.map(b => b.right)) - Math.min(...bs.map(b => b.left)); })() : 0;
       copy.w = Math.max(aw, ...[...copyEl.children].filter(e => e !== acts).map(textW)); copy.h = copyEl.getBoundingClientRect().height; }
-    renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
+    renderer.setPixelRatio(Math.min(1.5, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
 
   const ctx = { T, scene, camera, renderer, stage, cl, sm, easeOut, mix, noise, fbm, rnd, C, canvasTex, soft, reduce };
   const draw = build(ctx);
