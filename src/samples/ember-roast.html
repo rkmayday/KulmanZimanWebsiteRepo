@@ -141,9 +141,9 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 .foot nav a:hover{color:#e9a06a}
 @media (max-width:720px){@media (prefers-reduced-motion:reduce){main .btn,.seg button,.er-link span{transition:none}}
 
-.x3d-wait .er-bean{visibility:hidden}
+.x3d-wait .er-bean,.x3d-wait .er-steamx{visibility:hidden}
 </style>
-<script>document.documentElement.classList.add('x3d-wait');setTimeout(function(){document.documentElement.classList.remove('x3d-wait')},4000)</script>
+<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
@@ -155,7 +155,7 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a><a class="btn sm" href="#pricing">Order ahead</a></nav>
 
 <main>
-<section class="stage" aria-label="Ember Roast" data-hold=".86" data-stop=".83">
+<section class="stage" aria-label="Ember Roast" data-hold=".86" data-stop=".81">
   <div class="pin">
     <div class="mark" aria-hidden="true">
       <div class="er-glow"></div>

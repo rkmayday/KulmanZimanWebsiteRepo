@@ -64,7 +64,7 @@
   const crackX = (y, z) => crease(y) + .04 * noise(y * 7, z * 7, 1.3) + .022 * noise(y * 17, z * 17, 4.1) + .009 * noise(y * 45, z * 45, 8.7);
   const ROAST_D = C('#160904'), ROAST_L = C('#46230f'), CHAFF = C('#a27748'), INNER_D = C('#5a3218'), INNER_L = C('#a8733f');
   const beanHalf = side => {                                // side -1 = left half, +1 = right half
-    const g = new T.SphereGeometry(1, 200, 150), P = g.attributes.position, n = P.count, col = new Float32Array(n * 3), inner = new Uint8Array(n);
+    const g = new T.SphereGeometry(1, 150, 112), P = g.attributes.position, n = P.count, col = new Float32Array(n * 3), inner = new Uint8Array(n);
     const c = new T.Color();
     for (let i = 0; i < n; i++) {
       const x = P.getX(i), y = P.getY(i), z = P.getZ(i);
@@ -135,16 +135,18 @@
       const textW = el => { const rg = document.createRange(); rg.selectNodeContents(el); return rg.getBoundingClientRect().width; };
       const acts = copyEl.querySelector('.actions'), aw = acts ? (() => { const bs = [...acts.children].map(e => e.getBoundingClientRect()); return Math.max(...bs.map(b => b.right)) - Math.min(...bs.map(b => b.left)); })() : 0;
       copyBox.w = Math.max(aw, ...[...copyEl.children].filter(e => e !== acts).map(textW)); copyBox.h = copyEl.getBoundingClientRect().height; }
-    renderer.setPixelRatio(Math.min(1.5, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
+    renderer.setPixelRatio(Math.min(1.25, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
 
   // ---------- one frame, from the scroll variables ----------
   const v = k => parseFloat(stage.style.getPropertyValue(k)) || 0;
   let last = '';
+  const born = performance.now();
+  outside.transparent = inside.transparent = true;
   const draw = () => {
-    let i = v('--i'), p = v('--p'); const mx = v('--mx'), my = v('--my');
+    let i = Math.min(v('--i'), sm((performance.now() - born) / 900)), p = v('--p'); const mx = v('--mx'), my = v('--my');   // fades in when it is ready, even if it loaded late
     if (reduce) { i = 1; p = .2; }
-    // simple and readable in one scroll: turn 0-25%, crack 20-60%, the halves pop and vanish 55-72%, headline 66-82%
-    const a = sm(p / .25), b = cl((p - .2) / .4), pop = cl((p - .55) / .17), c = sm((p - .66) / .16);
+    // turn 0-18%, a quicker crack 14-44%, then a long, gentle pop-out 40-74%, headline 58-80% (the scroll stops at 81%)
+    const a = sm(p / .18), b = cl((p - .14) / .3), pop = cl((p - .4) / .34), c = sm((p - .58) / .22);
     stage.style.setProperty('--ea', a.toFixed(4)); stage.style.setProperty('--ec', c.toFixed(4));
     const sig = [i, a, b, c, p, mx, my, W, H].map(x => x.toFixed(4)).join();
     if (sig === last) return; last = sig;
@@ -157,21 +159,21 @@
     bean.position.y = (1 - easeOut(i)) * -.35;
     bean.rotation.set(.32 - .18 * a + my * .25, -.75 + 1.0 * a + mx * .45 - .2 * b, .5 - .38 * a);
     const o = sm((b - .1) / .8);
-    const spread = o * .5 + easeOut(pop) * .3;
+    const sp = sm(pop), spread = o * .5 + sp * .55;
     L.position.set(-spread, -o * .12, o * .15); R.position.set(spread, o * .08, o * .15);
-    L.rotation.set(o * .1, -o * .78, o * .3); R.rotation.set(-o * .08, o * .72, -o * .26);
-    // pop: a little swell, then they shrink away to nothing
-    const sc = pop < .3 ? 1 + .1 * sm(pop / .3) : 1.1 * (1 - sm((pop - .3) / .7));
-    L.scale.setScalar(sc); R.scale.setScalar(sc); L.visible = R.visible = sc > .005;
+    L.rotation.set(o * .1 + sp * .3, -o * .78 - sp * .5, o * .3 + sp * .4); R.rotation.set(-o * .08 - sp * .3, o * .72 + sp * .5, -o * .26 - sp * .4);
+    // pop-out: a slight swell, then they drift apart, turn, shrink and fade away together
+    const sc = (1 + .08 * Math.sin(Math.PI * cl(pop / .4))) * (1 - .55 * sp), fadeOut = 1 - sp;
+    L.scale.setScalar(sc); R.scale.setScalar(sc); outside.opacity = inside.opacity = fadeOut; L.visible = R.visible = fadeOut > .01;
 
     // no flying shards: just a soft puff of roast dust as it cracks
     shards.forEach(m => { m.visible = false; });
-    const s = cl((b - .12) / .88), fade = 1 - sm((s - .5) / .5);
+    const s = cl((b - .12) / .88), fade = (1 - sm((s - .5) / .5)) * (1 - sp);
     for (let k = 0; k < DUST; k++) { dpos[k * 3] = dO[k * 3] + dV[k * 3] * s * 1.2; dpos[k * 3 + 1] = dO[k * 3 + 1] + dV[k * 3 + 1] * s - 1.8 * s * s; dpos[k * 3 + 2] = dO[k * 3 + 2] + dV[k * 3 + 2] * s; }
     dg.attributes.position.needsUpdate = true; dust.material.opacity = s > 0 ? .6 * fade : 0;
 
     // the ember: a warm flash from inside the crack
-    const gl = Math.sin(Math.PI * cl((b - .06) / .6)) * (1 - pop);
+    const gl = Math.sin(Math.PI * cl((b - .06) / .6)) * (1 - sp);
     ember.intensity = gl * 9; ember.position.set(0, 0, .25);
     glow.material.opacity = gl * .55; glow.position.copy(bean.position).setZ(.2);
     shadow.material.opacity = .8 * (1 - o) * easeOut(i);
