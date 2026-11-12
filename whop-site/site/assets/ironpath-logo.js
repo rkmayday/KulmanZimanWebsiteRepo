@@ -1,6 +1,6 @@
 // Ironpath sample: the logo in 3D. A polished steel path draws itself upward with the lime ball riding its tip.
-// Scrolling pulls the ball up and away: the path stretches like rubber, thins in the middle and finally snaps;
-// the top half flies off the screen and the bottom half whips back, wobbles and fades as the headline comes in.
+// Scrolling pulls it both ways like rubber (the ball end up, the start down), thinning in the middle until it snaps
+// with a burst of sparks and both halves fly off the screen. This one plays over a few scrolls so it never looks rushed.
 window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   const LIME = '#c7f36b';
   const key = new T.DirectionalLight('#ffffff', 3); key.position.set(-3, 5, 6); scene.add(key);
@@ -35,7 +35,19 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   const base = new Float32Array(N * 3), cen = [];
   for (let k = 0; k <= SEG; k++) cen.push(path.getPointAt(k / SEG));
   for (let v = 0; v < N; v++) { const c = cen[Math.floor(v / RING)]; base[v * 3] = POS.getX(v) - c.x; base[v * 3 + 1] = POS.getY(v) - c.y; base[v * 3 + 2] = POS.getZ(v) - c.z; }
-  const DIR = new T.Vector3(.5, 1, .3).normalize(), SIDE = new T.Vector3(1, -.45, 0).normalize(), TB = .52;
+  // the rubber pulls both ways: the ball end up and to the right, the start down and to the left
+  const UP = new T.Vector3(.45, 1, .2).normalize(), DOWN = new T.Vector3(-.45, -1, -.2).normalize(), TB = .5;
+  // where a point at t (0 = start, 1 = ball) moves and how thick it is, for pull s and snap k
+  const shape = (t, s, k, out) => {
+    const m = (t - TB) * 2, side = m >= 0 ? UP : DOWN, reach = m * m;              // 0 in the middle, 1 at the ends
+    let thick = 1 - .78 * s * Math.exp(-Math.pow((t - TB) / .16, 2));               // thinnest in the middle
+    out.copy(side).multiplyScalar(2.6 * s * reach);
+    if (k > 0) {                                                                    // snapped: each half flies off its own way
+      out.addScaledVector(side, 13 * Math.pow(k, 1.5) * (.35 + Math.abs(m)));
+      thick = mix(thick, 1, easeOut(cl(k * 2))) * sm(Math.abs(t - TB) / .06);       // the torn ends taper to a point
+    }
+    return thick;
+  };
   const disp = new T.Vector3(), tmp = new T.Vector3();
   // after the snap the two halves are drawn as two meshes over the same vertices (no thread left between them)
   const G2 = new T.BufferGeometry(); G2.setIndex(G.index); for (const n in G.attributes) G2.setAttribute(n, G.attributes[n]);
@@ -49,27 +61,13 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   const spG = new T.BufferGeometry(); spG.setAttribute('position', new T.BufferAttribute(spPos, 3)); spG.setAttribute('color', new T.BufferAttribute(spCol, 3));
   const sparks = new T.Points(spG, new T.PointsMaterial({ size: .07, vertexColors: true, map: soft('rgba(255,255,255,1)', 'rgba(255,255,255,0)'), blending: T.AdditiveBlending, transparent: true, depthWrite: false }));
   logo3.add(sparks); const snapAt = new T.Vector3();
-  // where a point at t (0 = start, 1 = ball) sits and how thick it is, for pull s, snap k
-  const shape = (t, s, k, out) => {
-    let pull, thick, gone = 1;
-    if (k <= 0) { pull = s; thick = 1 - .72 * s * Math.pow(Math.sin(Math.PI * Math.min(1, t / .98)), 1.6); }
-    else if (t > TB) {                                             // the top half flies off with the ball
-      pull = s; thick = mix(1 - .72 * s * Math.pow(Math.sin(Math.PI * t), 1.6), 1, easeOut(k * 2)) * sm((t - TB) / .07);
-      out.copy(DIR).multiplyScalar(3.6 * Math.pow(t, 2.2) * pull + 11 * Math.pow(k, 1.4) * (.4 + t)); return thick;
-    } else {                                                       // the bottom half whips back and wobbles
-      const back = 1 - easeOut(cl(k * 1.7)), wob = .5 * Math.exp(-4 * k) * Math.sin(k * 26);
-      pull = s * back + wob * t; thick = mix(1 - .72 * s * Math.pow(Math.sin(Math.PI * t), 1.6), 1, easeOut(k * 2)) * sm((TB - t) / .07);
-    }
-    out.copy(DIR).multiplyScalar(3.6 * Math.pow(t, 2.2) * pull).addScaledVector(SIDE, Math.sin(Math.PI * t) * .55 * pull);
-    return thick * gone;
-  };
 
   return ({ i, p, a, mx, my, halfW }) => {
     const e = easeOut(i);
     // draws itself as the page opens (and the first bit of scrolling can only take it further)
     const d = Math.max(sm(i * 1.05), sm((p - .02) / .2)), u = Math.max(.002, d);
-    const s = sm((p - .04) / .3);                                  // stretch 4-34%
-    const k = cl((p - .34) / .26);                                 // snap 34-60%
+    const s = sm((p - .04) / .46);                                 // a long, slow stretch 4-50%
+    const k = cl((p - .5) / .24);                                  // snap 50-74%
     if (k > 0) { G.setDrawRange(0, IB * RAD * 6); G2.setDrawRange((IB + 1) * RAD * 6, (SEG - IB - 1) * RAD * 6); }
     else { G.setDrawRange(0, Math.floor(u * SEG) * RAD * 6); G2.setDrawRange(0, 0); }
     for (let r = 0; r <= SEG; r++) {
@@ -83,6 +81,7 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
     const q = cl(k / .55); sparks.visible = k > 0 && q < 1;
     for (let n = 0; n < SP; n++) { const v = spV[n]; spPos[n * 3] = snapAt.x + v[0] * q; spPos[n * 3 + 1] = snapAt.y + v[1] * q - 1.6 * q * q; spPos[n * 3 + 2] = snapAt.z + v[2] * q; }
     spG.attributes.position.needsUpdate = true; sparks.material.opacity = 1 - q; sparks.material.size = .17 * (1 - .5 * q);
+    shape(0, s, k, tmp); capA.position.copy(P[0]).add(tmp);           // the round start cap moves with the rubber
     // the ball rides the tip while drawing, then the end of the stretched rubber
     const tipT = d < 1 ? u : 1; shape(tipT, s, k, tmp);
     const tip = path.getPointAt(tipT).add(tmp); ball.position.copy(tip); capB.position.copy(tip); capB.visible = d < 1;
@@ -90,10 +89,10 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
     const arrive = sm((d - .9) / .1);
     glow.position.copy(tip); glow.material.opacity = (.35 + .5 * Math.sin(Math.PI * arrive) + .4 * s) * e * (1 - k);
     ball.material.emissiveIntensity = .35 + .9 * Math.sin(Math.PI * arrive) + .8 * s;
-    const S0 = Math.min(1, halfW * .8 / 1.75) * (.8 + .2 * e), fade = sm((p - .44) / .12);
-    logo3.position.set(0, -.15 - s * .35, 0);
+    const S0 = Math.min(1, halfW * .8 / 1.75) * (.8 + .2 * e), fade = sm((p - .66) / .1);
+    logo3.position.set(0, -.15, 0);
     logo3.scale.setScalar(S0);
     logo3.rotation.set(0, 0, 0);                                  // flat and face-on, exactly like the 2D logo
     steel.opacity = ball.material.opacity = 1 - fade; logo3.visible = fade < .99;
   };
-}, { z: 9, exposure: 1.1, copy: [.56, .22], env: { low: '#060706', high: '#d9e2dc' } });
+}, { z: 9, exposure: 1.1, copy: [.68, .2], env: { low: '#060706', high: '#d9e2dc' } });
