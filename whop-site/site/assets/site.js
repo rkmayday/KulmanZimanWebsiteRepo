@@ -1,4 +1,4 @@
-// Kulman Ziman — small, dependency-free enhancements. The site works without this file.
+// Ziman Sites — small, dependency-free enhancements. The site works without this file.
 /* Open Gmail's compose window with everything filled in (falls back to a normal link if pop-ups are blocked) */
 window.kzGmail = (to, subject = '', body = '') => {
   const url = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + (subject ? '&su=' + encodeURIComponent(subject) : '') + (body ? '&body=' + encodeURIComponent(body) : '');

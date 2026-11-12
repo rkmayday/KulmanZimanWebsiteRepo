@@ -1,4 +1,4 @@
-// Kulman Ziman — interactive / moving pieces. Everything degrades gracefully and
+// Ziman Sites — interactive / moving pieces. Everything degrades gracefully and
 // respects prefers-reduced-motion. No dependencies.
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
@@ -246,7 +246,7 @@
     });
     $('#play-send').addEventListener('click', () => {
       const f = new FormData(form);
-      const body = `Hi Kulman Ziman,\n\nI sketched this on your site:\n\nBusiness: ${f.get('name')}\nHeadline: ${f.get('headline')}\nIndustry: ${f.get('ind')}\nAccent colour: ${form.dataset.custom ? f.get('custom') : f.get('accent')}\nType: ${f.get('font') === 'sans' ? 'Modern' : 'Classic'}\nMode: ${f.get('mode')}\n\nMore about what I need:\n`;
+      const body = `Hi Ziman Sites,\n\nI sketched this on your site:\n\nBusiness: ${f.get('name')}\nHeadline: ${f.get('headline')}\nIndustry: ${f.get('ind')}\nAccent colour: ${form.dataset.custom ? f.get('custom') : f.get('accent')}\nType: ${f.get('font') === 'sans' ? 'Modern' : 'Classic'}\nMode: ${f.get('mode')}\n\nMore about what I need:\n`;
       window.kzGmail('info.kulmanziman@gmail.com', 'Website sketch — ' + f.get('name'), body);
     });
     render(false);

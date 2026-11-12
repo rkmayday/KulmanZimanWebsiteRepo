@@ -1,4 +1,4 @@
-/* Kulman Ziman sample-site kit (v2). Each sample sets the tokens below in :root and writes only content.
+/* Ziman Sites sample-site kit (v2). Each sample sets the tokens below in :root and writes only content.
    Tokens: --bg --bg2 --panel --panel2 --line --fg --mut --acc --acc2 --on-acc --display --body --mono --glass */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}

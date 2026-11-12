@@ -1,4 +1,4 @@
-// Kulman Ziman — the 3D world behind every page.
+// Ziman Sites — the 3D world behind every page.
 // Home: one gold crown floating over mirror water under a vivid royal sky, with glass bubbles.
 //   - the crown turns toward the cursor, can be dragged to spin (with momentum), and a click crowns it
 //   - bubbles drift away from the cursor and pop when clicked, then rise again

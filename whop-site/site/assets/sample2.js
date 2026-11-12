@@ -1,4 +1,4 @@
-// Kulman Ziman sample sites, v3 engine: always open at the top, the logo stage, menu, reveals, toasts.
+// Ziman Sites sample sites, v3 engine: always open at the top, the logo stage, menu, reveals, toasts.
 // The stage exposes CSS variables that each page's CSS uses to animate its own logo:
 //   --i  intro, 0 -> 1 over the first moment after the page opens
 //   --p  scroll progress through the stage, 0 -> 1
@@ -87,7 +87,7 @@
   }
   read(); prog = target; kick();
 
-  // the top-left logo replays the opening, like the Kulman Ziman logo does on the main site: a frame closes in,
+  // the top-left logo replays the opening, like the Ziman Sites logo does on the main site: a frame closes in,
   // the logo pops up in a badge, and the page opens again from the top with its animation
   const brand = $('.nav .brand');
   brand && brand.addEventListener('click', e => {

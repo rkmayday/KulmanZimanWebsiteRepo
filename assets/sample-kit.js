@@ -1,4 +1,4 @@
-// Kulman Ziman sample-site kit (v2): menu, progress bar, soft reveals, clean heading lines, count-ups,
+// Ziman Sites sample-site kit (v2): menu, progress bar, soft reveals, clean heading lines, count-ups,
 // pinned story, horizontal showcase, gentle tilt and magnetic buttons. Respects reduced motion and touch.
 (() => {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];

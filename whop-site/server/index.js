@@ -6,7 +6,7 @@
 //
 // Clean addresses ask for the exact .html file FIRST: the host may answer any unknown address with the
 // home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
-const REDIRECTS = { '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath' };
+const REDIRECTS = { '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about' };
 
 export default {
   async fetch(request, env) {

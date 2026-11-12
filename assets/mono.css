@@ -1,4 +1,4 @@
-/* Kulman Ziman — "Mono" theme. White paper, black ink, grey for quiet details.
+/* Ziman Sites — "Mono" theme. White paper, black ink, grey for quiet details.
    A standalone stylesheet (site.css is not loaded). The one big interactive moment is the KZ logo stage on the home page (mono.js). */
 :root{
   --paper:#ffffff; --paper-2:#f6f6f4; --paper-3:#efefec;
@@ -102,7 +102,7 @@ ul,ol{margin:0}
 .kz-scene{position:absolute;inset:0;display:grid;place-items:center;perspective:1500px;pointer-events:none}
 .kz-canvas{position:absolute;inset:0;width:100%;height:100%}
 .kz-logo{width:var(--lw);aspect-ratio:600/335;visibility:hidden}   /* sizes the canvas logo; the drawing is in .kz-canvas */
-.kz-word{position:absolute;left:50%;top:calc(50% + var(--lw) * .32);width:calc(var(--lw) * .537);height:auto;filter:brightness(0);opacity:var(--wo,1);will-change:transform,opacity;
+.kz-word{position:absolute;left:50%;top:calc(50% + var(--lw) * .32);width:calc(var(--lw) * .434);height:auto;filter:brightness(0);opacity:var(--wo,1);will-change:transform,opacity;
   transform:translateX(-50%) scale(var(--ws,1));pointer-events:none}
 .kz-cue{position:absolute;top:calc(50% + var(--lw) * .364 + 18px);left:50%;transform:translateX(-50%);display:grid;justify-items:center;gap:10px;
   font:500 .72rem var(--font-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);opacity:var(--co,1);pointer-events:none}
@@ -120,7 +120,7 @@ ul,ol{margin:0}
 @media (max-width:720px){
   .kz-stage{height:calc(293vh - 9px)}
   .kz-pin{--lw:86vw}
-  .kz-word{top:calc(50% + var(--lw) * .337);width:calc(var(--lw) * .72)}
+  .kz-word{top:calc(50% + var(--lw) * .337);width:calc(var(--lw) * .581)}
   .kz-cue{top:calc(50% + var(--lw) * .4 + 18px)}
   .kz-copy .hero-tags{display:none}
 }
@@ -471,3 +471,4 @@ html.intro #kz-intro{background:transparent!important;animation:none!important}
 
 /* industry tabs without the demo previews (the demos live on the portfolio page) */
 .panel.solo{grid-template-columns:1fr;max-width:760px}
+.founders.solo{grid-template-columns:1fr;max-width:760px}

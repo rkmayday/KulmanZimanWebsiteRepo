@@ -1,4 +1,4 @@
-/* Kulman Ziman sample sites, v3: minimal, editorial, with one big logo moment at the top.
+/* Ziman Sites sample sites, v3: minimal, editorial, with one big logo moment at the top.
    Each page sets tokens in :root: --bg --bg2 --fg --mut --line --acc --on-acc --panel --panel2 --glass --display --body --mono --hw */
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}

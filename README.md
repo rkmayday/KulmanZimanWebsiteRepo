@@ -1,5 +1,5 @@
 # KulmanZimanWebsiteRepo
-This is the codebase for the official KulmanZiman website.
+This is the codebase for the official Ziman Sites website (formerly Kulman Ziman).
 
 A static site with a live 3D scene, with no framework and no npm install. Three.js r128 loads from cdnjs.
 

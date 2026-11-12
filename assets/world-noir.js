@@ -1,4 +1,4 @@
-// Kulman Ziman — "Noir" background.
+// Ziman Sites — "Noir" background.
 // Black page, faint dot grid (CSS), and a neon-lime light ribbon: a bundle of fine filaments that twist like a cable,
 // pinch into a bright knot beside the headline, then flow down the page weaving around the edges of every card.
 //   - pulses travel along the strands, sparkles drift along the ribbon, scrolling speeds up the flow

@@ -1,4 +1,4 @@
-/* Kulman Ziman — "Noir" theme (black, white and lime). Loaded after site.css; changes colour and atmosphere only.
+/* Ziman Sites — "Noir" theme (black, white and lime). Loaded after site.css; changes colour and atmosphere only.
    Ratio: black 60% (page + 3D world) · white 30% (type, white cards, one white section) · lime 10% (accents). */
 :root{
   --navy-950:#050505; --navy-900:#0b0b0b; --navy-800:#141414; --royal:#1a1a1a; --royal-hi:#2a2a2a; --royal-glow:#c6ff3d; --royal-vivid:#c6ff3d;

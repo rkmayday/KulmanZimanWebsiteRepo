@@ -90,9 +90,9 @@ NAV = [("home", "/", "Home"), ("products", "/products", "Pricing"), ("about", "/
        ("portfolio", "/portfolio", "Portfolio"), ("affiliates", "/affiliates", "Affiliates"), ("help", "/help", "Help"), ("legal", "/legal", "Legal")]
 
 ORG = {
-    "@context": "https://schema.org", "@type": "Organization", "name": "Kulman Ziman", "url": SITE,
+    "@context": "https://schema.org", "@type": "Organization", "name": "Ziman Sites", "url": SITE,
     "logo": f"{SITE}/logo-512.png", "email": EMAIL, "foundingDate": "2026-08-24",
-    "founder": [{"@type": "Person", "name": "Rex Kulman"}, {"@type": "Person", "name": "Ryder Ziman"}],
+    "founder": [{"@type": "Person", "name": "Ryder Ziman"}],
 }
 ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' "
         "fill='%23071648'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23d4af37' text-anchor='middle'%3EKZ%3C/text%3E%3C/svg%3E")
@@ -105,13 +105,13 @@ ICON_FILES = ('<link rel="icon" href="/favicon.ico" sizes="48x48">\n'
               '<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n'
               '<link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">\n'
               '<link rel="apple-touch-icon" href="/apple-touch-icon.png">')
-# Mono tab icon: the real KZ logo shape on a transparent background, black (white when the browser is in dark mode)
+# Mono tab icon: the real ZS logo shape on a transparent background, black (white when the browser is in dark mode)
 ICON_MONO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3Epath%7Bfill:%230a0a0a%7D@media (prefers-color-scheme:dark)%7Bpath%7Bfill:%23ffffff%7D%7D%3C/style%3E%3Cpath transform='translate(1 14.69) scale(0.1033)' d='M0.00,0.00 L76.00,0.00 L76.00,137.42 L191.48,0.00 L283.45,0.00 L148.67,158.72 L303.05,333.19 L467.61,67.03 L325.06,66.99 L324.97,0.02 L488.00,0.00 L600.65,0.03 L434.59,268.00 L590.03,268.00 L589.94,335.00 L200.04,335.00 L76.00,192.20 L76.00,335.00 L0.00,335.00 Z'/%3E%3C/svg%3E"
-MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
+MONO_STAGE = """<section class="kz-stage" aria-label="Ziman Sites">
   <div class="kz-pin">
     <div class="kz-grid" aria-hidden="true"></div>
     <div class="kz-scene" aria-hidden="true"><div class="kz-logo"></div></div>
-    <img class="kz-word" src="/assets/wordmark.png" alt="" width="1013" height="82" aria-hidden="true">
+    <img class="kz-word" src="/assets/wordmark.png" alt="" width="818" height="82" aria-hidden="true">
     <div class="kz-copy"></div>
     <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </div>
@@ -122,7 +122,7 @@ MONO_STAGE = """<section class="kz-stage" aria-label="Kulman Ziman">
 THEMES = {
     "royal": {"out": "dist", "preview": "preview", "replace": {}},
     "mono": {
-        "out": "dist-mono", "preview": "preview-mono", "preview_title": "Kulman Ziman Mono",
+        "out": "dist-mono", "preview": "preview-mono", "preview_title": "Ziman Sites Mono",
         # leftovers from the earlier designs (royal / noir) and retired experiments: not shipped with the white site
         "prune": ["site.css", "motion.js", "world.js", "world-noir.js", "theme-noir.css", "kz-logo.png",
                   "sample-3d.js", "sample-kit.css", "sample-kit.js", "og.jpg", "email"],
@@ -140,7 +140,7 @@ THEMES = {
     },
 
     "noir": {
-        "out": "dist-noir", "preview": "preview-noir", "preview_title": "Kulman Ziman Noir",
+        "out": "dist-noir", "preview": "preview-noir", "preview_title": "Ziman Sites Noir",
         "replace": {
             '<meta name="theme-color" content="#030820">': '<meta name="theme-color" content="#050505">',
             ICON: ICON_NOIR,
@@ -169,14 +169,14 @@ def head_tags(meta):
 <meta name="google-site-verification" content="5wKKFu7Au6tRw0wMbycFva9GoaTk3sH9IX6nqa0HNWA">
 <meta name="google-site-verification" content="yGr2c2aswouMfP4rX4NCS5or-65btTR6U0RR6o_cVeE">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Kulman Ziman">
+<meta property="og:site_name" content="Ziman Sites">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{meta['description']}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{SITE}/og-kz.jpg">
 <meta property="og:image:width" content="2400">
 <meta property="og:image:height" content="1260">
-<meta property="og:image:alt" content="Kulman Ziman: custom websites, built to order.">
+<meta property="og:image:alt" content="Ziman Sites: custom websites, built to order.">
 <meta name="twitter:image" content="{SITE}/og-kz.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{ICON}">
@@ -230,7 +230,7 @@ def nav(active):
         for key, href, label in NAV)
     return f"""<header class="nav">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Kulman Ziman home"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
+    <a class="brand" href="/" aria-label="Ziman Sites home"><img src="/assets/wordmark.png" alt="Ziman Sites" width="818" height="82"></a>
     <nav aria-label="Main"><ul class="nav-links">{links}<li class="nav-get"><a class="btn" href="{CHECKOUT}">Get started</a></li></ul></nav>
     <div class="nav-cta">
       <a class="btn ghost" href="/#start">Send a brief</a>
@@ -246,15 +246,15 @@ FOOTER = f"""<footer>
   <div class="wrap">
     <div class="grid">
       <div class="reveal">
-        <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Kulman Ziman" width="1024" height="76"></a>
+        <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Ziman Sites" width="818" height="82"></a>
         <p>Custom websites, built to order.</p>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
       <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/portfolio">Portfolio</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li><li><a href="/legal">Legal</a></li></ul></div>
-      <div class="reveal"><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
+      <div class="reveal"><h4>Founder</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li></ul></div>
       <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Starter Website (1 page)</a></li><li><a href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Professional Website (2–3 pages)</a></li><li><a href="https://whop.com/checkout/plan_kayas42uF3j2w/">Premium Website (4–7 pages)</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
-    <div class="base-row"><span>© <span data-year>2026</span> Kulman Ziman. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
+    <div class="base-row"><span>© <span data-year>2026</span> Ziman Sites. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>
 </footer>
 <script src="{THREE}"></script>
@@ -332,7 +332,7 @@ def build(preview=False, theme="royal"):
         inner = nav(meta.get("nav", "")) + body + package_modal() + FOOTER
         if preview and page.stem == "index":
             # the preview host adds the document skeleton around its main page; it gets a short name
-            html = head_tags(dict(meta, title=th.get("preview_title", "Kulman Ziman Preview"))) + BODY_START + inner
+            html = head_tags(dict(meta, title=th.get("preview_title", "Ziman Sites Preview"))) + BODY_START + inner
         else:
             html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
                     '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -365,7 +365,7 @@ def build(preview=False, theme="royal"):
         (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
         (out_dir / "vercel.json").write_text('{"cleanUrls": true, "trailingSlash": false}\n')
         # Netlify / Cloudflare Pages: serve each page at its clean address, and forward old links
-        rules = ["/fitness-sample /samples/ironpath 301", "/ironpath-app /samples/ironpath 301"]
+        rules = ["/fitness-sample /samples/ironpath 301", "/ironpath-app /samples/ironpath 301", "/rexkulman /about 301"]
         rules += [f"/{p.stem}/ /{p.stem} 301" for p in pages if p.stem != "index"]
         rules += [f"/{p.stem} /{p.stem}.html 200" for p in pages if p.stem != "index"]
         rules += [f"/samples/{sp.stem} /samples/{sp.stem}.html 200" for sp in sorted((SRC / "samples").glob("*.html"))]
