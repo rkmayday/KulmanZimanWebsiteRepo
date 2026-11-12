@@ -111,7 +111,7 @@ MONO_STAGE = """<section class="kz-stage" aria-label="Ziman Sites">
   <div class="kz-pin">
     <div class="kz-grid" aria-hidden="true"></div>
     <div class="kz-scene" aria-hidden="true"><div class="kz-logo"></div></div>
-    <img class="kz-word" src="/assets/wordmark.png" alt="" width="818" height="82" aria-hidden="true">
+    <img class="kz-word" src="/assets/wordmark.png" alt="" width="795" height="82" aria-hidden="true">
     <div class="kz-copy"></div>
     <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </div>
@@ -230,7 +230,7 @@ def nav(active):
         for key, href, label in NAV)
     return f"""<header class="nav">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Ziman Sites home"><img src="/assets/wordmark.png" alt="Ziman Sites" width="818" height="82"></a>
+    <a class="brand" href="/" aria-label="Ziman Sites home"><img src="/assets/wordmark.png" alt="Ziman Sites" width="795" height="82"></a>
     <nav aria-label="Main"><ul class="nav-links">{links}<li class="nav-get"><a class="btn" href="{CHECKOUT}">Get started</a></li></ul></nav>
     <div class="nav-cta">
       <a class="btn ghost" href="/#start">Send a brief</a>
@@ -246,7 +246,7 @@ FOOTER = f"""<footer>
   <div class="wrap">
     <div class="grid">
       <div class="reveal">
-        <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Ziman Sites" width="818" height="82"></a>
+        <a class="brand" href="/"><img src="/assets/wordmark.png" alt="Ziman Sites" width="795" height="82"></a>
         <p>Custom websites, built to order.</p>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
