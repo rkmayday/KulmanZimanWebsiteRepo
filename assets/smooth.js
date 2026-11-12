@@ -7,35 +7,27 @@
     // Phones and tablets keep native scrolling, but a flick still stops right after the opening animation:
     // the page snaps to the top or to the finished headline, and everything below the headline scrolls freely.
     const stage = document.querySelector('[data-stop-y]') || document.querySelector('.stage,.kz-stage'); if (!stage) return;
-    // Snapping is only switched on while the page is inside the opening, so a flick lands on the top or on the
-    // finished headline. Below the headline it is off, so normal scrolling stays completely native (no nudges).
+    // Only the browser's own snapping is used (no scripted scrolling). It is switched on only inside the opening,
+    // so below the headline the phone scrolls completely normally.
     const root = document.documentElement, mk = css => { const d = document.createElement('div'); d.setAttribute('aria-hidden', 'true');
-      d.style.cssText = 'position:absolute;left:0;width:1px;pointer-events:none;' + css; document.body.append(d); return d; };
-    const top = mk('top:0;height:1px;scroll-snap-align:start'), stop = mk('height:1px;scroll-snap-align:start;scroll-snap-stop:always');
-    let S = 0, on = false, touching = false, lastY = scrollY, idle = 0, liftY = -1;
+      d.style.cssText = 'position:absolute;left:0;width:1px;height:1px;pointer-events:none;scroll-snap-stop:always;' + css; document.body.append(d); return d; };
+    const top = mk('top:0;scroll-snap-align:start'), stop = mk('top:0;scroll-snap-align:start');
+    let S = 0, on = false, touching = false, idle = 0, fy = 0;
     const snap = v => { if (v !== on) { on = v; root.style.scrollSnapType = v ? 'y mandatory' : 'none'; } };
     const fresh = () => { const s = +stage.dataset.stopY; if (s && s !== S) { S = s; stop.style.top = s + 'px'; } };   // the page keeps it up to date
-    const place = () => { if (stage.__refreshStop) stage.__refreshStop(); fresh(); if (!touching) settle(); };
-    const settle = () => { fresh(); if (S) snap(scrollY < S - 4); };     // resting inside the opening: snap; below it: free
-    let startY = 0;
-    const glide = y => { root.style.overflow = 'hidden';                 // cut the flick's own momentum, then glide there
-      requestAnimationFrame(() => { root.style.overflow = ''; scrollTo({ top: y, behavior: 'smooth' }); }); };
-    addEventListener('touchstart', () => { touching = true; liftY = -1; startY = scrollY; fresh(); if (S && scrollY >= S - 4) snap(false); }, { passive: true });
-    const lift = () => { touching = false; liftY = scrollY;
-      // one swipe inside the opening plays it: down glides to the finished headline, up goes back to the top
-      if (S && on && startY < S - 4) { const d = scrollY - startY; if (d > 12) glide(S); else if (d < -12) glide(0); } };
+    const both = () => { top.style.scrollSnapAlign = stop.style.scrollSnapAlign = 'start'; };
+    const settle = () => { fresh(); both(); if (S) snap(scrollY < S - 4); };   // inside the opening: snap; below it: off
+    const place = () => { if (stage.__refreshStop) stage.__refreshStop(); if (!touching) settle(); };
+    addEventListener('touchstart', e => { touching = true; fy = e.touches[0] ? e.touches[0].clientY : 0; clearTimeout(idle); settle(); }, { passive: true });
+    // one swipe inside the opening: a swipe down can only land on the finished headline, a swipe up only on the top
+    addEventListener('touchmove', e => { if (!S || !e.touches[0]) return; const d = fy - e.touches[0].clientY;
+      if (!on) { if (scrollY < S - 4) snap(true); else return; }      // dragged up from below into the opening
+      if (d > 10) { top.style.scrollSnapAlign = 'none'; stop.style.scrollSnapAlign = 'start'; }
+      else if (d < -10) { stop.style.scrollSnapAlign = 'none'; top.style.scrollSnapAlign = 'start'; } }, { passive: true });
+    const lift = () => { touching = false; clearTimeout(idle); idle = setTimeout(settle, 700); };
     addEventListener('touchend', lift, { passive: true }); addEventListener('touchcancel', lift, { passive: true });
-    addEventListener('scroll', () => {
-      const y = scrollY; fresh();
-      // a flick back up from below the headline (demos) glides to a stop at the headline instead of rewinding the opening
-      // (only the flick's own momentum is caught: dragging up past it with a finger still works)
-      // (as it nears the headline the flick's momentum is cut, so the page glides the last bit and stops on it)
-      const v = lastY - y;
-      if (S && stage.dataset.stopUp && !touching && liftY >= S - 2 && v > 0 && y < S + Math.max(30, v * 5)) {
-        liftY = -1; snap(true); glide(S);
-      }
-      lastY = y; clearTimeout(idle); idle = setTimeout(() => { if (!touching) settle(); }, 160);
-    }, { passive: true });
+    addEventListener('scroll', () => { if (touching) return; clearTimeout(idle); idle = setTimeout(settle, 250); }, { passive: true });
+    addEventListener('pageshow', place);
     addEventListener('load', place); setTimeout(place, 300); setTimeout(place, 1500);
     let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; place(); } });
     if (window.ResizeObserver) new ResizeObserver(() => place()).observe(document.body);

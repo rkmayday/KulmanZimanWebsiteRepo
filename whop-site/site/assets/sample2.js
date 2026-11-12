@@ -8,6 +8,8 @@
   // open at the very top, every time (no restored scroll position)
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   if (!location.hash) { scrollTo(0, 0); addEventListener('load', () => scrollTo(0, 0)); }
+  // ...also when the browser brings the page back from its memory (tapping the sample again after going back)
+  addEventListener('pageshow', e => { if (e.persisted && !location.hash) { scrollTo(0, 0); location.reload(); } });
 
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
