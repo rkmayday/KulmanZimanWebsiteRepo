@@ -12,6 +12,9 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
+    // the business is now Ziman Sites: the old kulmanziman.com address forwards every page to zimansites.com
+    if (/(^|\.)kulmanziman\.com$/.test(url.hostname)) return Response.redirect('https://zimansites.com' + path + url.search, 301);
+    if (url.hostname === 'www.zimansites.com') return Response.redirect('https://zimansites.com' + path + url.search, 301);
     if (REDIRECTS[path]) return Response.redirect(new URL(REDIRECTS[path] + url.search, url), 301);
     if (path.length > 1 && path.endsWith('/')) return Response.redirect(new URL(path.slice(0, -1) + url.search, url), 301);
     // Google Search Console ownership check (HTML-file method): answer /google<id>.html with the content Google expects
