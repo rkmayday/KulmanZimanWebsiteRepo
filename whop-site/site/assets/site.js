@@ -153,7 +153,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     btn.disabled = true; btn.textContent = 'Sending…';
     let sent = false;
     try {
-      const r = await fetch('https://formsubmit.co/ajax/info.kulmanziman@gmail.com', {
+      const r = await fetch('https://formsubmit.co/ajax/zimansites@gmail.com', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ name: g('name'), email: g('email'), business: g('business') || '-', industry: g('industry'),
           domain: g('domain') || 'Not sure yet', details: g('details'), _subject: subject, _replyto: g('email'), _template: 'table', _captcha: 'false' })
@@ -167,7 +167,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       [...brief.children].forEach(c => { if (c !== done) c.hidden = true; }); done.hidden = false; toast('Brief sent');
     } else {
       // browsers block pop-ups that don't come straight from a click, so offer one-click links instead of opening Gmail ourselves
-      const to = 'info.kulmanziman@gmail.com', body = [`Name: ${g('name')}`, `Email: ${g('email')}`, `Business: ${g('business')}`, `Industry: ${g('industry')}`,
+      const to = 'zimansites@gmail.com', body = [`Name: ${g('name')}`, `Email: ${g('email')}`, `Business: ${g('business')}`, `Industry: ${g('industry')}`,
         `Domain I'd like: ${g('domain') || 'Not sure yet'}`, '', 'What I need:', g('details')].join('\n');
       const fail = $('.brief-fail', brief);
       $('[data-brief-gmail]', fail).href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
