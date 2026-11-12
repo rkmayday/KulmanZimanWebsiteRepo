@@ -74,11 +74,21 @@
       Z += -groove + lip;
       const b = 1 + .022 * fbm(x * 3.1, y * 3.1, z * 3.1); X *= b; Y *= b; Z *= b;
       const cx = crackX(y, z);
-      if ((side < 0 && X > cx) || (side > 0 && X < cx)) { X = cx; inner[i] = 1; }
+      // inside a real roasted bean: the seed is folded over itself, so a pale, curling fold line runs through it
+      const fz = .1 - .3 * (1 - Math.min(1, Math.abs(y) * 1.1)) + .045 * Math.sin(y * 6), fd = Math.abs(z - fz);
+      const foldShade = Math.exp(-((fd / .05) ** 2));
+      if ((side < 0 && X > cx) || (side > 0 && X < cx)) { X = cx + side * .016 * foldShade + side * .006 * noise(y * 30, z * 30, 3.3); inner[i] = 1; }
       P.setXYZ(i, X, Y, Z);
       if (inner[i]) {                                        // inside: lighter, fibrous
-        const f = .5 + .5 * fbm(y * 22, z * 5, 2.2), sp = .5 + .5 * noise(y * 60, z * 60, 7), rimDist = Math.hypot(x, z);
-        c.copy(INNER_D).lerp(INNER_L, cl((f - .2) * 1.3 + sp * .2)).multiplyScalar(.75 + .25 * cl(1.2 - rimDist));
+        const f = .5 + .5 * fbm(y * 22, z * 5, 2.2), sp = .5 + .5 * noise(y * 60, z * 60, 7);
+        const edge = cl(1 - Math.hypot(y / 1.05, z > 0 ? z / .42 : z / .66));          // 0 at the shell, 1 in the middle
+        c.copy(INNER_D).lerp(INNER_L, cl((f - .2) * 1.3 + sp * .2));
+        c.multiplyScalar(mix(.36, 1, sm(edge / .34)));                                   // the roast darkens it in from the shell
+        c.multiplyScalar(1 - .45 * foldShade);                                          // shadow along the fold
+        const fold = Math.exp(-((fd / .021) ** 2)) * cl(edge * 3);                      // the pale silverskin line in the fold
+        if (fold > 0) c.lerp(CHAFF, fold * .85);
+        if (noise(y * 150, z * 150, 5.5) > .5) c.multiplyScalar(.82);                   // tiny cells
+        if (noise(y * 90, z * 12, 9.1) > .62) c.multiplyScalar(1.12);                    // fibres catching the light
       } else {                                               // outside: mottled roast, pale chaff in the crease
         const m = .5 + .5 * fbm(x * 4, y * 4, z * 4), spec = .5 + .5 * noise(x * 40, y * 40, z * 40);
         c.copy(ROAST_D).lerp(ROAST_L, cl(m * .85 + spec * .15));
@@ -171,8 +181,8 @@
     const sp = sm(pop), spread = o * .5 + sp * .55;
     L.position.set(-spread, -o * .12, o * .15); R.position.set(spread, o * .08, o * .15);
     L.rotation.set(o * .1 + sp * .3, -o * .78 - sp * .5, o * .3 + sp * .4); R.rotation.set(-o * .08 - sp * .3, o * .72 + sp * .5, -o * .26 - sp * .4);
-    // pop-out: a slight swell, then they drift apart, turn, shrink and fade away together
-    const sc = (1 + .08 * Math.sin(Math.PI * cl(pop / .4))) * (1 - .55 * sp), fadeOut = 1 - sp;
+    // pop-out: they drift apart, turn, shrink and fade away together
+    const sc = 1 - .55 * sp, fadeOut = 1 - sp;   // no swell: they just drift apart, shrink and fade
     L.scale.setScalar(sc); R.scale.setScalar(sc); outside.opacity = inside.opacity = fadeOut; L.visible = R.visible = fadeOut > .01;
 
     // no flying shards: just a soft puff of roast dust as it cracks
