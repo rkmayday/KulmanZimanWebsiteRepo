@@ -25,8 +25,8 @@
 /* the 3D logo (ironpath-logo.js) replaces the flat path when WebGL is available; one scroll to play */
 .x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
 .mark.has-3d .ip-mark,.mark.has-3d .ip-glow{display:none}
-.stage.x3d{height:500vh}
-@media (max-width:720px){.stage.x3d{height:400vh}}
+.stage.x3d{height:280vh}
+@media (max-width:720px){.stage.x3d{height:240vh}}
 .stage.x3d .copy{opacity:var(--ec,0);transform:translateY(calc((1 - var(--ec,0)) * 36px))}
 .stage.x3d .wordmark{opacity:calc(var(--i,1) - var(--ea,0) * 1.6)}
 .wordmark{font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase}
@@ -117,7 +117,7 @@ main .sec + .sec{border-top:0}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<section class="stage" aria-label="Ironpath" data-hold=".89" data-stop=".89">
+<section class="stage" aria-label="Ironpath" data-hold=".72" data-stop=".72">
   <div class="pin">
     <div class="mark" aria-hidden="true">
       <div class="ip-floor"></div>
