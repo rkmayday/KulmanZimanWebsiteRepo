@@ -8,12 +8,15 @@
 // home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
 const REDIRECTS = { '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about' };
 
+const FORWARD_OLD_DOMAIN = false;
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
     // the business is now Ziman Sites: the old kulmanziman.com address forwards every page to zimansites.com
-    if (/(^|\.)kulmanziman\.com$/.test(url.hostname)) return Response.redirect('https://zimansites.com' + path + url.search, 301);
+    // (switch FORWARD_OLD_DOMAIN on only once zimansites.com is connected and loading, or the old address would lead nowhere)
+    if (FORWARD_OLD_DOMAIN && /(^|\.)kulmanziman\.com$/.test(url.hostname)) return Response.redirect('https://zimansites.com' + path + url.search, 301);
     if (url.hostname === 'www.zimansites.com') return Response.redirect('https://zimansites.com' + path + url.search, 301);
     if (REDIRECTS[path]) return Response.redirect(new URL(REDIRECTS[path] + url.search, url), 301);
     if (path.length > 1 && path.endsWith('/')) return Response.redirect(new URL(path.slice(0, -1) + url.search, url), 301);
