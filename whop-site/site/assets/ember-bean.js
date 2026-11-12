@@ -183,8 +183,8 @@
 
     // the ember: a warm flash from inside the crack
     const gl = Math.sin(Math.PI * cl((b - .06) / .6)) * (1 - sp);
-    ember.intensity = gl * 9; ember.position.set(0, 0, .25);
-    glow.material.opacity = gl * .55; glow.position.copy(bean.position).setZ(.2);
+    ember.intensity = 0;                                          // no glow from inside the crack
+    glow.material.opacity = 0;
     shadow.material.opacity = .8 * (1 - o) * easeOut(i);
     // falling beans: on wide screens they fill the right side, on phones they drift down the two edges
     const now = performance.now() / 1000, wide = W >= 900, hw = Math.tan(14 * Math.PI / 180) * camera.position.z * W / H, hh = hw * H / W;
