@@ -68,7 +68,11 @@ main .sec + .sec{border-top:2px dashed var(--line)}
 .dd-editor,.dd-preview{border-radius:18px;box-shadow:0 0 0 2px var(--fg),0 8px 0 var(--fg)}
 .quote{font-weight:700;letter-spacing:-.03em}
 .cta input{border-radius:12px!important;box-shadow:inset 0 0 0 2px var(--fg)!important}
+.x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mark.has-3d .dd-mark{display:none}
+.x3d-wait .dd-mark{visibility:hidden}
 </style>
+<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
@@ -141,7 +145,10 @@ main .sec + .sec{border-top:2px dashed var(--line)}
   <nav><a href="#about">The course</a><a href="#play">Try it</a><a href="#pricing">Pricing</a></nav><span>© 2026 Deduction (fictional)</span></div></footer>
 
 <script src="/assets/sample2.js?v=c9590cb9" defer></script>
-<script src="/assets/smooth.js?v=343a2924" defer></script>
+<script src="/assets/smooth.js?v=391e0583" defer></script>
+<script src="/assets/three.min.js?v=eb854986" defer></script>
+<script src="/assets/sample3d.js?v=cfd5ef75" defer></script>
+<script src="/assets/deduction-logo.js?v=d5d8c4ce" defer></script>
 
 <script>
 // Deduction sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.
