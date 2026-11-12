@@ -1,6 +1,5 @@
 // Ironpath sample: the logo in 3D. A polished steel path draws itself upward with the lime ball riding its tip.
-// Scrolling pulls it both ways like rubber (the ball end up, the start down), thinning in the middle until it snaps
-// with a burst of sparks and both halves fly off the screen. This one plays over a few scrolls so it never looks rushed.
+// One scroll: it simply fades away as the headline comes in.
 window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
   const LIME = '#c7f36b';
   const key = new T.DirectionalLight('#ffffff', 3); key.position.set(-3, 5, 6); scene.add(key);
@@ -66,8 +65,8 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
     const e = easeOut(i);
     // draws itself as the page opens (and the first bit of scrolling can only take it further)
     const d = Math.max(sm(i * 1.05), sm((p - .02) / .2)), u = Math.max(.002, d);
-    const s = sm((p - .04) / .46);                                 // a long, slow stretch 4-50%
-    const k = cl((p - .5) / .24);                                  // snap 50-74%
+    const s = 0;                                                   // (no stretch: it simply fades away)
+    const k = 0;
     if (k > 0) { G.setDrawRange(0, IB * RAD * 6); G2.setDrawRange((IB + 1) * RAD * 6, (SEG - IB - 1) * RAD * 6); }
     else { G.setDrawRange(0, Math.floor(u * SEG) * RAD * 6); G2.setDrawRange(0, 0); }
     for (let r = 0; r <= SEG; r++) {
@@ -89,10 +88,10 @@ window.S3D && S3D(({ T, scene, cl, sm, easeOut, mix, C, soft }) => {
     const arrive = sm((d - .9) / .1);
     glow.position.copy(tip); glow.material.opacity = (.35 + .5 * Math.sin(Math.PI * arrive) + .4 * s) * e * (1 - k);
     ball.material.emissiveIntensity = .35 + .9 * Math.sin(Math.PI * arrive) + .8 * s;
-    const S0 = Math.min(1, halfW * .8 / 1.75) * (.8 + .2 * e), fade = sm((p - .66) / .1);
+    const S0 = Math.min(1, halfW * .8 / 1.75) * (.8 + .2 * e) * (1 - .12 * sm((p - .08) / .4)), fade = sm((p - .08) / .4);   // one scroll: a gentle fade 8-48%
     logo3.position.set(0, -.15, 0);
     logo3.scale.setScalar(S0);
     logo3.rotation.set(0, 0, 0);                                  // flat and face-on, exactly like the 2D logo
     steel.opacity = ball.material.opacity = 1 - fade; logo3.visible = fade < .99;
   };
-}, { z: 9, exposure: 1.1, copy: [.68, .2], env: { low: '#060706', high: '#d9e2dc' } });
+}, { z: 9, exposure: 1.1, copy: [.4, .3], env: { low: '#060706', high: '#d9e2dc' } });
