@@ -68,7 +68,11 @@ main .sec + .sec{border-top:2px dashed var(--line)}
 .dd-editor,.dd-preview{border-radius:18px;box-shadow:0 0 0 2px var(--fg),0 8px 0 var(--fg)}
 .quote{font-weight:700;letter-spacing:-.03em}
 .cta input{border-radius:12px!important;box-shadow:inset 0 0 0 2px var(--fg)!important}
+.x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mark.has-3d .dd-mark{display:none}
+.x3d-wait .dd-mark{visibility:hidden}
 </style>
+<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
@@ -142,6 +146,9 @@ main .sec + .sec{border-top:2px dashed var(--line)}
 
 <script src="{{ASSETS}}sample2.js" defer></script>
 <script src="{{ASSETS}}smooth.js" defer></script>
+<script src="{{THREE}}" defer></script>
+<script src="{{ASSETS}}sample3d.js" defer></script>
+<script src="{{ASSETS}}deduction-logo.js" defer></script>
 
 <script>
 // Deduction sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.

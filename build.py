@@ -302,12 +302,12 @@ def relativize(html):
 
 
 def bust(html):
-    """Add ?v=<content hash> to /assets/*.css and *.js links, so browsers never mix an old cached file with a new page."""
+    """Add ?v=<content hash> to /assets/ css, js and image links, so browsers never show an old cached file with a new page."""
     import hashlib
     def fix(m):
         f = ROOT / m.group(1).lstrip("/")
         return m.group(0) if not f.exists() else f'{m.group(1)}?v={hashlib.md5(f.read_bytes()).hexdigest()[:8]}"'
-    return re.sub(r'(/assets/[\w./-]+\.(?:css|js))"', fix, html)
+    return re.sub(r'(/assets/[\w./-]+\.(?:css|js|jpg|jpeg|png|webp|svg))"', fix, html)
 
 
 def build(preview=False, theme="royal"):

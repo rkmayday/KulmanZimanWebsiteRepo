@@ -58,7 +58,11 @@
 .x3d-wait .sy-mark{visibility:hidden}
 
 /* ===== blueprint style: deep-blue graph paper, a drafting serif, cyan linework and dashed callouts ===== */
-body{background-color:var(--bg);background-image:linear-gradient(rgba(94,240,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(94,240,255,.11) 1px,transparent 1px),linear-gradient(rgba(94,240,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(94,240,255,.045) 1px,transparent 1px);background-size:100px 100px,100px 100px,20px 20px,20px 20px;background-attachment:fixed}
+body{background:var(--bg)}
+.stage{background-color:var(--bg);background-image:linear-gradient(rgba(94,240,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(94,240,255,.11) 1px,transparent 1px),linear-gradient(rgba(94,240,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(94,240,255,.045) 1px,transparent 1px);background-size:100px 100px,100px 100px,20px 20px,20px 20px}
+main .sec{position:relative;z-index:2;background:var(--bg)}
+#agent{background:#0a1f45}
+.foot{background:var(--bg)}
 .mark.has-3d ~ *,.sy-stars{}
 .mark.has-3d .sy-stars{display:none}
 h1,h2,.statement,.quote,.wordmark{font-family:var(--display);font-weight:400;letter-spacing:-.01em}

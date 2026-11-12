@@ -2,7 +2,22 @@
 // Phones and tablets keep their own native momentum scrolling, and it is switched off for "reduce motion".
 (() => {
   const mq = q => matchMedia(q).matches;
-  if (mq('(prefers-reduced-motion: reduce)') || !mq('(hover: hover) and (pointer: fine)')) return;
+  if (mq('(prefers-reduced-motion: reduce)')) return;
+  if (!mq('(hover: hover) and (pointer: fine)')) {
+    // Phones and tablets keep native scrolling, but a flick still stops right after the opening animation:
+    // the page snaps to the top or to the finished headline, and everything below the headline scrolls freely.
+    const stage = document.querySelector('[data-stop-y]') || document.querySelector('.stage,.kz-stage'); if (!stage) return;
+    const root = document.documentElement, top = document.createElement('div'), after = document.createElement('div');
+    top.style.cssText = 'position:absolute;left:0;top:0;width:1px;height:1px;pointer-events:none;scroll-snap-align:start';
+    after.style.cssText = 'position:absolute;left:0;width:1px;pointer-events:none;scroll-snap-align:start;scroll-snap-stop:always';
+    top.setAttribute('aria-hidden', 'true'); after.setAttribute('aria-hidden', 'true');
+    document.body.append(top, after);
+    const place = () => { if (stage.__refreshStop) stage.__refreshStop(); const s = +stage.dataset.stopY; if (!s) return;
+      const h = Math.max(1, root.scrollHeight - s - 2); after.style.top = s + 'px'; after.style.height = h + 'px'; root.style.scrollSnapType = 'y mandatory'; };
+    addEventListener('load', place); addEventListener('resize', place); setTimeout(place, 300); setTimeout(place, 1500);
+    if (window.ResizeObserver) new ResizeObserver(() => place()).observe(document.body);
+    return;
+  }
 
   const EASE = .075;   // how quickly the page catches up each frame (lower = smoother, longer glide)
   const SPEED = .85;   // distance per wheel step compared with the browser's normal amount (lower = slower)
