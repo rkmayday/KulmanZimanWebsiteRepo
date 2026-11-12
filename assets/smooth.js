@@ -10,7 +10,8 @@
   let target = scrollY, cur = scrollY, raf = 0, last = 0, held = false, heldUntil = 0, lastAbs = 0, lastWheel = 0;
 
   const max = () => root.scrollHeight - innerHeight;
-  const go = y => scrollTo({ top: y, behavior: 'instant' });
+  let lastSet = scrollY;
+  const go = y => { lastSet = y; scrollTo({ top: y, behavior: 'instant' }); };
 
   function frame(t) {
     const dt = last ? Math.min(50, t - last) : 16.7; last = t;
@@ -42,7 +43,7 @@
     // ...but only briefly: any new swipe (a pause, a stronger push, or after 6 seconds) scrolls on as normal
     // (trackpad momentum only ever slows down, so a clearly stronger push is a new swipe; small jitters are not)
     // a mouse-wheel click moves in fixed steps (100 or 120); trackpad momentum is a smooth run of uneven values
-    const notch = e.deltaMode !== 0 || (abs >= 100 && (abs % 100 === 0 || (e.wheelDeltaY && Math.abs(e.wheelDeltaY) % 120 === 0)));
+    const notch = e.deltaMode !== 0 || (Number.isInteger(e.deltaY) && abs >= 100 && (abs % 100 === 0 || abs % 120 === 0));
     if (held) { const fresh = gap > 320 || (abs > lastAbs * 2 + 12 && abs > 24) || (notch && gap > 100) || now > heldUntil; lastAbs = Math.min(lastAbs || abs, abs); if (!fresh) return; held = false; }
     lastAbs = abs;
     if (!raf) { cur = target = scrollY; }
@@ -59,7 +60,22 @@
     if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });
 
-  // Keyboard, scrollbar dragging and link jumps scroll natively: keep up with them
-  addEventListener('scroll', () => { if (!raf) cur = target = scrollY; }, { passive: true });
+  // Keyboard, scrollbar dragging and other jumps: if something else moved the page, stop gliding and follow it
+  addEventListener('scroll', () => {
+    if (raf && Math.abs(scrollY - lastSet) > 60) { cancelAnimationFrame(raf); raf = 0; last = 0; held = false; }
+    if (!raf) cur = target = scrollY;
+  }, { passive: true });
+  // in-page menu links glide to their section (just below the menu bar) in one click
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.getAttribute('href').length < 2) return;
+    const el = document.getElementById(a.getAttribute('href').slice(1)); if (!el) return;
+    e.preventDefault();
+    const nav = document.querySelector('.nav'), off = nav ? nav.getBoundingClientRect().height : 0;
+    if (raf) cancelAnimationFrame(raf);
+    cur = scrollY; held = false; target = Math.max(0, Math.min(max(), el.getBoundingClientRect().top + scrollY - off));
+    raf = requestAnimationFrame(frame);
+    if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+  });
   addEventListener('resize', () => { target = Math.min(target, max()); });
 })();
