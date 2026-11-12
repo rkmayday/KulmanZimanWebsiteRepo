@@ -92,7 +92,8 @@
   size(); draw();
   let lastW = innerWidth, lastH = innerHeight;
   addEventListener('resize', () => {
-    if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 120) return;   // ignore the phone address bar
+    const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (innerWidth === lastW && (fine ? innerHeight === lastH : Math.abs(innerHeight - lastH) < 120)) return;   // ignore the phone address bar
     lastW = innerWidth; lastH = innerHeight; size(); draw(); pinT = pinTop();
   });
 
@@ -111,8 +112,8 @@
   const EXTRA = .36, SPLIT = .36 / .87;          // SPLIT: where the K and Z start to separate, on the timeline
   const readScroll = () => {
     const r = stage.getBoundingClientRect(), t = pinT, y = t - r.top;
-    const Rt = Math.max(1, r.height - (innerHeight - t));          // whole pinned scroll
-    const Ra = Math.max(1, Rt - innerHeight * EXTRA);               // pace of the turn (unchanged)
+    const Rt = Math.max(1, r.height - (lastH - t));          // whole pinned scroll
+    const Ra = Math.max(1, Rt - lastH * EXTRA);               // pace of the turn (unchanged)
     const y0 = SPLIT * Ra, Ls = Math.max(1, Rt - y0);               // eased part: from the split to the end
     // end pace as a share of the start pace, chosen so the timeline ends exactly at the end of the stage
     const sEnd = clamp(2 * (1 - SPLIT) * Ra / Ls - 1, .15, 1);

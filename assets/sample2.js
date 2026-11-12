@@ -47,9 +47,9 @@
   // where one scroll gesture stops (smooth.js): right after the opening animation, with the headline fully in.
   // Pages set data-stop to the point on their timeline where that happens.
   const STOP = Math.min(HOLD, parseFloat(stage.dataset.stop) || .76);
-  let lastMb = null;
+  let lastMb = null, VH = innerHeight;   // screen height, kept steady while a phone's address bar slides in and out
   const read = () => {
-    const r = stage.getBoundingClientRect(), range = Math.max(1, r.height - (innerHeight - nh));
+    const r = stage.getBoundingClientRect(), range = Math.max(1, r.height - (VH - nh));
     target = clamp((nh - r.top) / range);
     // after the reveal, the scene speeds up gradually into normal scrolling (no jolt at the hand-off)
     const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
@@ -64,7 +64,7 @@
   addEventListener('scroll', read, { passive: true });
   stage.__refreshStop = read;                                   // smooth.js asks for a fresh stop point before every wheel step
   if (window.ResizeObserver) new ResizeObserver(read).observe(stage);   // e.g. the 3D version makes the stage taller after it loads
-  let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; nh = navH(); read(); } });
+  let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw || Math.abs(innerHeight - VH) > (matchMedia('(hover: hover) and (pointer: fine)').matches ? 0 : 160)) { lw = innerWidth; VH = innerHeight; nh = navH(); read(); } });
   addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; tmx = e.clientX / innerWidth - .5; tmy = e.clientY / innerHeight - .5; kick(); }, { passive: true });
   // phones: a gentle tilt follows the device instead of a cursor (only where allowed without a prompt)
   addEventListener('deviceorientation', e => { if (e.gamma == null) return; tmx = clamp(e.gamma / 60, -.5, .5); tmy = clamp((e.beta - 45) / 90, -.5, .5); kick(); }, { passive: true });
