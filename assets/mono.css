@@ -468,3 +468,6 @@ html.intro #kz-intro{background:transparent!important;animation:none!important}
   input[type=range]{height:34px;touch-action:pan-y}
   footer a{display:inline-block;padding-block:7px}
 }
+
+/* industry tabs without the demo previews (the demos live on the portfolio page) */
+.panel.solo{grid-template-columns:1fr;max-width:760px}

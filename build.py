@@ -87,7 +87,7 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&fam
 EXTERNAL = {}
 
 NAV = [("home", "/", "Home"), ("products", "/products", "Pricing"), ("about", "/about", "About"),
-       ("affiliates", "/affiliates", "Affiliates"), ("help", "/help", "Help"), ("legal", "/legal", "Legal")]
+       ("portfolio", "/portfolio", "Portfolio"), ("affiliates", "/affiliates", "Affiliates"), ("help", "/help", "Help"), ("legal", "/legal", "Legal")]
 
 ORG = {
     "@context": "https://schema.org", "@type": "Organization", "name": "Kulman Ziman", "url": SITE,
@@ -250,7 +250,7 @@ FOOTER = f"""<footer>
         <p>Custom websites, built to order.</p>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
-      <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
+      <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/portfolio">Portfolio</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li></ul></div>
       <div class="reveal"><h4>Founders</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li><li><a href="/rexkulman">Rex Kulman</a></li></ul></div>
       <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Starter Website (1 page)</a></li><li><a href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Professional Website (2–3 pages)</a></li><li><a href="https://whop.com/checkout/plan_kayas42uF3j2w/">Premium Website (4–7 pages)</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
@@ -351,7 +351,7 @@ def build(preview=False, theme="royal"):
         print("built", out.relative_to(ROOT))
     # the four sample sites: standalone pages with their own branding
     for sp in sorted((SRC / "samples").glob("*.html")):
-        html = gmail_links(sp.read_text().replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
+        html = gmail_links(sp.read_text().replace("{{HOME}}portfolio", "../portfolio.html" if preview else "/portfolio").replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
         if not preview:
             html = bust(html)
         out = out_dir / "samples" / sp.name
