@@ -157,6 +157,16 @@ THEMES = {
 }
 
 
+
+def keep_title(html_text):
+    """Some hosts (Whop) swap the page <title> for the website's name; put ours back as soon as the page loads."""
+    import html as _h
+    m = re.search(r"<title>(.*?)</title>", html_text, flags=re.S)
+    if not m or "</body>" not in html_text:
+        return html_text
+    t = json.dumps(_h.unescape(m.group(1).strip())).replace("</", "<\\/")
+    return html_text.replace("</body>", f"<script>document.title={t}</script>\n</body>", 1)
+
 def head_tags(meta):
     title = meta["title"]
     canonical = SITE + meta["path"]
@@ -343,6 +353,7 @@ def build(preview=False, theme="royal"):
         if th.get("strip_comments"):
             html = re.sub(r"<!--(?!\[).*?-->\n?", "", html, flags=re.S)
         html = relativize(html) if preview else bust(html)
+        html = keep_title(html)
         # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages, GitHub Pages and Whop all serve
         # products.html at /products with no trailing slash
         out = out_dir / f"{page.stem}.html"
@@ -354,6 +365,7 @@ def build(preview=False, theme="royal"):
         html = gmail_links(sp.read_text().replace("{{HOME}}portfolio", "../portfolio.html" if preview else "/portfolio").replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
         if not preview:
             html = bust(html)
+        html = keep_title(html)
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
