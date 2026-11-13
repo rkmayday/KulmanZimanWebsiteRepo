@@ -19,7 +19,7 @@
   const ripples = [];
 
   // content blocks the field stays out of (page coordinates, unaffected by entrance transforms)
-  const CONTENT = '.nav, .back, .profile-card, .profile-copy > *, .founder, .box, footer, .dock';
+  const CONTENT = '.nav, .back, .profile-card > *, .profile-copy > *, .founder, .box, footer, .dock';
   const docRect = el => { let x = 0, y = 0, e = el; while (e) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { l: x, t: y, r: x + el.offsetWidth, b: y + el.offsetHeight }; };
   const measure = () => {
     dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
