@@ -8,7 +8,7 @@
 // home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
 const REDIRECTS = { '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about' };
 
-const FORWARD_OLD_DOMAIN = false;
+const FORWARD_OLD_DOMAIN = true;
 
 export default {
   async fetch(request, env) {
