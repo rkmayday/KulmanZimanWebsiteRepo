@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About & Contact — Ziman Sites</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Ziman Sites was founded on August 24, 2026 by Ryder Ziman to build custom websites for businesses. Meet the founder and get in touch.">
+<link rel="canonical" href="https://zimansites.com/about">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="google-site-verification" content="5wKKFu7Au6tRw0wMbycFva9GoaTk3sH9IX6nqa0HNWA">
+<meta name="google-site-verification" content="yGr2c2aswouMfP4rX4NCS5or-65btTR6U0RR6o_cVeE">
+<meta name="google-site-verification" content="AXvv-B5vZ8UKeBBvk5hgx2Oev-Htgv4v5SNwI0AFjUc">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ziman Sites">
+<meta property="og:title" content="About & Contact — Ziman Sites">
+<meta property="og:description" content="Ziman Sites was founded on August 24, 2026 by Ryder Ziman to build custom websites for businesses. Meet the founder and get in touch.">
+<meta property="og:url" content="https://zimansites.com/about">
+<meta property="og:image" content="https://zimansites.com/og-kz.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Ziman Sites: custom websites, built to order.">
+<meta name="twitter:image" content="https://zimansites.com/og-kz.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/mono.css">
+<link rel="stylesheet" href="assets/mono-dark.css">
+<script>document.documentElement.classList.add('js')</script>
+<script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
+(function(){var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
+try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
+var from=null;try{from=sessionStorage.getItem('kz-from');sessionStorage.removeItem('kz-from');}catch(e){}
+if(from==='brand')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
+if(location.hash==='#intro')play=true;
+if(play&&!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('intro','intro-hold');
+setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(function(){r.classList.remove('intro');},2400);}})();</script>
+<script>
+/* Arriving from another page of the site: start at the top (links to a spot on the page, back/forward and reload are left alone) */
+(function () {
+  var nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+  if (location.hash || (nav && nav.type !== 'navigate')) return;
+  var fromSite = false;
+  try { fromSite = sessionStorage.getItem('kz-top') === '1'; sessionStorage.removeItem('kz-top'); } catch (e) {}
+  var moved = false, root = document.documentElement;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) { addEventListener(ev, function () { moved = true; }, { once: true, passive: true }); });
+  function top() {
+    if (moved || (window.scrollY === 0 && !fromSite)) return;
+    var b = root.style.scrollBehavior; root.style.scrollBehavior = 'auto'; window.scrollTo(0, 0); root.style.scrollBehavior = b;
+  }
+  top(); addEventListener('DOMContentLoaded', top); addEventListener('load', top); addEventListener('pageshow', top);
+  [60, 200, 500, 1000].forEach(function (ms) { setTimeout(top, ms); });
+  // a viewer that scrolls the whole frame keeps its own position, so bring the top of this page into view there too
+  if (fromSite && window.top !== window) addEventListener('load', function () { if (!moved) try { root.scrollIntoView({ block: 'start' }); } catch (e) {} });
+})();
+</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Ziman Sites", "url": "https://zimansites.com", "logo": "https://zimansites.com/logo-512.png", "email": "zimansites@gmail.com", "foundingDate": "2026-08-24", "founder": [{"@type": "Person", "name": "Ryder Ziman"}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="kz-intro" aria-hidden="true"><div class="ki-frame"></div><div class="ki-fill"></div><div class="ki-badge"><i></i></div></div>
+<canvas id="world" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Ziman Sites home"><img src="assets/wordmark.png" alt="Ziman Sites" width="795" height="82"></a>
+    <nav aria-label="Main"><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="products.html">Pricing</a></li><li><a href="about.html" aria-current=page>About</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="affiliates.html">Affiliates</a></li><li><a href="help.html">Help</a></li><li><a href="legal.html">Legal</a></li><li class="nav-get"><a class="btn" href="get-started.html">Get started</a></li></ul></nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="index.html#start">Send a brief</a>
+      <a class="btn small" href="get-started.html">Get started</a>
+      <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">About us</span>
+    <h1 class="extrude">One founder. <em>One clear process.</em></h1>
+    <p class="lede">Ziman Sites was founded on August 24, 2026 by Ryder Ziman to build custom websites for businesses. Every website follows the same three-step refinement process, so you know what to expect from the first draft to final delivery.</p>
+  </div>
+</section>
+
+<section class="section linen" id="team">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Meet the founder</span>
+      <h2>The person behind <em>Ziman Sites.</em></h2>
+    </div>
+    <div class="founders solo">
+      <article class="founder linked reveal">
+        <div class="portrait" aria-hidden="true">RZ</div>
+        <div>
+          <h3><a class="stretch" href="ryderziman.html">Ryder Ziman</a></h3>
+          <div class="role">Founder · Branding &amp; growth</div>
+          <p>Ryder focuses on branding, marketing and business development. He brings a creative, growth-oriented mindset, with an emphasis on building a strong brand, reaching new audiences and turning ideas into scalable digital ventures.</p>
+          <div class="founder-foot">
+            <a class="mail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ryderziman%40gmail.com" target="_blank" rel="noopener">ryderziman@gmail.com</a>
+            <span class="more" aria-hidden="true">Meet Ryder <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section cta-final" id="contact">
+  <div class="wrap cta-grid">
+    <div class="reveal" style="display:grid;gap:22px;align-content:start">
+      <span class="eyebrow">Contact</span>
+      <h2>Questions or a custom request? <em>Write to us.</em></h2>
+      <p class="lede">Please contact us before you pay, or immediately after, so we can confirm your specifications and domain.</p>
+      <p class="email-big"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=zimansites%40gmail.com" target="_blank" rel="noopener">zimansites@gmail.com</a></p>
+      <div class="btn-row"><button class="btn ghost" type="button" data-copy="zimansites@gmail.com">Copy email</button><a class="btn" href="get-started.html">Packages from $284</a></div>
+    </div>
+    <form class="brief reveal" id="brief">
+      <div class="two">
+        <label>Your name<input name="name" required autocomplete="name"></label>
+        <label>Business name<input name="business" autocomplete="organization"></label>
+      </div>
+      <div class="two">
+        <label>Industry
+          <select name="industry"><option>Fitness &amp; Wellness</option><option>Technology &amp; IT</option><option>Local Services</option><option>Creators &amp; Education</option><option>Something else</option></select>
+        </label>
+        <label>Domain you'd like<input name="domain" placeholder="yourbusiness.com"></label>
+      </div>
+      <label>What do you need?<textarea name="details" rows="4" required></textarea></label>
+      <button class="btn" type="submit">Send my brief</button>
+      <small>Opens Gmail with everything filled in. Nothing is stored on this site.</small>
+      <small class="mail-alt">Not on Gmail? <a href='mailto:zimansites@gmail.com' data-brief-mailto>Use your usual email app</a></small>
+    </form>
+  </div>
+</section>
+</main>
+<dialog class="pkg-modal" id="pkg-modal" aria-labelledby="pm-title">
+  <div class="pm-box">
+    <button class="pm-x" type="button" aria-label="Close" data-pm-close>×</button>
+    <span class="eyebrow">Get started</span>
+    <h2 id="pm-title">Choose your package</h2>
+    <p class="pm-lede">You will go to a secure Whop checkout for the package you pick.</p>
+    <div class="pm-opts">
+      <a class="pm-opt" href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">
+        <span class="pm-name">Starter</span>
+        <span class="pm-price"><sup>$</sup>284</span>
+        <span class="pm-scope">1-page interactive website</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>
+      <a class="pm-opt best" href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">
+        <span class="pm-name">Professional<em>Most popular</em></span>
+        <span class="pm-price"><sup>$</sup>568</span>
+        <span class="pm-scope">2–3-page interactive website</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>
+      <a class="pm-opt" href="https://whop.com/checkout/plan_kayas42uF3j2w/">
+        <span class="pm-name">Premium</span>
+        <span class="pm-price"><sup>$</sup>994</span>
+        <span class="pm-scope">4–7-page interactive website</span>
+        <span class="pm-go" aria-hidden="true">Choose →</span>
+      </a>
+    </div>
+    <p class="pm-fine">One-time payment. Three rounds of refinement, delivered on time or a full refund. Not sure? <a href="index.html#start" data-pm-close>Send a brief first</a>.</p>
+  </div>
+</dialog>
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="reveal">
+        <a class="brand" href="index.html"><img src="assets/wordmark.png" alt="Ziman Sites" width="795" height="82"></a>
+        <p>Custom websites, built to order.</p>
+        <p style="margin-top:14px"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=zimansites%40gmail.com" target="_blank" rel="noopener">zimansites@gmail.com</a></p>
+      </div>
+      <div class="reveal"><h4>Site</h4><ul><li><a href="index.html">Home</a></li><li><a href="products.html">Products &amp; Pricing</a></li><li><a href="about.html">About &amp; Contact</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="affiliates.html">Affiliate Program</a></li><li><a href="help.html">Help</a></li><li><a href="legal.html">Legal</a></li></ul></div>
+      <div class="reveal"><h4>Founder</h4><ul><li><a href="ryderziman.html">Ryder Ziman</a></li></ul></div>
+      <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Starter Website (1 page)</a></li><li><a href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Professional Website (2–3 pages)</a></li><li><a href="https://whop.com/checkout/plan_kayas42uF3j2w/">Premium Website (4–7 pages)</a></li><li><a href="legal.html#refund">Refund policy</a></li><li><a href="legal.html">Legal</a></li></ul></div>
+    </div>
+    <div class="base-row"><span>© <span data-year>2026</span> Ziman Sites. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+<script src="assets/mono.js" defer></script>
+<script src="assets/smooth.js" defer></script>
+<script src="assets/founder-field.js" defer></script>
+<script>document.title="About & Contact \u2014 Ziman Sites"</script>
+</body>
+</html>

@@ -124,7 +124,7 @@ THEMES = {
     "mono": {
         "out": "dist-mono", "preview": "preview-mono", "preview_title": "Ziman Sites Mono",
         # leftovers from the earlier designs (royal / noir) and retired experiments: not shipped with the white site
-        "prune": ["site.css", "motion.js", "world.js", "world-noir.js", "theme-noir.css", "kz-logo.png",
+        "prune": ["mono-dark.css", "site.css", "motion.js", "world.js", "world-noir.js", "theme-noir.css", "kz-logo.png",
                   "sample-3d.js", "sample-kit.css", "sample-kit.js", "og.jpg", "email"],
         "strip_comments": True,
         "replace": {
@@ -136,6 +136,17 @@ THEMES = {
             '<script src="/assets/motion.js" defer></script>': '<script src="/assets/mono.js" defer></script>\n<script src="/assets/smooth.js" defer></script>',
             '<h1 class="extrude">Your business, <em>crowned</em> online.</h1>': '<h1 class="extrude">Websites made to <br><em>level up</em> your business.</h1>',
             '<section class="hero" data-dock="Home" id="top">': MONO_STAGE + '<section class="hero" data-dock="Home" id="top">',
+        },
+    },
+
+    # the same white site, reversed: black paper and white ink (assets/mono-dark.css + a white 3D logo)
+    "monodark": {
+        "out": "dist-monodark", "preview": "preview-monodark", "preview_title": "Ziman Sites Dark",
+        "base": "mono", "keep": ["mono-dark.css"],
+        "replace": {
+            '<meta name="theme-color" content="#ffffff">': '<meta name="theme-color" content="#0a0a0a">',
+            '<link rel="stylesheet" href="/assets/mono.css">': '<link rel="stylesheet" href="/assets/mono.css">\n<link rel="stylesheet" href="/assets/mono-dark.css">',
+            '<html lang="en">': '<html lang="en" class="dark">',
         },
     },
 
@@ -323,6 +334,10 @@ def bust(html):
 
 def build(preview=False, theme="royal"):
     th = THEMES[theme]
+    if "base" in th:   # a variant of another theme: its settings, plus these extra replacements applied after the base's
+        b = THEMES[th["base"]]
+        th = {**b, **{k: v for k, v in th.items() if k != "replace"}, "replace": {**b["replace"], **th["replace"]}}
+        th["prune"] = [n for n in th.get("prune", []) if n not in th.get("keep", [])]
     out_dir = ROOT / (th["preview"] if preview else th["out"])
     if out_dir.exists():
         shutil.rmtree(out_dir)

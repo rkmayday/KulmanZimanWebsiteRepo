@@ -1,0 +1,16 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/fitness-sample",
+      "destination": "/samples/ironpath",
+      "permanent": true
+    },
+    {
+      "source": "/ironpath-app",
+      "destination": "/samples/ironpath",
+      "permanent": true
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deduction — Sample Coding Course Site</title>
+<meta name="description" content="Deduction is a fictional creator who teaches people to code: a sample concept site built by Ziman Sites.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fbfaf6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23fbfaf6'/%3E%3Cg fill='none' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 28 L14 50 L34 72' stroke='%2312142a'/%3E%3Cpath d='M57 22 L43 78' stroke='%23f2b600'/%3E%3Cpath d='M66 28 L86 50 L66 72' stroke='%2312142a'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/sample2.css">
+<style>
+:root{--bg:#fbfaf6;--bg2:#f3f1ea;--fg:#12142a;--mut:#6b6e85;--line:#e4e2d8;--acc:#12142a;--on-acc:#fbfaf6;--panel:#ffffff;--panel2:#f3f1ea;--glass:rgba(255,255,255,.8);--display:"Sora",system-ui,sans-serif;--body:"Sora",system-ui,sans-serif;--mono:"Fira Code",ui-monospace,monospace;--hw:600;color-scheme:light}
+
+h1 em,h2 em{color:var(--fg);background:linear-gradient(transparent 58%,#ffd84d 58%,#ffd84d 92%,transparent 92%)}
+.k::before{background:#f2b600}
+.dd-mark{width:min(72vw,640px);overflow:visible;transform:scale(calc(.9 + var(--i) * .1 + var(--a) * .25))}
+.dd-l,.dd-r,.dd-s{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--i));transform-box:view-box;transform-origin:50px 50px}
+.dd-l{stroke:#12142a;transform:translate(calc(var(--mx) * -6px - var(--a) * 34px - var(--b) * 40px),calc(var(--my) * -4px));stroke-opacity:calc(1 - var(--b) * .85)}
+.dd-r{stroke:#12142a;transform:translate(calc(var(--mx) * 6px + var(--a) * 34px + var(--b) * 40px),calc(var(--my) * 4px));stroke-opacity:calc(1 - var(--b) * .85)}
+.dd-s{stroke:#f2b600;transform:rotate(calc(var(--a) * 76deg + var(--mx) * 10deg)) scale(calc(1 + var(--a) * .4 + var(--b) * .3));stroke-opacity:calc(1 - var(--b) * 1.1)}
+.dd-caret{fill:#12142a;transform-box:view-box;transform:translateX(calc(var(--a) * 40px));opacity:calc(var(--i) - var(--a) * 1.5);animation:ddblink 1s steps(1) infinite}
+@keyframes ddblink{50%{fill:transparent}}
+@media (max-width:720px){.dd-mark{width:84vw}}
+@media (prefers-reduced-motion:reduce){.dd-caret{animation:none}}
+
+
+.dd-lab{display:grid;gap:14px}
+.dd-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
+.dd-task{color:var(--mut);min-height:1.6em}
+.dd-task b{color:var(--acc)}
+.dd-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:14px}
+@media (max-width:900px){.dd-grid{grid-template-columns:1fr}}
+.dd-editor,.dd-preview{border-radius:20px;overflow:hidden;background:#0b0e1c;box-shadow:inset 0 0 0 1px var(--line),0 40px 80px -50px rgba(0,0,0,.8);display:flex;flex-direction:column;min-height:400px}
+.dd-preview{background:#f5f6fb}
+.dd-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;background:#141831;font:500 12px var(--mono);color:#9aa0c2}
+.dd-preview .dd-bar{background:#e4e6f0;color:#5b6080}
+.dd-bar i{width:10px;height:10px;border-radius:50%;background:#ff6b6b}.dd-bar i:nth-child(2){background:#ffcc4d}.dd-bar i:nth-child(3){background:#5bd18b}
+.dd-bar span{margin-left:8px}.dd-bar em{margin-left:auto;font-style:normal;color:#2fa866}
+.dd-code{position:relative;flex:1;min-height:340px}
+.dd-hl,.dd-code textarea{position:absolute;inset:0;margin:0;padding:16px 18px;font:400 13.5px/1.7 var(--mono);white-space:pre;overflow:auto;tab-size:2;border:0}
+.dd-hl{pointer-events:none;color:#c9cdf0}
+.dd-code textarea{background:transparent;color:transparent;caret-color:#ffcc4d;resize:none;outline:0}
+.dd-code textarea::selection{background:rgba(255,204,77,.25);color:transparent}
+.dd-hl .t{color:#82aaff}.dd-hl .a{color:#c792ea}.dd-hl .s{color:#c3e88d}.dd-hl .c{color:#5f6690}.dd-hl .n{color:#f78c6c}.dd-hl .k{color:#c792ea}
+.dd-preview iframe{flex:1;width:100%;border:0;background:#fff;min-height:340px}
+.dd-err{margin:0;padding:10px 14px;font:500 12.5px var(--mono);color:#b3261e;background:#fdecea}
+
+
+/* ===== Deduction's own look: friendly textbook. Yellow highlighter, code-comment labels, outlined cards ===== */
+.k{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--mut)}
+.k::before{content:"//";width:auto;height:auto;border-radius:0;background:none;color:#f2b600;font-weight:600}
+main h2{font-weight:700;letter-spacing:-.04em}
+main h2 em{color:var(--fg);background:linear-gradient(transparent 58%,#ffd84d 58%,#ffd84d 92%,transparent 92%);font-style:normal;padding:0 .08em}
+.statement span{color:var(--mut)}
+main .sec + .sec{border-top:2px dashed var(--line)}
+.btn{border-radius:12px;font-weight:700}
+.btn:not(.ghost){background:var(--fg);color:var(--bg);box-shadow:0 5px 0 #f2b600}
+.btn:not(.ghost):hover{transform:translateY(-2px);box-shadow:0 7px 0 #f2b600}
+.btn.ghost{box-shadow:inset 0 0 0 2px var(--fg)}
+.feat{border:2px solid var(--fg);border-radius:18px;padding:24px 22px 26px;background:#fff;box-shadow:0 6px 0 var(--fg)}
+.feat .n{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#ffd84d;color:var(--fg);font-weight:600;letter-spacing:0}
+.tiers{border:0;gap:18px}
+.tier,.tier + .tier{border:2px solid var(--fg)!important;border-radius:18px;background:#fff;box-shadow:0 6px 0 var(--fg)}
+.tier.best{background:#fff8d6;box-shadow:0 6px 0 #f2b600;border-color:var(--fg)!important}
+.dd-editor,.dd-preview{border-radius:18px;box-shadow:0 0 0 2px var(--fg),0 8px 0 var(--fg)}
+.quote{font-weight:700;letter-spacing:-.03em}
+.cta input{border-radius:12px!important;box-shadow:inset 0 0 0 2px var(--fg)!important}
+.x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mark.has-3d .dd-mark{display:none}
+.x3d-wait .dd-mark{visibility:hidden}
+</style>
+<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
+</head>
+<body id="top">
+<header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="../portfolio.html">← Back to Ziman Sites</a></div><div class="wrap nav-in">
+  <a class="brand" href="#top" aria-label="Deduction home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="currentColor"/><path d="M58 20 L42 80" stroke="#f2b600"/><path d="M66 26 L88 50 L66 74" stroke="currentColor"/></g></svg><span>Deduction</span></a>
+  <nav aria-label="Main"><ul class="links"><li><a href="#about">The course</a></li><li><a href="#play">Try it</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
+  <div class="actions"><a class="btn sm" href="#pricing">Start free</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
+</div></header>
+<nav class="drawer" aria-label="Mobile"><a href="#about">The course</a><a href="#play">Try it</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
+
+<main>
+<section class="stage" aria-label="Deduction" data-hold=".77" data-stop=".77">
+  <div class="pin">
+    <div class="mark" aria-hidden="true">
+      <svg class="dd-mark" viewBox="0 0 100 100"><g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+        <path class="dd-l" pathLength="1" d="M34 26 L12 50 L34 74"/><path class="dd-s" pathLength="1" d="M58 20 L42 80"/><path class="dd-r" pathLength="1" d="M66 26 L88 50 L66 74"/></g>
+        <rect class="dd-caret" x="97" y="40" width="3" height="20" rx="1.5"/></svg>
+    </div>
+    <div class="wordmark" aria-hidden="true">Welcome to <b>Deduction</b></div>
+    <div class="copy">
+      <span class="k">Learn to code, one small win at a time</span>
+      <h1>From hello to <em>shipping</em> your first app.</h1>
+      <p class="lede">Short lessons, a playground next to every video and six real projects. No setup, no jargon, no feeling lost.</p>
+      <div class="actions"><a class="btn" href="#pricing">Start the first module free <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#play">Try the playground</a></div>
+    </div>
+    <div class="cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
+  </div>
+</section>
+
+<section class="sec" id="about"><div class="wrap">
+  <p class="statement rv">Most people quit coding in week two, <span>not because it is hard but because nothing they build works yet. Here, every lesson ends with something that does.</span></p>
+  <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat"><span class="n">01</span><h3>Lessons under 8 minutes</h3><p>Small enough for a lunch break, and each one ends with something working on screen.</p></div><div class="feat"><span class="n">02</span><h3>A playground in every lesson</h3><p>Pause, type, run. Nothing to install and nothing to configure, ever.</p></div><div class="feat"><span class="n">03</span><h3>Six real projects</h3><p>From a landing page to your own portfolio at yourname.dev, each reviewed by a mentor.</p></div></div>
+</div></section>
+
+<section class="sec" id="play"><div class="wrap">
+  <div class="head"><span class="k">Try it now</span><h2>Write code. <em>See it move.</em></h2><p class="lede">This is a real playground. Edit the code on the left and the page on the right updates as you type. Pick a challenge to start.</p></div>
+  <div class="dd-lab">
+    <div class="dd-top"><div class="seg" id="dd-ch"><button type="button" data-c="0" aria-pressed="true">1 · Change the colour</button><button type="button" data-c="1" aria-pressed="false">2 · Make it bounce</button><button type="button" data-c="2" aria-pressed="false">3 · Count the clicks</button></div>
+      <button class="btn ghost sm" type="button" id="dd-reset">Reset</button></div>
+    <p class="dd-task" id="dd-task"></p>
+    <div class="dd-grid">
+      <div class="dd-editor"><div class="dd-bar"><i></i><i></i><i></i><span>index.html</span></div>
+        <div class="dd-code"><pre class="dd-hl" aria-hidden="true"><code id="dd-hl"></code></pre><textarea id="dd-src" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Code editor"></textarea></div></div>
+      <div class="dd-preview"><div class="dd-bar"><i></i><i></i><i></i><span>localhost:5173</span><em id="dd-status">● live</em></div>
+        <iframe id="dd-frame" title="Live preview" sandbox="allow-scripts"></iframe><p class="dd-err" id="dd-err" hidden></p></div>
+    </div>
+  </div>
+</div></section>
+
+
+<section class="sec" id="pricing"><div class="wrap">
+  <div class="head rv"><span class="k">Pricing</span><h2>Pick <em>where you are.</em></h2></div>
+  <div class="tiers" data-stagger><div class="tier"><span class="k">First module</span><div class="price">Free</div><ul><li>12 lessons of HTML</li><li>Playground included</li><li>Your first page online</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div><div class="tier best"><span class="k">Full path</span><div class="price">$19<small> /month</small></div><ul><li>All 84 lessons</li><li>6 mentor-reviewed projects</li><li>Weekly live sessions</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div><div class="tier"><span class="k">Lifetime</span><div class="price">$249<small> once</small></div><ul><li>Everything in Full path</li><li>All future modules</li><li>1:1 portfolio review</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div></div>
+  <p class="fine" style="margin-top:16px">Prices on this sample site are illustrative.</p>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <p class="quote rv">“I tried three courses before. This is the first one where I finished and had something to show.”</p>
+  <div class="who rv"><b>Tom Alvarez</b> · Career changer</div>
+  <p class="fine" style="margin-top:14px">Sample review written for this concept.</p>
+</div></section>
+
+<section class="sec"><div class="wrap cta">
+  <h2 class="rv">Your first line of code is <em>ten minutes away.</em></h2>
+  <form class="rv" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><input type="email" required placeholder="you@example.com" aria-label="Email" style="height:50px;min-width:min(300px,80vw);padding:0 20px;border-radius:99px;border:0;font:inherit;font-size:16px;color:var(--fg);background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)"><button class="btn" type="submit">Send me lesson one</button></form>
+</div></section>
+</main>
+
+<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="currentColor"/><path d="M58 20 L42 80" stroke="#f2b600"/><path d="M66 26 L88 50 L66 74" stroke="currentColor"/></g></svg><span>Deduction</span></a>
+  <nav><a href="#about">The course</a><a href="#play">Try it</a><a href="#pricing">Pricing</a></nav><span>© 2026 Deduction (fictional)</span></div></footer>
+
+<script src="../assets/sample2.js" defer></script>
+<script src="../assets/smooth.js" defer></script>
+<script src="../assets/three.min.js" defer></script>
+<script src="../assets/sample3d.js" defer></script>
+<script src="../assets/deduction-logo.js" defer></script>
+
+<script>
+// Deduction sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.
+(() => {
+  const $ = s => document.querySelector(s);
+  const CH = [
+    { task: 'Change the button colour: find <b>#12142a</b> in the CSS and try <b>#ffcc4d</b> or any colour you like.',
+      code: `<style>
+  body { font-family: system-ui; display: grid; place-items: center; height: 100vh; margin: 0; background: #f5f6fb; }
+  .card { padding: 32px; border-radius: 20px; background: white; box-shadow: 0 20px 40px rgba(0,0,0,.08); text-align: center; }
+  button { background: #12142a; color: white; border: 0; padding: 14px 26px; border-radius: 99px; font-size: 16px; }
+</style>
+
+<div class="card">
+  <h2>My first app</h2>
+  <button>Ship it</button>
+</div>` },
+    { task: 'Make it bounce: change <b>animation: none</b> to <b>animation: bounce 1s infinite</b>.',
+      code: `<style>
+  body { font-family: system-ui; display: grid; place-items: center; height: 100vh; margin: 0; background: #12142a; }
+  .ball { width: 90px; height: 90px; border-radius: 50%; background: #ffcc4d; animation: none; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-120px); }
+  }
+</style>
+
+<div class="ball"></div>` },
+    { task: 'Count the clicks: click the button in the preview, then change <b>count + 1</b> to <b>count + 10</b>.',
+      code: `<style>
+  body { font-family: system-ui; display: grid; place-items: center; height: 100vh; margin: 0; background: #f5f6fb; }
+  button { font-size: 22px; padding: 18px 30px; border-radius: 16px; border: 0; background: #ffcc4d; }
+</style>
+
+<button id="btn">Clicked 0 times</button>
+
+<script>
+  let count = 0;
+  btn.addEventListener('click', () => {
+    count = count + 1;
+    btn.textContent = 'Clicked ' + count + ' times';
+  });
+<\/script>` }
+  ];
+  const src = $('#dd-src'), hl = $('#dd-hl'), frame = $('#dd-frame'), err = $('#dd-err');
+  const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const highlight = code => esc(code)
+    .replace(/('[^'\n]*'|"[^"\n]*")/g, '\u0001$1\u0002')
+    .replace(/(&lt;\/?)([a-z0-9]+)/gi, '$1<span class=t>$2</span>')
+    .replace(/\u0001/g, '<span class=s>').replace(/\u0002/g, '</span>')
+    .replace(/(#[0-9a-f]{3,8})\b/gi, '<span class=n>$1</span>')
+    .replace(/\b(let|const|function|return|if|else)\b/g, '<span class=k>$1</span>')
+    .replace(/(\/\/[^\n]*)/g, '<span class=c>$1</span>');
+  const BRIDGE = '<script>window.onerror=(m,s,l)=>{parent.postMessage({kzErr:String(m)+" (line "+l+")"},"*")}<\/script>';
+  let timer = 0, cur = 0;
+  const run = () => { err.hidden = true; frame.srcdoc = BRIDGE + src.value; $('#dd-status').textContent = '● live'; };
+  const sync = () => { hl.innerHTML = highlight(src.value) + '\n'; hl.parentElement.scrollTop = src.scrollTop; hl.parentElement.scrollLeft = src.scrollLeft; };
+  addEventListener('message', e => { if (e.source === frame.contentWindow && e.data && e.data.kzErr) { err.textContent = 'Oops: ' + e.data.kzErr; err.hidden = false; $('#dd-status').textContent = '● error'; } });
+  src.addEventListener('input', () => { sync(); $('#dd-status').textContent = '● updating'; clearTimeout(timer); timer = setTimeout(run, 280); });
+  src.addEventListener('scroll', sync);
+  src.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const a = src.selectionStart, b = src.selectionEnd; src.setRangeText('  ', a, b, 'end'); src.dispatchEvent(new Event('input')); } });
+  const load = i => { cur = i; src.value = CH[i].code; $('#dd-task').innerHTML = CH[i].task; sync(); run();
+    document.querySelectorAll('#dd-ch button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === i)); };
+  document.querySelectorAll('#dd-ch button').forEach(b => b.addEventListener('click', () => load(+b.dataset.c)));
+  $('#dd-reset').addEventListener('click', () => load(cur));
+  load(0);
+})();
+</script>
+
+<script>document.title="Deduction \u2014 Sample Coding Course Site"</script>
+</body>
+</html>
