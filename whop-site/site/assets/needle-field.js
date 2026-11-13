@@ -5,6 +5,7 @@
 (() => {
   const page = document.querySelector('.founder-page[data-field="needles"]');
   if (!page) return;
+  if (matchMedia('(hover: none) and (pointer: coarse)').matches) return;   // phones and tablets: no interactive background (made for a mouse)
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('founder-field');      // same layering as the founder pages
   const cv = document.createElement('canvas');

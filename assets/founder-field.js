@@ -5,6 +5,7 @@
   const mono = !!document.querySelector('link[href*="mono.css"]');
   if (!document.querySelector('.founder-page') || !(mono || document.querySelector('link[href*="theme-noir"]'))) return;
   if (document.querySelector('.founder-page[data-field]')) return;   // Maxim's page has its own field (needle-field.js)
+  if (matchMedia('(hover: none) and (pointer: coarse)').matches) return;   // phones and tablets: no interactive background (made for a mouse)
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('founder-field');
   const cv = document.createElement('canvas');
