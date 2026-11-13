@@ -484,3 +484,5 @@ a.box.lift:active{transform:translateY(-1px)}
 .box.lift:hover .more svg{transform:translateX(5px)}
 @media (hover:none){.box.lift:hover{transform:none}}
 @media (prefers-reduced-motion:reduce){.box.lift,.box.lift .more svg{transition:none}.box.lift:hover{transform:none}}
+/* narrow screens: the photo stacks above the name, so the label under the photo would repeat the one above the name */
+@media (max-width:860px){.founder-page .profile-tag{display:none}}
