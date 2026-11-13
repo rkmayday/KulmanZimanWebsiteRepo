@@ -473,4 +473,4 @@ html.intro #kz-intro{background:transparent!important;animation:none!important}
 .panel.solo{grid-template-columns:1fr;max-width:760px}
 .founders.solo{grid-template-columns:1fr;max-width:760px}
 .portrait.photo{overflow:hidden;background:var(--paper-3);padding:0}
-.portrait.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.portrait.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
