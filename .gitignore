@@ -11,3 +11,5 @@ preview-mono/
 *.mp4
 *.wav
 KZ-logo-square-*.svg
+dist-monodark/
+preview-monodark/
