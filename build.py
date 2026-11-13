@@ -281,7 +281,7 @@ FOOTER = f"""<footer>
         <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
       <div class="reveal"><h4>Site</h4><ul><li><a href="/">Home</a></li><li><a href="/products">Products &amp; Pricing</a></li><li><a href="/about">About &amp; Contact</a></li><li><a href="/portfolio">Portfolio</a></li><li><a href="/affiliates">Affiliate Program</a></li><li><a href="/help">Help</a></li><li><a href="/legal">Legal</a></li></ul></div>
-      <div class="reveal"><h4>Founder</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li></ul></div>
+      <div class="reveal"><h4>Founder</h4><ul><li><a href="/ryderziman">Ryder Ziman</a></li></ul><h4 style="margin-top:22px">Head of Affiliates</h4><ul><li><a href="/maximzhukovski">Maxim Zhukovski</a></li></ul></div>
       <div class="reveal"><h4>Order</h4><ul><li><a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/">Starter Website (1 page)</a></li><li><a href="https://whop.com/checkout/plan_nhAPjhAm2Hdoo/">Professional Website (2–3 pages)</a></li><li><a href="https://whop.com/checkout/plan_kayas42uF3j2w/">Premium Website (4–7 pages)</a></li><li><a href="/legal#refund">Refund policy</a></li><li><a href="/legal">Legal</a></li></ul></div>
     </div>
     <div class="base-row"><span>© <span data-year>2026</span> Ziman Sites. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
