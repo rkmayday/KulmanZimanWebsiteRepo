@@ -4,6 +4,7 @@
 (() => {
   const mono = !!document.querySelector('link[href*="mono.css"]');
   if (!document.querySelector('.founder-page') || !(mono || document.querySelector('link[href*="theme-noir"]'))) return;
+  if (document.querySelector('.founder-page[data-field="network"]')) return;   // Maxim's page has its own network (network-field.js)
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('founder-field');
   const cv = document.createElement('canvas');
