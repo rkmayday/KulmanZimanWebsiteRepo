@@ -25,6 +25,7 @@
   // the solid logo is drawn on one canvas: a stack of logo-shaped slices, black on the front and lighter toward the back.
   // (It used to be 60 masked 3D layers in the DOM, which the browser had to repaint on every frame: very laggy.)
   const phone = matchMedia('(max-width: 720px)').matches;
+  const DARK = document.documentElement.classList.contains('dark');   // the reversed (black) version: a white logo
   const N = reduce ? 1 : (phone ? 18 : 30);
   const scene = $('.kz-scene', stage);
   const cv = document.createElement('canvas'); cv.className = 'kz-canvas'; scene.prepend(cv);
@@ -58,7 +59,7 @@
       const front = i === 0;
       if (!front && S.ho <= .002) continue;
       const z = -i * depth / Math.max(1, N - 1);
-      const c = Math.round(26 + i / Math.max(1, N - 1) * 120);
+      const c = DARK ? Math.round(232 - i / Math.max(1, N - 1) * 150) : Math.round(26 + i / Math.max(1, N - 1) * 120);
       for (const sh of SHAPES) {
         const hx = sh.k ? S.kx : S.zx;
         g.beginPath();
@@ -138,7 +139,7 @@
     const spread = innerWidth * (phone ? .62 : .45);
     S.ry = ry; S.rx = rx; S.ls = 1 - b * .3; S.ly = -b * 24; S.kx = -b * spread; S.zx = b * spread;
     S.ho = 1 - smooth(b * 1.6);                       // the sides fade away first
-    S.fv = Math.round(10 + b * 218);                  // the face turns light grey, staying crisp
+    S.fv = DARK ? Math.round(246 - b * 206) : Math.round(10 + b * 218);                  // the face turns light grey, staying crisp
     S.sx = 25 + a * 45 + px * 25;
     draw();
     // the name spells out under the logo, then makes room
