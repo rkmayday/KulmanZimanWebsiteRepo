@@ -169,14 +169,22 @@ THEMES = {
 
 
 
-def keep_title(html_text):
+def keep_title(html_text, icons_too=True):
     """Some hosts (Whop) swap the page <title> for the website's name; put ours back as soon as the page loads."""
     import html as _h
     m = re.search(r"<title>(.*?)</title>", html_text, flags=re.S)
     if not m or "</body>" not in html_text:
         return html_text
     t = json.dumps(_h.unescape(m.group(1).strip())).replace("</", "<\\/")
-    return html_text.replace("</body>", f"<script>document.title={t}</script>\n</body>", 1)
+    # ...and the same for the tab icon: drop any icon the host added and put the ZS icons back
+    icons = ('(function(){var h=document.head;document.querySelectorAll(\'link[rel~="icon"],link[rel="shortcut icon"]\').forEach(function(l){l.remove()});'
+             '[["/favicon.svg","image/svg+xml",""],["/favicon-192.png","image/png","192x192"],["/favicon-48.png","image/png","48x48"]].forEach(function(i){'
+             'var l=document.createElement("link");l.rel="icon";l.href=i[0]+"?v=zs2";l.type=i[1];if(i[2])l.sizes=i[2];h.appendChild(l)})})();')
+    if not icons_too:
+        icons = ""
+    m2 = re.search(r'href="([^"]*?)favicon\.svg', html_text)
+    icons = icons.replace('"/favicon', '"' + (m2.group(1) if m2 else "/") + 'favicon')
+    return html_text.replace("</body>", f"<script>document.title={t};{icons}</script>\n</body>", 1)
 
 def head_tags(meta):
     title = meta["title"]
@@ -381,7 +389,7 @@ def build(preview=False, theme="royal"):
         html = gmail_links(sp.read_text().replace("{{HOME}}portfolio", "../portfolio.html" if preview else "/portfolio").replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
         if not preview:
             html = bust(html)
-        html = keep_title(html)
+        html = keep_title(html, icons_too=False)   # the demos keep their own icons
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
