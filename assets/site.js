@@ -228,14 +228,27 @@ window.kzGmail = (to, subject = '', body = '') => {
     pm.addEventListener('close', () => { opener && opener.focus({ preventScroll: true }); });
   }
 
-  // portfolio clips: play only while on screen; reduced motion keeps the still picture (the poster)
+  // portfolio clips: all four have the same length and timeline, so they start together and loop in sync;
+  // they play only while on screen, and reduced motion keeps the still picture (the poster)
   const clips = $$('video[data-autoplay]');
   if (clips.length && !reduce && 'IntersectionObserver' in window) {
-    const vio = new IntersectionObserver(es => es.forEach(e => {
-      const v = e.target;
-      if (e.isIntersecting) { v.preload = 'auto'; const pr = v.play(); pr && pr.catch(() => {}); } else v.pause();
-    }), { threshold: .25 });
+    const seen = new Set(); let playing = false;
+    const startAll = () => {
+      playing = true;
+      clips.forEach(v => { v.preload = 'auto'; try { v.currentTime = 0; } catch (e) {} });
+      clips.forEach(v => { const pr = v.play(); pr && pr.catch(() => {}); });
+    };
+    const stopAll = () => { playing = false; clips.forEach(v => v.pause()); };
+    const vio = new IntersectionObserver(es => {
+      es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target));
+      if (seen.size && !playing) startAll(); else if (!seen.size && playing) stopAll();
+    }, { threshold: .2 });
     clips.forEach(v => vio.observe(v));
+    // keep them together: every so often, nudge any clip that has drifted back to the first one's time
+    setInterval(() => {
+      if (!playing) return; const lead = clips[0], t = lead.currentTime;
+      clips.forEach(v => { if (v !== lead && !v.paused && Math.abs(v.currentTime - t) > .08) v.currentTime = t; });
+    }, 1000);
   }
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
