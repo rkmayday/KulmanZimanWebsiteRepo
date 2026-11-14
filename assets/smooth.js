@@ -3,36 +3,8 @@
 (() => {
   const mq = q => matchMedia(q).matches;
   if (mq('(prefers-reduced-motion: reduce)')) return;
-  if (!mq('(hover: hover) and (pointer: fine)')) {
-    // Phones and tablets keep native scrolling, but a flick still stops right after the opening animation:
-    // the page snaps to the top or to the finished headline, and everything below the headline scrolls freely.
-    const stage = document.querySelector('[data-stop-y]') || document.querySelector('.stage,.kz-stage'); if (!stage) return;
-    // Only the browser's own snapping is used (no scripted scrolling). It is switched on only inside the opening,
-    // so below the headline the phone scrolls completely normally.
-    const root = document.documentElement, mk = css => { const d = document.createElement('div'); d.setAttribute('aria-hidden', 'true');
-      d.style.cssText = 'position:absolute;left:0;width:1px;height:1px;pointer-events:none;scroll-snap-stop:always;' + css; document.body.append(d); return d; };
-    const top = mk('top:0;scroll-snap-align:start'), stop = mk('top:0;scroll-snap-align:start');
-    let S = 0, on = false, touching = false, idle = 0, fy = 0;
-    const snap = v => { if (v !== on) { on = v; root.style.scrollSnapType = v ? 'y mandatory' : 'none'; } };
-    const fresh = () => { const s = +stage.dataset.stopY; if (s && s !== S) { S = s; stop.style.top = s + 'px'; } };   // the page keeps it up to date
-    const both = () => { top.style.scrollSnapAlign = stop.style.scrollSnapAlign = 'start'; };
-    const settle = () => { fresh(); both(); if (S) snap(scrollY < S - 4); };   // inside the opening: snap; below it: off
-    const place = () => { if (stage.__refreshStop) stage.__refreshStop(); if (!touching) settle(); };
-    addEventListener('touchstart', e => { touching = true; fy = e.touches[0] ? e.touches[0].clientY : 0; clearTimeout(idle); settle(); }, { passive: true });
-    // one swipe inside the opening: a swipe down can only land on the finished headline, a swipe up only on the top
-    addEventListener('touchmove', e => { if (!S || !e.touches[0]) return; const d = fy - e.touches[0].clientY;
-      if (!on) { if (scrollY < S - 4) snap(true); else return; }      // dragged up from below into the opening
-      if (d > 10) { top.style.scrollSnapAlign = 'none'; stop.style.scrollSnapAlign = 'start'; }
-      else if (d < -10) { stop.style.scrollSnapAlign = 'none'; top.style.scrollSnapAlign = 'start'; } }, { passive: true });
-    const lift = () => { touching = false; clearTimeout(idle); idle = setTimeout(settle, 700); };
-    addEventListener('touchend', lift, { passive: true }); addEventListener('touchcancel', lift, { passive: true });
-    addEventListener('scroll', () => { if (touching) return; clearTimeout(idle); idle = setTimeout(settle, 250); }, { passive: true });
-    addEventListener('pageshow', place);
-    addEventListener('load', place); setTimeout(place, 300); setTimeout(place, 1500);
-    let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; place(); } });
-    if (window.ResizeObserver) new ResizeObserver(() => place()).observe(document.body);
-    return;
-  }
+  // Phones and tablets: completely native scrolling, no snapping or scripted scrolling of any kind
+  if (!mq('(hover: hover) and (pointer: fine)')) return;
 
   const EASE = .075;   // how quickly the page catches up each frame (lower = smoother, longer glide)
   const SPEED = .85;   // distance per wheel step compared with the browser's normal amount (lower = slower)
