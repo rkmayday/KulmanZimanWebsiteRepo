@@ -4,10 +4,10 @@
   const mq = q => matchMedia(q).matches;
   if (mq('(prefers-reduced-motion: reduce)')) return;
   if (!mq('(hover: hover) and (pointer: fine)')) {
-    // Phones and tablets scroll natively (no snapping). On the demos, a flick that would carry past the end of the
+    // Phones and tablets scroll natively (no snapping). On the home page and the demos, a flick that would carry past the end of the
     // opening stops right there, with the headline fully in: only once the finger has left the screen (never
     // fighting the finger), and the rest of that flick is dropped. The next swipe scrolls on as normal.
-    const stage = document.querySelector('.stage[data-stop]'); if (!stage) return;
+    const stage = document.querySelector('.stage[data-stop], .kz-stage'); if (!stage) return;   // the demos and the home page
     const root = document.documentElement;
     let y0 = 0, touching = false, armed = 0, stopping = false;
     const S = () => { if (stage.__refreshStop) stage.__refreshStop(); return +stage.dataset.stopY || 0; };
