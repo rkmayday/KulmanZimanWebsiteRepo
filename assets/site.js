@@ -228,5 +228,14 @@ window.kzGmail = (to, subject = '', body = '') => {
     pm.addEventListener('close', () => { opener && opener.focus({ preventScroll: true }); });
   }
 
+  // portfolio clips: play only while on screen; reduced motion keeps the still picture (the poster)
+  const clips = $$('video[data-autoplay]');
+  if (clips.length && !reduce && 'IntersectionObserver' in window) {
+    const vio = new IntersectionObserver(es => es.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting) { v.preload = 'auto'; const pr = v.play(); pr && pr.catch(() => {}); } else v.pause();
+    }), { threshold: .25 });
+    clips.forEach(v => vio.observe(v));
+  }
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
