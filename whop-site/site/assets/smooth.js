@@ -3,8 +3,33 @@
 (() => {
   const mq = q => matchMedia(q).matches;
   if (mq('(prefers-reduced-motion: reduce)')) return;
-  // Phones and tablets: completely native scrolling, no snapping or scripted scrolling of any kind
-  if (!mq('(hover: hover) and (pointer: fine)')) return;
+  if (!mq('(hover: hover) and (pointer: fine)')) {
+    // Phones and tablets scroll natively (no snapping). On the demos, a flick that would carry past the end of the
+    // opening stops right there, with the headline fully in: only once the finger has left the screen (never
+    // fighting the finger), and the rest of that flick is dropped. The next swipe scrolls on as normal.
+    const stage = document.querySelector('.stage[data-stop]'); if (!stage) return;
+    const root = document.documentElement;
+    let y0 = 0, touching = false, armed = 0, stopping = false;
+    const S = () => { if (stage.__refreshStop) stage.__refreshStop(); return +stage.dataset.stopY || 0; };
+    addEventListener('touchstart', () => { touching = true; y0 = scrollY; }, { passive: true });
+    const lift = () => {
+      touching = false; const s = S(); if (!s) return;
+      armed = y0 < s - 4 ? 1 : (stage.dataset.stopUp && y0 > s + 4 ? -1 : 0);   // which way this flick would cross the stop
+      armed && check();
+    };
+    addEventListener('touchend', lift, { passive: true }); addEventListener('touchcancel', lift, { passive: true });
+    const check = () => {
+      if (!armed || touching || stopping) return; const s = +stage.dataset.stopY; if (!s) return;
+      if ((armed > 0 && scrollY >= s) || (armed < 0 && scrollY <= s)) {
+        armed = 0; stopping = true;
+        root.style.overflow = 'hidden';              // ends the momentum
+        scrollTo(0, s);
+        setTimeout(() => { root.style.overflow = ''; scrollTo(0, s); stopping = false; }, 120);
+      }
+    };
+    addEventListener('scroll', check, { passive: true });
+    return;
+  }
 
   const EASE = .075;   // how quickly the page catches up each frame (lower = smoother, longer glide)
   const SPEED = .85;   // distance per wheel step compared with the browser's normal amount (lower = slower)
