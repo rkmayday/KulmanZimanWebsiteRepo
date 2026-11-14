@@ -486,3 +486,18 @@ a.box.lift:active{transform:translateY(-1px)}
 @media (prefers-reduced-motion:reduce){.box.lift,.box.lift .more svg{transition:none}.box.lift:hover{transform:none}}
 /* narrow screens: the photo stacks above the name, so the label under the photo would repeat the one above the name */
 @media (max-width:860px){.founder-page .profile-tag{display:none}}
+
+/* checkout pop-up (checkout.js): Whop's embedded checkout inside the site's own pop-up */
+.co-modal{width:min(620px,calc(100% - 20px))}
+.co-box{padding-bottom:18px}
+.co-box h2{font-size:clamp(1.3rem,3.4vw,1.7rem);margin:10px 44px 4px 0}
+.co-price{margin:0 0 16px;font-weight:700;color:var(--ink-2)}
+.co-slot{min-height:340px;border-radius:16px;overflow:hidden;background:var(--paper-2);display:grid}
+.co-slot iframe{width:100%!important;border:0;display:block;background:#fff}
+.co-loading{display:grid;place-items:center;min-height:340px;color:var(--ink-3);font:500 .82rem var(--font-mono);letter-spacing:.12em;text-transform:uppercase}
+.co-done{padding:28px;display:grid;gap:10px;align-content:center;background:var(--paper)}
+.co-done b{font:600 1.4rem var(--font-display);letter-spacing:-.02em}
+.co-fine{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:space-between}
+.co-fallback{color:var(--ink-3)}
+html:has(.co-modal[open]){overflow:hidden}
+@media (max-width:560px){.co-modal{width:100%;max-height:100dvh;margin:auto 0 0}.co-box{border-radius:22px 22px 0 0;max-height:94dvh}}

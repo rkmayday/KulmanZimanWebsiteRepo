@@ -50,7 +50,7 @@ def package_modal():
     <button class="pm-x" type="button" aria-label="Close" data-pm-close>×</button>
     <span class="eyebrow">Get started</span>
     <h2 id="pm-title">Choose your package</h2>
-    <p class="pm-lede">You will go to a secure Whop checkout for the package you pick.</p>
+    <p class="pm-lede">Pick a package and pay securely right here. Checkout is powered by Whop.</p>
     <div class="pm-opts">
 {chr(10).join(rows)}
     </div>
@@ -290,6 +290,7 @@ FOOTER = f"""<footer>
 <script src="{THREE}"></script>
 <script src="/assets/world.js" defer></script>
 <script src="/assets/site.js" defer></script>
+<script src="/assets/checkout.js" defer></script>
 <script src="/assets/motion.js" defer></script>
 <script src="/assets/founder-field.js" defer></script>
 <script src="/assets/needle-field.js" defer></script>
