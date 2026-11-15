@@ -615,15 +615,16 @@ html.pt-in body{animation:ptIn .25s ease both}
 @media (hover:hover){.btn.ghost.solid:hover{background:var(--ink);color:var(--paper)}}
 
 /* the cursor switch: a small notch on the right edge (computers only) that pulls out an on/off switch */
-.cur-ctl{position:fixed;right:0;top:clamp(96px,16vh,150px);z-index:90;display:flex;align-items:center;transform:translateX(calc(100% - 20px));transition:transform .45s cubic-bezier(.2,.8,.2,1);
-  border-radius:12px 0 0 12px;background:rgba(255,255,255,.38);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
-  box-shadow:inset 0 0 0 1px rgba(10,10,10,.1),inset 0 1px 0 rgba(255,255,255,.6),0 10px 30px -14px rgba(0,0,0,.25)}
+.cur-ctl{position:fixed;left:0;top:clamp(96px,16vh,150px);z-index:90;display:flex;flex-direction:row-reverse;align-items:center;transform:translateX(calc(-100% + 32px));transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  border-radius:0 14px 14px 0;background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
+  box-shadow:inset 0 0 0 1px rgba(10,10,10,.2),inset 0 1px 0 rgba(255,255,255,.7),0 14px 36px -10px rgba(0,0,0,.4)}
 .cur-ctl.open{transform:none}
-.cur-notch{flex:none;display:grid;place-items:center;width:20px;height:46px;padding:0;border:0;border-radius:12px 0 0 12px;cursor:pointer;color:rgba(10,10,10,.7);background:transparent;touch-action:none}
-.cur-notch svg{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.cur-notch{flex:none;display:grid;place-items:center;align-content:center;gap:7px;width:32px;height:68px;padding:0;border:0;border-radius:0 14px 14px 0;cursor:pointer;color:var(--ink);background:transparent;touch-action:none}
+.cur-notch svg{width:14px;height:14px;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 .cur-ctl.open .cur-notch svg{transform:rotate(180deg)}
-@media (hover:hover){.cur-ctl:not(.open):hover{transform:translateX(calc(100% - 25px))}}
-.cur-panel{display:flex;align-items:center;gap:12px;height:46px;padding:0 14px 0 4px;color:var(--ink);font:600 .82rem var(--font-sans);white-space:nowrap}
+.cur-notch .cur-dot{width:12px;height:12px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.12)}
+@media (hover:hover){.cur-ctl:not(.open):hover{transform:translateX(calc(-100% + 38px))}}
+.cur-panel{display:flex;align-items:center;gap:12px;height:68px;padding:0 4px 0 16px;color:var(--ink);font:600 .84rem var(--font-sans);white-space:nowrap}
 .cur-sw{display:flex;align-items:center;gap:8px;padding:0;border:0;background:none;cursor:pointer;color:inherit;font:600 .78rem var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
 .cur-sw i{position:relative;width:36px;height:20px;border-radius:99px;background:rgba(10,10,10,.14);transition:background .25s}
 .cur-sw i::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
