@@ -613,3 +613,22 @@ html.pt-in body{animation:ptIn .25s ease both}
 /* a ghost button with a solid fill (nothing shows through it) */
 .btn.ghost.solid{background:var(--paper)}
 @media (hover:hover){.btn.ghost.solid:hover{background:var(--ink);color:var(--paper)}}
+
+/* the cursor switch: a small notch on the right edge (computers only) that pulls out an on/off switch */
+.cur-ctl{position:fixed;right:0;top:50%;z-index:90;display:flex;align-items:center;transform:translate(calc(100% - 22px),-50%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.cur-ctl.open{transform:translate(0,-50%)}
+.cur-notch{flex:none;display:grid;place-items:center;width:22px;height:54px;padding:0;border:0;border-radius:12px 0 0 12px;cursor:pointer;color:var(--paper);background:var(--ink);
+  box-shadow:-6px 10px 24px -12px rgba(0,0,0,.45);touch-action:none}
+.cur-notch svg{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.cur-ctl.open .cur-notch svg{transform:rotate(180deg)}
+@media (hover:hover){.cur-ctl:not(.open) .cur-notch:hover{width:26px}}
+.cur-panel{display:flex;align-items:center;gap:14px;height:54px;padding:0 16px;background:var(--ink);color:var(--paper);font:600 .86rem var(--font-sans);white-space:nowrap}
+.cur-sw{display:flex;align-items:center;gap:8px;padding:0;border:0;background:none;cursor:pointer;color:inherit;font:600 .78rem var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
+.cur-sw i{position:relative;width:38px;height:22px;border-radius:99px;background:#3a3a3a;transition:background .25s}
+.cur-sw i::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.cur-sw[aria-checked=true] i{background:#fff}
+.cur-sw[aria-checked=true] i::after{transform:translateX(16px);background:var(--ink)}
+.cur-sw b{min-width:2.4em;text-align:left;font-weight:600}
+.cur-notch:focus-visible,.cur-sw:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+@media (hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.cur-ctl{display:none}}
+html:has(dialog[open]) .cur-ctl{display:none}

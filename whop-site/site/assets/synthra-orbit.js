@@ -31,12 +31,16 @@ window.S3D && S3D(({ T, scene, cl, sm, C, soft }) => {
   const halo = new T.Sprite(new T.SpriteMaterial({ map: soft('rgba(94,240,255,.45)', 'rgba(94,240,255,0)'), blending: T.AdditiveBlending, depthWrite: false, transparent: true }));
   mark.add(core, halo);
 
+  let wmEl = null;
   return ({ i, p, mx, my, W, H, halfH }) => {
     const now = performance.now() / 1000, e = sm(i);
     // one simple motion: as you scroll it turns gently and the core brightens, then it zooms in until it fills the
     // whole screen and stays there, very faint, behind the headline and everything else
     const turn = sm(p / .36), pop = cl((p - .34) / .34), sp = sm(pop);
-    const px = 2 * halfH / H, svgPx = Math.min(.7 * W, 560) / 200;    // scene units per pixel, pixels per SVG unit
+    // pixels per SVG unit: by the width, and never so big that the orbit runs into "Welcome to Synthra" on a short window
+    if (!wmEl) wmEl = document.querySelector('.stage .wordmark');
+    const wmB = wmEl ? wmEl.offsetTop + wmEl.offsetHeight + 10 : 0, fit = wmB ? (H - 2 * wmB) / .8 : 1e9;
+    const px = 2 * halfH / H, svgPx = Math.max(140, Math.min(.7 * W, 560, fit)) / 200;    // scene units per pixel, pixels per SVG unit
     mark.scale.setScalar(svgPx * px / U * (.85 + .15 * e) * (1 + 2.6 * sp) * U / .01);
     mark.position.set(mx * -.25 * (1 - .6 * sp), my * .25 * (1 - .6 * sp) + .1 * Math.sin(now * .7) * (1 - sp), 0);
     mark.rotation.set(-.25 * turn + my * .15, .55 * turn + mx * .3, 0);

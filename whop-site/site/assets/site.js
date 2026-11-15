@@ -371,11 +371,13 @@ window.kzGmail = (to, subject = '', body = '') => {
 
   // blend cursor: a circle that inverts whatever it is over, and grows over links and buttons.
   // Only with a real mouse or trackpad; phones, tablets and "reduce motion" keep the normal cursor.
+  // A small notch on the right edge pulls out a switch to turn it off (remembered on this browser).
   if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const cur = document.createElement('div'); cur.className = 'blend-cursor'; cur.setAttribute('aria-hidden', 'true');
     document.body.append(cur);
     const html = document.documentElement;
-    let x = 0, y = 0, cx = 0, cy = 0, raf = 0, on = false;
+    let x = 0, y = 0, cx = 0, cy = 0, raf = 0, on = false, off = false;
+    try { off = localStorage.getItem('kz-cursor') === 'off'; } catch (e) {}
     const tick = () => {
       cx += (x - cx) * .4; cy += (y - cy) * .4;
       cur.style.transform = `translate3d(${cx.toFixed(1)}px,${cy.toFixed(1)}px,0)`;
@@ -385,10 +387,11 @@ window.kzGmail = (to, subject = '', body = '') => {
     addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse') return;
       x = e.clientX; y = e.clientY;
+      if (off) return;
       if (!on) { cx = x; cy = y; show(true); }
       if (!raf) raf = requestAnimationFrame(tick);
     }, { passive: true });
-    const HOT = 'a,button,summary,label,select,[role=tab],[role=button],.sample,input[type=range],input[type=checkbox],input[type=radio]';
+    const HOT = 'a,button,summary,label,select,[role=tab],[role=button],[role=switch],.sample,.cur-notch,input[type=range],input[type=checkbox],input[type=radio]';
     document.addEventListener('pointerover', e => {
       const t = e.target instanceof Element ? e.target : null;
       cur.classList.toggle('big', !!(t && t.closest(HOT)));
@@ -398,6 +401,35 @@ window.kzGmail = (to, subject = '', body = '') => {
     addEventListener('blur', () => show(false));
     addEventListener('pointerdown', () => cur.classList.add('down'), { passive: true });
     addEventListener('pointerup', () => cur.classList.remove('down'), { passive: true });
+
+    // the notch and its switch
+    const box = document.createElement('div'); box.className = 'cur-ctl';
+    box.innerHTML = '<button class="cur-notch" type="button" aria-expanded="false" aria-controls="cur-panel" aria-label="Cursor settings">'
+      + '<svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M7.5 2.5 4 6l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+      + '<div class="cur-panel" id="cur-panel"><span>Cursor follower</span><button class="cur-sw" type="button" role="switch" aria-checked="true"><i></i><b></b></button></div>';
+    document.body.append(box);
+    const notch = box.querySelector('.cur-notch'), sw = box.querySelector('.cur-sw');
+    const setOff = v => {
+      off = v; sw.setAttribute('aria-checked', String(!v)); sw.querySelector('b').textContent = v ? 'Off' : 'On';
+      try { v ? localStorage.setItem('kz-cursor', 'off') : localStorage.removeItem('kz-cursor'); } catch (e) {}
+      if (v) show(false); else { cx = x; cy = y; if (x || y) { show(true); if (!raf) raf = requestAnimationFrame(tick); } }
+    };
+    setOff(off);
+    const open = v => { box.classList.toggle('open', v); notch.setAttribute('aria-expanded', String(v)); };
+    // pull the notch towards the page (or just click it) to open; pull it back (or click again) to close
+    let sx = null, moved = false;
+    notch.addEventListener('pointerdown', e => { sx = e.clientX; moved = false; notch.setPointerCapture(e.pointerId); });
+    notch.addEventListener('pointermove', e => {
+      if (sx === null) return; const dx = e.clientX - sx;
+      if (Math.abs(dx) > 6) moved = true;
+      if (dx < -18 && !box.classList.contains('open')) { open(true); sx = e.clientX; }
+      else if (dx > 18 && box.classList.contains('open')) { open(false); sx = e.clientX; }
+    });
+    notch.addEventListener('pointerup', () => { if (!moved) open(!box.classList.contains('open')); sx = null; });
+    notch.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(!box.classList.contains('open')); } });
+    sw.addEventListener('click', () => setOff(!off));
+    document.addEventListener('pointerdown', e => { if (box.classList.contains('open') && !box.contains(e.target)) open(false); });
+    addEventListener('keydown', e => { if (e.key === 'Escape') open(false); });
   }
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
