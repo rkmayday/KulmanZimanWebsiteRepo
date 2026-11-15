@@ -250,6 +250,46 @@ window.kzGmail = (to, subject = '', body = '') => {
       clips.forEach(v => { if (v !== lead && !v.paused && Math.abs(v.currentTime - t) > .08) v.currentTime = t; });
     }, 1000);
   }
+  // ---------- headings light up word by word as you scroll past them ----------
+  // Each word starts faint and turns solid as the heading moves up the screen. Plain text stays in the page,
+  // so screen readers and search engines read it as normal. Off for "reduce motion".
+  const swTargets = $$('.section-head h2, .cmp-wrap h2, .mission blockquote');
+  if (swTargets.length && !reduce && 'IntersectionObserver' in window) {
+    const groups = swTargets.map(el => {
+      const words = [];
+      const walk = node => [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const parts = n.textContent.split(/(\s+)/); if (!n.textContent.trim()) return;
+          const frag = document.createDocumentFragment();
+          parts.forEach(p => {
+            if (!p) return;
+            if (/^\s+$/.test(p)) { frag.append(p); return; }
+            const w = document.createElement('span'); w.className = 'sw-word'; w.textContent = p; frag.append(w); words.push(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'CITE' && n.tagName !== 'BR') walk(n);
+      });
+      walk(el);
+      return { el, words, last: -1 };
+    });
+    const live = new Set();
+    const paint = () => {
+      swRaf = 0; const vh = innerHeight;
+      live.forEach(g => {
+        const top = g.el.getBoundingClientRect().top;
+        const p = Math.min(1, Math.max(0, (vh * .9 - top) / (vh * .42)));   // from 90% down the screen to 48%
+        if (Math.abs(p - g.last) < .002) return; g.last = p;
+        const n = g.words.length;
+        g.words.forEach((w, i) => { const k = Math.min(1, Math.max(0, p * (n + 2) - i)); w.style.setProperty('--wo', (.14 + .86 * k).toFixed(3)); });
+      });
+    };
+    let swRaf = 0;
+    const ask = () => { if (!swRaf) swRaf = requestAnimationFrame(paint); };
+    const swio = new IntersectionObserver(es => { es.forEach(e => { const g = groups.find(x => x.el === e.target); e.isIntersecting ? live.add(g) : live.delete(g); }); ask(); }, { rootMargin: '10% 0px 10% 0px' });
+    groups.forEach(g => swio.observe(g.el));
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
+  }
+
   // ---------- home: watch a homepage build itself ----------
   const bd = $('.bd');
   if (bd) {

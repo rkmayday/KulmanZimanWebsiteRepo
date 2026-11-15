@@ -808,3 +808,4 @@ footer h4{font-size:.78rem}
 .s-path{width:62px;height:62px;border-radius:50%;background:conic-gradient(from 200deg,transparent 0 18%,#c7f36b 18% 82%,transparent 82%);-webkit-mask:radial-gradient(circle,transparent 56%,#000 58%);mask:radial-gradient(circle,transparent 56%,#000 58%);filter:drop-shadow(0 0 10px rgba(199,243,107,.6))}
 
 #build,.cmp-wrap{display:none}
+.ki-draw{display:none}
