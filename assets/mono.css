@@ -609,3 +609,7 @@ html.pt-in body{animation:ptIn .25s ease both}
 
 /* ================= headings light up word by word as they scroll into view (site.js) ================= */
 .sw-word{opacity:var(--wo,.14);transition:opacity .25s linear}
+
+/* a ghost button with a solid fill (nothing shows through it) */
+.btn.ghost.solid{background:var(--paper)}
+.btn.ghost.solid:hover{background:var(--ink);color:var(--paper)}
