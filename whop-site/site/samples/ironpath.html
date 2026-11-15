@@ -4,125 +4,128 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ironpath — Sample Fitness Site</title>
-<meta name="description" content="Ironpath is a fictional fitness app: a sample concept site built by Ziman Sites.">
+<meta name="description" content="Ironpath is a fictional strength-training app: a sample concept site built by Ziman Sites.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0a0b0a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0b0a'/%3E%3Cpath d='M18 78 L42 50 L58 64 L82 28' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='82' cy='28' r='8' fill='%23c7f36b'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#f5f4f0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f5f4f0'/%3E%3Crect x='10' y='47' width='80' height='6' rx='3' fill='%23111'/%3E%3Crect x='20' y='26' width='9' height='48' rx='3' fill='%23ff3d2e'/%3E%3Crect x='71' y='26' width='9' height='48' rx='3' fill='%23ff3d2e'/%3E%3Crect x='31' y='34' width='6' height='32' rx='2.5' fill='%23111'/%3E%3Crect x='63' y='34' width='6' height='32' rx='2.5' fill='%23111'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/sample2.css?v=5483d320">
 <style>
-:root{--bg:#0a0b0a;--bg2:#0f110f;--fg:#eef3ef;--mut:#8a978f;--line:#222823;--acc:#c7f36b;--on-acc:#0a0b0a;--panel:#111411;--panel2:#171b17;--glass:rgba(17,20,17,.7);--display:"Archivo",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--hw:600;color-scheme:dark}
-
-.ip-mark{width:min(64vw,560px);overflow:visible;transform:translateY(calc(var(--a) * 10vh)) rotateX(calc(var(--a) * 56deg + var(--my) * -14deg)) rotateY(calc(var(--mx) * 22deg)) scale(calc(1 + var(--a) * .7 + var(--b) * .8));opacity:calc(1 - var(--b) * 1.15)}
-.ip-path{fill:none;stroke:#eef3ef;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--i))}
-.ip-dot{fill:#c7f36b;transform-box:fill-box;transform-origin:center;transform:scale(calc(var(--i) * var(--i)));filter:drop-shadow(0 0 6px #c7f36b)}
-.ip-glow{width:min(70vw,620px);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(199,243,107,.22),transparent 70%);transform:translate(calc(18% + var(--mx) * 30px),calc(-22% + var(--my) * 30px)) scale(calc(.6 + var(--i) * .4 + var(--a) * .6));opacity:calc(var(--i) - var(--b))}
-.ip-floor{position:absolute;left:-30%;right:-30%;bottom:-20%;height:70%;transform:perspective(600px) rotateX(72deg);transform-origin:bottom;
-  background-image:linear-gradient(rgba(199,243,107,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(199,243,107,.18) 1px,transparent 1px);background-size:60px 60px;background-position:0 calc(var(--p) * 900px);
-  -webkit-mask-image:linear-gradient(transparent,#000 60%);mask-image:linear-gradient(transparent,#000 60%);opacity:calc(var(--a) * (1 - var(--b) * .6))}
-
-/* the 3D logo (ironpath-logo.js) replaces the flat path when WebGL is available; one scroll to play */
-.x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
-.mark.has-3d .ip-mark,.mark.has-3d .ip-glow{display:none}
-.stage.x3d{height:280vh}
-@media (max-width:720px){.stage.x3d{height:240vh}}
-.stage.x3d .copy{opacity:var(--ec,0);transform:translateY(calc((1 - var(--ec,0)) * 36px))}
-.stage.x3d .wordmark{opacity:calc(var(--i,1) - var(--ea,0) * 1.6)}
-.wordmark{font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase}
+:root{--bg:#f5f4f0;--bg2:#ecebe6;--fg:#111111;--mut:#5f5e58;--line:#dddbd3;--acc:#ff3d2e;--on-acc:#ffffff;--panel:#ffffff;--panel2:#f0efea;--glass:rgba(255,255,255,.82);
+  --display:"Archivo",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--hw:800;color-scheme:light}
+::selection{background:#ff3d2e;color:#fff}
 
 /* ===== athletic sportswear style: fast italic type, slanted shapes, speed stripes ===== */
-:root{--sport:italic 900 1em/1 var(--display)}
-.copy h1,main h2,.statement,.quote,.feat h3,.tier .price,.lab-stats b{font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase;letter-spacing:-.01em}
+.wordmark,.copy h1,main h2,.statement,.feat h3,.tier .price,.lab-stats b,.ip-kg{font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase;letter-spacing:-.01em}
+.wordmark b,h1 em,h2 em{color:var(--acc);font-style:italic}
 .copy h1{font-size:clamp(2.5rem,5.6vw,4.9rem);line-height:.95;max-width:13ch;margin-inline:auto}
 .copy .lede{margin-top:6px}
 main h2{font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:.95}
 .k,.lab-label{font-family:var(--display);font-style:italic;font-weight:800;font-stretch:90%;letter-spacing:.26em;color:var(--acc)}
 .k::before{width:18px;height:3px;border-radius:0;transform:skewX(-20deg)}
-/* buttons: a slanted shape behind straight text */
-.btn{position:relative;isolation:isolate;background:transparent!important;color:#0a0b0a;border-radius:0;font-family:var(--display);font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:14px;padding:0 30px}
+.btn{position:relative;isolation:isolate;background:transparent!important;color:#fff;border-radius:0;font-family:var(--display);font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:14px;padding:0 30px}
 .btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--acc);transform:skewX(-14deg);transition:background .2s,transform .25s cubic-bezier(.2,.8,.2,1)}
 .btn:hover::before{transform:skewX(-14deg) scaleX(1.04)}
 .btn.ghost{color:var(--fg);box-shadow:none!important}
 .btn.ghost::before{background:transparent;border:2px solid var(--fg)}
-.btn.ghost:hover::before{background:color-mix(in srgb,var(--fg) 10%,transparent)}
+.btn.ghost:hover::before{background:color-mix(in srgb,var(--fg) 8%,transparent)}
 .btn.sm{font-size:12px;padding:0 20px}
-/* speed stripes on the far right of the opening, clear of the headline */
-.pin::after{content:"";position:absolute;top:0;bottom:0;right:-6vw;width:16vw;pointer-events:none;opacity:calc(var(--ec,0) * .9);
-  background:linear-gradient(112deg,transparent 0 34%,var(--acc) 34% 36%,transparent 36% 44%,var(--acc) 44% 64%,transparent 64%)}
+.cue{color:var(--fg)}
+.cue i{background:var(--acc)}
+.cue i::after{border-color:#fff}
+
+/* ===== the opening: a barbell loads up plate by plate, then gets lifted out of frame ===== */
+.ip-lanes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ip-lanes::before{content:"";position:absolute;inset:-10% -20%;background:repeating-linear-gradient(112deg,transparent 0 120px,rgba(17,17,17,.035) 120px 122px);transform:translateX(calc(var(--p,0) * -160px))}
+.ip-rig{position:relative;display:grid;justify-items:center;gap:clamp(10px,2vh,22px);width:min(86vw,760px);
+  transform:translateY(calc(var(--b,0) * -62vh + var(--a,0) * -2vh)) scale(calc(1 - var(--b,0) * .25));opacity:calc(1 - var(--b,0) * 1.15)}
+.ip-bb{width:100%;overflow:visible;transform:rotate(calc(var(--mx,0) * 2deg));filter:drop-shadow(0 18px 18px rgba(0,0,0,.12))}
+.ip-bar{transform-box:fill-box;transform-origin:center;transform:scaleX(var(--i,1))}
+.ip-col{opacity:var(--i,1)}
+/* plate 0 slams on as the page opens; plates 1-3 load as you scroll */
+.ip-pl{--k:clamp(0, calc(var(--a,0) * 3.3 - var(--j) + 1), 1);opacity:var(--k);transition:none}
+.ip-pl[style*="--j:0"]{--k:clamp(0, calc(var(--i,1) * 2 - 1), 1)}
+.ip-pl-l{transform:translateX(calc((1 - var(--k)) * -260px))}
+.ip-pl-r{transform:translateX(calc((1 - var(--k)) * 260px))}
+.ip-kg{display:flex;align-items:baseline;gap:.3em;font-size:clamp(2.6rem,7vw,5.4rem);line-height:.9;color:var(--fg);opacity:var(--i,1)}
+.ip-kg small{font-size:.36em;letter-spacing:.12em;color:var(--acc)}
+.ip-shadow{position:absolute;left:50%;bottom:-6%;width:70%;height:22px;margin-left:-35%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.18),transparent);
+  transform:scale(calc(1 - var(--b,0) * .8));opacity:calc(var(--i,1) * (1 - var(--b,0)))}
+.wordmark{font-size:clamp(2rem,5.4vw,4.4rem)}
+@media (max-width:720px){.ip-rig{width:92vw}}
+.no-stage .ip-rig{transform:none;opacity:1}
+
+/* speed stripes on the right of the headline (wide screens), headline on the left like a sportswear page */
+.pin::after{content:"";position:absolute;top:0;bottom:0;right:-6vw;width:62vw;pointer-events:none;opacity:calc(var(--c,0) * .95);
+  background:linear-gradient(112deg,transparent 0 60%,var(--acc) 60% 61.6%,transparent 61.6% 67%,var(--acc) 67% 80%,transparent 80%)}
 @media (max-width:899px){.pin::after{display:none}}
-/* wide screens: headline on the left like a sportswear page, stripes on the right */
 @media (min-width:900px){
-  .stage.x3d .copy{width:min(1180px,100%);justify-items:start;text-align:left;padding-right:calc(min(1180px,100%) * .34);padding-left:max(22px,env(safe-area-inset-left))}
-  .stage.x3d .copy h1{font-size:clamp(3rem,6vw,5.6rem);max-width:12ch;margin-inline:0}
-  .stage.x3d .copy .lede{margin-inline:0}
-  .stage.x3d .copy .actions{justify-content:flex-start}
-  .pin::after{right:-6vw;width:62vw;background:linear-gradient(112deg,transparent 0 60%,var(--acc) 60% 61.6%,transparent 61.6% 67%,var(--acc) 67% 80%,transparent 80%)}
+  .copy{width:min(1180px,100%);justify-items:start;text-align:left;padding-right:calc(min(1180px,100%) * .34);padding-left:max(22px,env(safe-area-inset-left))}
+  .copy h1{font-size:clamp(3rem,6vw,5.6rem);max-width:12ch;margin-inline:0}
+  .copy .lede{margin-inline:0}
+  .copy .actions{justify-content:flex-start}
 }
-/* the method section: a lime band with slanted edges */
-#about{background:var(--acc);color:#0a0b0a;clip-path:polygon(0 5%,100% 0,100% 95%,0 100%);padding-block:clamp(120px,14vw,190px);--fg:#0a0b0a;--mut:#2e3a16;--line:rgba(10,11,10,.25)}
+
+/* the method section: a black band with slanted edges */
+#about{background:#111;color:#fff;clip-path:polygon(0 5%,100% 0,100% 95%,0 100%);padding-block:clamp(120px,14vw,190px);--fg:#fff;--mut:#b4b3ad;--line:rgba(255,255,255,.2)}
 #about .statement{font-size:clamp(1.9rem,4vw,3.4rem);line-height:1;max-width:22ch}
-#about .statement span{color:#2e3a16}
-#about .feat{border-top:3px solid #0a0b0a}
-#about .feat .n{color:#0a0b0a;font:italic 900 15px var(--display);letter-spacing:.2em}
+#about .statement span{color:#8d8c86}
+#about .feat{border-top:3px solid var(--acc)}
+#about .feat .n{color:var(--acc);font:italic 900 15px var(--display);letter-spacing:.2em}
 #about .feat .n::after{content:" —"}
 #about .feat h3{font-size:clamp(1.7rem,2.6vw,2.3rem);line-height:1;margin:4px 0}
-#about .feat p{color:#1f2810}
+#about .feat p{color:#c9c8c2}
 main .sec + .sec{border-top:0}
 /* builder: squared, slanted controls */
-.card{border-radius:4px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.card{border-radius:4px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%);box-shadow:inset 0 0 0 1px var(--line)}
 .seg button{border-radius:0;transform:skewX(-10deg);font-style:italic;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.06em}
-.seg button[aria-pressed=true]{background:var(--acc);color:#0a0b0a}
+.seg button[aria-pressed=true]{background:var(--fg);color:#fff}
+.range input{accent-color:var(--acc)}
 .lab-stats{border-radius:0}
 .lab-stats b{font-size:1.9rem;color:var(--acc)}
-.ip-day{border-radius:2px}
 /* pricing: tickets with a cut corner */
 .tiers{border:0;gap:18px}
-.tier,.tier + .tier{border:0;background:var(--panel);clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,0 100%);border-left:0}
-.tier.best{background:var(--acc);color:#0a0b0a;--fg:#0a0b0a;--mut:#2e3a16}
-.tier.best .k,.tier.best li::before{color:#0a0b0a}
-.tier.best .btn{color:var(--acc)}.tier.best .btn::before{background:#0a0b0a}
+.tier,.tier + .tier{border:0;background:var(--panel);clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,0 100%);border-left:0;box-shadow:inset 0 0 0 1px var(--line)}
+.tier.best{background:var(--acc);color:#fff;--fg:#fff;--mut:rgba(255,255,255,.82)}
+.tier.best .k,.tier.best li::before{color:#fff}
+.tier.best .k::before{background:#fff}
+.tier.best .btn{color:var(--acc)}.tier.best .btn::before{background:#fff}
 .tier .price{font-size:clamp(2.8rem,4.4vw,3.6rem)}
 .tier li::before{content:"/ ";color:var(--acc);font-weight:900}
-/* review and sign-up */
-.quote{font-size:clamp(1.8rem,3.6vw,3rem);line-height:1.02;max-width:24ch}
-.cta h2{font-size:clamp(2.8rem,7vw,6rem);max-width:none}
-.cta input{border-radius:0!important;transform:skewX(-10deg)}
+.cta h2{font-size:clamp(2.8rem,7vw,6rem);max-width:none;font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase}
+.cta input{border-radius:0!important;transform:skewX(-10deg);background:#fff!important;box-shadow:inset 0 0 0 2px var(--fg)!important}
 .foot nav a{font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
 
 .ip-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
-.ip-day{display:grid;gap:6px;align-content:start;padding:12px 8px;border-radius:14px;min-height:118px;background:color-mix(in srgb,var(--fg) 4%,transparent);box-shadow:inset 0 0 0 1px var(--line)}
-.ip-day.on{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 18%,transparent),transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 50%,transparent)}
+.ip-day{display:grid;gap:6px;align-content:start;padding:12px 8px;border-radius:2px;min-height:118px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
+.ip-day.on{background:linear-gradient(180deg,rgba(255,61,46,.12),transparent);box-shadow:inset 0 0 0 1px rgba(255,61,46,.45)}
 .ip-day small{font:500 11px var(--mono);color:var(--mut);letter-spacing:.08em}
 .ip-day b{font-size:.86rem;line-height:1.2}
-.ip-day i{display:block;height:6px;border-radius:6px;background:color-mix(in srgb,var(--fg) 8%,transparent);overflow:hidden;margin-top:auto}
+.ip-day i{display:block;height:6px;border-radius:6px;background:rgba(17,17,17,.08);overflow:hidden;margin-top:auto}
 .ip-day i::after{content:"";display:block;height:100%;width:var(--w,0%);background:var(--acc);border-radius:inherit;transition:width .6s cubic-bezier(.2,.8,.2,1)}
 .ip-day.rest b{color:var(--mut);font-weight:500}
 @media (max-width:620px){.ip-week{grid-template-columns:repeat(4,minmax(0,1fr))}.ip-day{min-height:92px}}
-.ip-chart{width:100%;height:180px;border-radius:16px;background:color-mix(in srgb,var(--fg) 3%,transparent);box-shadow:inset 0 0 0 1px var(--line)}
+.ip-chart{width:100%;height:180px;border-radius:2px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
 .ip-gridlines line{stroke:var(--line);stroke-dasharray:4 6}
 .ip-axis{display:flex;justify-content:space-between;font:500 11px var(--mono);color:var(--mut);margin-top:-8px}
-
-.x3d-wait .ip-mark{visibility:hidden}
 </style>
-<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="/portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
-  <a class="brand" href="#top" aria-label="Ironpath home"><svg class="" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 84 L40 50 L58 66 L86 22" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="86" cy="22" r="8" fill="#c7f36b"/></svg><span>Ironpath</span></a>
+  <a class="brand" href="#top" aria-label="Ironpath home"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="47" width="80" height="6" rx="3" fill="currentColor"/><rect x="20" y="26" width="9" height="48" rx="3" fill="#ff3d2e"/><rect x="31" y="34" width="6" height="32" rx="2.5" fill="currentColor"/><rect x="71" y="26" width="9" height="48" rx="3" fill="#ff3d2e"/><rect x="63" y="34" width="6" height="32" rx="2.5" fill="currentColor"/></svg><span>Ironpath</span></a>
   <nav aria-label="Main"><ul class="links"><li><a href="#about">Method</a></li><li><a href="#builder">Build your week</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
   <div class="actions"><a class="btn sm" href="#pricing">Start free</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
 </div></header>
 <nav class="drawer" aria-label="Mobile"><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<section class="stage" aria-label="Ironpath" data-hold=".72" data-stop=".72">
+<section class="stage" aria-label="Ironpath" data-hold=".77" data-stop=".77">
   <div class="pin">
+    <div class="ip-lanes" aria-hidden="true"></div>
     <div class="mark" aria-hidden="true">
-      <div class="ip-floor"></div>
-      <div class="ip-glow"></div>
-      <svg class="ip-mark" viewBox="0 0 100 100"><path class="ip-path" pathLength="1" d="M12 84 L40 50 L58 66 L86 22"/><circle class="ip-dot" cx="86" cy="22" r="8"/></svg>
+      <div class="ip-rig"><svg class="ip-bb" viewBox="0 0 600 200"><rect class="ip-bar" x="20" y="95" width="560" height="10" rx="5" fill="#111"/><rect class="ip-col" x="146" y="82" width="8" height="36" rx="3" fill="#111"/><rect class="ip-col" x="446" y="82" width="8" height="36" rx="3" fill="#111"/><rect class="ip-pl ip-pl-l" style="--j:0" x="126" y="15.0" width="20" height="170" rx="5" fill="#ff3d2e"/><rect class="ip-pl ip-pl-r" style="--j:0" x="454" y="15.0" width="20" height="170" rx="5" fill="#ff3d2e"/><rect class="ip-pl ip-pl-l" style="--j:1" x="102" y="15.0" width="20" height="170" rx="5" fill="#ff3d2e"/><rect class="ip-pl ip-pl-r" style="--j:1" x="478" y="15.0" width="20" height="170" rx="5" fill="#ff3d2e"/><rect class="ip-pl ip-pl-l" style="--j:2" x="78" y="30.0" width="20" height="140" rx="5" fill="#111111"/><rect class="ip-pl ip-pl-r" style="--j:2" x="502" y="30.0" width="20" height="140" rx="5" fill="#111111"/><rect class="ip-pl ip-pl-l" style="--j:3" x="54" y="46.0" width="20" height="108" rx="5" fill="#9a9a94"/><rect class="ip-pl ip-pl-r" style="--j:3" x="526" y="46.0" width="20" height="108" rx="5" fill="#9a9a94"/></svg><div class="ip-kg"><span class="ip-kg-n">20</span><small>KG</small></div><i class="ip-shadow"></i></div>
     </div>
     <div class="wordmark" aria-hidden="true">Welcome to <b>Ironpath</b></div>
     <div class="copy">
@@ -154,10 +157,10 @@ main .sec + .sec{border-top:0}
       <div class="ip-week" id="ip-week"></div>
       <div class="lab-label">Projected progress</div>
       <svg class="ip-chart" id="ip-chart" viewBox="0 0 600 200" preserveAspectRatio="none" aria-label="Projected strength over 12 weeks">
-        <defs><linearGradient id="ipfill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c7f36b" stop-opacity=".45"/><stop offset="1" stop-color="#c7f36b" stop-opacity="0"/></linearGradient></defs>
+        <defs><linearGradient id="ipfill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ff3d2e" stop-opacity=".45"/><stop offset="1" stop-color="#ff3d2e" stop-opacity="0"/></linearGradient></defs>
         <g class="ip-gridlines"><line x1="0" x2="600" y1="50" y2="50"/><line x1="0" x2="600" y1="100" y2="100"/><line x1="0" x2="600" y1="150" y2="150"/></g>
-        <path id="ip-area" fill="url(#ipfill)"/><path id="ip-line" fill="none" stroke="#c7f36b" stroke-width="3" stroke-linejoin="round"/>
-        <circle id="ip-dot" r="6" fill="#c7f36b"/>
+        <path id="ip-area" fill="url(#ipfill)"/><path id="ip-line" fill="none" stroke="#ff3d2e" stroke-width="3" stroke-linejoin="round"/>
+        <circle id="ip-dot" r="6" fill="#ff3d2e"/>
       </svg>
       <div class="ip-axis"><span>Week 1</span><span>Deload</span><span>Week 12</span></div>
     </div>
@@ -172,11 +175,6 @@ main .sec + .sec{border-top:0}
   <p class="fine" style="margin-top:16px">Prices on this sample site are illustrative.</p>
 </div></section>
 
-<section class="sec"><div class="wrap">
-  <p class="quote rv">“I stopped guessing what to lift. Twelve weeks later my squat is up 20 kg and nothing hurts.”</p>
-  <div class="who rv"><b>Maya Romero</b> · Member since 2024</div>
-  <p class="fine" style="margin-top:14px">Sample review written for this concept.</p>
-</div></section>
 
 <section class="sec"><div class="wrap cta">
   <h2 class="rv">Your first week <em>is on us.</em></h2>
@@ -184,15 +182,31 @@ main .sec + .sec{border-top:0}
 </div></section>
 </main>
 
-<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg class="" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 84 L40 50 L58 66 L86 22" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="86" cy="22" r="8" fill="#c7f36b"/></svg><span>Ironpath</span></a>
+<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="47" width="80" height="6" rx="3" fill="currentColor"/><rect x="20" y="26" width="9" height="48" rx="3" fill="#ff3d2e"/><rect x="31" y="34" width="6" height="32" rx="2.5" fill="currentColor"/><rect x="71" y="26" width="9" height="48" rx="3" fill="#ff3d2e"/><rect x="63" y="34" width="6" height="32" rx="2.5" fill="currentColor"/></svg><span>Ironpath</span></a>
   <nav><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a></nav><span>© 2026 Ironpath (fictional)</span></div></footer>
 
 <script src="/assets/sample2.js?v=bffbd206" defer></script>
 <script src="/assets/smooth.js?v=cd842495" defer></script>
-<script src="/assets/three.min.js?v=eb854986" defer></script>
-<script src="/assets/sample3d.js?v=cfd5ef75" defer></script>
-<script src="/assets/ironpath-logo.js?v=2f96d601" defer></script>
 
+<script>
+// Ironpath: the weight on the bar counts up as each pair of plates goes on (read from the stage's scroll variables)
+(() => {
+  const stage = document.querySelector('.stage'), out = document.querySelector('.ip-kg-n'); if (!stage || !out) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, PAIRS = [50, 50, 40, 20];
+  const v = k => { const s = stage.style.getPropertyValue(k); return s === '' ? 1 : parseFloat(s) || 0; };
+  const clamp = x => Math.min(1, Math.max(0, x));
+  let shown = -1, on = true;
+  new IntersectionObserver(es => { on = es[0].isIntersecting; if (on) requestAnimationFrame(tick); }).observe(stage);
+  function tick() {
+    const i = reduce ? 1 : v('--i'), a = reduce ? 1 : v('--a');
+    const k = [clamp(i * 2 - 1), clamp(a * 3.3), clamp(a * 3.3 - 1), clamp(a * 3.3 - 2)];
+    const kg = Math.round((20 + k.reduce((s, x, j) => s + x * PAIRS[j], 0)) / 2.5) * 2.5;
+    if (kg !== shown) { shown = kg; out.textContent = kg % 1 ? kg.toFixed(1) : kg; }
+    if (on) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
 <script>
 // Ironpath sample: live plan builder (pure sample logic; nothing is saved or sent)
 (() => {
