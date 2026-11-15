@@ -404,7 +404,7 @@ def build(preview=False, theme="royal"):
         (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
         (out_dir / "vercel.json").write_text('{"cleanUrls": true, "trailingSlash": false}\n')
         # Netlify / Cloudflare Pages: serve each page at its clean address, and forward old links
-        rules = ["/fitness-sample /samples/ironpath 301", "/ironpath-app /samples/ironpath 301", "/rexkulman /about 301"]
+        rules = ["/fitness-sample /samples/ironpath 301", "/ironpath-app /samples/ironpath 301", "/rexkulman /about 301", "/samples/ashgrove /portfolio 301"]
         rules += [f"/{p.stem}/ /{p.stem} 301" for p in pages if p.stem != "index"]
         rules += [f"/{p.stem} /{p.stem}.html 200" for p in pages if p.stem != "index"]
         rules += [f"/samples/{sp.stem} /samples/{sp.stem}.html 200" for sp in sorted((SRC / "samples").glob("*.html"))]
