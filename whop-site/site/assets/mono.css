@@ -215,7 +215,7 @@ ul,ol{margin:0}
 .panel .art img{width:100%;height:100%;object-fit:cover;object-position:left top}
 
 /* proof: sample cards */
-.samples{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:28px}
+.samples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}
 @media (max-width:1060px){.samples{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.samples{grid-template-columns:1fr}}
 .sample{display:grid;gap:6px;align-content:start;padding:0 0 22px;border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--ink);background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2);transition:box-shadow .3s,transform .3s var(--ease)}

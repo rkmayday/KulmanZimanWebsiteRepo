@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/mono.css?v=041fd289">
+<link rel="stylesheet" href="/assets/mono.css?v=0369e192">
 <script>document.documentElement.classList.add('js')</script>
 <script>/* page transition: arriving from another page of the site, this one fades in */
 (function(){try{if(sessionStorage.getItem('kz-pt')==='1'){sessionStorage.removeItem('kz-pt');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){var r=document.documentElement;r.classList.add('pt-in');setTimeout(function(){r.classList.remove('pt-in');},400);}}}catch(e){}})();</script>
@@ -211,6 +211,7 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
       <button class="tab" role="tab" id="t-tech" aria-controls="p-tech" aria-selected="false" tabindex="-1">Technology &amp; IT</button>
       <button class="tab" role="tab" id="t-local" aria-controls="p-local" aria-selected="false" tabindex="-1">Local Services</button>
       <button class="tab" role="tab" id="t-create" aria-controls="p-create" aria-selected="false" tabindex="-1">Creators &amp; Education</button>
+      <button class="tab" role="tab" id="t-home" aria-controls="p-home" aria-selected="false" tabindex="-1">Real Estate</button>
     </div>
     <div class="panel-stage">
       <div class="panel solo reveal" role="tabpanel" id="p-fit" aria-labelledby="t-fit">
@@ -243,6 +244,14 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
           <p class="muted" style="margin-bottom:20px">Homes on the web for creators, coaches, tutors and course makers.</p>
           <ul class="ticks"><li>Personal brand and portfolio sites</li><li>Course and program landing pages</li><li>Tutoring and coaching booking pages</li><li>Newsletter and community sign-up pages</li></ul>
           <p style="margin-top:24px"><a class="link-arrow" href="/portfolio#deduction">See our creator concept in the portfolio →</a></p>
+        </div>
+      </div>
+      <div class="panel solo" role="tabpanel" id="p-home" aria-labelledby="t-home" hidden>
+        <div>
+          <h3>Real Estate</h3>
+          <p class="muted" style="margin-bottom:20px">Sites for agents, brokerages and property managers that turn browsers into viewings.</p>
+          <ul class="ticks"><li>Property listings with filters</li><li>Valuation and contact request forms</li><li>Mortgage and affordability calculators</li><li>Neighbourhood and area guides</li></ul>
+          <p style="margin-top:24px"><a class="link-arrow" href="/portfolio#ashgrove">See our real estate concept in the portfolio →</a></p>
         </div>
       </div>
     </div>
@@ -355,7 +364,7 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
       <div class="two">
         <label for="b-biz">Business name<input id="b-biz" name="business" autocomplete="organization"></label>
         <label for="b-ind">Industry
-          <select id="b-ind" name="industry"><option>Fitness &amp; Wellness</option><option>Technology &amp; IT</option><option>Local Services</option><option>Creators &amp; Education</option><option>Something else</option></select>
+          <select id="b-ind" name="industry"><option>Fitness &amp; Wellness</option><option>Technology &amp; IT</option><option>Local Services</option><option>Creators &amp; Education</option><option>Real Estate</option><option>Something else</option></select>
         </label>
       </div>
       <label for="b-dom">Domain you'd like<input id="b-dom" name="domain" placeholder="yourbusiness.com"></label>
