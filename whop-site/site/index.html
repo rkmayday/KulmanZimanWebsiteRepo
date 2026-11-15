@@ -29,8 +29,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/mono.css?v=e2b95df8">
+<link rel="stylesheet" href="/assets/mono.css?v=3f42b6ed">
 <script>document.documentElement.classList.add('js')</script>
+<script>/* page transition: the black panel that covered the last page carries on up and off this one */
+(function(){try{if(sessionStorage.getItem('kz-pt')==='1'){sessionStorage.removeItem('kz-pt');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){var r=document.documentElement;r.classList.add('pt-in');setTimeout(function(){r.classList.remove('pt-in');},1100);}}}catch(e){}})();</script>
 <script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
 (function(){var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
 try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
@@ -319,6 +321,51 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
   </div>
 </section>
 
+<section class="section" id="build">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Watch it build</span>
+      <h2 class="extrude">A homepage, built <em>in seconds.</em></h2>
+      <p class="lede">Pick a kind of business and a colour, and watch a homepage put itself together. Your real site is designed with you over three rounds; this is a taste of the motion.</p>
+    </div>
+    <div class="bd reveal">
+      <div class="bd-controls">
+        <div class="bd-group" role="group" aria-label="Kind of business">
+          <button class="tab" type="button" data-kind="gym" aria-pressed="true">Gym</button>
+          <button class="tab" type="button" data-kind="cafe" aria-pressed="false">Caf&eacute;</button>
+          <button class="tab" type="button" data-kind="tech" aria-pressed="false">Tech</button>
+          <button class="tab" type="button" data-kind="coach" aria-pressed="false">Coach</button>
+        </div>
+        <div class="bd-group bd-colors" role="group" aria-label="Colour">
+          <button type="button" data-color="#111111" aria-label="Black" aria-pressed="true" style="--c:#111111"></button>
+          <button type="button" data-color="#2f6bff" aria-label="Blue" aria-pressed="false" style="--c:#2f6bff"></button>
+          <button type="button" data-color="#ff5a3c" aria-label="Coral" aria-pressed="false" style="--c:#ff5a3c"></button>
+          <button type="button" data-color="#14a46c" aria-label="Green" aria-pressed="false" style="--c:#14a46c"></button>
+          <button type="button" data-color="#7c5cff" aria-label="Violet" aria-pressed="false" style="--c:#7c5cff"></button>
+        </div>
+        <button class="btn ghost bd-again" type="button">Build it again</button>
+      </div>
+      <div class="bd-browser" aria-live="polite">
+        <div class="bd-bar"><i></i><i></i><i></i><span class="bd-url"><b class="bd-domain"></b><u></u></span></div>
+        <div class="bd-page" data-kind="gym">
+          <nav class="bd-nav"><strong class="bd-logo"></strong><span class="bd-links"></span><em class="bd-pill"></em></nav>
+          <div class="bd-hero">
+            <div class="bd-copy">
+              <small class="bd-kicker"></small>
+              <h3 class="bd-h"><span></span><i class="bd-caret"></i></h3>
+              <p class="bd-p"></p>
+              <div class="bd-ctas"><em class="bd-btn"></em><em class="bd-ghost"></em></div>
+            </div>
+            <div class="bd-vis" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="bd-cards"><div><b>01</b><span></span></div><div><b>02</b><span></span></div><div><b>03</b><span></span></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="muted reveal bd-note">Example businesses. Every real site is designed from scratch around yours.</p>
+  </div>
+</section>
+
 <section class="section" style="padding-block-end:0">
   <div class="wrap">
     <div class="aff reveal">
@@ -413,7 +460,7 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
     <div class="base-row"><span>© <span data-year>2026</span> Ziman Sites. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>
 </footer>
-<script src="/assets/site.js?v=27cdbdc4" defer></script>
+<script src="/assets/site.js?v=adc87ba8" defer></script>
 <script src="/assets/mono.js?v=c539ea3d" defer></script>
 <script src="/assets/smooth.js?v=cd842495" defer></script>
 <script src="/assets/founder-field.js?v=d0d8f93a" defer></script>

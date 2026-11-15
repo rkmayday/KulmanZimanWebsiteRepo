@@ -250,6 +250,147 @@ window.kzGmail = (to, subject = '', body = '') => {
       clips.forEach(v => { if (v !== lead && !v.paused && Math.abs(v.currentTime - t) > .08) v.currentTime = t; });
     }, 1000);
   }
+  // ---------- home: watch a homepage build itself ----------
+  const bd = $('.bd');
+  if (bd) {
+    const page = $('.bd-page', bd), browser = $('.bd-browser', bd), H = $('.bd-h span', bd);
+    const SITES = {
+      gym: { name: 'Northside Fitness', domain: 'northsidefitness.com', links: 'Classes · Coaches · Join', pill: 'Join now', kick: 'Personal training & classes',
+        h: 'Stronger every week.', p: 'Small-group classes and coaching that fit around your life.', cta: 'Start a free week', ghost: 'See timetable', cards: ['Strength', 'Conditioning', 'Mobility'] },
+      cafe: { name: 'Harbour Coffee', domain: 'harbourcoffee.com', links: 'Menu · Visit · Order', pill: 'Order ahead', kick: 'Small-batch roastery & café',
+        h: 'Coffee worth the walk.', p: 'Roasted in-house every morning and poured by people who care.', cta: 'See the menu', ghost: 'Find us', cards: ['Espresso', 'Pour-over', 'Pastries'] },
+      tech: { name: 'Lumen Cloud', domain: 'lumencloud.io', links: 'Product · Pricing · Docs', pill: 'Sign in', kick: 'Infrastructure for small teams',
+        h: 'Ship faster, sleep better.', p: 'Deploys, monitoring and backups in one calm dashboard.', cta: 'Start free trial', ghost: 'Book a demo', cards: ['Deploy', 'Monitor', 'Scale'] },
+      coach: { name: 'Maya Reyes Coaching', domain: 'mayareyes.com', links: 'About · Programs · Book', pill: 'Book a call', kick: 'Career & life coaching',
+        h: 'Your next chapter starts here.', p: 'One-to-one coaching for people ready for a change.', cta: 'Book a free call', ghost: 'Read stories', cards: ['Clarity', 'Confidence', 'Momentum'] }
+    };
+    const STEPS = ['s-bg', 's-nav', 's-kick', 's-p', 's-btn', 's-vis', 's-cards'];
+    let kind = 'gym', timers = [], built = false;
+    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+    const fill = d => {
+      $('.bd-logo', bd).textContent = d.name; $('.bd-links', bd).textContent = d.links; $('.bd-pill', bd).textContent = d.pill;
+      $('.bd-kicker', bd).textContent = d.kick; $('.bd-p', bd).textContent = d.p; $('.bd-btn', bd).textContent = d.cta; $('.bd-ghost', bd).textContent = d.ghost;
+      $$('.bd-cards span', bd).forEach((el, i) => el.textContent = d.cards[i]);
+    };
+    const build = () => {
+      timers.forEach(clearTimeout); timers = [];
+      const d = SITES[kind]; fill(d); page.dataset.kind = kind; built = true;
+      page.classList.remove(...STEPS, 'typing'); browser.classList.remove('typing-url');
+      const dom = $('.bd-domain', bd);
+      if (reduce) { dom.textContent = d.domain; H.textContent = d.h; page.classList.add(...STEPS); return; }
+      dom.textContent = ''; H.textContent = '';
+      // 1. the address types itself, 2. the page fills in block by block while the headline types out
+      browser.classList.add('typing-url');
+      [...d.domain].forEach((c, i) => later(() => { dom.textContent += c; }, 120 + i * 32));
+      let t = 160 + d.domain.length * 32;
+      later(() => browser.classList.remove('typing-url'), t);
+      later(() => page.classList.add('s-bg', 's-nav'), t += 60);
+      later(() => page.classList.add('s-kick', 'typing'), t += 280);
+      [...d.h].forEach((c, i) => later(() => { H.textContent += c; }, t + 120 + i * 42));
+      t += 120 + d.h.length * 42;
+      later(() => page.classList.add('s-p'), t += 60);
+      later(() => page.classList.add('s-btn'), t += 220);
+      later(() => page.classList.add('s-vis'), t += 160);
+      later(() => page.classList.add('s-cards'), t += 260);
+      later(() => page.classList.remove('typing'), t + 1400);
+    };
+    const press = (sel, btn) => $$(sel, bd).forEach(b => b.setAttribute('aria-pressed', b === btn));
+    $$('[data-kind]', bd).forEach(b => b.addEventListener('click', () => { kind = b.dataset.kind; press('[data-kind]', b); build(); }));
+    $$('[data-color]', bd).forEach(b => b.addEventListener('click', () => { browser.style.setProperty('--ac', b.dataset.color); press('[data-color]', b); if (!built) build(); }));
+    $('.bd-again', bd).addEventListener('click', build);
+    fill(SITES[kind]);
+    if ('IntersectionObserver' in window) {
+      const bio = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { bio.disconnect(); if (!built) build(); } }, { threshold: .35 });
+      bio.observe(browser);
+    } else build();
+  }
+
+  // ---------- portfolio: before and after slider ----------
+  const cmp = $('.cmp');
+  if (cmp) {
+    const line = $('.cmp-line', cmp), vid = $('.cmp-after', cmp);
+    const TEMPLATE = {
+      ironpath: ['Ironpath', 'Welcome to Ironpath', 'We are a gym in your area. We offer many services. Contact us today for more information.'],
+      synthra: ['Synthra', 'Welcome to Synthra', 'We are a technology company. We provide IT solutions for businesses. Contact us today to learn more.'],
+      'ember-roast': ['Ember Roast', 'Welcome to Ember Roast', 'We are a coffee shop. We sell coffee and other drinks. Come visit us today.'],
+      deduction: ['Deduction', 'Welcome to Deduction', 'We offer online coding courses. Sign up today to start learning.']
+    };
+    let x = 50, dragging = false;
+    const set = v => {
+      x = Math.max(0, Math.min(100, v)); cmp.style.setProperty('--x', x + '%'); line.setAttribute('aria-valuenow', Math.round(x));
+      cmp.toggleAttribute('data-x-low', x < 22); cmp.toggleAttribute('data-x-high', x > 78);
+    };
+    const fromEvent = e => { const r = cmp.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); };
+    cmp.addEventListener('pointerdown', e => {
+      if (e.button) return; dragging = true; cmp.classList.add('dragging'); fromEvent(e);
+      if (e.pointerType === 'mouse') cmp.setPointerCapture(e.pointerId);
+    });
+    cmp.addEventListener('pointermove', e => { if (dragging) fromEvent(e); });
+    // on touch screens, a sideways drag moves the line; scrolling up and down still scrolls the page
+    let tx = 0, ty = 0, lock = '';
+    cmp.addEventListener('touchstart', e => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; lock = ''; }, { passive: true });
+    cmp.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      if (!lock) lock = Math.abs(t.clientX - tx) > Math.abs(t.clientY - ty) ? 'x' : 'y';
+      if (lock === 'x') { e.preventDefault(); fromEvent(t); }
+    }, { passive: false });
+    const up = () => { dragging = false; cmp.classList.remove('dragging'); };
+    cmp.addEventListener('pointerup', up); cmp.addEventListener('pointercancel', up); cmp.addEventListener('lostpointercapture', up);
+    line.addEventListener('keydown', e => {
+      const step = e.shiftKey ? 10 : 4;
+      const k = { ArrowLeft: -step, ArrowDown: -step, ArrowRight: step, ArrowUp: step, Home: -100, End: 100 }[e.key];
+      if (k !== undefined) { e.preventDefault(); set(x + k); }
+    });
+    // switch sample
+    $$('[data-cmp]').forEach(b => b.addEventListener('click', () => {
+      const slug = b.dataset.cmp, d = TEMPLATE[slug];
+      $$('[data-cmp]').forEach(o => o.setAttribute('aria-pressed', o === b));
+      $('.tp-name', cmp).textContent = d[0]; $('.tp-h', cmp).textContent = d[1]; $('.tp-p', cmp).textContent = d[2];
+      vid.poster = '/assets/shots/' + slug + '.jpg'; vid.src = '/assets/shots/' + slug + '.mp4?v=3';
+      if (!reduce && onScreen) { const pr = vid.play(); pr && pr.catch(() => {}); }
+    }));
+    // the clip plays only while on screen; the first time it appears, the line sweeps once to show it can be dragged
+    let onScreen = false, hinted = false;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(es => es.forEach(e => {
+        onScreen = e.isIntersecting;
+        if (onScreen && !reduce) { vid.preload = 'auto'; const pr = vid.play(); pr && pr.catch(() => {}); } else vid.pause();
+        if (onScreen && !hinted && !reduce) {
+          hinted = true; const t0 = performance.now();
+          const sweep = now => {
+            if (dragging) return; const k = Math.min(1, (now - t0) / 1600);
+            set(50 + Math.sin(k * Math.PI * 2) * 22 * (1 - k)); if (k < 1) requestAnimationFrame(sweep);
+          };
+          setTimeout(() => requestAnimationFrame(sweep), 400);
+        }
+      }), { threshold: .4 }).observe(cmp);
+    }
+  }
+
+  // ---------- page transitions ----------
+  // A link to another page of this site: a black panel sweeps up over the page, then the next page opens and the
+  // panel carries on up and off it (see the head script). Pop-ups, new tabs, the top-left logo (it has its own
+  // opening animation) and the sample sites are left alone. Off for "reduce motion".
+  if (!reduce) {
+    const pt = document.createElement('div'); pt.className = 'pt'; pt.setAttribute('aria-hidden', 'true'); document.body.append(pt);
+    const html = document.documentElement;
+    document.addEventListener('click', e => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target || a.hasAttribute('download')) return;
+      const u = new URL(a.href, location.href);
+      if (u.origin !== location.origin || /^\/samples\//.test(u.pathname) || /\/get-started(\.html)?$/.test(u.pathname)) return;
+      if (u.pathname === location.pathname) return;                 // same page (section links)
+      if (a.closest('.nav .brand')) return;                          // the logo replays the opening instead
+      e.preventDefault();
+      html.classList.add('pt-out');
+      try { sessionStorage.setItem('kz-pt', '1'); } catch (err) {}
+      setTimeout(() => { location.href = a.href; }, 430);
+      setTimeout(() => html.classList.remove('pt-out'), 4000);       // safety: never leave the page covered
+    });
+    // coming back with the back button (page restored from memory): uncover it
+    addEventListener('pageshow', e => { if (e.persisted) { html.classList.remove('pt-out', 'pt-in'); try { sessionStorage.removeItem('kz-pt'); } catch (err) {} } });
+  }
+
   // blend cursor: a circle that inverts whatever it is over, and grows over links and buttons.
   // Only with a real mouse or trackpad; phones, tablets and "reduce motion" keep the normal cursor.
   if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
