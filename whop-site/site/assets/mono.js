@@ -100,7 +100,7 @@
   // the scene away while the split is still finishing, so something is always moving.
   // EXTRA matches the extra height given to .kz-stage in mono.css for this eased part.
   let lastMb = null;
-  const EXTRA = .36, SPLIT = .36 / .87;          // SPLIT: where the Z and S start to separate, on the timeline
+  const EXTRA = .252, SPLIT = .36 / .87;          // SPLIT: where the Z and S start to separate, on the timeline
   const readScroll = () => {
     const r = stage.getBoundingClientRect(), t = pinT, y = t - r.top;
     const Rt = Math.max(1, r.height - (lastH - t));          // whole pinned scroll

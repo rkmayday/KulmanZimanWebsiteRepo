@@ -250,5 +250,35 @@ window.kzGmail = (to, subject = '', body = '') => {
       clips.forEach(v => { if (v !== lead && !v.paused && Math.abs(v.currentTime - t) > .08) v.currentTime = t; });
     }, 1000);
   }
+  // blend cursor: a circle that inverts whatever it is over, and grows over links and buttons.
+  // Only with a real mouse or trackpad; phones, tablets and "reduce motion" keep the normal cursor.
+  if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cur = document.createElement('div'); cur.className = 'blend-cursor'; cur.setAttribute('aria-hidden', 'true');
+    document.body.append(cur);
+    const html = document.documentElement;
+    let x = 0, y = 0, cx = 0, cy = 0, raf = 0, on = false;
+    const tick = () => {
+      cx += (x - cx) * .4; cy += (y - cy) * .4;
+      cur.style.transform = `translate3d(${cx.toFixed(1)}px,${cy.toFixed(1)}px,0)`;
+      raf = Math.abs(x - cx) + Math.abs(y - cy) > .2 ? requestAnimationFrame(tick) : 0;
+    };
+    const show = v => { if (v !== on) { on = v; cur.classList.toggle('on', v); html.classList.toggle('blend-on', v); } };
+    addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      x = e.clientX; y = e.clientY;
+      if (!on) { cx = x; cy = y; show(true); }
+      if (!raf) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+    const HOT = 'a,button,summary,label,select,[role=tab],[role=button],.sample,input[type=range],input[type=checkbox],input[type=radio]';
+    document.addEventListener('pointerover', e => {
+      const t = e.target instanceof Element ? e.target : null;
+      cur.classList.toggle('big', !!(t && t.closest(HOT)));
+      cur.classList.toggle('text', !!(t && t.closest('input:not([type=range]):not([type=checkbox]):not([type=radio]),textarea,[contenteditable]')));
+    }, { passive: true });
+    html.addEventListener('mouseleave', () => show(false));
+    addEventListener('blur', () => show(false));
+    addEventListener('pointerdown', () => cur.classList.add('down'), { passive: true });
+    addEventListener('pointerup', () => cur.classList.remove('down'), { passive: true });
+  }
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
