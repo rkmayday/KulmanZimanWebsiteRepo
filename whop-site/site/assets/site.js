@@ -148,6 +148,8 @@ window.kzGmail = (to, subject = '', body = '') => {
     e.preventDefault();
     const f = new FormData(brief), g = k => (f.get(k) || '').toString().trim();
     if (g('_honey')) return;                                         // spam bots fill the hidden field
+    const em = brief.querySelector('[name=email]');                 // never send a brief we can't reply to
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('email'))) { if (em) { em.setCustomValidity('Please enter your email so we can reply.'); em.reportValidity(); em.addEventListener('input', () => em.setCustomValidity(''), { once: true }); } return; }
     const subject = 'Website brief — ' + (g('business') || g('name'));
     const btn = $('button[type=submit]', brief), label = btn.textContent;
     btn.disabled = true; btn.textContent = 'Sending…';
