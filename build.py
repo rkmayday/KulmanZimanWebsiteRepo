@@ -215,8 +215,8 @@ def head_tags(meta):
 <link href="{FONTS}" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
-<script>/* page transition: the black panel that covered the last page carries on up and off this one */
-(function(){{try{{if(sessionStorage.getItem('kz-pt')==='1'){{sessionStorage.removeItem('kz-pt');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){{var r=document.documentElement;r.classList.add('pt-in');setTimeout(function(){{r.classList.remove('pt-in');}},1100);}}}}}}catch(e){{}}}})();</script>
+<script>/* page transition: arriving from another page of the site, this one fades in */
+(function(){{try{{if(sessionStorage.getItem('kz-pt')==='1'){{sessionStorage.removeItem('kz-pt');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){{var r=document.documentElement;r.classList.add('pt-in');setTimeout(function(){{r.classList.remove('pt-in');}},400);}}}}}}catch(e){{}}}})();</script>
 <script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
 (function(){{var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
 try{{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}}catch(e){{}}

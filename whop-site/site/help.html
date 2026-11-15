@@ -29,10 +29,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/mono.css?v=9731fe1b">
+<link rel="stylesheet" href="/assets/mono.css?v=b2129172">
 <script>document.documentElement.classList.add('js')</script>
-<script>/* page transition: the black panel that covered the last page carries on up and off this one */
-(function(){try{if(sessionStorage.getItem('kz-pt')==='1'){sessionStorage.removeItem('kz-pt');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){var r=document.documentElement;r.classList.add('pt-in');setTimeout(function(){r.classList.remove('pt-in');},1100);}}}catch(e){}})();</script>
+<script>/* page transition: arriving from another page of the site, this one fades in */
+(function(){try{if(sessionStorage.getItem('kz-pt')==='1'){sessionStorage.removeItem('kz-pt');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){var r=document.documentElement;r.classList.add('pt-in');setTimeout(function(){r.classList.remove('pt-in');},400);}}}catch(e){}})();</script>
 <script>/* opening animation: plays when you enter the site, or click the top-left logo; never for menu/section links, reloads or back/forward */
 (function(){var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
 try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
@@ -141,7 +141,7 @@ setTimeout(function(){r.classList.remove('intro-hold');},1150);setTimeout(functi
     <div class="base-row"><span>© <span data-year>2026</span> Ziman Sites. All rights reserved.</span><span>Payments processed securely by Whop.</span></div>
   </div>
 </footer>
-<script src="/assets/site.js?v=d06f06b7" defer></script>
+<script src="/assets/site.js?v=0792d83c" defer></script>
 <script src="/assets/mono.js?v=c539ea3d" defer></script>
 <script src="/assets/smooth.js?v=cd842495" defer></script>
 <script src="/assets/founder-field.js?v=d0d8f93a" defer></script>

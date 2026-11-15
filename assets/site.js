@@ -253,7 +253,7 @@ window.kzGmail = (to, subject = '', body = '') => {
   // ---------- headings light up word by word as you scroll past them ----------
   // Each word starts faint and turns solid as the heading moves up the screen. Plain text stays in the page,
   // so screen readers and search engines read it as normal. Off for "reduce motion".
-  const swTargets = $$('.section-head h2, .cmp-wrap h2, .mission blockquote');
+  const swTargets = $$('.section-head h2, .mission blockquote');
   if (swTargets.length && !reduce && 'IntersectionObserver' in window) {
     const groups = swTargets.map(el => {
       const words = [];
@@ -345,74 +345,10 @@ window.kzGmail = (to, subject = '', body = '') => {
     } else build();
   }
 
-  // ---------- portfolio: before and after slider ----------
-  const cmp = $('.cmp');
-  if (cmp) {
-    const line = $('.cmp-line', cmp), vid = $('.cmp-after', cmp);
-    const TEMPLATE = {
-      ironpath: ['Ironpath', 'Welcome to Ironpath', 'We are a gym in your area. We offer many services. Contact us today for more information.'],
-      synthra: ['Synthra', 'Welcome to Synthra', 'We are a technology company. We provide IT solutions for businesses. Contact us today to learn more.'],
-      'ember-roast': ['Ember Roast', 'Welcome to Ember Roast', 'We are a coffee shop. We sell coffee and other drinks. Come visit us today.'],
-      deduction: ['Deduction', 'Welcome to Deduction', 'We offer online coding courses. Sign up today to start learning.']
-    };
-    let x = 50, dragging = false;
-    const set = v => {
-      x = Math.max(0, Math.min(100, v)); cmp.style.setProperty('--x', x + '%'); line.setAttribute('aria-valuenow', Math.round(x));
-      cmp.toggleAttribute('data-x-low', x < 22); cmp.toggleAttribute('data-x-high', x > 78);
-    };
-    const fromEvent = e => { const r = cmp.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); };
-    cmp.addEventListener('pointerdown', e => {
-      if (e.button) return; dragging = true; cmp.classList.add('dragging'); fromEvent(e);
-      if (e.pointerType === 'mouse') cmp.setPointerCapture(e.pointerId);
-    });
-    cmp.addEventListener('pointermove', e => { if (dragging) fromEvent(e); });
-    // on touch screens, a sideways drag moves the line; scrolling up and down still scrolls the page
-    let tx = 0, ty = 0, lock = '';
-    cmp.addEventListener('touchstart', e => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; lock = ''; }, { passive: true });
-    cmp.addEventListener('touchmove', e => {
-      const t = e.touches[0];
-      if (!lock) lock = Math.abs(t.clientX - tx) > Math.abs(t.clientY - ty) ? 'x' : 'y';
-      if (lock === 'x') { e.preventDefault(); fromEvent(t); }
-    }, { passive: false });
-    const up = () => { dragging = false; cmp.classList.remove('dragging'); };
-    cmp.addEventListener('pointerup', up); cmp.addEventListener('pointercancel', up); cmp.addEventListener('lostpointercapture', up);
-    line.addEventListener('keydown', e => {
-      const step = e.shiftKey ? 10 : 4;
-      const k = { ArrowLeft: -step, ArrowDown: -step, ArrowRight: step, ArrowUp: step, Home: -100, End: 100 }[e.key];
-      if (k !== undefined) { e.preventDefault(); set(x + k); }
-    });
-    // switch sample
-    $$('[data-cmp]').forEach(b => b.addEventListener('click', () => {
-      const slug = b.dataset.cmp, d = TEMPLATE[slug];
-      $$('[data-cmp]').forEach(o => o.setAttribute('aria-pressed', o === b));
-      $('.tp-name', cmp).textContent = d[0]; $('.tp-h', cmp).textContent = d[1]; $('.tp-p', cmp).textContent = d[2];
-      vid.poster = '/assets/shots/' + slug + '.jpg'; vid.src = '/assets/shots/' + slug + '.mp4?v=3';
-      if (!reduce && onScreen) { const pr = vid.play(); pr && pr.catch(() => {}); }
-    }));
-    // the clip plays only while on screen; the first time it appears, the line sweeps once to show it can be dragged
-    let onScreen = false, hinted = false;
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(es => es.forEach(e => {
-        onScreen = e.isIntersecting;
-        if (onScreen && !reduce) { vid.preload = 'auto'; const pr = vid.play(); pr && pr.catch(() => {}); } else vid.pause();
-        if (onScreen && !hinted && !reduce) {
-          hinted = true; const t0 = performance.now();
-          const sweep = now => {
-            if (dragging) return; const k = Math.min(1, (now - t0) / 1600);
-            set(50 + Math.sin(k * Math.PI * 2) * 22 * (1 - k)); if (k < 1) requestAnimationFrame(sweep);
-          };
-          setTimeout(() => requestAnimationFrame(sweep), 400);
-        }
-      }), { threshold: .4 }).observe(cmp);
-    }
-  }
-
   // ---------- page transitions ----------
-  // A link to another page of this site: a black panel sweeps up over the page, then the next page opens and the
-  // panel carries on up and off it (see the head script). Pop-ups, new tabs, the top-left logo (it has its own
-  // opening animation) and the sample sites are left alone. Off for "reduce motion".
+  // A link to another page of this site: the page fades out quickly and the next one fades in (see the head script).
+  // Pop-ups, new tabs, the top-left logo (it has its own opening animation) and the sample sites are left alone.
   if (!reduce) {
-    const pt = document.createElement('div'); pt.className = 'pt'; pt.setAttribute('aria-hidden', 'true'); document.body.append(pt);
     const html = document.documentElement;
     document.addEventListener('click', e => {
       const a = e.target.closest && e.target.closest('a[href]');
@@ -424,10 +360,10 @@ window.kzGmail = (to, subject = '', body = '') => {
       e.preventDefault();
       html.classList.add('pt-out');
       try { sessionStorage.setItem('kz-pt', '1'); } catch (err) {}
-      setTimeout(() => { location.href = a.href; }, 430);
-      setTimeout(() => html.classList.remove('pt-out'), 4000);       // safety: never leave the page covered
+      setTimeout(() => { location.href = a.href; }, 150);
+      setTimeout(() => html.classList.remove('pt-out'), 3000);       // safety: never leave the page blank
     });
-    // coming back with the back button (page restored from memory): uncover it
+    // coming back with the back button (page restored from memory): show it straight away
     addEventListener('pageshow', e => { if (e.persisted) { html.classList.remove('pt-out', 'pt-in'); try { sessionStorage.removeItem('kz-pt'); } catch (err) {} } });
   }
 

@@ -589,40 +589,13 @@ html:has(dialog[open]) .blend-cursor{opacity:0}
 @media (max-width:560px){.bd-hero{grid-template-columns:1fr}.bd-vis{display:none}.bd-links{display:none}}
 @media (prefers-reduced-motion:reduce){.bd-page *,.bd-page::before{transition:none!important;animation:none!important}}
 
-/* ================= before and after slider (portfolio) ================= */
-.cmp-wrap{margin-top:clamp(70px,9vw,120px);margin-bottom:clamp(50px,6vw,80px)}
-.cmp-wrap .section-head{margin-bottom:22px}
-.cmp-tabs .tab[aria-pressed=true]{background:var(--ink);color:var(--paper);box-shadow:none}
-.cmp{--x:50%;position:relative;aspect-ratio:16/10;border-radius:20px;overflow:hidden;background:#111;box-shadow:0 0 0 1px var(--line-2),0 40px 80px -40px rgba(0,0,0,.4);container-type:inline-size;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize}
-.cmp-after{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.cmp-before{position:absolute;inset:0;background:#fff;color:#222;font-family:"Times New Roman",Times,serif;clip-path:inset(0 calc(100% - var(--x)) 0 0);pointer-events:none;display:flex;flex-direction:column}
-.tp-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:2.2cqw 3cqw;background:#e8e8e8;border-bottom:1px solid #c8c8c8;font-size:1.9cqw}
-.tp-nav b{font-size:2.6cqw}
-.tp-nav u{color:#1a0dab;margin-left:1.4cqw}
-.tp-body{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:3cqw;padding:4cqw 3cqw;align-items:center}
-.tp-img{display:grid;place-items:center;aspect-ratio:4/3;background:#d9d9d9;color:#8a8a8a;font:2.2cqw Arial,sans-serif;border:1px solid #c4c4c4}
-.tp-h{margin:0 0 1.6cqw;font:700 3.8cqw/1.15 "Times New Roman",Times,serif;color:#222}
-.tp-p{margin:0 0 2.4cqw;font-size:max(7px,2cqw);line-height:1.45;color:#333}
-.tp-btn{display:inline-block;padding:1cqw 2.2cqw;background:#2a62c9;color:#fff;font:1.9cqw Arial,sans-serif;border:1px solid #1d4a9e}
-.tp-foot{padding:1.6cqw 3cqw;background:#f0f0f0;border-top:1px solid #ccc;font:1.6cqw Arial,sans-serif;color:#777}
-.cmp-tag{position:absolute;bottom:14px;padding:6px 12px;border-radius:999px;font:600 .72rem/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;pointer-events:none;transition:opacity .25s}
-.cmp-tag-l{left:14px;background:#fff;color:#111;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
-.cmp-tag-r{right:14px;background:#111;color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.2)}
-.cmp[data-x-low] .cmp-tag-l,.cmp[data-x-high] .cmp-tag-r{opacity:0}
-.cmp-line{position:absolute;top:0;bottom:0;left:var(--x);width:44px;margin-left:-22px;display:grid;place-items:center;outline:0;cursor:ew-resize}
-.cmp-line::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
-.cmp-knob{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fff;color:#111;box-shadow:0 6px 20px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.12);transition:transform .2s var(--ease)}
-.cmp.dragging .cmp-knob,.cmp-line:focus-visible .cmp-knob{transform:scale(1.12)}
-.cmp-line:focus-visible .cmp-knob{box-shadow:0 0 0 3px #fff,0 0 0 5px #111}
-.cmp-note{margin-top:14px;font-size:.86rem}
-@media (max-width:560px){.cmp-tag{bottom:8px;padding:5px 9px;font-size:.58rem}.cmp-tag-l{left:8px}.cmp-tag-r{right:8px}.cmp-knob{width:38px;height:38px}}
+.build-wrap{margin-top:clamp(70px,9vw,120px);margin-bottom:clamp(50px,6vw,80px)}
 
-/* ================= page transitions: a black panel sweeps up over the page, then on up and off the next ================= */
-.pt{position:fixed;inset:0;z-index:2147483646;background:var(--ink);transform:translateY(100%);pointer-events:none;visibility:hidden}
-html.pt-out .pt{visibility:visible;transform:none;transition:transform .42s cubic-bezier(.7,0,.25,1)}
-html.pt-in body::after{content:"";position:fixed;inset:0;z-index:2147483646;background:var(--ink);pointer-events:none;animation:ptOff .6s .05s cubic-bezier(.7,0,.25,1) both}
-@keyframes ptOff{to{transform:translateY(-100%)}}
-@media (prefers-reduced-motion:reduce){.pt{display:none}html.pt-in body::after{display:none}}
+/* ================= page transitions: a quick fade out, and the next page fades in ================= */
+html.pt-out body{opacity:0;transition:opacity .15s ease}
+html.pt-in body{animation:ptIn .25s ease both}
+@keyframes ptIn{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){html.pt-out body{opacity:1}html.pt-in body{animation:none}}
 
 /* ================= opening screen: the ZS draws itself in white on black, fills in, then settles into the badge ================= */
 #kz-intro .ki-badge i{display:none!important}
