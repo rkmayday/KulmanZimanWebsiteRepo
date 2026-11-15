@@ -347,6 +347,63 @@ window.kzGmail = (to, subject = '', body = '') => {
     } else build();
   }
 
+  // ---------- Portfolio: stack slider (one slide per demo, driven by the scroll) ----------
+  const ss = $('.stack-show');
+  if (ss && !reduce) {
+    const demos = $$('.samples .sample').map(a => {
+      const st = getComputedStyle(a), vid = a.querySelector('video');
+      return { name: a.querySelector('b').textContent.trim(), ind: (a.querySelector('.s-ind') || {}).textContent || '', desc: (a.querySelector('b + span') || {}).textContent || '',
+        href: a.getAttribute('href'), ac: st.getPropertyValue('--s1').trim() || '#888', bg: st.getPropertyValue('--s2').trim() || '#111',
+        video: vid ? vid.getAttribute('src') : '', poster: vid ? vid.getAttribute('poster') : '' };
+    });
+    if (demos.length) {
+      ss.hidden = false;
+      const pin = $('.ss-pin', ss), word = $('.ss-word', ss), cardsEl = $('.ss-cards', ss), info = { count: $('.ss-count b', ss), ind: $('.ss-ind', ss), desc: $('.ss-desc', ss), open: $('.ss-open', ss) };
+      $('.ss-count', ss).lastChild.textContent = ' / ' + String(demos.length).padStart(2, '0');
+      const phone = matchMedia('(max-width: 860px), (hover: none)').matches;
+      const light = hex => { const h = hex.replace('#', ''); if (h.length < 6) return false; const [r, g, b] = [0, 2, 4].map(k => parseInt(h.substr(k, 2), 16)); return (r * 299 + g * 587 + b * 114) / 1000 > 150; };
+      const cards = demos.map((d, i) => {
+        const c = document.createElement('a'); c.className = 'ss-card'; c.href = d.href; c.setAttribute('aria-label', 'Open the ' + d.name + ' sample');
+        c.innerHTML = `<img src="${d.poster}" alt="" loading="${i ? 'lazy' : 'eager'}">` + (d.video ? `<video muted loop playsinline preload="none" src="${d.video}" aria-hidden="true"></video>` : '');
+        cardsEl.append(c); return c;
+      });
+      let active = -1;
+      // the giant word always fits across the frame, however long the name
+      const fit = () => { word.style.fontSize = ''; const cs = getComputedStyle(word), avail = word.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), w = word.scrollWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        if (w > avail && avail > 0) word.style.fontSize = (parseFloat(cs.fontSize) * avail / w * .97).toFixed(1) + 'px'; };
+      addEventListener('resize', () => { if (active >= 0) fit(); });
+      const setActive = i => {
+        if (i === active) return; active = i; const d = demos[i], lt = light(d.bg);
+        pin.style.setProperty('--bg', d.bg); pin.style.setProperty('--ac', d.ac);
+        pin.style.setProperty('--tx', lt ? '#141414' : '#f5f4f2'); pin.style.setProperty('--mu', lt ? 'rgba(20,20,20,.62)' : 'rgba(245,244,242,.7)');
+        word.innerHTML = [...d.name].map((ch, k) => ch === ' ' ? '<span class="sp" style="--i:' + k + '"></span>' : `<span style="--i:${k}">${ch}</span>`).join('');
+        fit();
+        info.count.textContent = String(i + 1).padStart(2, '0'); info.ind.textContent = d.ind; info.desc.textContent = d.desc; info.open.href = d.href;
+        cards.forEach((c, k) => { c.classList.toggle('on', k === i); const v = c.querySelector('video'); if (!v) return;
+          if (k === i) { v.preload = 'auto'; const pr = v.play(); pr && pr.catch(() => {}); } else v.pause(); });
+      };
+      let raf = 0, onScreen = false;
+      const paint = () => {
+        raf = 0; const r = ss.getBoundingClientRect(), run = Math.max(1, r.height - pin.offsetHeight);
+        const p = Math.min(1, Math.max(0, (72 - r.top) / run)), f = p * (demos.length - 1);
+        cards.forEach((c, k) => {
+          const d = k - f, ad = Math.abs(d);
+          c.style.transform = `translate3d(0,calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
+          c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .55)).toFixed(3);
+          if (!phone) c.style.filter = ad < .02 ? 'none' : `blur(${Math.min(10, ad * 7).toFixed(1)}px)`;
+          c.style.zIndex = String(100 - Math.round(ad * 10));
+          c.style.pointerEvents = ad < .5 ? 'auto' : 'none';
+        });
+        setActive(Math.round(f));
+        $('.ss-hint', ss).style.opacity = p > .02 ? '0' : '1';
+      };
+      const ask = () => { if (onScreen && !raf) raf = requestAnimationFrame(paint); };
+      new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) ask(); else cards.forEach(c => { const v = c.querySelector('video'); v && v.pause(); }); }).observe(ss);
+      addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
+      onScreen = true; paint();
+    }
+  }
+
   // ---------- page transitions ----------
   // A link to another page of this site: the page fades out quickly and the next one fades in (see the head script).
   // Pop-ups, new tabs, the top-left logo (it has its own opening animation) and the sample sites are left alone.
