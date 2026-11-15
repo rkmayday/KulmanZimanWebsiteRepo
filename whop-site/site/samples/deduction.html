@@ -4,111 +4,212 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Deduction — Sample Coding Course Site</title>
-<meta name="description" content="Deduction is a fictional creator who teaches people to code: a sample concept site built by Ziman Sites.">
+<meta name="description" content="Deduction is a fictional coding school for complete beginners: a sample concept site built by Ziman Sites.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#fbfaf6">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23fbfaf6'/%3E%3Cg fill='none' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 28 L14 50 L34 72' stroke='%2312142a'/%3E%3Cpath d='M57 22 L43 78' stroke='%23f2b600'/%3E%3Cpath d='M66 28 L86 50 L66 72' stroke='%2312142a'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#08080d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308080d'/%3E%3Cg fill='none' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 28 L14 50 L34 72' stroke='%23c4b5fd'/%3E%3Cpath d='M57 22 L43 78' stroke='%23f472b6'/%3E%3Cpath d='M66 28 L86 50 L66 72' stroke='%23c4b5fd'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/sample2.css?v=5483d320">
 <style>
-:root{--bg:#fbfaf6;--bg2:#f3f1ea;--fg:#12142a;--mut:#6b6e85;--line:#e4e2d8;--acc:#12142a;--on-acc:#fbfaf6;--panel:#ffffff;--panel2:#f3f1ea;--glass:rgba(255,255,255,.8);--display:"Sora",system-ui,sans-serif;--body:"Sora",system-ui,sans-serif;--mono:"Fira Code",ui-monospace,monospace;--hw:600;color-scheme:light}
+:root{--bg:#08080d;--bg2:#0d0d15;--fg:#f3f2f8;--mut:#9b99ad;--line:rgba(255,255,255,.09);--acc:#a78bfa;--acc2:#f472b6;--on-acc:#0b0a12;--panel:#0f0f17;--panel2:#15151f;--glass:rgba(15,15,23,.72);
+  --display:"Inter Tight",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--hw:600;--grad:linear-gradient(100deg,#c4b5fd 0%,#a78bfa 38%,#f472b6 100%);color-scheme:dark}
+body{background:var(--bg)}
+::selection{background:#a78bfa;color:#0b0a12}
+h1,h2{letter-spacing:-.045em}
+h1 em,h2 em{font-style:normal;color:transparent;background:var(--grad);-webkit-background-clip:text;background-clip:text}
+.k{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:none;color:var(--mut)}
+.k::before{content:"//";width:auto;height:auto;border-radius:0;background:none;color:var(--acc);font-weight:600}
+.btn{background:var(--fg);color:var(--bg);font-weight:600}
+.btn.glow{background:var(--grad);color:#0b0a12;box-shadow:0 10px 40px -10px rgba(167,139,250,.7)}
+.btn.ghost{color:var(--fg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--fg)}
+.stuck .nav{background:rgba(8,8,13,.78)}
+.brand svg path{stroke-width:9}
+.demo-strip{background:#f3f2f8;color:#08080d}
+main .sec + .sec{border-top:1px solid var(--line)}
 
-h1 em,h2 em{color:var(--fg);background:linear-gradient(transparent 58%,#ffd84d 58%,#ffd84d 92%,transparent 92%)}
-.k::before{background:#f2b600}
-.dd-mark{width:min(72vw,640px);overflow:visible;transform:scale(calc(.9 + var(--i) * .1 + var(--a) * .25))}
-.dd-l,.dd-r,.dd-s{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--i));transform-box:view-box;transform-origin:50px 50px}
-.dd-l{stroke:#12142a;transform:translate(calc(var(--mx) * -6px - var(--a) * 34px - var(--b) * 40px),calc(var(--my) * -4px));stroke-opacity:calc(1 - var(--b) * .85)}
-.dd-r{stroke:#12142a;transform:translate(calc(var(--mx) * 6px + var(--a) * 34px + var(--b) * 40px),calc(var(--my) * 4px));stroke-opacity:calc(1 - var(--b) * .85)}
-.dd-s{stroke:#f2b600;transform:rotate(calc(var(--a) * 76deg + var(--mx) * 10deg)) scale(calc(1 + var(--a) * .4 + var(--b) * .3));stroke-opacity:calc(1 - var(--b) * 1.1)}
-.dd-caret{fill:#12142a;transform-box:view-box;transform:translateX(calc(var(--a) * 40px));opacity:calc(var(--i) - var(--a) * 1.5);animation:ddblink 1s steps(1) infinite}
-@keyframes ddblink{50%{fill:transparent}}
-@media (max-width:720px){.dd-mark{width:84vw}}
-@media (prefers-reduced-motion:reduce){.dd-caret{animation:none}}
+/* ===== the opening: a glowing </> draws itself, then the brackets slide out to frame the headline ===== */
+.stage{--bh:clamp(150px,32vh,320px);--spread:min(30vw,430px);--sp:calc(var(--a,0) * .6 + var(--b,0) * .4)}
+.dd-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.dd-dots{position:absolute;inset:-20% 0;background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1.4px);background-size:28px 28px;
+  -webkit-mask:radial-gradient(ellipse 60% 55% at 50% 50%,#000 20%,transparent 75%);mask:radial-gradient(ellipse 60% 55% at 50% 50%,#000 20%,transparent 75%);
+  transform:translateY(calc(var(--p,0) * -120px));opacity:calc(.35 + var(--i,1) * .65)}
+.dd-glow{position:absolute;left:50%;top:50%;width:min(80vw,900px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(167,139,250,.32),rgba(244,114,182,.12) 38%,transparent 66%);filter:blur(10px);
+  transform:translate(calc(-50% + var(--mx,0) * 60px),calc(-50% + var(--my,0) * 40px)) scale(calc(.6 + var(--i,1) * .4 + var(--a,0) * .5));opacity:calc(var(--i,1) * (1 - var(--b,0) * .45))}
+.dd-br,.dd-sl{position:relative;height:var(--bh);overflow:visible;filter:drop-shadow(0 0 16px rgba(167,139,250,.55)) drop-shadow(0 0 2px rgba(196,181,253,.8))}
+.dd-br{width:calc(var(--bh) * .5)}
+.dd-br path,.dd-sl path{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--i,1))}
+.dd-br path{stroke:#c4b5fd;stroke-width:7}
+.dd-sl{width:calc(var(--bh) * .34);filter:drop-shadow(0 0 16px rgba(244,114,182,.6))}
+.dd-sl path{stroke:#f472b6;stroke-width:7}
+.dd-l{transform:translateX(calc(var(--bh) * -.62 - var(--sp) * var(--spread) + var(--mx,0) * -10px)) scale(calc(1 + var(--sp) * .35));opacity:calc(1 - var(--b,0) * .72)}
+.dd-r{transform:translateX(calc(var(--bh) * .62 + var(--sp) * var(--spread) + var(--mx,0) * 10px)) scale(calc(1 + var(--sp) * .35));opacity:calc(1 - var(--b,0) * .72)}
+.dd-sl{transform:rotate(calc(var(--sp) * 220deg + var(--mx,0) * 8deg)) scale(calc(1 - var(--sp) * .75));opacity:calc(1 - var(--sp) * 1.4)}
+.dd-type{position:absolute;left:0;right:0;top:calc(50% + var(--bh) * .5 + clamp(22px,4vh,40px));text-align:center;font:500 clamp(15px,1.6vw,19px)/1 var(--mono);color:var(--mut);
+  opacity:calc(var(--i,1) - var(--a,0) * 2.2)}
+.dd-type b{font-weight:500;color:var(--fg)}
+.dd-type i{display:inline-block;width:.6em;height:1.1em;margin-left:2px;vertical-align:-.18em;background:var(--acc);animation:ddblink 1s steps(1) infinite}
+@keyframes ddblink{50%{opacity:0}}
+.wordmark{color:var(--fg)}
+.wordmark b{color:transparent;background:var(--grad);-webkit-background-clip:text;background-clip:text}
+.copy h1{font-size:clamp(2.6rem,6.4vw,5.6rem)}
+.copy .lede{color:#b3b1c4}
+.cue{color:var(--fg)}
+.cue i{background:var(--acc)}
+@media (max-width:720px){.stage{--bh:clamp(120px,24vh,190px);--spread:24vw}}
+.no-stage .dd-l,.no-stage .dd-r,.no-stage .dd-sl{transform:none;opacity:1}
+.no-stage .dd-type{display:none}
 
+/* ===== sections ===== */
+.statement{max-width:26ch}
+.statement span{color:var(--mut)}
+.feats{gap:16px}
+.feat{border-top:0;padding:28px 26px 30px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));box-shadow:inset 0 0 0 1px var(--line);position:relative;overflow:hidden}
+.feat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.7),transparent)}
+.feat{align-content:start}
+.feat .n{font:500 12px var(--mono);color:var(--acc)}
+.feat h3{font-size:1.2rem}
 
+/* the course path: the line fills as you scroll through it */
+.path{position:relative;display:grid;gap:0;max-width:880px;--fill:0}
+.path::before,.path::after{content:"";position:absolute;left:19px;top:22px;bottom:22px;width:2px;border-radius:2px;background:var(--line)}
+.path::after{background:var(--grad);bottom:auto;height:calc((100% - 44px) * var(--fill));box-shadow:0 0 14px rgba(167,139,250,.6)}
+.step{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:22px;align-items:center;padding:22px 0}
+.step + .step{border-top:1px solid var(--line)}
+.dot{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:600 12px var(--mono);color:var(--mut);background:var(--bg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);transition:color .4s,box-shadow .4s,background .4s}
+.step.on .dot{color:#0b0a12;background:var(--grad);box-shadow:0 0 22px rgba(167,139,250,.55)}
+.step h3{font-size:clamp(1.1rem,1.7vw,1.35rem)}
+.step p{color:var(--mut);font-size:.94rem;margin-top:4px}
+.step small{font:500 12px var(--mono);color:var(--mut);white-space:nowrap}
+.step .tag{display:inline-block;margin-left:10px;padding:3px 9px;border-radius:99px;font:600 11px var(--mono);color:#f9a8d4;background:rgba(244,114,182,.12);vertical-align:2px}
+@media (max-width:640px){.step{grid-template-columns:40px minmax(0,1fr);gap:16px}.step small{grid-column:2}}
+
+/* the playground */
 .dd-lab{display:grid;gap:14px}
 .dd-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
+.seg button{color:var(--fg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.seg button[aria-pressed=true]{background:var(--fg);color:var(--bg)}
 .dd-task{color:var(--mut);min-height:1.6em}
-.dd-task b{color:var(--acc)}
+.dd-task b{color:#c4b5fd;font-weight:600}
 .dd-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:14px}
 @media (max-width:900px){.dd-grid{grid-template-columns:1fr}}
-.dd-editor,.dd-preview{border-radius:20px;overflow:hidden;background:#0b0e1c;box-shadow:inset 0 0 0 1px var(--line),0 40px 80px -50px rgba(0,0,0,.8);display:flex;flex-direction:column;min-height:400px}
-.dd-preview{background:#f5f6fb}
-.dd-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;background:#141831;font:500 12px var(--mono);color:#9aa0c2}
-.dd-preview .dd-bar{background:#e4e6f0;color:#5b6080}
-.dd-bar i{width:10px;height:10px;border-radius:50%;background:#ff6b6b}.dd-bar i:nth-child(2){background:#ffcc4d}.dd-bar i:nth-child(3){background:#5bd18b}
-.dd-bar span{margin-left:8px}.dd-bar em{margin-left:auto;font-style:normal;color:#2fa866}
+.dd-editor,.dd-preview{border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-height:400px;box-shadow:inset 0 0 0 1px var(--line),0 40px 80px -50px rgba(0,0,0,.9)}
+.dd-editor{background:#0b0b12}
+.dd-preview{background:#fff}
+.dd-bar{display:flex;align-items:center;gap:6px;padding:12px 14px;background:#12121b;font:500 12px var(--mono);color:#8d8ba3;border-bottom:1px solid var(--line)}
+.dd-preview .dd-bar{background:#f1f0f6;color:#6b6980;border-bottom-color:#e4e2ec}
+.dd-bar i{width:10px;height:10px;border-radius:50%;background:#3a3947}.dd-preview .dd-bar i{background:#d6d4e0}
+.dd-bar span{margin-left:8px}.dd-bar em{margin-left:auto;font-style:normal;color:#34d399}
 .dd-code{position:relative;flex:1;min-height:340px}
 .dd-hl,.dd-code textarea{position:absolute;inset:0;margin:0;padding:16px 18px;font:400 13.5px/1.7 var(--mono);white-space:pre;overflow:auto;tab-size:2;border:0}
-.dd-hl{pointer-events:none;color:#c9cdf0}
-.dd-code textarea{background:transparent;color:transparent;caret-color:#ffcc4d;resize:none;outline:0}
-.dd-code textarea::selection{background:rgba(255,204,77,.25);color:transparent}
-.dd-hl .t{color:#82aaff}.dd-hl .a{color:#c792ea}.dd-hl .s{color:#c3e88d}.dd-hl .c{color:#5f6690}.dd-hl .n{color:#f78c6c}.dd-hl .k{color:#c792ea}
+.dd-hl{pointer-events:none;color:#d4d2e6}
+.dd-code textarea{background:transparent;color:transparent;caret-color:#f472b6;resize:none;outline:0}
+.dd-code textarea::selection{background:rgba(167,139,250,.3);color:transparent}
+.dd-hl .t{color:#a78bfa}.dd-hl .a{color:#f9a8d4}.dd-hl .s{color:#86efac}.dd-hl .c{color:#5f5d75}.dd-hl .n{color:#fbbf24}.dd-hl .k{color:#f472b6}
+.dd-hl .k::before{content:none}
 .dd-preview iframe{flex:1;width:100%;border:0;background:#fff;min-height:340px}
 .dd-err{margin:0;padding:10px 14px;font:500 12.5px var(--mono);color:#b3261e;background:#fdecea}
 
+/* what you'll build */
+.builds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.builds{grid-template-columns:1fr}}
+.build{display:grid;align-content:start;gap:16px;padding:16px 16px 22px;border-radius:22px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
+@media (hover:hover){.build:hover{transform:translateY(-4px);box-shadow:inset 0 0 0 1px rgba(167,139,250,.45),0 30px 60px -30px rgba(167,139,250,.35)}}
+.build h3{padding-inline:6px}
+.build p{padding-inline:6px;color:var(--mut);font-size:.94rem}
+.shot{position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;background:#13131d;box-shadow:inset 0 0 0 1px var(--line)}
+.shot > *{position:absolute}
+/* 1. a landing page */
+.s1 .bar{left:8%;right:8%;top:10%;height:6%;border-radius:4px;background:rgba(255,255,255,.08)}
+.s1 .h{left:8%;top:28%;width:58%;height:12%;border-radius:4px;background:linear-gradient(90deg,#c4b5fd,#f472b6)}
+.s1 .l{left:8%;top:46%;width:44%;height:5%;border-radius:3px;background:rgba(255,255,255,.14)}
+.s1 .b{left:8%;top:60%;width:22%;height:10%;border-radius:99px;background:#f3f2f8}
+.s1 .o{right:8%;top:28%;width:24%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f9a8d4,#7c3aed)}
+/* 2. a weather app */
+.s2{background:linear-gradient(160deg,#1e1b4b,#13131d)}
+.s2 .sun{left:12%;top:18%;width:22%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fde68a,#f59e0b);box-shadow:0 0 30px rgba(251,191,36,.5)}
+.s2 .deg{left:40%;top:20%;font:600 clamp(26px,3.4vw,40px)/1 var(--display);color:#fff;letter-spacing:-.04em}
+.s2 .days{left:8%;right:8%;bottom:10%;height:30%;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.s2 .days i{border-radius:8px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+/* 3. a to-do app */
+.s3 .tdc{left:16%;right:16%;top:12%;bottom:12%;border-radius:12px;background:#f3f2f8;padding:0}
+.s3 .row{left:22%;right:22%;height:9%;border-radius:6px;display:flex;align-items:center;gap:8%}
+.s3 .row::before{content:"";width:8%;aspect-ratio:1;border-radius:50%;box-shadow:inset 0 0 0 2px #a78bfa}
+.s3 .row::after{content:"";flex:1;height:30%;border-radius:3px;background:#d4d2e0}
+.s3 .row.d::before{background:#a78bfa}.s3 .row.d::after{background:#a78bfa;opacity:.35}
+.s3 .r1{top:22%}.s3 .r2{top:38%}.s3 .r3{top:54%}.s3 .r4{top:70%}
 
-/* ===== Deduction's own look: friendly textbook. Yellow highlighter, code-comment labels, outlined cards ===== */
-.k{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--mut)}
-.k::before{content:"//";width:auto;height:auto;border-radius:0;background:none;color:#f2b600;font-weight:600}
-main h2{font-weight:700;letter-spacing:-.04em}
-main h2 em{color:var(--fg);background:linear-gradient(transparent 58%,#ffd84d 58%,#ffd84d 92%,transparent 92%);font-style:normal;padding:0 .08em}
-.statement span{color:var(--mut)}
-main .sec + .sec{border-top:2px dashed var(--line)}
-.btn{border-radius:12px;font-weight:700}
-.btn:not(.ghost){background:var(--fg);color:var(--bg);box-shadow:0 5px 0 #f2b600}
-.btn:not(.ghost):hover{transform:translateY(-2px);box-shadow:0 7px 0 #f2b600}
-.btn.ghost{box-shadow:inset 0 0 0 2px var(--fg)}
-.feat{border:2px solid var(--fg);border-radius:18px;padding:24px 22px 26px;background:#fff;box-shadow:0 6px 0 var(--fg)}
-.feat .n{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#ffd84d;color:var(--fg);font-weight:600;letter-spacing:0}
-.tiers{border:0;gap:18px}
-.tier,.tier + .tier{border:2px solid var(--fg)!important;border-radius:18px;background:#fff;box-shadow:0 6px 0 var(--fg)}
-.tier.best{background:#fff8d6;box-shadow:0 6px 0 #f2b600;border-color:var(--fg)!important}
-.dd-editor,.dd-preview{border-radius:18px;box-shadow:0 0 0 2px var(--fg),0 8px 0 var(--fg)}
-.quote{font-weight:700;letter-spacing:-.03em}
-.cta input{border-radius:12px!important;box-shadow:inset 0 0 0 2px var(--fg)!important}
-.x-3d{position:absolute;inset:0;width:100%;height:100%;display:block}
-.mark.has-3d .dd-mark{display:none}
-.x3d-wait .dd-mark{visibility:hidden}
+/* pricing */
+.tiers{border:0;gap:16px}
+.tier,.tier + .tier{border:0!important;border-radius:22px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.tier.best{background:linear-gradient(var(--panel),var(--panel)) padding-box,var(--grad) border-box;border:1px solid transparent!important;box-shadow:0 30px 70px -30px rgba(167,139,250,.45)}
+.tier li::before{content:"→ ";color:var(--acc)}
+.tier .k{color:#c4b5fd}
+
+/* sign-up */
+.cta{position:relative;overflow:hidden;padding:clamp(48px,7vw,90px) 22px;border-radius:28px;background:radial-gradient(ellipse 70% 90% at 50% 120%,rgba(167,139,250,.35),transparent 70%),var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.cta form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cta input{height:50px;min-width:min(300px,80vw);padding:0 20px;border-radius:99px;border:0;font:inherit;font-size:16px;color:var(--fg);background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.cta input::placeholder{color:#77758c}
+.cta input:focus{outline:0;box-shadow:inset 0 0 0 1px var(--acc),0 0 0 4px rgba(167,139,250,.2)}
+.foot{border-top:1px solid var(--line)}
 </style>
-<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
 <body id="top">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="/portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
-  <a class="brand" href="#top" aria-label="Deduction home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="currentColor"/><path d="M58 20 L42 80" stroke="#f2b600"/><path d="M66 26 L88 50 L66 74" stroke="currentColor"/></g></svg><span>Deduction</span></a>
-  <nav aria-label="Main"><ul class="links"><li><a href="#about">The course</a></li><li><a href="#play">Try it</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
+  <a class="brand" href="#top" aria-label="Deduction home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="#c4b5fd"/><path d="M58 20 L42 80" stroke="#f472b6"/><path d="M66 26 L88 50 L66 74" stroke="#c4b5fd"/></g></svg><span>Deduction</span></a>
+  <nav aria-label="Main"><ul class="links"><li><a href="#path">The path</a></li><li><a href="#play">Try it</a></li><li><a href="#builds">Projects</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
   <div class="actions"><a class="btn sm" href="#pricing">Start free</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
 </div></header>
-<nav class="drawer" aria-label="Mobile"><a href="#about">The course</a><a href="#play">Try it</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
+<nav class="drawer" aria-label="Mobile"><a href="#path">The path</a><a href="#play">Try it</a><a href="#builds">Projects</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
 <section class="stage" aria-label="Deduction" data-hold=".77" data-stop=".77">
   <div class="pin">
+    <div class="dd-bg" aria-hidden="true"><div class="dd-dots"></div><div class="dd-glow"></div></div>
     <div class="mark" aria-hidden="true">
-      <svg class="dd-mark" viewBox="0 0 100 100"><g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
-        <path class="dd-l" pathLength="1" d="M34 26 L12 50 L34 74"/><path class="dd-s" pathLength="1" d="M58 20 L42 80"/><path class="dd-r" pathLength="1" d="M66 26 L88 50 L66 74"/></g>
-        <rect class="dd-caret" x="97" y="40" width="3" height="20" rx="1.5"/></svg>
+      <svg class="dd-br dd-l" viewBox="0 0 60 120"><path pathLength="1" d="M52 8 L8 60 L52 112"/></svg>
+      <svg class="dd-sl" viewBox="0 0 40 120"><path pathLength="1" d="M32 6 L8 114"/></svg>
+      <svg class="dd-br dd-r" viewBox="0 0 60 120"><path pathLength="1" d="M8 8 L52 60 L8 112"/></svg>
+      <div class="dd-type"><span class="dd-typed"></span><i></i></div>
     </div>
     <div class="wordmark" aria-hidden="true">Welcome to <b>Deduction</b></div>
     <div class="copy">
-      <span class="k">Learn to code, one small win at a time</span>
-      <h1>From hello to <em>shipping</em> your first app.</h1>
-      <p class="lede">Short lessons, a playground next to every video and six real projects. No setup, no jargon, no feeling lost.</p>
-      <div class="actions"><a class="btn" href="#pricing">Start the first module free <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#play">Try the playground</a></div>
+      <span class="k">Coding courses for complete beginners</span>
+      <h1>Learn to code by <em>building real things.</em></h1>
+      <p class="lede">Short lessons, a playground beside every one, and six projects you can actually show people. No setup, no jargon, no feeling lost.</p>
+      <div class="actions"><a class="btn glow" href="#pricing">Start the first module free <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#play">Try the playground</a></div>
     </div>
     <div class="cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
   </div>
 </section>
 
 <section class="sec" id="about"><div class="wrap">
-  <p class="statement rv">Most people quit coding in week two, <span>not because it is hard but because nothing they build works yet. Here, every lesson ends with something that does.</span></p>
-  <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat"><span class="n">01</span><h3>Lessons under 8 minutes</h3><p>Small enough for a lunch break, and each one ends with something working on screen.</p></div><div class="feat"><span class="n">02</span><h3>A playground in every lesson</h3><p>Pause, type, run. Nothing to install and nothing to configure, ever.</p></div><div class="feat"><span class="n">03</span><h3>Six real projects</h3><p>From a landing page to your own portfolio at yourname.dev, each reviewed by a mentor.</p></div></div>
+  <p class="statement rv">Most people quit coding in week two, <span>not because it is hard, but because nothing they build works yet. Here, every lesson ends with something that does.</span></p>
+  <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)">
+    <div class="feat"><span class="n">01</span><h3>Lessons under 8 minutes</h3><p>Small enough for a lunch break, and each one ends with something working on screen.</p></div>
+    <div class="feat"><span class="n">02</span><h3>A playground in every lesson</h3><p>Pause, type, run. Nothing to install and nothing to configure, ever.</p></div>
+    <div class="feat"><span class="n">03</span><h3>Real projects, reviewed</h3><p>Six builds from a landing page to your own portfolio, each reviewed by a mentor.</p></div>
+  </div>
+</div></section>
+
+<section class="sec" id="path"><div class="wrap">
+  <div class="head rv"><span class="k">The path</span><h2>From zero to <em>your own portfolio.</em></h2><p class="lede">Six modules, in order. Each one builds on the last and ends with something you made.</p></div>
+  <div class="path">
+    <div class="step"><span class="dot">01</span><div><h3>HTML: your first page</h3><p>Headings, links, images. Your page is online by the end of lesson three.</p></div><small>12 lessons</small></div>
+    <div class="step"><span class="dot">02</span><div><h3>CSS: make it look good<span class="tag">project</span></h3><p>Colour, layout and type. You rebuild a real landing page from scratch.</p></div><small>14 lessons</small></div>
+    <div class="step"><span class="dot">03</span><div><h3>JavaScript basics</h3><p>Variables, functions and events: buttons that actually do things.</p></div><small>16 lessons</small></div>
+    <div class="step"><span class="dot">04</span><div><h3>Talking to the internet<span class="tag">project</span></h3><p>Fetch live data and turn it into a weather app.</p></div><small>12 lessons</small></div>
+    <div class="step"><span class="dot">05</span><div><h3>Building an app<span class="tag">project</span></h3><p>State, storage and structure, in a to-do app you will actually use.</p></div><small>16 lessons</small></div>
+    <div class="step"><span class="dot">06</span><div><h3>Ship your portfolio<span class="tag">project</span></h3><p>Put it all together on your own site, live at yourname.dev.</p></div><small>14 lessons</small></div>
+  </div>
 </div></section>
 
 <section class="sec" id="play"><div class="wrap">
-  <div class="head"><span class="k">Try it now</span><h2>Write code. <em>See it move.</em></h2><p class="lede">This is a real playground. Edit the code on the left and the page on the right updates as you type. Pick a challenge to start.</p></div>
+  <div class="head rv"><span class="k">Try it now</span><h2>Write code. <em>See it move.</em></h2><p class="lede">This is a real playground. Edit the code on the left and the page on the right updates as you type. Pick a challenge to start.</p></div>
   <div class="dd-lab">
     <div class="dd-top"><div class="seg" id="dd-ch"><button type="button" data-c="0" aria-pressed="true">1 · Change the colour</button><button type="button" data-c="1" aria-pressed="false">2 · Make it bounce</button><button type="button" data-c="2" aria-pressed="false">3 · Count the clicks</button></div>
       <button class="btn ghost sm" type="button" id="dd-reset">Reset</button></div>
@@ -122,34 +223,66 @@ main .sec + .sec{border-top:2px dashed var(--line)}
   </div>
 </div></section>
 
+<section class="sec" id="builds"><div class="wrap">
+  <div class="head rv"><span class="k">What you will build</span><h2>Things you can <em>actually show people.</em></h2></div>
+  <div class="builds" data-stagger>
+    <div class="build"><div class="shot s1" aria-hidden="true"><i class="bar"></i><i class="h"></i><i class="l"></i><i class="b"></i><i class="o"></i></div><h3>A landing page</h3><p>Module 2. Rebuild a real product page, pixel by pixel.</p></div>
+    <div class="build"><div class="shot s2" aria-hidden="true"><i class="sun"></i><span class="deg">21°</span><div class="days"><i></i><i></i><i></i><i></i><i></i></div></div><h3>A weather app</h3><p>Module 4. Live forecasts for anywhere you type.</p></div>
+    <div class="build"><div class="shot s3" aria-hidden="true"><i class="tdc"></i><i class="row r1 d"></i><i class="row r2 d"></i><i class="row r3"></i><i class="row r4"></i></div><h3>A to-do app</h3><p>Module 5. Saves your list, works offline.</p></div>
+  </div>
+</div></section>
 
 <section class="sec" id="pricing"><div class="wrap">
-  <div class="head rv"><span class="k">Pricing</span><h2>Pick <em>where you are.</em></h2></div>
-  <div class="tiers" data-stagger><div class="tier"><span class="k">First module</span><div class="price">Free</div><ul><li>12 lessons of HTML</li><li>Playground included</li><li>Your first page online</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div><div class="tier best"><span class="k">Full path</span><div class="price">$19<small> /month</small></div><ul><li>All 84 lessons</li><li>6 mentor-reviewed projects</li><li>Weekly live sessions</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div><div class="tier"><span class="k">Lifetime</span><div class="price">$249<small> once</small></div><ul><li>Everything in Full path</li><li>All future modules</li><li>1:1 portfolio review</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div></div>
+  <div class="head rv"><span class="k">Pricing</span><h2>Start free. <em>Stay if you love it.</em></h2></div>
+  <div class="tiers" data-stagger><div class="tier"><span class="k">First module</span><div class="price">Free</div><ul><li>12 lessons of HTML</li><li>Playground included</li><li>Your first page online</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div><div class="tier best"><span class="k">Full path</span><div class="price">$19<small> /month</small></div><ul><li>All 84 lessons</li><li>6 mentor-reviewed projects</li><li>Weekly live sessions</li></ul><a class="btn glow sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div><div class="tier"><span class="k">Lifetime</span><div class="price">$249<small> once</small></div><ul><li>Everything in Full path</li><li>All future modules</li><li>1:1 portfolio review</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start learning</a></div></div>
   <p class="fine" style="margin-top:16px">Prices on this sample site are illustrative.</p>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <p class="quote rv">“I tried three courses before. This is the first one where I finished and had something to show.”</p>
-  <div class="who rv"><b>Tom Alvarez</b> · Career changer</div>
-  <p class="fine" style="margin-top:14px">Sample review written for this concept.</p>
-</div></section>
-
-<section class="sec"><div class="wrap cta">
-  <h2 class="rv">Your first line of code is <em>ten minutes away.</em></h2>
-  <form class="rv" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><input type="email" required placeholder="you@example.com" aria-label="Email" style="height:50px;min-width:min(300px,80vw);padding:0 20px;border-radius:99px;border:0;font:inherit;font-size:16px;color:var(--fg);background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)"><button class="btn" type="submit">Send me lesson one</button></form>
+  <div class="cta rv">
+    <span class="k">Lesson one is free</span>
+    <h2>Your first line of code is <em>ten minutes away.</em></h2>
+    <form><input type="email" required placeholder="you@example.com" aria-label="Email"><button class="btn glow" type="submit">Send me lesson one</button></form>
+  </div>
 </div></section>
 </main>
 
-<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="currentColor"/><path d="M58 20 L42 80" stroke="#f2b600"/><path d="M66 26 L88 50 L66 74" stroke="currentColor"/></g></svg><span>Deduction</span></a>
-  <nav><a href="#about">The course</a><a href="#play">Try it</a><a href="#pricing">Pricing</a></nav><span>© 2026 Deduction (fictional)</span></div></footer>
+<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="#c4b5fd"/><path d="M58 20 L42 80" stroke="#f472b6"/><path d="M66 26 L88 50 L66 74" stroke="#c4b5fd"/></g></svg><span>Deduction</span></a>
+  <nav><a href="#path">The path</a><a href="#play">Try it</a><a href="#builds">Projects</a><a href="#pricing">Pricing</a></nav><span>© 2026 Deduction (fictional)</span></div></footer>
 
 <script src="/assets/sample2.js?v=bffbd206" defer></script>
 <script src="/assets/smooth.js?v=cd842495" defer></script>
-<script src="/assets/three.min.js?v=eb854986" defer></script>
-<script src="/assets/sample3d.js?v=cfd5ef75" defer></script>
-<script src="/assets/deduction-logo.js?v=d5d8c4ce" defer></script>
 
+<script>
+// Deduction: the address types itself under the logo as the page opens, and the course path fills as you scroll
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const typed = document.querySelector('.dd-typed'), word = 'deduction.dev';
+  if (typed) {
+    if (reduce) typed.innerHTML = '<b>deduction</b>.dev';
+    else {
+      // one letter every 70 ms, starting just after the logo begins to draw (on the animation clock)
+      const t0 = performance.now(); let shown = -1;
+      const tick = now => { const n = Math.max(0, Math.min(word.length, Math.floor((now - t0 - 380) / 70) + 1));
+        if (n !== shown) { shown = n; const t = word.slice(0, n); typed.innerHTML = '<b>' + t.slice(0, 9) + '</b>' + t.slice(9); }
+        if (n < word.length) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }
+  }
+  const path = document.querySelector('.path'), steps = [...document.querySelectorAll('.step')];
+  if (path) {
+    let raf = 0;
+    const fill = () => {
+      raf = 0; const r = path.getBoundingClientRect(), vh = innerHeight;
+      const f = reduce ? 1 : Math.min(1, Math.max(0, (vh * .62 - r.top) / r.height));
+      path.style.setProperty('--fill', f.toFixed(4));
+      steps.forEach(s => { const sr = s.getBoundingClientRect(); s.classList.toggle('on', reduce || sr.top + sr.height / 2 < vh * .62); });
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(fill); }, { passive: true });
+    addEventListener('resize', fill); fill();
+  }
+})();
+</script>
 <script>
 // Deduction sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.
 (() => {
@@ -217,7 +350,6 @@ main .sec + .sec{border-top:2px dashed var(--line)}
   load(0);
 })();
 </script>
-
 <script>document.title="Deduction \u2014 Sample Coding Course Site";</script>
 </body>
 </html>
