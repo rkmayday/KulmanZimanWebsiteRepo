@@ -3,29 +3,42 @@
 (() => {
   const mq = q => matchMedia(q).matches;
   if (mq('(prefers-reduced-motion: reduce)')) return;
+  // every stop point on the page, freshly measured: [{ y, up }] (up = it also stops on the way back up)
+  const stops = () => {
+    const out = [];
+    for (const el of document.querySelectorAll('[data-stop-y], [data-stops]')) {
+      if (el.__refreshStop) el.__refreshStop();
+      if (el.dataset.stopY) out.push({ y: +el.dataset.stopY, up: !!el.dataset.stopUp });
+      if (el.dataset.stops) el.dataset.stops.split(',').forEach(v => out.push({ y: +v, up: true }));
+    }
+    return out.filter(o => o.y > 0).sort((a, b) => a.y - b.y);
+  };
   if (!mq('(hover: hover) and (pointer: fine)')) {
-    // Phones and tablets scroll natively (no snapping). On the home page and the demos, a flick that would carry past the end of the
+    // Phones and tablets scroll natively (no snapping). A flick that would carry past a stop point (the end of an opening, or a Portfolio slide)
     // opening stops right there, with the headline fully in: only once the finger has left the screen (never
     // fighting the finger), and the rest of that flick is dropped. The next swipe scrolls on as normal.
-    const stage = document.querySelector('.stage[data-stop], .kz-stage'); if (!stage) return;   // the demos and the home page
+    if (!document.querySelector('[data-stop-y], [data-stops], .stage[data-stop], .kz-stage')) return;
     const root = document.documentElement;
-    let y0 = 0, touching = false, armed = 0, stopping = false;
-    const S = () => { if (stage.__refreshStop) stage.__refreshStop(); return +stage.dataset.stopY || 0; };
-    addEventListener('touchstart', () => { touching = true; y0 = scrollY; }, { passive: true });
+    let y0 = 0, touching = false, target = null, stopping = false;
+    addEventListener('touchstart', () => { touching = true; y0 = scrollY; target = null; }, { passive: true });
     const lift = () => {
-      touching = false; const s = S(); if (!s) return;
-      armed = y0 < s - 4 ? 1 : (stage.dataset.stopUp && y0 > s + 4 ? -1 : 0);   // which way this flick would cross the stop
-      armed && check();
+      touching = false;
+      // the first stop this flick would cross: the next one down, or (if it allows it) the next one up
+      const list = stops(), down = list.find(o => o.y > y0 + 4), up = [...list].reverse().find(o => o.up && o.y < y0 - 4);
+      target = { down: down ? down.y : null, up: up ? up.y : null };
+      check();
     };
     addEventListener('touchend', lift, { passive: true }); addEventListener('touchcancel', lift, { passive: true });
+    const stopAt = y => {
+      target = null; stopping = true;
+      root.style.overflow = 'hidden';              // ends the momentum
+      scrollTo(0, y);
+      setTimeout(() => { root.style.overflow = ''; scrollTo(0, y); stopping = false; }, 120);
+    };
     const check = () => {
-      if (!armed || touching || stopping) return; const s = +stage.dataset.stopY; if (!s) return;
-      if ((armed > 0 && scrollY >= s) || (armed < 0 && scrollY <= s)) {
-        armed = 0; stopping = true;
-        root.style.overflow = 'hidden';              // ends the momentum
-        scrollTo(0, s);
-        setTimeout(() => { root.style.overflow = ''; scrollTo(0, s); stopping = false; }, 120);
-      }
+      if (!target || touching || stopping) return;
+      if (target.down !== null && scrollY >= target.down) stopAt(target.down);
+      else if (target.up !== null && scrollY <= target.up) stopAt(target.up);
     };
     addEventListener('scroll', check, { passive: true });
     return;
@@ -76,14 +89,11 @@
     if (!raf) { cur = target = scrollY; }
     const from = target;
     target = Math.max(0, Math.min(max(), target + dy * SPEED));
-    // stop points: one scroll plays an opening animation and stops when it is done, instead of flying past it
-    for (const el of document.querySelectorAll('[data-stop-y]')) {
-      if (el.__refreshStop) el.__refreshStop();                       // always use the stop point for the page as it is now
-      const s = +el.dataset.stopY;
-      if (dy > 0 && from < s - 2 && target > s) { target = s; held = true; heldUntil = now + 6000; }
-      // scrolling back up (demos): stop at the finished headline instead of rewinding the whole animation
-      if (dy < 0 && el.dataset.stopUp && from > s + 2 && target < s) { target = s; held = true; heldUntil = now + 6000; }
-    }
+    // stop points: one scroll plays an opening animation and stops when it is done, instead of flying past it;
+    // stepped sections (the Portfolio stack slider) stop at every slide, in both directions
+    const list = stops();
+    if (dy > 0) { const o = list.find(o => from < o.y - 2 && target > o.y); if (o) { target = o.y; held = true; heldUntil = now + 6000; } }
+    else { const o = [...list].reverse().find(o => o.up && from > o.y + 2 && target < o.y); if (o) { target = o.y; held = true; heldUntil = now + 6000; } }
     if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });
 

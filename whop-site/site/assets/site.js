@@ -398,6 +398,10 @@ window.kzGmail = (to, subject = '', body = '') => {
         $('.ss-hint', ss).style.opacity = p > .02 ? '0' : '1';
       };
       const ask = () => { if (onScreen && !raf) raf = requestAnimationFrame(paint); };
+      // one scroll moves exactly one slide: a stop point at every slide (smooth.js)
+      const refresh = () => { const top = ss.getBoundingClientRect().top + scrollY - 72, run = Math.max(1, ss.offsetHeight - pin.offsetHeight);
+        ss.dataset.stops = demos.map((d, k) => Math.round(top + run * k / Math.max(1, demos.length - 1))).join(','); };
+      ss.__refreshStop = refresh; refresh(); addEventListener('load', refresh);
       new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) ask(); else cards.forEach(c => { const v = c.querySelector('video'); v && v.pause(); }); }).observe(ss);
       addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
       onScreen = true; paint();
