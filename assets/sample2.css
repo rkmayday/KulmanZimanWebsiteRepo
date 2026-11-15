@@ -24,9 +24,9 @@ p{margin:0}
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:50px;padding:0 24px;border:0;border-radius:999px;cursor:pointer;white-space:nowrap;
   font:600 15px/1 var(--body);text-decoration:none;background:var(--acc);color:var(--on-acc);transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
-.btn:hover{transform:translateY(-2px)}
+@media (hover:hover){.btn:hover{transform:translateY(-2px)}}
 .btn.ghost{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
-.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--fg)}
+@media (hover:hover){.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--fg)}}
 .btn.sm{height:40px;padding:0 16px;font-size:14px}
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
@@ -38,7 +38,7 @@ p{margin:0}
 .brand svg{width:26px;height:26px}
 .links{display:flex;gap:2px;list-style:none;margin:0;padding:0}
 .links a{display:block;padding:8px 13px;border-radius:99px;font-size:.9rem;color:var(--mut);text-decoration:none;transition:color .2s}
-.links a:hover{color:var(--fg)}
+@media (hover:hover){.links a:hover{color:var(--fg)}}
 .burger{display:none;width:42px;height:42px;border:0;border-radius:12px;background:transparent;box-shadow:inset 0 0 0 1px var(--line);cursor:pointer;color:var(--fg)}
 .burger span{display:block;width:16px;height:1.5px;margin:4px auto;background:currentColor;transition:transform .3s}
 .menu-open .burger span:first-child{transform:translateY(2.75px) rotate(45deg)}
@@ -119,7 +119,7 @@ p{margin:0}
 .foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
 .foot nav{display:flex;flex-wrap:wrap;gap:18px}
 .foot a{text-decoration:none}
-.foot a:hover{color:var(--fg)}
+@media (hover:hover){.foot a:hover{color:var(--fg)}}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:70;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:12px 18px;border-radius:12px;background:var(--fg);color:var(--bg);font-weight:600;font-size:.9rem;transition:opacity .3s,transform .4s cubic-bezier(.2,.8,.2,1)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
@@ -136,7 +136,7 @@ p{margin:0}
 .lab-label{font:500 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 .seg button{border:0;cursor:pointer;padding:9px 14px;border-radius:99px;font:500 14px var(--body);color:var(--fg);background:transparent;box-shadow:inset 0 0 0 1px var(--line);transition:background .25s,color .25s,box-shadow .25s}
-.seg button:hover{box-shadow:inset 0 0 0 1px var(--fg)}
+@media (hover:hover){.seg button:hover{box-shadow:inset 0 0 0 1px var(--fg)}}
 .seg button[aria-pressed=true]{background:var(--fg);color:var(--bg);box-shadow:none}
 .range{display:grid;gap:8px}
 .range input{width:100%;accent-color:var(--acc)}

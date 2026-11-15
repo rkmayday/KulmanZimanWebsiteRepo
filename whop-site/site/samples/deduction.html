@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308080d'/%3E%3Cg fill='none' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 28 L14 50 L34 72' stroke='%23c4b5fd'/%3E%3Cpath d='M57 22 L43 78' stroke='%23f472b6'/%3E%3Cpath d='M66 28 L86 50 L66 72' stroke='%23c4b5fd'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/sample2.css?v=5483d320">
+<link rel="stylesheet" href="/assets/sample2.css?v=88b5f6f4">
 <style>
 :root{--bg:#08080d;--bg2:#0d0d15;--fg:#f3f2f8;--mut:#9b99ad;--line:rgba(255,255,255,.09);--acc:#a78bfa;--acc2:#f472b6;--on-acc:#0b0a12;--panel:#0f0f17;--panel2:#15151f;--glass:rgba(15,15,23,.72);
   --display:"Inter Tight",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--hw:600;--grad:linear-gradient(100deg,#c4b5fd 0%,#a78bfa 38%,#f472b6 100%);color-scheme:dark}
@@ -23,7 +23,7 @@ h1 em,h2 em{font-style:normal;color:transparent;background:var(--grad);-webkit-b
 .btn{background:var(--fg);color:var(--bg);font-weight:600}
 .btn.glow{background:var(--grad);color:#0b0a12;box-shadow:0 10px 40px -10px rgba(167,139,250,.7)}
 .btn.ghost{color:var(--fg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--fg)}
+@media (hover:hover){.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--fg)}}
 .stuck .nav{background:rgba(8,8,13,.78)}
 .brand svg path{stroke-width:9}
 .demo-strip{background:#f3f2f8;color:#08080d}
