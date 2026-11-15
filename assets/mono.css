@@ -492,9 +492,9 @@ a.box.lift:active{transform:translateY(-1px)}
 .blend-cursor::before{content:"";position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#fff;
   transition:transform .28s cubic-bezier(.2,.7,.2,1)}
 .blend-cursor.on{opacity:1}
-.blend-cursor.big::before{transform:scale(3)}
+.blend-cursor.big::before{transform:scale(2.3)}
 .blend-cursor.down::before{transform:scale(.75)}
-.blend-cursor.big.down::before{transform:scale(2.6)}
+.blend-cursor.big.down::before{transform:scale(2)}
 .blend-cursor.text{opacity:0}
 html.blend-on,html.blend-on *{cursor:none!important}
 html.blend-on :is(input:not([type=range]):not([type=checkbox]):not([type=radio]),textarea,[contenteditable]){cursor:text!important}
