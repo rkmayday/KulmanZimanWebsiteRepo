@@ -201,11 +201,11 @@
     falling.forEach((g, k) => { const u = g.userData; g.visible = rain > .01;
       if (!g.visible) return;
       const d = camera.position.z - u.z, sx = d / camera.position.z;          // keep beans further back inside the frame too
-      const x = wide ? mix(.12, .92, u.u) * hw * sx : (k % 2 ? 1 : -1) * mix(.62, .95, u.u) * hw * sx;
+      const x = wide ? mix(.12, .92, u.u) * hw * sx : (k % 2 ? 1 : -1) * mix(.86, 1.04, u.u) * hw * sx;   // phones: right at the edges
       const q = (now * u.sp + u.ph) % 1, span = 2 * hh * sx + 1;
       g.position.set(x + Math.sin(now * .7 + k) * .08, span / 2 - q * span, u.z);
       g.setRotationFromAxisAngle(u.ax, now * u.rs + k);
-      g.scale.setScalar(u.s * (wide ? 1 : .75) * (.6 + .4 * rain));
+      g.scale.setScalar(u.s * (wide ? 1 : .5) * (.6 + .4 * rain));
     });
     fallOut.opacity = fallIn.opacity = 1;
     renderer.render(scene, camera);

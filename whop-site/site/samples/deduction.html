@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308080d'/%3E%3Cg fill='none' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 28 L14 50 L34 72' stroke='%23c4b5fd'/%3E%3Cpath d='M57 22 L43 78' stroke='%23f472b6'/%3E%3Cpath d='M66 28 L86 50 L66 72' stroke='%23c4b5fd'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/sample2.css?v=88b5f6f4">
+<link rel="stylesheet" href="/assets/sample2.css?v=ce72f965">
 <style>
 :root{--bg:#08080d;--bg2:#0d0d15;--fg:#f3f2f8;--mut:#9b99ad;--line:rgba(255,255,255,.09);--acc:#a78bfa;--acc2:#f472b6;--on-acc:#0b0a12;--panel:#0f0f17;--panel2:#15151f;--glass:rgba(15,15,23,.72);
   --display:"Inter Tight",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--hw:600;--grad:linear-gradient(100deg,#c4b5fd 0%,#a78bfa 38%,#f472b6 100%);color-scheme:dark}
@@ -94,7 +94,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .dd-task{color:var(--mut);min-height:1.6em}
 .dd-task b{color:#c4b5fd;font-weight:600}
 .dd-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:14px}
-@media (max-width:900px){.dd-grid{grid-template-columns:1fr}}
+@media (max-width:900px){.dd-grid{grid-template-columns:minmax(0,1fr)}}
 .dd-editor,.dd-preview{border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-height:400px;box-shadow:inset 0 0 0 1px var(--line),0 40px 80px -50px rgba(0,0,0,.9)}
 .dd-editor{background:#0b0b12}
 .dd-preview{background:#fff}
@@ -114,7 +114,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
 
 /* what you'll build */
 .builds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-@media (max-width:900px){.builds{grid-template-columns:1fr}}
+@media (max-width:900px){.builds{grid-template-columns:minmax(0,1fr)}}
 .build{display:grid;align-content:start;gap:16px;padding:16px 16px 22px;border-radius:22px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
 @media (hover:hover){.build:hover{transform:translateY(-4px);box-shadow:inset 0 0 0 1px rgba(167,139,250,.45),0 30px 60px -30px rgba(167,139,250,.35)}}
 .build h3{padding-inline:6px}

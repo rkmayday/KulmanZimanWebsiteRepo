@@ -95,12 +95,12 @@ p{margin:0}
 .statement{font:var(--hw,500) clamp(1.8rem,3.6vw,3rem)/1.18 var(--display);letter-spacing:-.035em;max-width:24ch}
 .statement span{color:var(--mut)}
 .feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,56px)}
-@media (max-width:860px){.feats{grid-template-columns:1fr}}
+@media (max-width:860px){.feats{grid-template-columns:minmax(0,1fr)}}
 .feat{display:grid;gap:12px;padding-top:22px;border-top:1px solid var(--line)}
 .feat .n{font:500 12px var(--mono);color:var(--acc);letter-spacing:.1em}
 .feat p{color:var(--mut)}
 .tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
-@media (max-width:860px){.tiers{grid-template-columns:1fr}}
+@media (max-width:860px){.tiers{grid-template-columns:minmax(0,1fr)}}
 .tier{display:flex;flex-direction:column;gap:16px;padding:30px 26px 34px;border-bottom:1px solid var(--line)}
 .tier + .tier{border-left:1px solid var(--line)}
 @media (max-width:860px){.tier + .tier{border-left:0}}
@@ -131,7 +131,7 @@ p{margin:0}
 .card{position:relative;padding:clamp(22px,2.6vw,30px);border-radius:22px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
 .row-ui{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--fg) 5%,transparent);font-size:.9rem}
 .lab{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px;align-items:stretch}
-@media (max-width:960px){.lab{grid-template-columns:1fr}}
+@media (max-width:960px){.lab{grid-template-columns:minmax(0,1fr)}}
 .lab .card{display:grid;gap:18px;align-content:start}
 .lab-label{font:500 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
@@ -177,3 +177,7 @@ p{margin:0}
 .demo-strip b{font-weight:700}
 .demo-strip a{color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:640px){.demo-strip{font-size:11.5px;gap:10px;justify-content:space-between}.demo-strip span{overflow:hidden;text-overflow:ellipsis}.demo-strip a{flex:none}}
+
+/* lab cards never grow wider than the screen (their contents wrap instead) */
+.lab > *{min-width:0}
+.lab .card{grid-template-columns:minmax(0,1fr)}
