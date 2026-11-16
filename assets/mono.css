@@ -782,3 +782,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 .pt-item b{font-weight:600;color:var(--ink-2);font-size:.95rem}
 .pt-item em{font:600 1.7rem/1 var(--font-display);font-style:normal;letter-spacing:-.04em}
 @media (hover:hover){.pt-item:hover{background:var(--paper-2)}}
+
+/* breathing room between the full-width demo slider and the demo boxes below it */
+.stack-show{margin-bottom:clamp(56px,7vw,96px)}
