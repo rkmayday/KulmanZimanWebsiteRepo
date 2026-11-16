@@ -37,6 +37,35 @@
     $$('.rv').forEach(el => io.observe(el));
   } else $$('.rv').forEach(el => el.classList.add('in'));
 
+  // headings light up word by word as you scroll past them (like the Ziman Sites home page). The text stays in the page as
+  // normal text for screen readers. A word in gradient lettering lights up as one piece.
+  if (!reduce && 'IntersectionObserver' in window) {
+    const groups = $$('h2').filter(h => !h.closest('.stage') && !h.closest('[data-no-sw]')).map(el => {
+      const words = [];
+      const walk = node => [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          if (!n.textContent.trim()) return;
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(p => { if (!p) return; if (/^\s+$/.test(p)) { frag.append(p); return; }
+            const w = document.createElement('span'); w.className = 'sw-word'; w.textContent = p; frag.append(w); words.push(w); });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') {
+          const cs = getComputedStyle(n);
+          if ((cs.webkitBackgroundClip || cs.backgroundClip) === 'text') { n.classList.add('sw-word'); words.push(n); } else walk(n);
+        }
+      });
+      walk(el); return { el, words, last: -1 };
+    });
+    const live = new Set(); let swRaf = 0;
+    const paint = () => { swRaf = 0; const vh = innerHeight;
+      live.forEach(g => { const p = clamp((vh * .9 - g.el.getBoundingClientRect().top) / (vh * .42)); if (Math.abs(p - g.last) < .002) return; g.last = p;
+        const n = g.words.length; g.words.forEach((w, i) => w.style.setProperty('--wo', (.14 + .86 * clamp(p * (n + 2) - i)).toFixed(3))); }); };
+    const ask = () => { if (!swRaf) swRaf = requestAnimationFrame(paint); };
+    const swio = new IntersectionObserver(es => { es.forEach(e => { const g = groups.find(x => x.el === e.target); e.isIntersecting ? live.add(g) : live.delete(g); }); ask(); }, { rootMargin: '10% 0px 10% 0px' });
+    groups.forEach(g => swio.observe(g.el));
+    addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
+  }
+
   // ---------- the stage ----------
   const stage = $('.stage');
   if (!stage) return;

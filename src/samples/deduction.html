@@ -141,6 +141,128 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .s3 .row.d::before{background:#a78bfa}.s3 .row.d::after{background:#a78bfa;opacity:.35}
 .s3 .r1{top:22%}.s3 .r2{top:38%}.s3 .r3{top:54%}.s3 .r4{top:70%}
 
+/* ===== the path: a screen that builds a real site as you move through the modules ===== */
+.grow-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,70px);align-items:start}
+.grow-wrap .path{grid-column:1;grid-row:1}
+.grow{grid-column:2;grid-row:1;position:sticky;top:calc(var(--navh,68px) + 40px);display:grid;gap:14px}
+.g-win{border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px var(--line),0 50px 90px -40px rgba(0,0,0,.9);transition:box-shadow .8s}
+.g-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;background:#f1f0f6;font:500 12px var(--mono);color:#6b6980;border-bottom:1px solid #e4e2ec}
+.g-bar > i{width:10px;height:10px;border-radius:50%;background:#d6d4e0}
+.g-url{position:relative;margin-left:10px;flex:1;min-width:0;height:1.4em;overflow:hidden}
+.g-url > span{position:absolute;left:0;top:0;white-space:nowrap;transition:opacity .4s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.g-url b{color:#7c3aed}
+.g-url .u2,.g-url .u6{opacity:0;transform:translateY(100%)}
+.s2 .g-url .u1,.s6 .g-url .u2{opacity:0;transform:translateY(-100%)}
+.s2 .g-url .u2,.s6 .g-url .u6{opacity:1;transform:none}
+.g-live{font-style:normal;color:#10b981;opacity:0;transform:scale(.6);transition:opacity .4s,transform .5s cubic-bezier(.2,1.4,.4,1)}
+.s6 .g-live{opacity:1;transform:none}
+.g-page{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:18px;padding:26px 24px;min-height:300px;color:#000;
+  font-family:"Times New Roman",Times,serif;background:#fff;transition:background .8s}
+.s2 .g-page{font-family:var(--body);background:radial-gradient(120% 90% at 100% 0%,#efe9ff,#fff 60%)}
+.g-main{display:grid;align-content:start;gap:12px}
+.g-h{margin:0;font:700 26px/1.1 "Times New Roman",Times,serif;color:#000;transition:color .6s}
+.s2 .g-h{font:600 28px/1.05 var(--display);letter-spacing:-.04em;color:transparent;background:var(--grad);-webkit-background-clip:text;background-clip:text}
+.g-p{margin:0;font-size:15px;line-height:1.45;color:#000;transition:color .6s}
+.g-p u{color:#0000ee}
+.s2 .g-p{color:#4b4a5c}.s2 .g-p u{color:#7c3aed;text-decoration-thickness:2px;text-underline-offset:3px}
+.g-btn{justify-self:start;position:relative;display:inline-grid;padding:4px 10px;font:13px system-ui,sans-serif;color:#000;background:#efefef;border:1px solid #767676;border-radius:2px;transition:all .6s cubic-bezier(.2,.8,.2,1)}
+.g-btn > span{grid-area:1/1;transition:opacity .35s,transform .35s}
+.g-b3{opacity:0;transform:translateY(60%)}
+.s2 .g-btn{padding:11px 20px;border:0;border-radius:99px;color:#fff;background:#12142a;font:600 14px var(--body);box-shadow:0 10px 24px -10px rgba(18,20,42,.6)}
+.s3 .g-btn{background:linear-gradient(100deg,#7c3aed,#db2777);animation:gTap 1.8s ease-in-out infinite}
+.s3 .g-b0{opacity:0;transform:translateY(-60%)}.s3 .g-b3{opacity:1;transform:none}
+@keyframes gTap{0%,70%,100%{transform:scale(1)}78%{transform:scale(.93)}88%{transform:scale(1.04)}}
+.g-side{position:relative;min-height:180px}
+.g-side > *{position:absolute;inset:0 0 auto 0;transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.g-img{height:130px;display:grid;place-items:center;border:1px dashed #9a9a9a;font:12px system-ui;color:#6b6b6b;background:#fafafa}
+.s2 .g-img{border:0;border-radius:18px;color:transparent;background:radial-gradient(circle at 35% 30%,#f9a8d4,#7c3aed 70%);box-shadow:0 20px 40px -18px rgba(124,58,237,.6);animation:gFloat 5s ease-in-out infinite}
+@keyframes gFloat{50%{transform:translateY(-6px) rotate(2deg)}}
+.s4 .g-img{opacity:0;transform:scale(.85);animation:none}
+.g-wx{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:4px 12px;padding:16px;border-radius:16px;color:#fff;background:linear-gradient(150deg,#312e81,#1e1b4b);
+  box-shadow:0 20px 40px -20px rgba(30,27,75,.7);opacity:0;transform:translateY(16px) scale(.94)}
+.g-wx b{font:600 34px/1 var(--display);letter-spacing:-.04em}
+.g-wx span{grid-column:2;font:500 12px/1.3 var(--body);color:#c7c3f7}
+.g-sun{grid-row:span 2;width:44px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fde68a,#f59e0b);box-shadow:0 0 24px rgba(251,191,36,.7);animation:gSpin 6s linear infinite}
+@keyframes gSpin{50%{box-shadow:0 0 36px rgba(251,191,36,.9)}}
+.s4 .g-wx{opacity:1;transform:none}
+.s5 .g-wx{transform:translateY(0) scale(.82);transform-origin:top left;opacity:.9}
+.g-todo{list-style:none;margin:0;padding:12px 14px;display:grid;gap:8px;top:auto;bottom:0;border-radius:14px;background:#f5f3ff;box-shadow:inset 0 0 0 1px #e4ddff;
+  font:500 13px var(--body);color:#2e2a4a;opacity:0;transform:translateY(16px)}
+.g-todo li{display:flex;align-items:center;gap:9px}
+.g-todo li::before{content:"";flex:none;width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 2px #a78bfa;transition:background .3s}
+.s5 .g-todo{opacity:1;transform:none}
+.s5 .g-todo li{animation:gDone 4.5s infinite}
+.s5 .g-todo li::before{animation:gDot 4.5s infinite}
+.s5 .g-todo li:nth-child(2),.s5 .g-todo li:nth-child(2)::before{animation-delay:.7s}
+.s5 .g-todo li:nth-child(3),.s5 .g-todo li:nth-child(3)::before{animation-delay:1.4s}
+@keyframes gDot{0%,15%{background:transparent}25%,90%{background:#a78bfa}100%{background:transparent}}
+@keyframes gDone{0%,15%{color:#2e2a4a;text-decoration:none}25%,90%{color:#9a95b8;text-decoration:line-through}}
+.g-stamp{position:absolute;right:18px;bottom:16px;padding:6px 12px;border-radius:8px;font:700 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#10b981;
+  box-shadow:inset 0 0 0 2px #10b981;transform:rotate(-8deg) scale(1.8);opacity:0;transition:opacity .3s,transform .5s cubic-bezier(.2,1.5,.4,1)}
+.s6 .g-stamp{opacity:1;transform:rotate(-8deg) scale(1)}
+.s6 .g-win{box-shadow:0 0 0 1px rgba(167,139,250,.6),0 0 60px -10px rgba(167,139,250,.6),0 50px 90px -40px rgba(0,0,0,.9)}
+.g-meta{display:flex;align-items:center;gap:14px;font:500 12px var(--mono);color:var(--mut)}
+.g-meta b{color:var(--fg)}
+.g-prog{flex:1;height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.g-prog i{display:block;height:100%;width:calc(var(--gp,0) * 100%);background:var(--grad);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:900px){
+  .grow-wrap{grid-template-columns:minmax(0,1fr);gap:18px}
+  .grow{grid-column:1;grid-row:1;top:var(--navh,68px);z-index:3;padding:14px 0 12px;background:var(--bg);box-shadow:0 18px 22px -14px var(--bg)}
+  .grow-wrap .path{grid-row:2}
+  .g-page{min-height:0;height:188px;padding:14px;gap:12px;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+  .g-h{font-size:19px}.s2 .g-h{font-size:20px}
+  .g-p{font-size:12px}
+  .g-btn{font-size:11px}.s2 .g-btn{padding:8px 13px;font-size:11.5px}
+  .g-side{min-height:0}
+  .g-img{height:96px}
+  .g-wx{padding:10px;gap:2px 8px;border-radius:12px}.g-wx b{font-size:22px}.g-wx span{font-size:10px}.g-sun{width:28px}
+  .s5 .g-wx{transform:scale(.7)}
+  .g-todo{padding:8px 10px;gap:5px;font-size:10.5px;border-radius:10px}.g-todo li::before{width:10px;height:10px}
+  .g-stamp{right:10px;bottom:8px;font-size:10px;padding:4px 8px}
+  .g-bar{padding:8px 12px;font-size:10.5px}.g-bar > i{width:8px;height:8px}
+}
+@media (prefers-reduced-motion:reduce){.grow *{animation:none!important;transition:none!important}}
+
+/* ===== what you'll build: a 3D deck ===== */
+.builds{perspective:1400px}
+.build{position:relative;transform:translate3d(var(--fx,0px),var(--fy,0px),0) rotate(var(--fr,0deg)) perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--lift,0px));
+  transition:transform .18s ease-out,box-shadow .4s;z-index:var(--z,1);will-change:transform;transform-style:preserve-3d}
+@media (hover:hover){.build:hover{transform:translate3d(var(--fx,0px),var(--fy,0px),0) rotate(var(--fr,0deg)) perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px)}}
+.glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;opacity:0;transition:opacity .4s;
+  background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.14),transparent 45%)}
+.build.live .glare{opacity:1}
+.build.live{box-shadow:inset 0 0 0 1px rgba(167,139,250,.5),0 40px 80px -30px rgba(167,139,250,.45)}
+/* the projects come alive */
+.build.live .s1 .h{animation:bType 2.4s steps(14) infinite}
+@keyframes bType{0%{width:0}60%,100%{width:58%}}
+.build.live .s1 .b{animation:bPress 2.4s ease-in-out infinite}
+@keyframes bPress{0%,70%,100%{transform:scale(1)}80%{transform:scale(.88)}}
+.build.live .s1 .o{animation:bOrb 3s ease-in-out infinite}
+@keyframes bOrb{50%{transform:translateY(-10%) scale(1.06)}}
+.build.live .s2 .sun{animation:bSun 2.6s ease-in-out infinite}
+@keyframes bSun{50%{box-shadow:0 0 50px rgba(251,191,36,.9);transform:scale(1.08)}}
+.s2 .days i{transform-origin:bottom}
+.build.live .s2 .days i{animation:bDay 2.4s cubic-bezier(.2,.8,.2,1) infinite}
+.build.live .s2 .days i:nth-child(2){animation-delay:.1s}.build.live .s2 .days i:nth-child(3){animation-delay:.2s}.build.live .s2 .days i:nth-child(4){animation-delay:.3s}.build.live .s2 .days i:nth-child(5){animation-delay:.4s}
+@keyframes bDay{0%{transform:scaleY(.2);background:rgba(255,255,255,.07)}40%,80%{transform:scaleY(1);background:rgba(196,181,253,.22)}100%{transform:scaleY(.2)}}
+.build.live .s3 .r3::before,.build.live .s3 .r4::before{animation:bCheck 2.8s infinite}
+.build.live .s3 .r4::before{animation-delay:.6s}
+@keyframes bCheck{0%,25%{background:transparent}35%,90%{background:#a78bfa}100%{background:transparent}}
+/* phones: a stack you swipe through */
+.builds.deck{display:grid;grid-template-columns:minmax(0,1fr);perspective:none}
+.builds.deck .build{grid-area:1/1;transform:translate3d(calc(var(--dx,0) * 1px),calc(var(--k,0) * 16px),0) rotate(calc(var(--dx,0) * .05deg)) scale(calc(1 - var(--k,0) * .06));
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s;z-index:calc(10 - var(--k,0));opacity:calc(1 - var(--k,0) * .25);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.builds.deck .build.drag{transition:none}
+.builds.deck .build.out{opacity:0}
+.deck-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:40px}
+.deck-nav button{width:46px;height:46px;border-radius:50%;border:0;display:grid;place-items:center;color:var(--fg);background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);cursor:pointer}
+.deck-nav button:active{transform:scale(.93)}
+.dk-dots{display:flex;gap:7px}.dk-dots i{width:7px;height:7px;border-radius:9px;background:rgba(255,255,255,.25);transition:width .3s,background .3s}
+.dk-dots i.on{width:22px;background:var(--grad)}
+.deck-nav[hidden],.deck-hint[hidden]{display:none}
+.deck-hint{margin:12px 0 0;text-align:center;font:500 12px var(--mono);color:var(--mut)}
+@media (prefers-reduced-motion:reduce){.build,.builds.deck .build{transition:none}.build.live *{animation:none!important}}
+
 /* pricing */
 .tiers{border:0;gap:16px}
 .tier,.tier + .tier{border:0!important;border-radius:22px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
@@ -198,6 +320,26 @@ main .sec + .sec{border-top:1px solid var(--line)}
 
 <section class="sec" id="path"><div class="wrap">
   <div class="head rv"><span class="k">The path</span><h2>From zero to <em>your own portfolio.</em></h2><p class="lede">Six modules, in order. Each one builds on the last and ends with something you made.</p></div>
+  <div class="grow-wrap">
+  <div class="grow" aria-hidden="true">
+    <div class="g-win">
+      <div class="g-bar"><i></i><i></i><i></i><span class="g-url"><span class="u1">file:///my-site/index.html</span><span class="u2">localhost:5173</span><span class="u6"><b>yourname</b>.dev</span></span><em class="g-live">● Live</em></div>
+      <div class="g-page">
+        <div class="g-main">
+          <h4 class="g-h">My first page</h4>
+          <p class="g-p">Hi, I am learning to code. <u>Read more</u></p>
+          <span class="g-btn"><span class="g-b0">Click me</span><span class="g-b3">Clicked <b class="g-n">0</b> times</span></span>
+        </div>
+        <div class="g-side">
+          <div class="g-img"><span>image.png</span></div>
+          <div class="g-wx"><i class="g-sun"></i><b>21°</b><span>Sunny<br>London</span></div>
+          <ul class="g-todo"><li>Finish module 5</li><li>Deploy my site</li><li>Tell everyone</li></ul>
+        </div>
+        <span class="g-stamp">Shipped</span>
+      </div>
+    </div>
+    <div class="g-meta"><span>Module <b class="g-m">01</b> / 06</span><span class="g-prog"><i></i></span><span class="g-pc">0%</span></div>
+  </div>
   <div class="path">
     <div class="step"><span class="dot">01</span><div><h3>HTML: your first page</h3><p>Headings, links, images. Your page is online by the end of lesson three.</p></div><small>12 lessons</small></div>
     <div class="step"><span class="dot">02</span><div><h3>CSS: make it look good<span class="tag">project</span></h3><p>Colour, layout and type. You rebuild a real landing page from scratch.</p></div><small>14 lessons</small></div>
@@ -205,6 +347,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
     <div class="step"><span class="dot">04</span><div><h3>Talking to the internet<span class="tag">project</span></h3><p>Fetch live data and turn it into a weather app.</p></div><small>12 lessons</small></div>
     <div class="step"><span class="dot">05</span><div><h3>Building an app<span class="tag">project</span></h3><p>State, storage and structure, in a to-do app you will actually use.</p></div><small>16 lessons</small></div>
     <div class="step"><span class="dot">06</span><div><h3>Ship your portfolio<span class="tag">project</span></h3><p>Put it all together on your own site, live at yourname.dev.</p></div><small>14 lessons</small></div>
+  </div>
   </div>
 </div></section>
 
@@ -225,11 +368,13 @@ main .sec + .sec{border-top:1px solid var(--line)}
 
 <section class="sec" id="builds"><div class="wrap">
   <div class="head rv"><span class="k">What you will build</span><h2>Things you can <em>actually show people.</em></h2></div>
-  <div class="builds" data-stagger>
-    <div class="build"><div class="shot s1" aria-hidden="true"><i class="bar"></i><i class="h"></i><i class="l"></i><i class="b"></i><i class="o"></i></div><h3>A landing page</h3><p>Module 2. Rebuild a real product page, pixel by pixel.</p></div>
-    <div class="build"><div class="shot s2" aria-hidden="true"><i class="sun"></i><span class="deg">21°</span><div class="days"><i></i><i></i><i></i><i></i><i></i></div></div><h3>A weather app</h3><p>Module 4. Live forecasts for anywhere you type.</p></div>
-    <div class="build"><div class="shot s3" aria-hidden="true"><i class="tdc"></i><i class="row r1 d"></i><i class="row r2 d"></i><i class="row r3"></i><i class="row r4"></i></div><h3>A to-do app</h3><p>Module 5. Saves your list, works offline.</p></div>
+  <div class="builds">
+    <div class="build"><span class="glare" aria-hidden="true"></span><div class="shot s1" aria-hidden="true"><i class="bar"></i><i class="h"></i><i class="l"></i><i class="b"></i><i class="o"></i></div><h3>A landing page</h3><p>Module 2. Rebuild a real product page, pixel by pixel.</p></div>
+    <div class="build"><span class="glare" aria-hidden="true"></span><div class="shot s2" aria-hidden="true"><i class="sun"></i><span class="deg">21°</span><div class="days"><i></i><i></i><i></i><i></i><i></i></div></div><h3>A weather app</h3><p>Module 4. Live forecasts for anywhere you type.</p></div>
+    <div class="build"><span class="glare" aria-hidden="true"></span><div class="shot s3" aria-hidden="true"><i class="tdc"></i><i class="row r1 d"></i><i class="row r2 d"></i><i class="row r3"></i><i class="row r4"></i></div><h3>A to-do app</h3><p>Module 5. Saves your list, works offline.</p></div>
   </div>
+  <div class="deck-nav" hidden><button type="button" class="dk-prev" aria-label="Previous project"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="dk-dots" aria-hidden="true"><i></i><i></i><i></i></span><button type="button" class="dk-next" aria-label="Next project"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <p class="deck-hint" hidden>Swipe the cards</p>
 </div></section>
 
 <section class="sec" id="pricing"><div class="wrap">
@@ -253,6 +398,105 @@ main .sec + .sec{border-top:1px solid var(--line)}
 <script src="{{ASSETS}}sample2.js" defer></script>
 <script src="{{ASSETS}}smooth.js" defer></script>
 
+<script>
+// Deduction: the path screen builds a real site as you move through the modules, and the projects are a 3D deck
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), sm = v => { v = clamp(v); return v * v * (3 - 2 * v); };
+
+  // ---- the growing site ----
+  const grow = document.querySelector('.grow'), steps = [...document.querySelectorAll('.step')];
+  if (grow && steps.length) {
+    const mEl = grow.querySelector('.g-m'), pc = grow.querySelector('.g-pc'), nEl = grow.querySelector('.g-n');
+    let shown = -1, clicks = 0, timer = 0;
+    const set = n => {
+      if (n === shown) return; shown = n;
+      for (let k = 1; k <= 6; k++) grow.classList.toggle('s' + k, k <= n);
+      mEl.textContent = String(Math.max(1, n)).padStart(2, '0');
+      pc.textContent = Math.round(n / 6 * 100) + '%'; grow.style.setProperty('--gp', n / 6);
+      // module 3 and on: the button counts its own clicks
+      if (n >= 3 && !timer && !reduce) { clicks = 1; nEl.textContent = 1; } if (n >= 3 && !timer && !reduce) timer = setInterval(() => { clicks++; nEl.textContent = clicks; }, 1800);
+      if (n < 3 && timer) { clearInterval(timer); timer = 0; clicks = 0; nEl.textContent = 0; }
+      if (reduce && n >= 3) nEl.textContent = 3;
+    };
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      const phone = matchMedia('(max-width: 900px)').matches;
+      const line = phone ? grow.getBoundingClientRect().bottom + 50 : innerHeight * .74;
+      let n = 0; steps.forEach(s => { const r = s.getBoundingClientRect(); if (r.top + r.height / 2 < line) n++; });
+      set(n);
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(read); }, { passive: true });
+    addEventListener('resize', read); read();
+  }
+
+  // ---- the projects deck ----
+  const box = document.querySelector('.builds'); if (!box) return;
+  const cards = [...box.querySelectorAll('.build')], nav = document.querySelector('.deck-nav'), hint = document.querySelector('.deck-hint');
+  const dots = nav ? [...nav.querySelectorAll('.dk-dots i')] : [];
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let deck = null, order = cards.map((c, i) => i);
+
+  // computers and tablets: the cards start stacked and fan out into a row as the section comes up the screen
+  let fRaf = 0;
+  const fan = () => {
+    fRaf = 0; if (deck) return;
+    const r = box.getBoundingClientRect(), e = reduce ? 1 : sm((innerHeight - r.top) / (innerHeight * .6));
+    cards.forEach((c, i) => {
+      const d = i - (cards.length - 1) / 2;
+      c.style.setProperty('--fx', (-d * (1 - e) * (c.offsetWidth + 16)).toFixed(1) + 'px');
+      c.style.setProperty('--fy', ((1 - e) * (40 + Math.abs(d) * 18)).toFixed(1) + 'px');
+      c.style.setProperty('--fr', (d * (1 - e) * 9).toFixed(2) + 'deg');
+      c.style.setProperty('--z', String(5 - Math.abs(d)));
+    });
+  };
+  // tilt towards the pointer, with a soft light where it is
+  if (fine && !reduce) cards.forEach(c => {
+    c.addEventListener('pointermove', ev => { if (deck) return; const r = c.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+      c.style.setProperty('--rx', ((.5 - y) * 12).toFixed(2) + 'deg'); c.style.setProperty('--ry', ((x - .5) * 14).toFixed(2) + 'deg');
+      c.style.setProperty('--gx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--gy', (y * 100).toFixed(1) + '%'); c.classList.add('live'); });
+    c.addEventListener('pointerleave', () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); c.classList.remove('live'); });
+  });
+
+  // phones: a stack you swipe through (or use the arrows)
+  const layout = () => {
+    order.forEach((ci, k) => { cards[ci].style.setProperty('--k', k); cards[ci].classList.toggle('live', k === 0); cards[ci].setAttribute('aria-hidden', k ? 'true' : 'false'); });
+    dots.forEach((d, i) => d.classList.toggle('on', i === order[0]));
+  };
+  const move = dir => {
+    const top = cards[order[0]];
+    if (dir > 0) { top.classList.add('out'); top.style.setProperty('--dx', -innerWidth); setTimeout(() => { top.classList.add('drag'); top.style.setProperty('--dx', 0); order.push(order.shift()); layout(); requestAnimationFrame(() => requestAnimationFrame(() => top.classList.remove('drag', 'out'))); }, reduce ? 0 : 260); }
+    else { order.unshift(order.pop()); layout(); }
+  };
+  const enterDeck = () => {
+    deck = true; box.classList.add('deck'); if (nav) nav.hidden = false; if (hint) hint.hidden = false;
+    cards.forEach(c => ['--fx', '--fy', '--fr', '--rx', '--ry'].forEach(v => c.style.removeProperty(v))); layout();
+  };
+  const leaveDeck = () => {
+    deck = null; box.classList.remove('deck'); if (nav) nav.hidden = true; if (hint) hint.hidden = true;
+    cards.forEach(c => { c.style.removeProperty('--k'); c.style.removeProperty('--dx'); c.classList.remove('live'); c.removeAttribute('aria-hidden'); }); fan();
+  };
+  const mq = matchMedia('(max-width: 900px)');
+  const pick = () => { mq.matches ? (deck || enterDeck()) : (deck && leaveDeck()); fan(); };
+  mq.addEventListener ? mq.addEventListener('change', pick) : mq.addListener(pick); pick();
+  if (nav) { nav.querySelector('.dk-next').addEventListener('click', () => move(1)); nav.querySelector('.dk-prev').addEventListener('click', () => move(-1)); }
+  // drag the top card sideways; up and down still scrolls the page
+  let sx = 0, sy = 0, dx = 0, dragging = false, decided = false;
+  box.addEventListener('touchstart', e => { if (!deck) return; const t = e.touches[0]; sx = t.clientX; sy = t.clientY; dx = 0; dragging = false; decided = false; }, { passive: true });
+  box.addEventListener('touchmove', e => {
+    if (!deck) return; const t = e.touches[0], mx = t.clientX - sx, my = t.clientY - sy;
+    if (!decided && (Math.abs(mx) > 8 || Math.abs(my) > 8)) { decided = true; dragging = Math.abs(mx) > Math.abs(my); if (dragging) cards[order[0]].classList.add('drag'); }
+    if (dragging) { dx = mx; cards[order[0]].style.setProperty('--dx', dx.toFixed(1)); }
+  }, { passive: true });
+  box.addEventListener('touchend', () => {
+    if (!deck || !dragging) return; const top = cards[order[0]]; top.classList.remove('drag'); dragging = false;
+    if (Math.abs(dx) > 70) { if (dx < 0) move(1); else { top.style.setProperty('--dx', 0); move(-1); } } else top.style.setProperty('--dx', 0);
+  });
+  addEventListener('scroll', () => { if (!fRaf) fRaf = requestAnimationFrame(fan); }, { passive: true });
+  addEventListener('resize', fan); fan();
+})();
+</script>
 <script>
 // Deduction: the address types itself under the logo as the page opens, and the course path fills as you scroll
 (() => {

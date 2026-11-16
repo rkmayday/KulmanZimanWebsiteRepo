@@ -181,3 +181,6 @@ p{margin:0}
 /* lab cards never grow wider than the screen (their contents wrap instead) */
 .lab > *{min-width:0}
 .lab .card{grid-template-columns:minmax(0,1fr)}
+
+/* headings light up word by word as you scroll (sample2.js) */
+.sw-word{opacity:var(--wo,.14);transition:opacity .25s linear}
