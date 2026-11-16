@@ -807,3 +807,13 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   .ss-info{padding-bottom:10px}
 }
 @media (max-width:860px){.ss-cards{margin-block:14px 16px}}
+
+/* demo slider on phone-width screens: grows to fit (nothing cut off); title, card, then the arrows right under it
+   (always on screen with the card), then the details. On short screens the card shrinks so the arrows still show. */
+@media (max-width:860px){
+  .ss-pin{height:auto;min-height:0;grid-template-rows:auto auto auto auto;padding:18px 18px 34px;align-content:start}
+  .ss-word{grid-row:1;padding-top:6px}
+  .ss-cards{grid-row:2;width:min(100%,calc((100svh - 72px - 250px) * 1.6));justify-self:center;margin-block:14px 4px}
+  .ss-nav{grid-row:3;justify-self:center;margin:14px 0 18px}
+  .ss-info{grid-row:4;padding:0}
+}
