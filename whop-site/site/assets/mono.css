@@ -674,3 +674,8 @@ html:has(dialog[open]) .cur-ctl{display:none}
   .ss-hint{display:none}
 }
 @media (prefers-reduced-motion:reduce){.stack-show{display:none!important}}
+
+/* Ryder's profile photo: the elastic frame (elastic-frame.js, computers only) */
+.ef-host{position:relative}
+.ef-canvas{position:absolute;z-index:2;pointer-events:none}
+.ef-host .portrait.photo{position:relative;z-index:1}
