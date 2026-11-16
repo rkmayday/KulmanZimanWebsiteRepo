@@ -223,9 +223,9 @@ def head_tags(meta):
 (function(){{var r=document.documentElement,play=false,nav=performance.getEntriesByType?performance.getEntriesByType('navigation')[0]:null,type=nav?nav.type:'navigate',same=false;
 try{{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}}catch(e){{}}
 var from=null;try{{from=sessionStorage.getItem('kz-from');sessionStorage.removeItem('kz-from');}}catch(e){{}}
-if(from==='brand')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
+if(from==='brand'||from==='loader')play=true;else if(from==='link')play=false;else play=type==='navigate'&&!same;
 if(location.hash==='#intro')play=true;
-var entry=from!=='brand'&&location.hash!=='#intro';
+var entry=from==='loader'||(from!=='brand'&&location.hash!=='#intro');
 if(play&&entry&&!matchMedia('(prefers-reduced-motion: reduce)').matches){{r.classList.add('kz-loader','intro-hold');setTimeout(function(){{r.classList.remove('intro-hold');}},2950);setTimeout(function(){{r.classList.remove('kz-loader');}},3750);play=false;}}
 if(play&&!matchMedia('(prefers-reduced-motion: reduce)').matches){{r.classList.add('intro','intro-hold');
 setTimeout(function(){{r.classList.remove('intro-hold');}},1150);setTimeout(function(){{r.classList.remove('intro');}},2400);}}}})();</script>

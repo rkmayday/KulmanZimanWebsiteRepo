@@ -26,9 +26,9 @@ window.kzGmail = (to, subject = '', body = '') => {
     if (!a || a.target || e.metaKey || e.ctrlKey || e.shiftKey) return;
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin) return;
-    const brand = !!a.closest('.nav .brand');
-    if (!brand && u.pathname === location.pathname && u.hash) return;   // in-page section jumps
-    try { sessionStorage.setItem('kz-from', brand ? 'brand' : 'link'); } catch (err) {}
+    const brand = !!a.closest('.nav .brand'), loader = !!a.closest('footer .brand');   // the footer's Ziman Sites replays the Intro Loader
+    if (!brand && !loader && u.pathname === location.pathname && u.hash) return;   // in-page section jumps
+    try { sessionStorage.setItem('kz-from', loader ? 'loader' : brand ? 'brand' : 'link'); } catch (err) {}
   }, true);
 
   // Nav: glass background once scrolled, mobile menu toggle
@@ -430,7 +430,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       const u = new URL(a.href, location.href);
       if (u.origin !== location.origin || /^\/samples\//.test(u.pathname) || /\/get-started(\.html)?$/.test(u.pathname)) return;
       if (u.pathname === location.pathname) return;                 // same page (section links)
-      if (a.closest('.nav .brand')) return;                          // the logo replays the opening instead
+      if (a.closest('.nav .brand') || a.closest('footer .brand')) return;   // these replay an opening instead
       e.preventDefault();
       html.classList.add('pt-out');
       try { sessionStorage.setItem('kz-pt', '1'); } catch (err) {}
