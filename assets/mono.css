@@ -817,3 +817,44 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   .ss-nav{grid-row:3;justify-self:center;margin:14px 0 18px}
   .ss-info{grid-row:4;padding:0}
 }
+
+/* ================= Home industries: Expanded Cards. A rail of tall slivers; hovering one widens it into a full card
+   (its demo behind it) and slides the others aside. Clicking opens the portfolio slider on that demo. ================= */
+.xcards{display:flex;gap:12px;height:clamp(440px,62vh,560px)}
+.xc{position:relative;flex:1 1 0;min-width:0;border-radius:22px;overflow:hidden;text-decoration:none;color:#f5f4f2;background:var(--bg);
+  transition:flex-grow .7s cubic-bezier(.2,.8,.2,1);isolation:isolate}
+.xc.on{flex-grow:4.2}
+.xc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;z-index:-2;opacity:.22;transform:scale(1.08);
+  transition:opacity .7s,transform 1s cubic-bezier(.2,.8,.2,1)}
+.xc.on img{opacity:.55;transform:none}
+.xc::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 30%,transparent),color-mix(in srgb,var(--bg) 70%,transparent) 40%,var(--bg) 82%)}
+.xc-n{position:absolute;top:20px;left:20px;font:600 .82rem/1 var(--font-display);letter-spacing:.04em;padding:7px 10px;border-radius:99px;
+  background:color-mix(in srgb,var(--bg) 70%,transparent);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.xc-side{position:absolute;left:50%;bottom:26px;transform:translateX(-50%) rotate(180deg);writing-mode:vertical-rl;white-space:nowrap;
+  font:600 1.15rem/1 var(--font-display);letter-spacing:-.02em;transition:opacity .35s}
+.xc.on .xc-side{opacity:0}
+.xc-body{position:absolute;left:0;right:0;bottom:0;padding:clamp(22px,3vw,34px);width:min(100%,520px);opacity:0;transform:translateY(16px);
+  transition:opacity .35s,transform .5s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.xc.on .xc-body{opacity:1;transform:none;transition-delay:.22s}
+.xc-body h3{color:inherit;font-size:clamp(1.6rem,2.6vw,2.2rem);margin:0 0 8px}
+.xc-body p{margin:0 0 14px;color:rgba(245,244,242,.78);line-height:1.5}
+.xc-body ul{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:6px;font-size:.93rem}
+.xc-body li{display:flex;gap:9px;align-items:flex-start;line-height:1.4}
+.xc-body li::before{content:"";flex:none;width:6px;height:6px;margin-top:.5em;border-radius:50%;background:var(--ac)}
+.xc-go{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:99px;background:var(--ac);color:var(--bg);font-weight:700;font-size:.92rem;white-space:nowrap}
+.xc-go svg{width:16px;height:16px;transition:transform .25s}
+@media (hover:hover){.xc:hover .xc-go svg{transform:translateX(3px)}}
+.xc:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+/* phones and touch screens: every card open, stacked, tap goes straight to the demo */
+@media (max-width:860px),(hover:none){
+  .xcards{flex-direction:column;height:auto}
+  .xc,.xc.on{flex:none;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(120px,32vw,200px)}
+  .xc-body{position:relative;width:auto;padding:22px}
+  .xc-body h3{font-size:1.6rem}
+  .xc-body p{font-size:.98rem}
+  .xc-go{font-size:.86rem;padding:11px 16px}
+  .xc img{opacity:.5;transform:none}
+  .xc-side{display:none}
+  .xc-body{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.xc,.xc img,.xc-body,.xc-side{transition:none}}

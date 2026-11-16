@@ -347,6 +347,13 @@ window.kzGmail = (to, subject = '', body = '') => {
     } else build();
   }
 
+  // home industries (Expanded Cards): hovering or focusing a card widens it on computers
+  const xcs = $$('.xc');
+  if (xcs.length && matchMedia('(hover: hover) and (min-width: 861px)').matches) {
+    const pick = c => xcs.forEach(x => x.classList.toggle('on', x === c));
+    xcs.forEach(c => { c.addEventListener('mouseenter', () => pick(c)); c.addEventListener('focus', () => pick(c)); });
+  }
+
   // ---------- Portfolio: demo slider. One screen tall: the scroll stops on it once, and the arrows (or the arrow keys,
   // or a sideways swipe) move between the demos, lined up side by side. The giant name swaps letter by letter. ----------
   const ss = $('.stack-show');
@@ -422,9 +429,18 @@ window.kzGmail = (to, subject = '', body = '') => {
       const refresh = () => { ss.dataset.stops = String(Math.round(ss.getBoundingClientRect().top + scrollY - 72)); };
       ss.__refreshStop = refresh; refresh(); addEventListener('load', refresh);
       new IntersectionObserver(es => { onScreen = es[0].intersectionRatio > .55; play(); }, { threshold: [0, .55, .8] }).observe(ss);
-      setActive(0); draw();
+      const want = /^#slide-/.test(location.hash) ? demos.findIndex(d => d.href === '/samples/' + location.hash.slice(7)) : -1;
+      if (want > 0) { f = target = want; setActive(want); } else setActive(0);
+      draw();
+      if (want >= 0) {
+        const land = () => { refresh(); scrollTo({ top: +ss.dataset.stops, behavior: 'instant' }); };
+        land(); requestAnimationFrame(land); addEventListener('load', () => setTimeout(land, 30), { once: true });
+        history.replaceState(null, '', location.pathname);
+      }
     }
   }
+
+  if ((!ss || reduce) && /^#slide-/.test(location.hash)) { const el = document.getElementById(location.hash.slice(7)); if (el) el.scrollIntoView(); }
 
   // pricing folders: on touch screens they open as they scroll into view (computers open them on hover)
   const folders = $$('.folder');
