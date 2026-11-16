@@ -419,6 +419,13 @@ window.kzGmail = (to, subject = '', body = '') => {
     }
   }
 
+  // pricing folders: on touch screens they open as they scroll into view (computers open them on hover)
+  const folders = $$('.folder');
+  if (folders.length && 'IntersectionObserver' in window && !matchMedia('(hover: hover)').matches) {
+    const fio = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('open', e.isIntersecting)), { threshold: .7 });
+    folders.forEach(f => fio.observe(f));
+  }
+
   // ---------- page transitions ----------
   // A link to another page of this site: the page fades out quickly and the next one fades in (see the head script).
   // Pop-ups, new tabs, the top-left logo (it has its own opening animation) and the sample sites are left alone.

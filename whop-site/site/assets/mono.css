@@ -726,3 +726,59 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 .ss-frame::after{border-radius:0}
 @media (min-width:861px){.ss-pin{padding-inline:max(24px,calc((100vw - 1240px) / 2 + 24px))}}
 @media (max-width:860px){.ss-pin{grid-template-columns:minmax(0,1fr);padding-inline:18px}.ss-cards{margin-inline:0}.ss-word{padding-inline:0}.ss-info{padding-inline:0}}
+
+/* ================= Pricing page: packages as folders (Card Folder) ================= */
+.fpkgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,30px);align-items:start}
+@media (max-width:960px){.fpkgs{grid-template-columns:minmax(0,1fr);max-width:520px}}
+.fpkg{display:flex;flex-direction:column;gap:16px}
+.fpkg .pkg-scope{color:var(--ink-2);font-size:.95rem;line-height:1.5;margin-top:6px}
+.fpkg .ticks{font-size:.93rem}
+.fpkg .btn{width:100%}
+.folder{position:relative;aspect-ratio:10/8.4;perspective:1100px;outline:0;cursor:default;margin-top:34px}
+.folder:focus-visible{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--ink);border-radius:22px}
+/* the back with its tab */
+.f-back{position:absolute;inset:0;border-radius:6px 22px 22px 22px;background:#cfcfca;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.f-tab{position:absolute;left:0;top:-22px;width:42%;height:24px;border-radius:14px 18px 0 0;background:inherit}
+.f-tab::after{content:"";position:absolute;right:-16px;bottom:0;width:18px;height:18px;background:radial-gradient(circle at 100% 0,transparent 17px,#cfcfca 17.5px)}
+.best .f-back,.best .f-tab{background:#262626}.best .f-tab::after{background:radial-gradient(circle at 100% 0,transparent 17px,#262626 17.5px)}
+/* the iridescent lining, revealed as the front tilts open */
+.f-lining{position:absolute;inset:8% 4% 0;border-radius:16px;opacity:0;transition:opacity .5s;
+  background:linear-gradient(125deg,#ffd6e8,#d7e4ff 25%,#c8fff0 48%,#fff4c2 70%,#f1d6ff),radial-gradient(circle at 30% 20%,rgba(255,255,255,.8),transparent 50%);background-blend-mode:screen}
+/* the pages inside: one little website page per page in the package */
+.f-sheets{position:absolute;inset:0;pointer-events:none}
+.f-sheets i{position:absolute;left:50%;bottom:22%;width:44%;aspect-ratio:3/4;border-radius:8px;background:
+  linear-gradient(#0a0a0a,#0a0a0a) 12% 12%/40% 7% no-repeat,linear-gradient(#bdbdbd,#bdbdbd) 12% 28%/76% 4% no-repeat,linear-gradient(#bdbdbd,#bdbdbd) 12% 36%/60% 4% no-repeat,
+  linear-gradient(#e7e7e3,#e7e7e3) 12% 72%/76% 26% no-repeat,#fff;box-shadow:0 10px 24px -12px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.06);
+  --spread:calc((var(--s) - (var(--n) - 1) / 2));
+  transform:translate(calc(-50% + var(--spread) * 22%),40%) rotate(calc(var(--spread) * 6deg));opacity:0;
+  transition:transform .7s cubic-bezier(.2,.9,.25,1.15),opacity .4s;transition-delay:calc(var(--s) * 50ms)}
+/* the front face */
+.f-front{position:absolute;left:0;right:0;bottom:0;height:78%;border-radius:18px;padding:clamp(18px,2.4vw,26px);display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
+  background:linear-gradient(160deg,#fbfbf9,#ecece8);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 -1px 0 rgba(0,0,0,.04),0 18px 40px -26px rgba(0,0,0,.45);
+  transform-origin:50% 100%;transition:transform .7s cubic-bezier(.2,.8,.2,1),box-shadow .7s;z-index:2}
+.best .f-front{background:linear-gradient(160deg,#1c1c1c,#0a0a0a);color:var(--paper)}
+.f-front .eyebrow{margin-bottom:auto}
+.best .f-front .eyebrow{color:#bdbdbd}.best .f-front .eyebrow::before{background:var(--paper)}
+.f-front .pkg-price{font:600 clamp(3rem,5vw,4.4rem)/1 var(--font-display);letter-spacing:-.06em}
+.f-front .pkg-price sup{font-size:.42em;vertical-align:top;margin-right:2px;color:var(--ink-3)}
+.best .f-front .pkg-price sup{color:#9a9a9a}
+.f-scope{margin:0;font-weight:700;font-size:.95rem}
+.f-front .pkg-badge{top:18px;right:18px}
+/* open: hover or keyboard focus on computers; scrolled into view on touch screens (site.js adds .open) */
+.folder.open .f-front{transform:rotateX(-32deg);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 34px 50px -24px rgba(0,0,0,.5)}
+.folder.open .f-lining{opacity:1}
+.folder.open .f-sheets i{opacity:1;transform:translate(calc(-50% + var(--spread) * 26%),calc(-36% - var(--s) * 2%)) rotate(calc(var(--spread) * 8deg))}
+@media (hover:hover){.folder:hover .f-front,.folder:focus-visible .f-front{transform:rotateX(-32deg);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 34px 50px -24px rgba(0,0,0,.5)}
+  .folder:hover .f-lining,.folder:focus-visible .f-lining{opacity:1}
+  .folder:hover .f-sheets i,.folder:focus-visible .f-sheets i{opacity:1;transform:translate(calc(-50% + var(--spread) * 26%),calc(-36% - var(--s) * 2%)) rotate(calc(var(--spread) * 8deg))}}
+@media (prefers-reduced-motion:reduce){.f-front,.f-sheets i,.f-lining{transition:none}}
+
+/* ================= Home: a quiet row of the three packages ================= */
+.pkg-tease{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:var(--r);box-shadow:inset 0 0 0 1px var(--line-2);overflow:hidden;max-width:900px}
+@media (max-width:700px){.pkg-tease{grid-template-columns:minmax(0,1fr)}}
+.pt-item{display:grid;gap:6px;padding:22px 24px;text-decoration:none;color:var(--ink);transition:background .25s}
+.pt-item + .pt-item{box-shadow:-1px 0 0 var(--line-2)}
+@media (max-width:700px){.pt-item + .pt-item{box-shadow:0 -1px 0 var(--line-2)}}
+.pt-item b{font-weight:600;color:var(--ink-2);font-size:.95rem}
+.pt-item em{font:600 1.7rem/1 var(--font-display);font-style:normal;letter-spacing:-.04em}
+@media (hover:hover){.pt-item:hover{background:var(--paper-2)}}

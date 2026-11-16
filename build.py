@@ -79,6 +79,49 @@ def packages_html():
             '    <p class="muted reveal pkg-note">One-time payment, no subscription. Hosting and maintenance after delivery are not included. '
             'Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="/legal#terms">See the terms</a>.</p>')
 
+
+PAGE_COUNT = {"starter": 1, "professional": 3, "premium": 5}
+
+
+def package_folders_html():
+    """Pricing page: each package is a folder. Hover (or scroll it into view on a phone) and the front tilts open:
+    an iridescent lining shows inside and little website pages rise out (one per page in the package)."""
+    cards = []
+    for key, name, price, scope, best, link in PACKAGES:
+        popular = key == "professional"
+        href = link or "/#start"
+        label = f"Choose {name} · ${price}" if link else f"Start with {name}"
+        ticks = "".join(f"<li>{t}</li>" for t in [scope] + PACKAGE_COMMON)
+        n = PAGE_COUNT.get(key, 1)
+        sheets = "".join(f'<i style="--s:{k};--n:{n}"></i>' for k in range(n))
+        cards.append(f"""      <article class="fpkg reveal{' best' if popular else ''}" id="pkg-{key}">
+        <div class="folder" tabindex="0" aria-label="{name}: ${price}, {scope}">
+          <div class="f-back"><span class="f-tab"></span></div>
+          <div class="f-lining" aria-hidden="true"></div>
+          <div class="f-sheets" aria-hidden="true">{sheets}</div>
+          <div class="f-front">
+            {'<span class="pkg-badge">Most popular</span>' if popular else ''}
+            <span class="eyebrow">{name}</span>
+            <div class="pkg-price"><sup>$</sup>{price}</div>
+            <p class="f-scope">{scope}</p>
+          </div>
+        </div>
+        <p class="pkg-scope">{best}</p>
+        <ul class="ticks">{ticks}</ul>
+        <a class="btn{'' if popular else ' ghost'}" href="{href}">{label}</a>
+      </article>""")
+    return ('<div class="fpkgs" id="packages">\n' + "\n".join(cards) + '\n    </div>\n'
+            '    <p class="muted reveal pkg-note">One-time payment, no subscription. Hosting and maintenance after delivery are not included. '
+            'Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="/legal#terms">See the terms</a>.</p>')
+
+
+def package_teaser_html():
+    """Home page: just the three packages in one quiet row, and a link to compare them on the pricing page."""
+    items = "".join(f"""<a class="pt-item" href="/products#pkg-{key}"><span class="eyebrow">{name}</span><b>{scope.split(' interactive')[0]}</b><em>${price}</em></a>"""
+                    for key, name, price, scope, best, link in PACKAGES)
+    return (f'<div class="pkg-tease reveal">{items}</div>\n'
+            '    <p class="reveal" style="margin-top:22px"><a class="btn ghost" href="/products">Compare the packages <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></p>')
+
 EMAIL = "zimansites@gmail.com"
 THREE = "/assets/three.min.js"  # self-hosted Three.js r128, no third-party CDN to fail
 FONTS = ("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
@@ -370,7 +413,7 @@ def build(preview=False, theme="royal"):
         text = page.read_text()
         m = re.match(r"---\n(.*?)\n---\n", text, re.S)
         meta = dict(line.split(": ", 1) for line in m.group(1).splitlines())
-        body = text[m.end():].replace("{{PACKAGES}}", packages_html()).replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
+        body = text[m.end():].replace("{{PACKAGE_FOLDERS}}", package_folders_html()).replace("{{PACKAGE_TEASER}}", package_teaser_html()).replace("{{PACKAGES}}", packages_html()).replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
         inner = nav(meta.get("nav", "")) + body + package_modal() + FOOTER
         if preview and page.stem == "index":
             # the preview host adds the document skeleton around its main page; it gets a short name
