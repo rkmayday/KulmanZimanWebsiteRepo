@@ -693,11 +693,11 @@ html:has(dialog[open]) .cur-ctl{display:none}
    A tagline builds word by word, gives way to the logo, picture cards of the demos stream up both sides,
    then the screen splits open onto the page. About 3.2 s, then it removes itself. ================= */
 #kz-load{display:none}
-html.kz-loader #kz-load{display:block;position:fixed;inset:0;z-index:2147483640;pointer-events:auto;overflow:hidden;animation:klGone 3.4s linear forwards}
+html.kz-loader #kz-load{display:block;position:fixed;inset:0;z-index:2147483640;pointer-events:auto;overflow:hidden;animation:klGone 3.75s linear forwards}
 @keyframes klGone{0%,93%{visibility:visible}100%{visibility:hidden}}
 #kz-load .kl-half{position:absolute;left:0;right:0;height:50.5%;background:var(--paper)}
-#kz-load .kl-top{top:0;animation:klTop .8s 2.45s cubic-bezier(.76,0,.24,1) forwards}
-#kz-load .kl-bot{bottom:0;animation:klBot .8s 2.45s cubic-bezier(.76,0,.24,1) forwards}
+#kz-load .kl-top{top:0;animation:klTop .8s 2.8s cubic-bezier(.76,0,.24,1) forwards}
+#kz-load .kl-bot{bottom:0;animation:klBot .8s 2.8s cubic-bezier(.76,0,.24,1) forwards}
 @keyframes klTop{to{transform:translateY(-101%)}}
 @keyframes klBot{to{transform:translateY(101%)}}
 /* the tagline, one word at a time, then it lifts away */
@@ -707,25 +707,14 @@ html.kz-loader #kz-load{display:block;position:fixed;inset:0;z-index:2147483640;
 #kz-load .kl-tag em{font-style:normal;color:var(--ink-4)}
 @keyframes klWord{to{opacity:1;transform:none}}
 @keyframes klTagOut{to{opacity:0;transform:translateY(calc(-50% - 40px))}}
-/* the logo */
-#kz-load .kl-logo{position:absolute;left:50%;top:50%;width:min(44vw,300px);aspect-ratio:600/335;background:var(--ink);
-  -webkit-mask:url(kz-logo.svg) center/contain no-repeat;mask:url(kz-logo.svg) center/contain no-repeat;
-  opacity:0;transform:translate(-50%,-50%) scale(.82);animation:klLogo 1.3s 1.2s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes klLogo{0%{opacity:0;transform:translate(-50%,-50%) scale(.82)}30%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.02)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.06)}}
-/* demo cards streaming up both sides */
-#kz-load .kl-col{position:absolute;top:0;bottom:0;width:clamp(120px,19vw,280px);display:flex;flex-direction:column;gap:18px;opacity:0;
-  animation:klCol 1.75s .95s cubic-bezier(.35,0,.25,1) forwards}
-#kz-load .kl-l{left:clamp(14px,4vw,70px)}
-#kz-load .kl-r{right:clamp(14px,4vw,70px);animation-delay:1.05s}
-#kz-load .kl-col i{flex:none;width:100%;aspect-ratio:16/10;border-radius:12px;background:#ddd center/cover no-repeat;box-shadow:0 18px 40px -20px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.06)}
-#kz-load .kl-col i.t0{background-image:url(shots/thumb-deduction.jpg)}
-#kz-load .kl-col i.t1{background-image:url(shots/thumb-ember-roast.jpg)}
-#kz-load .kl-col i.t2{background-image:url(shots/thumb-synthra.jpg)}
-#kz-load .kl-col i.t3{background-image:url(shots/thumb-ironpath.jpg)}
-#kz-load .kl-r i.t0{background-image:url(shots/thumb-synthra.jpg)}
-#kz-load .kl-r i.t2{background-image:url(shots/thumb-deduction.jpg)}
-@keyframes klCol{0%{opacity:0;transform:translateY(100vh)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(calc(-100% - 10vh))}}
-@media (max-width:640px){#kz-load .kl-col{width:30vw;gap:12px}#kz-load .kl-l{left:-6vw}#kz-load .kl-r{right:-6vw}#kz-load .kl-logo{width:56vw}}
+/* the ZS draws itself (outline, then it fills in), like the top-left logo's opening */
+#kz-load .kl-draw{position:absolute;left:50%;top:50%;width:min(46vw,320px);overflow:visible;transform:translate(-50%,-50%);animation:klDrawOut .45s 2.55s ease forwards}
+#kz-load .kl-draw path{fill:var(--ink);fill-opacity:0;stroke:var(--ink);stroke-width:7;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;
+  animation:klLine .95s 1.5s cubic-bezier(.45,0,.2,1) forwards,klFill .35s 2.3s ease forwards}
+@keyframes klLine{to{stroke-dashoffset:0}}
+@keyframes klFill{to{fill-opacity:1}}
+@keyframes klDrawOut{to{opacity:0;transform:translate(-50%,-50%) scale(1.06)}}
+@media (max-width:640px){#kz-load .kl-draw{width:58vw}}
 @media (prefers-reduced-motion:reduce){html.kz-loader #kz-load{display:none}}
 
 /* the loader runs while the rest of the page holds still */
