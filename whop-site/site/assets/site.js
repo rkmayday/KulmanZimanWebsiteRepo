@@ -492,7 +492,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     const box = document.createElement('div'); box.className = 'cur-ctl';
     box.innerHTML = '<button class="cur-notch" type="button" aria-expanded="false" aria-controls="cur-panel" aria-label="Cursor settings"><i class="cur-dot"></i>'
       + '<svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M4.5 2.5 8 6l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
-      + '<div class="cur-panel" id="cur-panel"><span>Cursor follower</span><button class="cur-sw" type="button" role="switch" aria-checked="true"><i></i><b></b></button></div>';
+      + '<div class="cur-panel" id="cur-panel"><span>Custom cursor</span><button class="cur-sw" type="button" role="switch" aria-checked="true"><i></i><b></b></button></div>';
     document.body.append(box);
     const notch = box.querySelector('.cur-notch'), sw = box.querySelector('.cur-sw');
     const setOff = v => {
