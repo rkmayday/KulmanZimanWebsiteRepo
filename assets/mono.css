@@ -675,11 +675,6 @@ html:has(dialog[open]) .cur-ctl{display:none}
 }
 @media (prefers-reduced-motion:reduce){.stack-show{display:none!important}}
 
-/* Ryder's profile photo: the elastic frame (elastic-frame.js, computers only) */
-.ef-host{position:relative}
-.ef-canvas{position:absolute;z-index:2;pointer-events:none}
-.ef-host .portrait.photo{position:relative;z-index:1}
-
 /* stack slider, any window size: the title has its own row (cards never cover it), everything is clipped to the
    rounded frame (no shadows outside it), the card fits the space that is left, and the details keep clear of the edge */
 .ss-pin{--fi:clamp(10px,1.4vw,18px);clip-path:inset(var(--fi) round 28px)}

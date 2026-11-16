@@ -119,7 +119,7 @@
     // from the stop at the headline the scene moves exactly with the page: no scroll room at all
     pin.style.transform = h > 0 ? `translate3d(0,${(-h).toFixed(1)}px,0)` : '';
     // the blueprint grid scrolls with the page while the logo holds still: like scrolling down a sheet of whiteprint
-    grid.style.setProperty('--gy', (-Math.max(0, Math.min(y, yHold))).toFixed(1) + 'px');
+    grid.style.setProperty('--gy', (-Math.max(0, Math.min(y, yHold)) * .4).toFixed(1) + 'px');   // a gentle drift: 40% of the scroll
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     const mb = Math.round(-H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
