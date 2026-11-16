@@ -333,7 +333,7 @@ def relativize(html):
         if "." in path.rsplit("/", 1)[-1]:
             return f'{attr}="{path.lstrip("/")}{frag}"'
         return f'{attr}="{path.strip("/")}.html{frag}"'
-    return re.sub(r'(href|src)="(/[^"/][^"]*|/|/#[^"]*)"', fix, html)
+    return re.sub(r'(href|src|poster)="(/[^"/][^"]*|/|/#[^"]*)"', fix, html)
 
 
 def bust(html):

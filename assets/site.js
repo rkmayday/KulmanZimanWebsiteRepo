@@ -360,7 +360,8 @@ window.kzGmail = (to, subject = '', body = '') => {
       ss.hidden = false;
       const pin = $('.ss-pin', ss), word = $('.ss-word', ss), cardsEl = $('.ss-cards', ss), info = { count: $('.ss-count b', ss), ind: $('.ss-ind', ss), desc: $('.ss-desc', ss), open: $('.ss-open', ss) };
       $('.ss-count', ss).lastChild.textContent = ' / ' + String(demos.length).padStart(2, '0');
-      const phone = matchMedia('(max-width: 860px), (hover: none)').matches;
+      const phone = matchMedia('(max-width: 860px), (hover: none)').matches;   // lighter effects (no blur) on phones and touch screens
+      const narrow = () => matchMedia('(max-width: 860px)').matches;              // the layout follows the window width only (as the CSS does)
       const light = hex => { const h = hex.replace('#', ''); if (h.length < 6) return false; const [r, g, b] = [0, 2, 4].map(k => parseInt(h.substr(k, 2), 16)); return (r * 299 + g * 587 + b * 114) / 1000 > 150; };
       const cards = demos.map((d, i) => {
         const c = document.createElement('a'); c.className = 'ss-card'; c.href = d.href; c.setAttribute('aria-label', 'Open the ' + d.name + ' sample');
@@ -389,7 +390,7 @@ window.kzGmail = (to, subject = '', body = '') => {
         const p = Math.min(1, Math.max(0, (72 - r.top) / run)), f = p * (demos.length - 1);
         cards.forEach((c, k) => {
           const d = k - f, ad = Math.abs(d);
-          c.style.transform = `translate3d(${phone ? '0' : '-50%'},calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
+          c.style.transform = `translate3d(${narrow() ? '0' : '-50%'},calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
           c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .72)).toFixed(3);
           if (!phone) c.style.filter = ad < .02 ? 'none' : `blur(${Math.min(10, ad * 7).toFixed(1)}px)`;
           c.style.zIndex = String(100 - Math.round(ad * 10));
