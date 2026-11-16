@@ -109,6 +109,55 @@ main .sec + .sec{border-top:0}
 .ip-chart{width:100%;height:180px;border-radius:2px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
 .ip-gridlines line{stroke:var(--line);stroke-dasharray:4 6}
 .ip-axis{display:flex;justify-content:space-between;font:500 11px var(--mono);color:var(--mut);margin-top:-8px}
+
+/* ===== your next 12 weeks: pinned while you scroll; the week, the bar and the curve all move with the scroll ===== */
+.sec.jr{padding:0;height:260vh}
+.jr-pin{position:sticky;top:var(--navh,68px);height:calc(100vh - var(--navh,68px));height:calc(100svh - var(--navh,68px));display:grid;align-items:center;overflow:hidden;
+  background:linear-gradient(115deg,transparent 62%,color-mix(in srgb,var(--acc) 7%,transparent) 62% 70%,transparent 70%)}
+.jr-wrap{display:grid;gap:clamp(18px,3vh,34px)}
+.jr-head{margin:0}
+.jr-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,60px);align-items:center}
+.jr-left{display:grid;gap:10px}
+.jr-week{display:flex;align-items:baseline;gap:12px;font:600 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.jr-week b{font:italic 900 clamp(4.5rem,11vw,9rem)/.85 var(--display);font-stretch:76%;letter-spacing:-.03em;color:var(--fg);font-variant-numeric:tabular-nums}
+.jr-kg{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.jr-kg b{font:italic 900 clamp(2.2rem,4.4vw,3.4rem)/1 var(--display);font-stretch:76%;color:var(--acc);font-variant-numeric:tabular-nums}
+.jr-kg span{font:700 14px var(--body);text-transform:uppercase;letter-spacing:.04em}
+.jr-kg em{font:600 12px var(--mono);font-style:normal;padding:4px 8px;border-radius:6px;background:var(--fg);color:var(--bg);transform:skewX(-10deg)}
+.jr-bar{width:100%;max-width:520px;overflow:visible}
+.jr-bar .pl{transform-box:fill-box;transform-origin:center;opacity:0;transition:transform .45s cubic-bezier(.2,1.3,.4,1),opacity .25s}
+.jr-bar .pl:nth-of-type(n){}
+.jr-bar .pl.on{opacity:1;transform:none!important}
+.jr-chart{width:100%;overflow:visible}
+.jr-gridl line{stroke:var(--line);stroke-width:1}
+.jr-chart text{font:600 10px var(--mono);fill:var(--mut)}
+.jr-area{fill:color-mix(in srgb,var(--acc) 12%,transparent);clip-path:inset(0 calc((1 - var(--jp,0)) * 100%) 0 0)}
+.jr-line{fill:none;stroke:var(--acc);stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--jp,0))}
+.jr-dot{fill:#fff;stroke:var(--acc);stroke-width:3.5}
+.jr-ms{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.jr-ms li{display:flex;gap:8px;align-items:center;padding:9px 11px;border-radius:10px;font:600 .86rem/1.2 var(--body);color:var(--mut);background:var(--panel);box-shadow:inset 0 0 0 1px var(--line);
+  transition:background .35s,color .35s,transform .45s cubic-bezier(.2,1.4,.4,1),box-shadow .35s}
+.jr-ms li b{font:italic 900 .95rem var(--display);font-stretch:76%;color:var(--mut)}
+.jr-ms li.on{background:var(--fg);color:var(--bg);transform:skewX(-6deg);box-shadow:4px 4px 0 var(--acc)}
+.jr-ms li.on b{color:var(--acc)}
+.jr-note{margin:0;font:500 12px var(--mono);color:var(--mut)}
+@media (max-width:860px){
+  .sec.jr{height:230vh}
+  .jr-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  .jr-wrap{gap:12px}
+  .jr-head h2{font-size:clamp(1.8rem,8vw,2.4rem)}
+  .jr-head .lede{display:none}
+  .jr-left{grid-template-columns:auto minmax(0,1fr);align-items:end;gap:4px 16px}
+  .jr-week{flex-direction:column;gap:2px;align-items:flex-start}.jr-week b{font-size:4.2rem}
+  .jr-kg{flex-direction:column;align-items:flex-start;gap:4px}.jr-kg b{font-size:2.2rem}
+  .jr-bar{grid-column:1/-1;max-height:84px}
+  .jr-chart{max-height:130px}
+  .jr-ms{margin-top:6px;gap:6px}.jr-ms li{padding:7px 9px;font-size:.76rem}
+  .jr-note{font-size:10.5px}
+}
+@media (max-height:620px) and (max-width:860px){.jr-head .k{display:none}.jr-head h2{font-size:1.55rem}.jr-wrap{gap:8px}.jr-week b{font-size:3rem}.jr-kg b{font-size:1.8rem}.jr-kg em{display:none}
+  .jr-bar{max-height:58px}.jr-chart{max-height:74px}.jr-ms li{padding:5px 8px;font-size:.7rem}.jr-ms li b{font-size:.8rem}.jr-note{display:none}}
+@media (prefers-reduced-motion:reduce){.sec.jr{height:auto}.jr-pin{position:relative;top:auto;height:auto;padding-block:90px}.jr-bar .pl,.jr-ms li{transition:none}}
 </style>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 </head>
@@ -142,6 +191,37 @@ main .sec + .sec{border-top:0}
   <p class="statement rv">Most plans are written once and forgotten. <span>Ironpath rewrites yours every week, from what you actually lifted, how you slept and what hurt.</span></p>
   <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat"><span class="n">01</span><h3>Adaptive loads</h3><p>Weights go up when you are ready, not on a fixed schedule. Miss a day and the week rebalances.</p></div><div class="feat"><span class="n">02</span><h3>Real coaches</h3><p>Every program is written and reviewed by certified strength coaches you can message any day.</p></div><div class="feat"><span class="n">03</span><h3>Recovery built in</h3><p>Deload weeks and a daily recovery score keep you progressing for months, not weeks.</p></div></div>
 </div></section>
+
+<section class="sec jr" id="journey" aria-label="Your next 12 weeks"><div class="jr-pin"><div class="wrap jr-wrap">
+  <div class="head jr-head"><span class="k">Your next 12 weeks</span><h2>Watch yourself <em>get stronger.</em></h2></div>
+  <div class="jr-grid">
+    <div class="jr-left">
+      <div class="jr-week"><small>Week</small><b class="jr-w">01</b><small>of 12</small></div>
+      <div class="jr-kg"><b class="jr-k">60</b><span>kg squat</span><em class="jr-d">+0 kg</em></div>
+      <svg class="jr-bar" viewBox="0 0 400 140" aria-hidden="true">
+        <rect x="18" y="66" width="364" height="8" rx="4" fill="#9a9890"/>
+        <rect x="106" y="58" width="8" height="24" rx="2" fill="#5f5e58"/><rect x="286" y="58" width="8" height="24" rx="2" fill="#5f5e58"/>
+        <rect class="pl p0" style="--k:0" x="98" y="33.0" width="14" height="74" rx="2.5" fill="#ff3d2e" stroke="#111" stroke-width="1.5"/><rect class="pl p1" style="--k:1" x="84" y="37.0" width="12" height="66" rx="2.5" fill="#1f5bd8" stroke="#111" stroke-width="1.5"/><rect class="pl p2" style="--k:2" x="71" y="41.0" width="11" height="58" rx="2.5" fill="#f5c518" stroke="#111" stroke-width="1.5"/><rect class="pl p3" style="--k:3" x="59" y="45.0" width="10" height="50" rx="2.5" fill="#1f9d55" stroke="#111" stroke-width="1.5"/><rect class="pl p4" style="--k:4" x="48" y="49.0" width="9" height="42" rx="2.5" fill="#e9e7e1" stroke="#111" stroke-width="1.5"/><rect class="pl p0" style="--k:0" x="288" y="33.0" width="14" height="74" rx="2.5" fill="#ff3d2e" stroke="#111" stroke-width="1.5"/><rect class="pl p1" style="--k:1" x="304" y="37.0" width="12" height="66" rx="2.5" fill="#1f5bd8" stroke="#111" stroke-width="1.5"/><rect class="pl p2" style="--k:2" x="318" y="41.0" width="11" height="58" rx="2.5" fill="#f5c518" stroke="#111" stroke-width="1.5"/><rect class="pl p3" style="--k:3" x="331" y="45.0" width="10" height="50" rx="2.5" fill="#1f9d55" stroke="#111" stroke-width="1.5"/><rect class="pl p4" style="--k:4" x="343" y="49.0" width="9" height="42" rx="2.5" fill="#e9e7e1" stroke="#111" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="jr-right">
+      <svg class="jr-chart" viewBox="0 0 320 170" aria-hidden="true">
+        <g class="jr-gridl"><line x1="30" y1="20" x2="310" y2="20"/><line x1="30" y1="60" x2="310" y2="60"/><line x1="30" y1="100" x2="310" y2="100"/><line x1="30" y1="140" x2="310" y2="140"/></g>
+        <text x="24" y="24" text-anchor="end">100</text><text x="24" y="104" text-anchor="end">70</text><text x="30" y="160">W1</text><text x="310" y="160" text-anchor="end">W12</text>
+        <path class="jr-area" d="M30 127 C80 122 110 104 150 86 S240 40 310 15 L310 140 L30 140 Z"/>
+        <path class="jr-line" pathLength="1" d="M30 127 C80 122 110 104 150 86 S240 40 310 15"/>
+        <circle class="jr-dot" r="6" cx="30" cy="127"/>
+      </svg>
+      <ol class="jr-ms">
+        <li data-w="2"><b>W2</b> Your form is locked in</li>
+        <li data-w="4"><b>W4</b> First bodyweight squat</li>
+        <li data-w="8"><b>W8</b> +25 kg on the bar</li>
+        <li data-w="12"><b>W12</b> 100 kg club</li>
+      </ol>
+    </div>
+  </div>
+  <p class="jr-note">A typical first 12 weeks on the Strength path. Yours is planned from your own numbers.</p>
+</div></div></section>
 
 <section class="sec" id="builder"><div class="wrap">
   <div class="head"><span class="k">Try it</span><h2>Build your week <em>in seconds.</em></h2><p class="lede">Pick a goal, how often you can train and your level. Your plan and your projected progress update live.</p></div>
@@ -248,5 +328,38 @@ main .sec + .sec{border-top:0}
 })();
 </script>
 
+<script>
+// Ironpath: your next 12 weeks. While the section is pinned, the scroll drives the week, the plates on the bar, the curve and the milestones.
+(() => {
+  const sec = document.querySelector('.sec.jr'); if (!sec) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pin = sec.querySelector('.jr-pin'), wEl = sec.querySelector('.jr-w'), kEl = sec.querySelector('.jr-k'), dEl = sec.querySelector('.jr-d');
+  const line = sec.querySelector('.jr-line'), dot = sec.querySelector('.jr-dot'), ms = [...sec.querySelectorAll('.jr-ms li')];
+  const plates = [...sec.querySelectorAll('.jr-bar .pl')], L = line.getTotalLength ? line.getTotalLength() : 0;
+  // each plate slides in from its own side
+  plates.forEach(pl => { const left = +pl.getAttribute('x') < 200; pl.style.transform = `translateX(${left ? -40 : 40}px)`; });
+  let last = -1, raf = 0;
+  const paint = p => {
+    if (Math.abs(p - last) < .001) return; last = p;
+    const week = Math.min(12, 1 + Math.floor(p * 11.999));
+    const pt = L ? line.getPointAtLength(L * p) : { x: 30 + 280 * p, y: 127 - 112 * p };
+    const kg = Math.round(60 + (127 - pt.y) / 112 * 42);
+    wEl.textContent = String(week).padStart(2, '0'); kEl.textContent = kg; dEl.textContent = '+' + (kg - 60) + ' kg';
+    sec.style.setProperty('--jp', p.toFixed(4));
+    dot.setAttribute('cx', pt.x.toFixed(1)); dot.setAttribute('cy', pt.y.toFixed(1));
+    const n = Math.min(5, Math.ceil(p * 5.2));
+    plates.forEach(pl => pl.classList.toggle('on', +pl.style.getPropertyValue('--k') < n));
+    ms.forEach(li => li.classList.toggle('on', week >= +li.dataset.w));
+  };
+  const read = () => {
+    raf = 0;
+    if (reduce) return paint(1);
+    const r = sec.getBoundingClientRect(), range = Math.max(1, r.height - pin.offsetHeight);
+    paint(Math.min(1, Math.max(0, (-r.top + (innerHeight - pin.offsetHeight) * 0 + pin.offsetTop * 0 + (parseFloat(getComputedStyle(pin).top) || 0)) / range)));
+  };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(read); }, { passive: true });
+  addEventListener('resize', read); read();
+})();
+</script>
 </body>
 </html>

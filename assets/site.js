@@ -255,7 +255,7 @@ window.kzGmail = (to, subject = '', body = '') => {
   // ---------- headings light up word by word as you scroll past them ----------
   // Each word starts faint and turns solid as the heading moves up the screen. Plain text stays in the page,
   // so screen readers and search engines read it as normal. Off for "reduce motion".
-  const swTargets = $$('.section-head h2, .mission blockquote');
+  const swTargets = $$('.section-head h2, .mission blockquote').filter(el => !el.hasAttribute('data-no-sw'));
   if (swTargets.length && !reduce && 'IntersectionObserver' in window) {
     const groups = swTargets.map(el => {
       const words = [];
