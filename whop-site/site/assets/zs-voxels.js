@@ -65,20 +65,22 @@
       draw(p, mx, my) {
         if (scene3.clientWidth !== cw || scene3.clientHeight !== ch) size();
         const S = L.S, W = L.W, H = L.H, depth = W * (phone ? .06 : .075);
-        const show = sm((p - .062) / .02);                       // blocks take over from the drawn logo
+        const show = sm((p - .05) / .045);                       // blocks fade in over the drawn logo (a crossfade, not a swap)
         const gone = 1 - sm((p - .5) / .05);                      // the last few are gone before the headline settles
         mat.opacity = show * gone; mesh.visible = mat.opacity > .003;
         canvas.style.visibility = mesh.visible ? 'visible' : 'hidden';
         if (!mesh.visible) { renderer.clear(); return; }
         e3.set(-S.rx * Math.PI / 180, S.ry * Math.PI / 180, 0, 'XYZ'); qLogo.setFromEuler(e3);
-        const lcs = W / cols * .94;
+        const gap = sm((p - .07) / .06), lcs = W / cols * (1.05 - .11 * gap);   // packed solid at first, then gaps open
         for (let i = 0; i < B.length; i++) {
           const b = B[i];
           // a wave from left to right, a little ragged: each block lets go, drifts out towards you, tumbles and shrinks away
-          const e = sm((p - .075 - b.w * .3) / .17);
+          const e = sm((p - .095 - b.w * .28) / .16);
+          // a ripple runs left to right first: each block pops towards you, then settles as it lets go
+          const rip = sm((p - .055 - b.w * .09) / .035) * (1 - sm((p - .1 - b.w * .09) / .04));
           vL.set(b.ux * W * S.ls, b.uy * H * S.ls, -b.layer * depth * S.ls).applyQuaternion(qLogo); vL.y -= S.ly;
           vE.set(b.dir.x * .55 + .25, b.dir.y * .55 + .12, Math.abs(b.dir.z) * .8 + .35).multiplyScalar(W * b.dist);
-          v.copy(vL).addScaledVector(vE, e * e);
+          v.copy(vL).addScaledVector(vE, e * e); v.z += W * .035 * rip;
           v.x += mx * 40 * e; v.y -= my * 30 * e;
           const s = lcs * S.ls * (1 - sm((e - .3) / .7));
           qSpin.setFromAxisAngle(b.spin, b.turns * e);

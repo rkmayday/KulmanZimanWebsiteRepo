@@ -151,7 +151,7 @@
     S.fv = DARK ? Math.round(246 - b * 206) : Math.round(10 + b * 218);                  // the face turns light grey, staying crisp
     S.sx = 25 + a * 45 + px * 25;
     draw();
-    if (vox) { cv.style.opacity = (1 - smooth((p - .062) / .02)).toFixed(3); window.__kzVox.draw(p, px, py); } else cv.style.opacity = '';
+    if (vox) { cv.style.opacity = (1 - smooth((p - .06) / .05)).toFixed(3); window.__kzVox.draw(p, px, py); } else cv.style.opacity = '';
     // the name spells out under the logo, then makes room
     word.style.setProperty('--ws', (1.06 - a * .06).toFixed(4));
     word.style.setProperty('--wo', (1 - smooth(vox ? (p - .08) / .08 : (p - .28) / .14)).toFixed(3));
