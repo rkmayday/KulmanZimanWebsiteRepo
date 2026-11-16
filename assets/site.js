@@ -26,9 +26,9 @@ window.kzGmail = (to, subject = '', body = '') => {
     if (!a || a.target || e.metaKey || e.ctrlKey || e.shiftKey) return;
     const u = new URL(a.href, location.href);
     if (u.origin !== location.origin) return;
-    const brand = !!a.closest('.nav .brand'), loader = !!a.closest('footer .brand');   // the footer's Ziman Sites replays the Intro Loader
+    const brand = !!a.closest('.nav .brand'), loader = !!a.closest('footer .brand');
     if (!brand && !loader && u.pathname === location.pathname && u.hash) return;   // in-page section jumps
-    try { sessionStorage.setItem('kz-from', loader ? 'loader' : brand ? 'brand' : 'link'); } catch (err) {}
+    try { sessionStorage.setItem('kz-from', loader || brand ? 'loader' : 'link'); } catch (err) {}   // both Ziman Sites logos replay the Intro Loader
   }, true);
 
   // Nav: glass background once scrolled, mobile menu toggle
