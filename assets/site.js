@@ -347,11 +347,15 @@ window.kzGmail = (to, subject = '', body = '') => {
     } else build();
   }
 
-  // home industries (Expanded Cards): hovering or focusing a card widens it on computers
+  // home industries (Expanded Cards): all even at first; hovering or focusing a card widens it on computers
   const xcs = $$('.xc');
   if (xcs.length && matchMedia('(hover: hover) and (min-width: 861px)').matches) {
     const pick = c => xcs.forEach(x => x.classList.toggle('on', x === c));
     xcs.forEach(c => { c.addEventListener('mouseenter', () => pick(c)); c.addEventListener('focus', () => pick(c)); });
+    // leaving the row (or tabbing out of it) puts all four back to even
+    const rail = xcs[0].parentNode;
+    rail.addEventListener('mouseleave', () => pick(null));
+    rail.addEventListener('focusout', e => { if (!rail.contains(e.relatedTarget)) pick(null); });
   }
 
   // ---------- Portfolio: demo slider. One screen tall: the scroll stops on it once, and the arrows (or the arrow keys,

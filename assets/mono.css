@@ -845,16 +845,34 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 .xc-go svg{width:16px;height:16px;transition:transform .25s}
 @media (hover:hover){.xc:hover .xc-go svg{transform:translateX(3px)}}
 .xc:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
-/* phones and touch screens: every card open, stacked, tap goes straight to the demo */
+/* phones and touch screens: all four industries in one box, one row each; a tap goes straight to that demo */
 @media (max-width:860px),(hover:none){
-  .xcards{flex-direction:column;height:auto}
-  .xc,.xc.on{flex:none;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(120px,32vw,200px)}
-  .xc-body{position:relative;width:auto;padding:22px}
-  .xc-body h3{font-size:1.6rem}
-  .xc-body p{font-size:.98rem}
-  .xc-go{font-size:.86rem;padding:11px 16px}
-  .xc img{opacity:.5;transform:none}
+  .xcards{flex-direction:column;gap:0;height:auto;border-radius:22px;overflow:hidden;background:#0c0c0c;box-shadow:0 24px 50px -30px rgba(0,0,0,.55)}
+  .xc,.xc.on{flex:none;border-radius:0;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"n h g" "n p g";
+    column-gap:14px;row-gap:4px;align-items:center;padding:20px 18px;min-height:0}
+  .xc + .xc{box-shadow:0 -1px 0 rgba(255,255,255,.09)}
+  .xc img,.xc.on img{opacity:.38;transform:none;object-position:right center;width:62%;left:auto}
+  .xc::after{background:linear-gradient(90deg,var(--bg) 38%,color-mix(in srgb,var(--bg) 55%,transparent) 70%,color-mix(in srgb,var(--bg) 30%,transparent))}
+  .xc-n{position:static;grid-area:n;align-self:center;background:color-mix(in srgb,var(--ac) 22%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 55%,transparent)}
   .xc-side{display:none}
-  .xc-body{opacity:1;transform:none}
+  .xc-body,.xc.on .xc-body{display:contents}
+  .xc-body h3{grid-area:h;font-size:1.22rem;margin:0;align-self:end}
+  .xc-body p{grid-area:p;font-size:.86rem;line-height:1.4;margin:0;align-self:start;color:rgba(245,244,242,.7)}
+  .xc-body ul{display:none}
+  .xc-go{grid-area:g;font-size:0;gap:0;width:40px;height:40px;padding:0;justify-content:center}
+  .xc-go svg{width:18px;height:18px}
+  .xc:active{filter:brightness(1.15)}
+  .xc-n{min-width:46px;text-align:center}
 }
+.xc-demo{display:none}
+/* small phones: a short line instead of the description, so the box stays compact */
+@media (max-width:560px){
+  .xc,.xc.on{grid-template-areas:"n h g" "n d g";padding:16px 14px;column-gap:12px}
+  .xc-body p{display:none}
+  .xc-demo{display:block;grid-area:d;font-size:.82rem;color:var(--ac);font-weight:600;align-self:start}
+  .xc-body h3{font-size:1.08rem}
+  .xc-n{min-width:40px;font-size:.75rem}
+  .xc-go{width:36px;height:36px}
+}
+@media (max-width:380px){.xc-body h3{font-size:1rem}.xc,.xc.on{padding:14px 12px;column-gap:10px}.xc-n{min-width:36px;padding:6px 8px}}
 @media (prefers-reduced-motion:reduce){.xc,.xc img,.xc-body,.xc-side{transition:none}}
