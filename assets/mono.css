@@ -101,6 +101,7 @@ ul,ol{margin:0}
   transform:translate3d(0,var(--gy,0px),0)}
 .kz-scene{position:absolute;inset:0;display:grid;place-items:center;perspective:1500px;pointer-events:none}
 .kz-canvas{position:absolute;inset:0;width:100%;height:100%}
+.kz-gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .kz-logo{width:var(--lw);aspect-ratio:600/335;visibility:hidden}   /* sizes the canvas logo; the drawing is in .kz-canvas */
 .kz-word{position:absolute;left:50%;top:calc(50% + var(--lw) * .32);width:calc(var(--lw) * .421);height:auto;filter:brightness(0);opacity:var(--wo,1);will-change:transform,opacity;
   transform:translateX(-50%) scale(var(--ws,1));pointer-events:none}

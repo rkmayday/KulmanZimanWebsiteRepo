@@ -32,8 +32,8 @@
     const stopAt = y => {
       target = null; stopping = true;
       root.style.overflow = 'hidden';              // ends the momentum
-      scrollTo(0, y);
-      setTimeout(() => { root.style.overflow = ''; scrollTo(0, y); stopping = false; }, 120);
+      scrollTo({ top: y, behavior: 'instant' });   // straight to the stop (never the page's smooth scrolling)
+      setTimeout(() => { root.style.overflow = ''; scrollTo({ top: y, behavior: 'instant' }); stopping = false; }, 120);
     };
     const check = () => {
       if (!target || touching || stopping) return;

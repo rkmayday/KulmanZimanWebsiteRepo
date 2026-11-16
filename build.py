@@ -116,6 +116,8 @@ MONO_STAGE = """<section class="kz-stage" aria-label="Ziman Sites">
     <div class="kz-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
   </div>
 </section>
+<script src="/assets/three.min.js" defer></script>
+<script src="/assets/zs-voxels.js" defer></script>
 """
 
 # Themes share every page and feature; they differ in colours, the 3D world and a few lines of copy.
