@@ -98,7 +98,7 @@ ul,ol{margin:0}
 .kz-grid{position:absolute;inset:-10%;z-index:-1;pointer-events:none;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;
   -webkit-mask-image:radial-gradient(60% 55% at 50% 48%,#000 20%,transparent 75%);mask-image:radial-gradient(60% 55% at 50% 48%,#000 20%,transparent 75%);
-  transform:translate3d(0,var(--gy,0px),0)}
+  background-position:0 var(--gy,0px)}
 .kz-scene{position:absolute;inset:0;display:grid;place-items:center;perspective:1500px;pointer-events:none}
 .kz-canvas{position:absolute;inset:0;width:100%;height:100%}
 .kz-gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
@@ -679,3 +679,17 @@ html:has(dialog[open]) .cur-ctl{display:none}
 .ef-host{position:relative}
 .ef-canvas{position:absolute;z-index:2;pointer-events:none}
 .ef-host .portrait.photo{position:relative;z-index:1}
+
+/* stack slider, any window size: the title has its own row (cards never cover it), everything is clipped to the
+   rounded frame (no shadows outside it), the card fits the space that is left, and the details keep clear of the edge */
+.ss-pin{--fi:clamp(10px,1.4vw,18px);clip-path:inset(var(--fi) round 28px)}
+.ss-frame{inset:var(--fi)}
+.ss-word{z-index:3}
+@media (min-width:861px){
+  .ss-pin{grid-template-rows:auto minmax(0,1fr);column-gap:clamp(20px,3vw,48px);align-items:stretch;
+    padding:calc(var(--fi) + clamp(14px,3vh,32px)) calc(var(--fi) + clamp(18px,2.6vw,40px)) calc(var(--fi) + clamp(20px,4vh,44px))}
+  .ss-word{position:relative;left:auto;right:auto;top:auto;grid-column:1/-1;grid-row:1;font-size:clamp(2.8rem,min(10.5vw,15vh),10rem);padding:0}
+  .ss-cards{grid-column:2;grid-row:2;height:auto;align-self:stretch;container-type:size;margin-top:clamp(10px,2vh,24px)}
+  .ss-card{width:min(100cqw,150cqh);height:auto;margin-inline:auto;right:auto;left:50%;max-height:none}
+  .ss-info{grid-column:1;grid-row:2;align-self:end;padding:0;max-width:440px}
+}

@@ -118,6 +118,8 @@
     const yHold = y0 + uH * Ls, H = Math.max(1, Rt - yHold), h = clamp(y - yHold, 0, H);
     // from the stop at the headline the scene moves exactly with the page: no scroll room at all
     pin.style.transform = h > 0 ? `translate3d(0,${(-h).toFixed(1)}px,0)` : '';
+    // the blueprint grid scrolls with the page while the logo holds still: like scrolling down a sheet of whiteprint
+    grid.style.setProperty('--gy', (-Math.max(0, Math.min(y, yHold))).toFixed(1) + 'px');
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     const mb = Math.round(-H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
@@ -156,7 +158,6 @@
     word.style.setProperty('--ws', (1.06 - a * .06).toFixed(4));
     word.style.setProperty('--wo', (1 - smooth(vox ? (p - .08) / .08 : (p - .28) / .14)).toFixed(3));
     cue.style.setProperty('--co', (1 - smooth(p / .06)).toFixed(3));
-    grid.style.setProperty('--gy', (-p * 140).toFixed(1) + 'px');
     // the headline rises into the gap
     const o = vox ? smooth((p - .4) / .18) : smooth((p - .5) / .24);   // with the blocks, the headline rises as the last ones go
     copy.style.setProperty('--o2', o.toFixed(3));

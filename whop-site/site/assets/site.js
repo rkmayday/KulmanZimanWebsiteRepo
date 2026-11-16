@@ -237,14 +237,14 @@ window.kzGmail = (to, subject = '', body = '') => {
     const seen = new Set(); let playing = false;
     const startAll = () => {
       playing = true;
-      clips.forEach(v => { v.preload = 'auto'; try { v.currentTime = 0; } catch (e) {} });
+      clips.forEach(v => { v.preload = 'auto'; v.defaultPlaybackRate = v.playbackRate = 1.25; try { v.currentTime = 0; } catch (e) {} });
       clips.forEach(v => { const pr = v.play(); pr && pr.catch(() => {}); });
     };
     const stopAll = () => { playing = false; clips.forEach(v => v.pause()); };
     const vio = new IntersectionObserver(es => {
       es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target));
       if (seen.size && !playing) startAll(); else if (!seen.size && playing) stopAll();
-    }, { threshold: .2 });
+    }, { threshold: .6 });
     clips.forEach(v => vio.observe(v));
     // keep them together: every so often, nudge any clip that has drifted back to the first one's time
     setInterval(() => {
@@ -367,7 +367,8 @@ window.kzGmail = (to, subject = '', body = '') => {
         c.innerHTML = `<img src="${d.poster}" alt="" loading="${i ? 'lazy' : 'eager'}">` + (d.video ? `<video muted loop playsinline preload="none" src="${d.video}" aria-hidden="true"></video>` : '');
         cardsEl.append(c); return c;
       });
-      let active = -1;
+      let active = -1, playing = -1;
+      const RATE = 1.25;   // clips play a little faster than recorded
       // the giant word always fits across the frame, however long the name
       const fit = () => { word.style.fontSize = ''; const cs = getComputedStyle(word), avail = word.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), w = word.scrollWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         if (w > avail && avail > 0) word.style.fontSize = (parseFloat(cs.fontSize) * avail / w * .97).toFixed(1) + 'px'; };
@@ -379,8 +380,8 @@ window.kzGmail = (to, subject = '', body = '') => {
         word.innerHTML = [...d.name].map((ch, k) => ch === ' ' ? '<span class="sp" style="--i:' + k + '"></span>' : `<span style="--i:${k}">${ch}</span>`).join('');
         fit();
         info.count.textContent = String(i + 1).padStart(2, '0'); info.ind.textContent = d.ind; info.desc.textContent = d.desc; info.open.href = d.href;
-        cards.forEach((c, k) => { c.classList.toggle('on', k === i); const v = c.querySelector('video'); if (!v) return;
-          if (k === i) { v.preload = 'auto'; const pr = v.play(); pr && pr.catch(() => {}); } else v.pause(); });
+        cards.forEach((c, k) => c.classList.toggle('on', k === i));
+        playing = -2;   // let paint() start the right clip
       };
       let raf = 0, onScreen = false;
       const paint = () => {
@@ -388,13 +389,22 @@ window.kzGmail = (to, subject = '', body = '') => {
         const p = Math.min(1, Math.max(0, (72 - r.top) / run)), f = p * (demos.length - 1);
         cards.forEach((c, k) => {
           const d = k - f, ad = Math.abs(d);
-          c.style.transform = `translate3d(0,calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
-          c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .55)).toFixed(3);
+          c.style.transform = `translate3d(${phone ? '0' : '-50%'},calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
+          c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .72)).toFixed(3);
           if (!phone) c.style.filter = ad < .02 ? 'none' : `blur(${Math.min(10, ad * 7).toFixed(1)}px)`;
           c.style.zIndex = String(100 - Math.round(ad * 10));
           c.style.pointerEvents = ad < .5 ? 'auto' : 'none';
         });
         setActive(Math.round(f));
+        // a clip plays only while the slider is locked in place on screen, and only the one in front (from the start)
+        const pinned = r.top <= 73 && r.bottom >= pin.offsetHeight + 71;
+        const want = pinned ? active : -1;
+        if (want !== playing) {
+          playing = want;
+          cards.forEach((c, k) => { const v = c.querySelector('video'); if (!v) return;
+            if (k === want) { v.preload = 'auto'; v.defaultPlaybackRate = v.playbackRate = RATE; try { v.currentTime = 0; } catch (e) {} const pr = v.play(); pr && pr.catch(() => {}); }
+            else v.pause(); });
+        }
         $('.ss-hint', ss).style.opacity = p > .02 ? '0' : '1';
       };
       const ask = () => { if (onScreen && !raf) raf = requestAnimationFrame(paint); };
