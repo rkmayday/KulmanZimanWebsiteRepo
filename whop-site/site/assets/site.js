@@ -347,7 +347,8 @@ window.kzGmail = (to, subject = '', body = '') => {
     } else build();
   }
 
-  // ---------- Portfolio: stack slider (one slide per demo, driven by the scroll) ----------
+  // ---------- Portfolio: demo slider. One screen tall: the scroll stops on it once, and the arrows (or the arrow keys,
+  // or a sideways swipe) move between the demos, lined up side by side. The giant name swaps letter by letter. ----------
   const ss = $('.stack-show');
   if (ss && !reduce) {
     const demos = $$('.samples .sample').map(a => {
@@ -358,19 +359,20 @@ window.kzGmail = (to, subject = '', body = '') => {
     });
     if (demos.length) {
       ss.hidden = false;
-      const pin = $('.ss-pin', ss), word = $('.ss-word', ss), cardsEl = $('.ss-cards', ss), info = { count: $('.ss-count b', ss), ind: $('.ss-ind', ss), desc: $('.ss-desc', ss), open: $('.ss-open', ss) };
+      const pin = $('.ss-pin', ss), word = $('.ss-word', ss), cardsEl = $('.ss-cards', ss), dots = $('.ss-dots', ss),
+        info = { count: $('.ss-count b', ss), ind: $('.ss-ind', ss), desc: $('.ss-desc', ss), open: $('.ss-open', ss) };
       $('.ss-count', ss).lastChild.textContent = ' / ' + String(demos.length).padStart(2, '0');
       const phone = matchMedia('(max-width: 860px), (hover: none)').matches;   // lighter effects (no blur) on phones and touch screens
-      const narrow = () => matchMedia('(max-width: 860px)').matches;              // the layout follows the window width only (as the CSS does)
+      const narrow = () => matchMedia('(max-width: 860px)').matches;
       const light = hex => { const h = hex.replace('#', ''); if (h.length < 6) return false; const [r, g, b] = [0, 2, 4].map(k => parseInt(h.substr(k, 2), 16)); return (r * 299 + g * 587 + b * 114) / 1000 > 150; };
       const cards = demos.map((d, i) => {
         const c = document.createElement('a'); c.className = 'ss-card'; c.href = d.href; c.setAttribute('aria-label', 'Open the ' + d.name + ' sample');
         c.innerHTML = `<img src="${d.poster}" alt="" loading="${i ? 'lazy' : 'eager'}">` + (d.video ? `<video muted loop playsinline preload="none" src="${d.video}" aria-hidden="true"></video>` : '');
         cardsEl.append(c); return c;
       });
-      let active = -1, playing = -1;
+      dots.innerHTML = demos.map(() => '<i></i>').join('');
+      let active = -1, playing = -1, onScreen = false;
       const RATE = 1.25;   // clips play a little faster than recorded
-      // the giant word always fits across the frame, however long the name
       const fit = () => { word.style.fontSize = ''; const cs = getComputedStyle(word), avail = word.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), w = word.scrollWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         if (w > avail && avail > 0) word.style.fontSize = (parseFloat(cs.fontSize) * avail / w * .97).toFixed(1) + 'px'; };
       addEventListener('resize', () => { if (active >= 0) fit(); });
@@ -382,40 +384,45 @@ window.kzGmail = (to, subject = '', body = '') => {
         fit();
         info.count.textContent = String(i + 1).padStart(2, '0'); info.ind.textContent = d.ind; info.desc.textContent = d.desc; info.open.href = d.href;
         cards.forEach((c, k) => c.classList.toggle('on', k === i));
-        playing = -2;   // let paint() start the right clip
+        [...dots.children].forEach((e, k) => e.classList.toggle('on', k === i));
+        play();
       };
-      let raf = 0, onScreen = false;
-      const paint = () => {
-        raf = 0; const r = ss.getBoundingClientRect(), run = Math.max(1, r.height - pin.offsetHeight);
-        const p = Math.min(1, Math.max(0, (72 - r.top) / run)), f = p * (demos.length - 1);
+      // only the demo in front plays, from the start, and only while the slider is in view
+      const play = () => {
+        const want = onScreen ? active : -1; if (want === playing) return; playing = want;
+        cards.forEach((c, k) => { const v = c.querySelector('video'); if (!v) return;
+          if (k === want) { v.preload = 'auto'; v.defaultPlaybackRate = v.playbackRate = RATE; try { v.currentTime = 0; } catch (e) {} const pr = v.play(); pr && pr.catch(() => {}); }
+          else v.pause(); });
+      };
+      // the cards glide to the chosen demo
+      let f = 0, target = 0, raf = 0;
+      const draw = () => {
+        const sx = narrow() ? 74 : 62;
         cards.forEach((c, k) => {
           const d = k - f, ad = Math.abs(d);
-          c.style.transform = `translate3d(${narrow() ? '0' : '-50%'},calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
-          c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .72)).toFixed(3);
-          if (!phone) c.style.filter = ad < .02 ? 'none' : `blur(${Math.min(10, ad * 7).toFixed(1)}px)`;
+          c.style.transform = `translate3d(calc(${narrow() ? '0%' : '-50%'} + ${(d * sx).toFixed(2)}%),-50%,${(-ad * 170).toFixed(1)}px) rotateY(${(d * -16).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .14).toFixed(3)})`;
+          c.style.opacity = Math.max(0, 1 - ad * (phone ? .9 : .6)).toFixed(3);
+          if (!phone) c.style.filter = ad < .02 ? 'none' : `blur(${Math.min(10, ad * 6).toFixed(1)}px)`;
           c.style.zIndex = String(100 - Math.round(ad * 10));
           c.style.pointerEvents = ad < .5 ? 'auto' : 'none';
         });
-        setActive(Math.round(f));
-        // a clip plays only while the slider is locked in place on screen, and only the one in front (from the start)
-        const pinned = r.top <= 73 && r.bottom >= pin.offsetHeight + 71;
-        const want = pinned ? active : -1;
-        if (want !== playing) {
-          playing = want;
-          cards.forEach((c, k) => { const v = c.querySelector('video'); if (!v) return;
-            if (k === want) { v.preload = 'auto'; v.defaultPlaybackRate = v.playbackRate = RATE; try { v.currentTime = 0; } catch (e) {} const pr = v.play(); pr && pr.catch(() => {}); }
-            else v.pause(); });
-        }
-        $('.ss-hint', ss).style.opacity = p > .02 ? '0' : '1';
       };
-      const ask = () => { if (onScreen && !raf) raf = requestAnimationFrame(paint); };
-      // one scroll moves exactly one slide: a stop point at every slide (smooth.js)
-      const refresh = () => { const top = ss.getBoundingClientRect().top + scrollY - 72, run = Math.max(1, ss.offsetHeight - pin.offsetHeight);
-        ss.dataset.stops = demos.map((d, k) => Math.round(top + run * k / Math.max(1, demos.length - 1))).join(','); };
+      const tick = () => { raf = 0; f += (target - f) * .16; if (Math.abs(target - f) < .002) f = target; draw(); if (f !== target) raf = requestAnimationFrame(tick); };
+      const go = i => { const n = demos.length; target = ((i % n) + n) % n; setActive(target); if (!raf) raf = requestAnimationFrame(tick); };
+      $('.ss-prev', ss).addEventListener('click', () => go(active - 1));
+      $('.ss-next', ss).addEventListener('click', () => go(active + 1));
+      addEventListener('keydown', e => { if (!onScreen || e.target.closest && e.target.closest('input,textarea,select')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(active + 1); } else if (e.key === 'ArrowLeft') { e.preventDefault(); go(active - 1); } });
+      // sideways swipe on touch screens (up and down still scrolls the page)
+      let tx = 0, ty = 0, swiped = false;
+      pin.addEventListener('touchstart', e => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; swiped = false; }, { passive: true });
+      pin.addEventListener('touchmove', e => { if (swiped) return; const t = e.touches[0], dx = t.clientX - tx, dy = t.clientY - ty;
+        if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) { swiped = true; go(active + (dx < 0 ? 1 : -1)); } }, { passive: true });
+      // the scroll stops once, with the whole slider in view (smooth.js)
+      const refresh = () => { ss.dataset.stops = String(Math.round(ss.getBoundingClientRect().top + scrollY - 72)); };
       ss.__refreshStop = refresh; refresh(); addEventListener('load', refresh);
-      new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) ask(); else cards.forEach(c => { const v = c.querySelector('video'); v && v.pause(); }); }).observe(ss);
-      addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
-      onScreen = true; paint();
+      new IntersectionObserver(es => { onScreen = es[0].intersectionRatio > .55; play(); }, { threshold: [0, .55, .8] }).observe(ss);
+      setActive(0); draw();
     }
   }
 

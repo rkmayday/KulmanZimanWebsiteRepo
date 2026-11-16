@@ -785,3 +785,25 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* breathing room between the full-width demo slider and the demo boxes below it */
 .stack-show{margin-bottom:clamp(56px,7vw,96px)}
+
+/* demo slider, arrow version: one screen tall (no long scroll), cards side by side, arrows to move between them */
+.stack-show{height:auto}
+.ss-pin{position:relative;top:auto;height:calc(100vh - 72px);height:calc(100svh - 72px);min-height:560px}
+.ss-hint{display:none}
+.ss-card{top:50%}
+.ss-nav{position:absolute;right:max(24px,calc((100vw - 1240px) / 2 + 24px));bottom:clamp(22px,4vh,44px);z-index:4;display:flex;align-items:center;gap:14px}
+.ss-arrow{width:52px;height:52px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;color:var(--tx);
+  background:color-mix(in srgb,var(--tx) 10%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--tx) 35%,transparent);transition:background .25s,color .25s,transform .2s}
+@media (hover:hover){.ss-arrow:hover{background:var(--tx);color:var(--bg)}}
+.ss-arrow:active{transform:scale(.94)}
+.ss-arrow:focus-visible{outline:2px solid var(--tx);outline-offset:3px}
+.ss-dots{display:flex;gap:7px}
+.ss-dots i{width:7px;height:7px;border-radius:99px;background:color-mix(in srgb,var(--tx) 30%,transparent);transition:width .3s,background .3s}
+.ss-dots i.on{width:22px;background:var(--tx)}
+@media (max-width:860px){
+  .ss-pin{grid-template-rows:auto 1fr auto auto;min-height:0}
+  .ss-nav{position:relative;right:auto;bottom:auto;grid-row:4;justify-self:center;margin:4px 0 18px}
+  .ss-arrow{width:46px;height:46px}
+  .ss-info{padding-bottom:10px}
+}
+@media (max-width:860px){.ss-cards{margin-block:14px 16px}}
