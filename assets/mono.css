@@ -600,13 +600,13 @@ html.pt-in body{animation:ptIn .25s ease both}
 
 /* ================= opening screen: the ZS draws itself in white on black, fills in, then settles into the badge ================= */
 #kz-intro .ki-badge i{display:none!important}
-#kz-intro .ki-draw{position:absolute;left:50%;top:50%;width:64px;margin:-18px 0 0 -32px;overflow:visible;animation:ki-draw-size 2.35s cubic-bezier(.6,0,.2,1) forwards}
-#kz-intro .ki-draw path{fill:#fff;fill-opacity:0;stroke:#fff;stroke-width:9;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;
+#kz-intro .ki-draw{position:absolute;left:50%;top:50%;width:205px;max-width:none;margin:-59px 0 0 -102.5px;overflow:visible;animation:ki-draw-size 2.35s cubic-bezier(.6,0,.2,1) forwards}
+#kz-intro .ki-draw path{fill:#fff;fill-opacity:0;stroke:#fff;stroke-width:3;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;
   animation:ki-draw-line 2.35s cubic-bezier(.45,0,.2,1) forwards,ki-draw-fill 2.35s ease forwards}
-@keyframes ki-draw-size{0%,44%{transform:scale(3.2)}74%,100%{transform:scale(1)}}
+@keyframes ki-draw-size{0%,44%{transform:scale(1)}74%,100%{transform:scale(.3125)}}   /* drawn at full size, scaled down: always crisp */
 @keyframes ki-draw-line{0%,3%{stroke-dashoffset:1}34%,100%{stroke-dashoffset:0}}
 @keyframes ki-draw-fill{0%,30%{fill-opacity:0;stroke-opacity:1}41%{fill-opacity:1;stroke-opacity:1}48%,100%{fill-opacity:1;stroke-opacity:0}}
-@media (max-width:560px){@keyframes ki-draw-size{0%,44%{transform:scale(2.6)}74%,100%{transform:scale(1)}}}
+@media (max-width:560px){@keyframes ki-draw-size{0%,44%{transform:scale(.8125)}74%,100%{transform:scale(.3125)}}}
 
 /* ================= headings light up word by word as they scroll into view (site.js) ================= */
 .sw-word{opacity:var(--wo,.14);transition:opacity .25s linear}
