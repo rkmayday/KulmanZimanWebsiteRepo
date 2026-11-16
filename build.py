@@ -297,7 +297,6 @@ FOOTER = f"""<footer>
 <script src="/assets/motion.js" defer></script>
 <script src="/assets/founder-field.js" defer></script>
 <script src="/assets/needle-field.js" defer></script>
-<script src="/assets/mesh-flow.js" defer></script>
 """
 
 
