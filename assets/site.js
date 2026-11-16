@@ -389,8 +389,8 @@ window.kzGmail = (to, subject = '', body = '') => {
         const p = Math.min(1, Math.max(0, (72 - r.top) / run)), f = p * (demos.length - 1);
         cards.forEach((c, k) => {
           const d = k - f, ad = Math.abs(d);
-          c.style.transform = `translate3d(0,calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
-          c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .55)).toFixed(3);
+          c.style.transform = `translate3d(${phone ? '0' : '-50%'},calc(-50% + ${(d * 58).toFixed(2)}%),${(-ad * 160).toFixed(1)}px) rotateX(${(d * -14).toFixed(2)}deg) scale(${(1 - Math.min(ad, 2) * .12).toFixed(3)})`;
+          c.style.opacity = Math.max(0, 1 - ad * (phone ? .95 : .72)).toFixed(3);
           if (!phone) c.style.filter = ad < .02 ? 'none' : `blur(${Math.min(10, ad * 7).toFixed(1)}px)`;
           c.style.zIndex = String(100 - Math.round(ad * 10));
           c.style.pointerEvents = ad < .5 ? 'auto' : 'none';
