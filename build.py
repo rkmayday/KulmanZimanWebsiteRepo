@@ -80,7 +80,7 @@ def packages_html():
             'Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="/legal#terms">See the terms</a>.</p>')
 
 
-PAGE_COUNT = {"starter": 1, "professional": 3, "premium": 5}
+PAGE_COUNT = {"starter": 1, "professional": 3, "premium": 7}
 
 
 def package_folders_html():
@@ -98,7 +98,7 @@ def package_folders_html():
         <div class="folder" tabindex="0" aria-label="{name}: ${price}, {scope}">
           <div class="f-back"><span class="f-tab"></span></div>
           <div class="f-lining" aria-hidden="true"></div>
-          <div class="f-sheets" aria-hidden="true">{sheets}</div>
+          <div class="f-sheets" aria-hidden="true" style="--k:{min(1, 1 / max(1, (n - 1) / 2)):.3f}">{sheets}</div>
           <div class="f-front">
             {'<span class="pkg-badge">Most popular</span>' if popular else ''}
             <span class="eyebrow">{name}</span>

@@ -750,7 +750,7 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   linear-gradient(#0a0a0a,#0a0a0a) 12% 12%/40% 7% no-repeat,linear-gradient(#bdbdbd,#bdbdbd) 12% 28%/76% 4% no-repeat,linear-gradient(#bdbdbd,#bdbdbd) 12% 36%/60% 4% no-repeat,
   linear-gradient(#e7e7e3,#e7e7e3) 12% 72%/76% 26% no-repeat,#fff;box-shadow:0 10px 24px -12px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.06);
   --spread:calc((var(--s) - (var(--n) - 1) / 2));
-  transform:translate(calc(-50% + var(--spread) * 22%),40%) rotate(calc(var(--spread) * 6deg));opacity:0;
+  transform:translate(calc(-50% + var(--spread) * var(--k,1) * 22%),40%) rotate(calc(var(--spread) * var(--k,1) * 6deg));opacity:0;
   transition:transform .7s cubic-bezier(.2,.9,.25,1.15),opacity .4s;transition-delay:calc(var(--s) * 50ms)}
 /* the front face */
 .f-front{position:absolute;left:0;right:0;bottom:0;height:78%;border-radius:18px;padding:clamp(18px,2.4vw,26px);display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
@@ -767,10 +767,10 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 /* open: hover or keyboard focus on computers; scrolled into view on touch screens (site.js adds .open) */
 .folder.open .f-front{transform:rotateX(-32deg);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 34px 50px -24px rgba(0,0,0,.5)}
 .folder.open .f-lining{opacity:1}
-.folder.open .f-sheets i{opacity:1;transform:translate(calc(-50% + var(--spread) * 26%),calc(-36% - var(--s) * 2%)) rotate(calc(var(--spread) * 8deg))}
+.folder.open .f-sheets i{opacity:1;transform:translate(calc(-50% + var(--spread) * var(--k,1) * 26%),calc(-36% - var(--s) * var(--k,1) * 2%)) rotate(calc(var(--spread) * var(--k,1) * 8deg))}
 @media (hover:hover){.folder:hover .f-front,.folder:focus-visible .f-front{transform:rotateX(-32deg);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 34px 50px -24px rgba(0,0,0,.5)}
   .folder:hover .f-lining,.folder:focus-visible .f-lining{opacity:1}
-  .folder:hover .f-sheets i,.folder:focus-visible .f-sheets i{opacity:1;transform:translate(calc(-50% + var(--spread) * 26%),calc(-36% - var(--s) * 2%)) rotate(calc(var(--spread) * 8deg))}}
+  .folder:hover .f-sheets i,.folder:focus-visible .f-sheets i{opacity:1;transform:translate(calc(-50% + var(--spread) * var(--k,1) * 26%),calc(-36% - var(--s) * var(--k,1) * 2%)) rotate(calc(var(--spread) * var(--k,1) * 8deg))}}
 @media (prefers-reduced-motion:reduce){.f-front,.f-sheets i,.f-lining{transition:none}}
 
 /* ================= Home: a quiet row of the three packages ================= */
