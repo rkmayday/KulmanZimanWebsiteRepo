@@ -132,8 +132,13 @@
 
   const kick = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
   window.__kzKick = kick;
-  function frame() {
-    prog += (target - prog) * .32; px += (tpx - px) * .08; py += (tpy - py) * .08;
+  // the animation follows the scroll, but never faster than a set pace: a slow scroll is tracked exactly,
+  // a fast scroll or a hard flick plays it through at that pace (about 2 seconds from the logo to the headline)
+  let lastT = 0;
+  function frame(now) {
+    now = now || performance.now(); const dt = lastT ? Math.min(64, now - lastT) : 16.7; lastT = now;
+    const step = (target - prog) * (1 - Math.pow(1 - .2, dt / 16.7)), maxStep = dt / 2300;
+    prog += Math.max(-maxStep, Math.min(maxStep, step)); px += (tpx - px) * .08; py += (tpy - py) * .08;
     const p = prog * .87;            // the stage is 13% shorter than the timeline: same animation, half the hold after it
     const a = smooth(p / .42);                    // turn: shows the depth
     const vox = window.__kzVox && window.__kzVox.ready;   // the block animation (zs-voxels.js) takes over from the split
@@ -153,11 +158,11 @@
     cue.style.setProperty('--co', (1 - smooth(p / .06)).toFixed(3));
     grid.style.setProperty('--gy', (-p * 140).toFixed(1) + 'px');
     // the headline rises into the gap
-    const o = smooth((p - .5) / .24);
+    const o = vox ? smooth((p - .4) / .18) : smooth((p - .5) / .24);   // with the blocks, the headline rises as the last ones go
     copy.style.setProperty('--o2', o.toFixed(3));
     copy.style.setProperty('--y2', ((1 - o) * 40).toFixed(1) + 'px');
     copy.classList.toggle('live', o > .6);
-    if (Math.abs(target - prog) > .0005 || Math.abs(tpx - px) > .001 || Math.abs(tpy - py) > .001) requestAnimationFrame(frame); else running = false;
+    if (Math.abs(target - prog) > .0005 || Math.abs(tpx - px) > .001 || Math.abs(tpy - py) > .001) requestAnimationFrame(frame); else { running = false; lastT = 0; }
   }
   readScroll(); prog = target; frame();
 })();
