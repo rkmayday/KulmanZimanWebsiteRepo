@@ -86,6 +86,73 @@ h2{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1}
 .feat{border-top:0;border:1.5px dashed color-mix(in srgb,var(--acc) 55%,transparent);padding:22px 22px 24px;background:color-mix(in srgb,var(--bg) 70%,transparent)}
 .feat .n{color:var(--acc);font-size:12px}
 .feat .n::before{content:"Fig. "}
+/* ===== the Fig. boxes: live blueprint schematics, lit by a spotlight that follows the pointer ===== */
+.feat.fx{position:relative;overflow:hidden;align-content:start;isolation:isolate;transition:border-color .3s,box-shadow .4s}
+.feat.fx::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(color-mix(in srgb,var(--acc) 22%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--acc) 22%,transparent) 1px,transparent 1px);background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(240px circle at var(--sx,50%) var(--sy,30%),#000,transparent 70%);mask-image:radial-gradient(240px circle at var(--sx,50%) var(--sy,30%),#000,transparent 70%);opacity:.0;transition:opacity .4s}
+.feat.fx:hover::before,.feat.fx.go::before{opacity:1}
+.feat.fx .spot{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(300px circle at var(--sx,50%) var(--sy,30%),color-mix(in srgb,var(--acc) 14%,transparent),transparent 60%);opacity:0;transition:opacity .4s}
+.feat.fx:hover .spot{opacity:1}
+@media (hover:hover){.feat.fx:hover{border-color:var(--acc);box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 40%,transparent),0 30px 60px -30px color-mix(in srgb,var(--acc) 50%,transparent)}}
+.fig{margin-top:8px;border-radius:12px;padding:14px;background:color-mix(in srgb,#020a1c 70%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 30%,transparent);font:400 .88rem/1.45 var(--body)}
+.fig code{font:500 .8em var(--mono);color:var(--acc)}
+/* fig 1: the plan */
+.pl-q{margin:0 0 10px;font-style:italic;color:var(--fg)}
+.plan ol{list-style:none;margin:0;padding:0;display:grid;gap:7px;counter-reset:st}
+.plan li{display:flex;gap:10px;align-items:center;color:var(--mut);counter-increment:st;transition:color .3s}
+.plan li::before{content:counter(st);flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font:600 10px var(--mono);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc);transition:background .3s,color .3s}
+.plan li.run{color:var(--fg)}
+.plan li.run::before{content:"";background:conic-gradient(var(--acc) 0 30%,transparent 30%);animation:plSpin .7s linear infinite;box-shadow:inset 0 0 0 1px var(--acc)}
+.plan li.done{color:var(--fg)}
+.plan li.done::before{content:"✓";background:var(--acc);color:var(--on-acc)}
+@keyframes plSpin{to{transform:rotate(360deg)}}
+.pl-foot{display:flex;gap:12px;align-items:center;margin-top:12px}
+.pl-bar{flex:1;height:3px;border-radius:3px;background:color-mix(in srgb,var(--acc) 18%,transparent);overflow:hidden}
+.pl-bar i{display:block;height:100%;width:calc(var(--pp,0) * 100%);background:var(--acc);box-shadow:0 0 10px var(--acc);transition:width .5s}
+.pl-run,.ask-b button{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;color:var(--acc);background:transparent;box-shadow:inset 0 0 0 1px var(--acc);transition:background .2s,color .2s,transform .15s}
+@media (hover:hover){.pl-run:hover{background:var(--acc);color:var(--on-acc)}}
+.pl-run:active,.ask-b button:active{transform:scale(.95)}
+/* fig 2: the approval */
+.ask-h{display:flex;align-items:center;gap:8px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#ffd166}
+.ask-dot{width:8px;height:8px;border-radius:50%;background:#ffd166;box-shadow:0 0 0 0 rgba(255,209,102,.6);animation:askPing 1.6s infinite}
+@keyframes askPing{70%{box-shadow:0 0 0 8px rgba(255,209,102,0)}100%{box-shadow:0 0 0 0 rgba(255,209,102,0)}}
+.ask-t{margin:8px 0}
+.diff{display:grid;gap:3px;padding:8px 10px;border-radius:8px;background:rgba(0,0,0,.25);font:500 11.5px/1.5 var(--mono)}
+.diff .m{color:#ff8b8b}.diff .pl{color:#7dffb0}
+.ask-b{display:flex;gap:8px;margin-top:12px}
+.ask-b button[data-a=ok]{background:var(--acc);color:var(--on-acc)}
+.ask-b button[data-a=ok].nudge{animation:askNudge 1.4s ease-in-out infinite}
+@keyframes askNudge{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--acc) 25%,transparent)}}
+@media (hover:hover){.ask-b button[data-a=no]:hover{background:rgba(255,139,139,.14);color:#ff8b8b;box-shadow:inset 0 0 0 1px #ff8b8b}}
+.ask-r{margin:10px 0 0;min-height:1.4em;font:500 12px var(--mono)}
+.ask.ok .ask-h{color:#7dffb0}.ask.ok .ask-dot{background:#7dffb0;animation:none}
+.ask.no .ask-h{color:#ff8b8b}.ask.no .ask-dot{background:#ff8b8b;animation:none}
+.ask.ok .ask-r{color:#7dffb0}.ask.no .ask-r{color:#ff8b8b}
+.ask.ok .ask-b,.ask.no .ask-b{display:none}
+/* fig 3: the chat */
+.chat{display:grid;gap:8px;overflow:hidden}
+.ch-top{font:600 11px var(--mono);color:var(--mut);padding-bottom:6px;border-bottom:1px solid color-mix(in srgb,var(--acc) 18%,transparent)}
+.msg{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1)}
+.msg i{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font:600 9px var(--mono);font-style:normal;background:#2a3f6b;color:#fff}
+.msg.b i{background:var(--acc);color:var(--on-acc)}
+.msg p{margin:0}
+.msg.dots{position:absolute;visibility:hidden}
+.chat.s1 .msg.u,.chat.s3 .msg.u,.chat.s3 .msg.rep{opacity:1;transform:none}
+.chat.s2 .msg.u{opacity:1;transform:none}
+.chat.s2 .msg.dots{position:static;visibility:visible;opacity:1;transform:none}
+.chat .msg.rep{position:absolute;visibility:hidden}
+.chat.s3 .msg.rep{position:static;visibility:visible}
+.msg.dots p{display:flex;gap:4px;padding-top:9px}
+.msg.dots p span{width:6px;height:6px;border-radius:50%;background:var(--mut);animation:chDot 1s infinite}
+.msg.dots p span:nth-child(2){animation-delay:.15s}.msg.dots p span:nth-child(3){animation-delay:.3s}
+@keyframes chDot{50%{transform:translateY(-4px);background:var(--acc)}}
+.tools{margin-top:4px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.tl-run{display:flex;gap:6px;width:max-content;animation:tlRun 22s linear infinite}
+.tl-run span{font:500 10.5px var(--mono);padding:4px 8px;border-radius:99px;color:var(--acc);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 40%,transparent)}
+@keyframes tlRun{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.tl-run,.ask-dot,.msg.dots p span,.plan li.run::before{animation:none}.msg{transition:none}}
+
 .feat h3{font-family:var(--display);font-weight:400;font-size:1.9rem;letter-spacing:-.01em}
 .card{border-radius:0;box-shadow:none;border:1.5px solid var(--line);background:var(--panel)}
 .tiers{border:0;gap:18px}
@@ -136,7 +203,20 @@ h2{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1}
 
 <section class="sec" id="about"><div class="wrap">
   <p class="statement rv">Your team spends a day a week on requests a machine could finish. <span>Synthra takes those, follows your runbooks and leaves a full audit trail.</span></p>
-  <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat"><span class="n">01</span><h3>Plans before it acts</h3><p>Every request becomes a short, readable plan you can check before a single click is made.</p></div><div class="feat"><span class="n">02</span><h3>Asks first</h3><p>Anything sensitive waits for a person to approve, with the exact change spelled out.</p></div><div class="feat"><span class="n">03</span><h3>Works where you work</h3><p>Ask in Slack or Teams. Synthra uses 40+ tools and answers in the thread.</p></div></div>
+  <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat fx"><span class="spot" aria-hidden="true"></span><span class="n">01</span><h3>Plans before it acts</h3><p>Every request becomes a short, readable plan you can check before a single click is made.</p>
+    <div class="fig plan"><p class="pl-q">“Give Maya access to the finance drive”</p>
+      <ol><li>Look up Maya in Okta</li><li>Check the finance-drive policy</li><li>Add her to <code>fin-readers</code></li><li>Post a summary in #it-help</li></ol>
+      <div class="pl-foot"><span class="pl-bar"><i></i></span><button type="button" class="pl-run">Replay ▸</button></div></div></div><div class="feat fx"><span class="spot" aria-hidden="true"></span><span class="n">02</span><h3>Asks first</h3><p>Anything sensitive waits for a person to approve, with the exact change spelled out.</p>
+    <div class="fig ask"><div class="ask-h"><span class="ask-dot"></span>Waiting for approval</div>
+      <p class="ask-t"><b>Reset MFA</b> for j.doe@acme.co</p>
+      <div class="diff"><span class="m">− device: iPhone 12 (reported lost)</span><span class="pl">+ device: new enrolment link, valid 24 h</span></div>
+      <div class="ask-b"><button type="button" data-a="no">Deny</button><button type="button" data-a="ok">Approve</button></div>
+      <p class="ask-r" aria-live="polite"></p></div></div><div class="feat fx"><span class="spot" aria-hidden="true"></span><span class="n">03</span><h3>Works where you work</h3><p>Ask in Slack or Teams. Synthra uses 40+ tools and answers in the thread.</p>
+    <div class="fig chat"><div class="ch-top"># it-help</div>
+      <div class="msg u"><i>JD</i><p>@synthra my VPN keeps dropping</p></div>
+      <div class="msg b dots"><i>S</i><p><span></span><span></span><span></span></p></div>
+      <div class="msg b rep"><i>S</i><p>Found it: your VPN app is two versions behind. I pushed the update; reconnect in a minute. ✓</p></div>
+      <div class="tools" aria-label="Some of the tools Synthra uses"><div class="tl-run"><span>Slack</span><span>Teams</span><span>Okta</span><span>Jira</span><span>Intune</span><span>Datadog</span><span>GitHub</span><span>Zendesk</span><span>Google</span><span>AWS</span><span>Slack</span><span>Teams</span><span>Okta</span><span>Jira</span><span>Intune</span><span>Datadog</span><span>GitHub</span><span>Zendesk</span><span>Google</span><span>AWS</span></div></div></div></div></div>
 </div></section>
 
 <section class="sec" id="agent"><div class="wrap">
@@ -246,5 +326,41 @@ h2{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1}
 })();
 </script>
 
+<script>
+// Synthra: the Fig. boxes come alive. A spotlight follows the pointer; each box plays its scene when it is on screen.
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cards = [...document.querySelectorAll('.feat.fx')]; if (!cards.length) return;
+  cards.forEach(c => c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); c.style.setProperty('--sx', (e.clientX - r.left) + 'px'); c.style.setProperty('--sy', (e.clientY - r.top) + 'px'); }));
+  const T = new Map(); const later = (c, f, ms) => { const id = setTimeout(f, reduce ? 0 : ms); (T.get(c) || T.set(c, []).get(c)).push(id); };
+  const stop = c => { (T.get(c) || []).forEach(clearTimeout); T.set(c, []); };
+  // fig 1: the plan runs one step at a time
+  const plan = c => { const fig = c.querySelector('.plan'); if (!fig) return; const li = [...fig.querySelectorAll('li')];
+    stop(c); li.forEach(l => l.classList.remove('run', 'done')); fig.style.setProperty('--pp', 0);
+    li.forEach((l, k) => { later(c, () => l.classList.add('run'), 300 + k * 900); later(c, () => { l.classList.replace('run', 'done'); fig.style.setProperty('--pp', (k + 1) / li.length); }, 300 + k * 900 + 750); }); };
+  // fig 2: the request waits; Approve / Deny really answer it
+  const ask = c => { const fig = c.querySelector('.ask'); if (!fig) return; const ok = fig.querySelector('[data-a=ok]');
+    later(c, () => { if (!fig.classList.contains('ok') && !fig.classList.contains('no')) ok.classList.add('nudge'); }, 1400); };
+  // fig 3: a question, Synthra typing, the answer
+  const chat = c => { const fig = c.querySelector('.chat'); if (!fig) return; stop(c);
+    const run = () => { fig.className = 'fig chat'; later(c, () => fig.classList.add('s1'), 200); later(c, () => { fig.classList.remove('s1'); fig.classList.add('s2'); }, 1000);
+      later(c, () => { fig.classList.remove('s2'); fig.classList.add('s3'); }, 2600); if (!reduce) later(c, run, 9000); };
+    reduce ? fig.classList.add('s3') : run(); };
+  const play = c => { plan(c); ask(c); chat(c); };
+  cards.forEach(c => {
+    const pr = c.querySelector('.pl-run'); pr && pr.addEventListener('click', () => plan(c));
+    c.querySelectorAll('.ask-b button').forEach(b => b.addEventListener('click', () => {
+      const fig = c.querySelector('.ask'), yes = b.dataset.a === 'ok';
+      fig.classList.add(yes ? 'ok' : 'no'); fig.querySelector('.ask-h').lastChild.textContent = yes ? 'Approved' : 'Denied';
+      fig.querySelector('.ask-r').textContent = yes ? '✓ Approved by you. Synthra sent the enrolment link and logged the change.' : '✕ Denied. Nothing was changed, and the requester was told why.';
+      later(c, () => { fig.classList.remove('ok', 'no'); fig.querySelector('.ask-h').lastChild.textContent = 'Waiting for approval'; fig.querySelector('.ask-r').textContent = ''; }, 6000);
+    }));
+  });
+  const io = new IntersectionObserver(es => es.forEach(e => { const c = e.target;
+    if (e.isIntersecting && !c.classList.contains('go')) { c.classList.add('go'); play(c); }
+    else if (!e.isIntersecting && c.classList.contains('go')) { c.classList.remove('go'); stop(c); } }), { threshold: .4 });
+  cards.forEach(c => io.observe(c));
+})();
+</script>
 </body>
 </html>
