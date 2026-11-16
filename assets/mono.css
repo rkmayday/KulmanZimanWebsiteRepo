@@ -339,7 +339,12 @@ ul,ol{margin:0}
 /* founder profile pages */
 .founder-page{background:var(--paper)}
 .back{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;font-weight:600;font-size:.88rem;text-decoration:none;box-shadow:inset 0 0 0 1px var(--line-2)}
-.back svg{width:16px;height:16px}
+.back svg{width:16px;height:16px;transition:transform .3s var(--ease)}
+.back{color:var(--ink);transition:background .25s,color .25s,box-shadow .25s,transform .2s}
+@media (hover:hover){.back:hover{background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);transform:translateY(-1px)}
+  .back:hover svg{transform:translateX(-3px)}}
+.back:active{transform:translateY(1px)}
+.back:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .profile{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,5vw,70px);align-items:center;margin-top:24px;width:100%}
 @media (max-width:860px){.profile{grid-template-columns:1fr}}
 .profile-card{display:grid;gap:14px;justify-items:start}
@@ -876,3 +881,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 }
 @media (max-width:380px){.xc-body h3{font-size:1rem}.xc,.xc.on{padding:14px 12px;column-gap:10px}.xc-n{min-width:36px;padding:6px 8px}}
 @media (prefers-reduced-motion:reduce){.xc,.xc img,.xc-body,.xc-side{transition:none}}
+
+/* the section after the home opening is pulled up over the empty bottom of the opening screen: keep it on top */
+.hero + .strip{position:relative;z-index:1;background:var(--paper)}

@@ -349,6 +349,7 @@ window.kzGmail = (to, subject = '', body = '') => {
 
   // home industries (Expanded Cards): all even at first; hovering or focusing a card widens it on computers
   const xcs = $$('.xc');
+  xcs.forEach(c => c.addEventListener('click', () => { try { sessionStorage.setItem('kz-slide', c.getAttribute('href').split('#slide-')[1] || ''); } catch (e) {} }));
   if (xcs.length && matchMedia('(hover: hover) and (min-width: 861px)').matches) {
     const pick = c => xcs.forEach(x => x.classList.toggle('on', x === c));
     xcs.forEach(c => { c.addEventListener('mouseenter', () => pick(c)); c.addEventListener('focus', () => pick(c)); });
@@ -433,7 +434,9 @@ window.kzGmail = (to, subject = '', body = '') => {
       const refresh = () => { ss.dataset.stops = String(Math.round(ss.getBoundingClientRect().top + scrollY - 72)); };
       ss.__refreshStop = refresh; refresh(); addEventListener('load', refresh);
       new IntersectionObserver(es => { onScreen = es[0].intersectionRatio > .55; play(); }, { threshold: [0, .55, .8] }).observe(ss);
-      const want = /^#slide-/.test(location.hash) ? demos.findIndex(d => d.href === '/samples/' + location.hash.slice(7)) : -1;
+      let pickSlug = /^#slide-/.test(location.hash) ? location.hash.slice(7) : '';
+      try { pickSlug = pickSlug || sessionStorage.getItem('kz-slide') || ''; sessionStorage.removeItem('kz-slide'); } catch (e) {}
+      const want = pickSlug ? demos.findIndex(d => d.href.replace(/\.html$/, '').split('/').pop() === pickSlug) : -1;
       if (want > 0) { f = target = want; setActive(want); } else setActive(0);
       draw();
       if (want >= 0) {

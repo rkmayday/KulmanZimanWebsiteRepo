@@ -119,7 +119,9 @@
     // from the stop at the headline the scene moves exactly with the page: no scroll room at all
     pin.style.transform = h > 0 ? `translate3d(0,${(-h).toFixed(1)}px,0)` : '';
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
-    const mb = Math.round(-H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    // ...and also by the empty bottom of the screen below the headline's buttons, so no blank scroll follows the stop
+    const blank = Math.max(0, pin.clientHeight - (copy.offsetTop + copy.offsetHeight) - (pin.clientWidth < 720 ? 36 : 56));
+    const mb = Math.round(-H - blank); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
     // ...exactly where the animation has finished and before the page starts moving on
     stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);
