@@ -86,6 +86,46 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .step .tag{display:inline-block;margin-left:10px;padding:3px 9px;border-radius:99px;font:600 11px var(--mono);color:#f9a8d4;background:rgba(244,114,182,.12);vertical-align:2px}
 @media (max-width:640px){.step{grid-template-columns:40px minmax(0,1fr);gap:16px}.step small{grid-column:2}}
 
+/* ===== the three steps: each one is a little hands-on demo ===== */
+.feats.dxs{align-items:stretch}
+.feat.dx{display:grid;grid-template-rows:auto auto auto 1fr;gap:12px}
+.dx-art{margin-top:8px;align-self:end;border-radius:14px;padding:14px;background:rgba(0,0,0,.28);box-shadow:inset 0 0 0 1px var(--line);font:500 12.5px var(--mono)}
+/* 1: the lesson timer */
+.timer{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;align-items:center}
+.timer svg{width:96px;height:96px;grid-row:span 2;transform:rotate(-90deg)}
+.tm-bg,.tm-arc{fill:none;stroke-width:9}
+.tm-bg{stroke:rgba(255,255,255,.08)}
+.tm-arc{stroke:url(#ddGrad);stroke:#a78bfa;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--tp,0) * 96);filter:drop-shadow(0 0 6px rgba(167,139,250,.6))}
+.tm-read b{display:block;font:600 26px/1 var(--display);color:var(--fg);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tm-read span{color:var(--mut);font-size:11px}
+.tm-steps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.tm-steps li{padding:3px 8px;border-radius:99px;font-size:10.5px;color:var(--mut);box-shadow:inset 0 0 0 1px var(--line);transition:all .3s}
+.tm-steps li.on{color:#0b0a12;background:var(--grad);box-shadow:none}
+/* 2: the playground */
+.pg-code{display:block;padding:10px 12px;border-radius:10px;background:#0b0b12;color:#d4d2e6;white-space:nowrap;overflow:hidden}
+.pg-code .t{color:#a78bfa}.pg-code .a{color:#f9a8d4}.pg-code .v{color:var(--pc,#a78bfa);transition:color .3s}
+.pg-v.typing{border-right:2px solid #f472b6}
+.pg-out{margin-top:10px;padding:16px 12px;border-radius:10px;background:#fff;text-align:center}
+.pg-h{font:700 22px/1 var(--body);color:var(--pc,#a78bfa);transition:color .4s,transform .4s cubic-bezier(.2,1.6,.4,1);display:inline-block}
+.pg-h.pop{transform:scale(1.12)}
+.pg-sw{display:flex;gap:8px;margin-top:10px}
+.sw{width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;background:var(--c);box-shadow:0 0 0 2px #08080d,0 0 0 3px transparent;transition:box-shadow .2s,transform .2s}
+.sw[aria-pressed=true]{box-shadow:0 0 0 2px #08080d,0 0 0 4px var(--c)}
+@media (hover:hover){.sw:hover{transform:scale(1.12)}}
+/* 3: the review */
+.rv-file{color:var(--mut);font-size:11px;margin-bottom:6px}
+.rv-code{margin:0;padding:8px 0;border-radius:8px;background:#0b0b12;font:500 11.5px/1.7 var(--mono);white-space:pre;overflow:hidden}
+.rv-code .ln{display:inline-block;width:28px;text-align:right;padding-right:8px;color:#5f5d75}
+.rv-code .del{color:#fca5a5;background:rgba(239,68,68,.12)}.rv-code .add{color:#86efac;background:rgba(34,197,94,.12)}
+.rv-note{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;margin-top:10px;font:500 12.5px/1.4 var(--body);opacity:0;transform:translateY(8px);transition:opacity .4s,transform .5s cubic-bezier(.2,1.4,.4,1)}
+.rv-note i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 9px var(--mono);font-style:normal;background:var(--grad);color:#0b0a12}
+.rv-note p{margin:0;padding:8px 10px;border-radius:4px 12px 12px 12px;background:rgba(255,255,255,.07);color:var(--fg)}
+.rev.go .rv-note{opacity:1;transform:none}
+.rv-ok{margin-top:10px;width:100%;padding:10px;border-radius:10px;border:0;cursor:pointer;font:600 12px var(--body);color:#0b0a12;background:var(--fg);transition:background .3s,transform .15s}
+.rv-ok:active{transform:scale(.97)}
+.rev.ok .rv-ok{background:#34d399}
+@media (prefers-reduced-motion:reduce){.rv-note,.pg-h,.tm-steps li{transition:none}}
+
 /* the playground */
 .dd-lab{display:grid;gap:14px}
 .dd-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
@@ -311,10 +351,21 @@ main .sec + .sec{border-top:1px solid var(--line)}
 
 <section class="sec" id="about"><div class="wrap">
   <p class="statement rv">Most people quit coding in week two, <span>not because it is hard, but because nothing they build works yet. Here, every lesson ends with something that does.</span></p>
-  <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)">
-    <div class="feat"><span class="n">01</span><h3>Lessons under 8 minutes</h3><p>Small enough for a lunch break, and each one ends with something working on screen.</p></div>
-    <div class="feat"><span class="n">02</span><h3>A playground in every lesson</h3><p>Pause, type, run. Nothing to install and nothing to configure, ever.</p></div>
-    <div class="feat"><span class="n">03</span><h3>Real projects, reviewed</h3><p>Six builds from a landing page to your own portfolio, each reviewed by a mentor.</p></div>
+  <div class="feats dxs" data-stagger style="margin-top:clamp(56px,7vw,90px)">
+    <div class="feat dx"><span class="n">01</span><h3>Lessons under 8 minutes</h3><p>Small enough for a lunch break, and each one ends with something working on screen.</p>
+      <div class="dx-art timer"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="50" class="tm-bg"/><circle cx="60" cy="60" r="50" class="tm-arc" pathLength="100"/></svg>
+        <div class="tm-read"><b class="tm-t">0:00</b><span>lesson 3 of 12</span></div>
+        <ol class="tm-steps"><li>Watch</li><li>Type</li><li>Run</li><li>It works ✓</li></ol></div></div>
+    <div class="feat dx"><span class="n">02</span><h3>A playground in every lesson</h3><p>Pause, type, run. Nothing to install and nothing to configure, ever.</p>
+      <div class="dx-art play"><code class="pg-code"><span class="t">h1</span> { <span class="a">color</span>: <span class="v pg-v">violet</span>; }</code>
+        <div class="pg-out"><span class="pg-h">Hello, world</span></div>
+        <div class="pg-sw" role="group" aria-label="Try a colour"><button type="button" class="sw" style="--c:#a78bfa" data-c="#a78bfa" data-n="violet" aria-label="Make it violet"></button><button type="button" class="sw" style="--c:#f472b6" data-c="#f472b6" data-n="pink" aria-label="Make it pink"></button><button type="button" class="sw" style="--c:#34d399" data-c="#34d399" data-n="green" aria-label="Make it green"></button><button type="button" class="sw" style="--c:#fbbf24" data-c="#fbbf24" data-n="amber" aria-label="Make it amber"></button></div></div></div>
+    <div class="feat dx"><span class="n">03</span><h3>Real projects, reviewed</h3><p>Six builds from a landing page to your own portfolio, each reviewed by a mentor.</p>
+      <div class="dx-art rev"><div class="rv-file">portfolio/index.html</div>
+        <pre class="rv-code"><span class="ln">12</span><span class="del">  &lt;div style="margin:20px"&gt;</span>
+<span class="ln">12</span><span class="add">  &lt;div class="card"&gt;</span></pre>
+        <div class="rv-note"><i>MR</i><p>Nice move to a class. Your layout is clean now. 👏</p></div>
+        <button type="button" class="rv-ok">Approve project</button></div></div>
   </div>
 </div></section>
 
@@ -398,6 +449,47 @@ main .sec + .sec{border-top:1px solid var(--line)}
 <script src="{{ASSETS}}sample2.js" defer></script>
 <script src="{{ASSETS}}smooth.js" defer></script>
 
+<script>
+// Deduction: the three steps are hands-on. A lesson timer runs, colour swatches rewrite the code and the preview, and the mentor review can be approved.
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 1: the timer runs a whole lesson (7:42) in a few seconds, lighting up each step
+  const tm = document.querySelector('.timer');
+  if (tm) {
+    const t = tm.querySelector('.tm-t'), st = [...tm.querySelectorAll('.tm-steps li')]; let raf = 0, t0 = 0;
+    const tick = now => { const p = Math.min(1, (now - t0) / 5200), sec = Math.round(p * 462);
+      t.textContent = Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); tm.style.setProperty('--tp', p);
+      st.forEach((l, i) => l.classList.toggle('on', p >= i / st.length + .01));
+      raf = p < 1 ? requestAnimationFrame(tick) : (setTimeout(() => { t0 = performance.now(); raf = requestAnimationFrame(tick); }, 2600), 0); };
+    const start = () => { if (reduce) { t.textContent = '7:42'; tm.style.setProperty('--tp', 1); st.forEach(l => l.classList.add('on')); return; } t0 = performance.now(); raf = requestAnimationFrame(tick); };
+    let on = false; new IntersectionObserver(es => { if (es[0].isIntersecting && !on) { on = true; start(); } }, { threshold: .4 }).observe(tm);
+  }
+  // 2: the swatches type a new colour into the code, and the preview follows
+  const pg = document.querySelector('.play');
+  if (pg) {
+    const v = pg.querySelector('.pg-v'), h = pg.querySelector('.pg-h'), sws = [...pg.querySelectorAll('.sw')]; let typing = 0, auto = 0, touched = false;
+    const pick = (b, user) => {
+      if (user) { touched = true; clearInterval(auto); }
+      sws.forEach(x => x.setAttribute('aria-pressed', x === b)); const name = b.dataset.n; clearInterval(typing);
+      v.classList.add('typing'); let n = 0; v.textContent = '';
+      const done = () => { v.classList.remove('typing'); pg.style.setProperty('--pc', b.dataset.c); h.classList.add('pop'); setTimeout(() => h.classList.remove('pop'), 300); };
+      if (reduce) { v.textContent = name; done(); return; }
+      typing = setInterval(() => { v.textContent = name.slice(0, ++n); if (n >= name.length) { clearInterval(typing); done(); } }, 60);
+    };
+    sws.forEach(b => b.addEventListener('click', () => pick(b, true)));
+    sws[0].setAttribute('aria-pressed', 'true');
+    // until someone tries it, it shows itself off
+    let k = 0; new IntersectionObserver(es => { if (es[0].isIntersecting && !auto && !touched && !reduce) auto = setInterval(() => { if (!touched) pick(sws[k = (k + 1) % sws.length]); }, 2400); }, { threshold: .4 }).observe(pg);
+  }
+  // 3: the mentor's note arrives; Approve really approves
+  const rev = document.querySelector('.rev');
+  if (rev) {
+    const btn = rev.querySelector('.rv-ok');
+    new IntersectionObserver(es => { if (es[0].isIntersecting) setTimeout(() => rev.classList.add('go'), reduce ? 0 : 700); }, { threshold: .4 }).observe(rev);
+    btn.addEventListener('click', () => { const ok = rev.classList.toggle('ok'); btn.textContent = ok ? '✓ Approved. Project 2 of 6 done' : 'Approve project'; });
+  }
+})();
+</script>
 <script>
 // Deduction: the path screen builds a real site as you move through the modules, and the projects are a 3D deck
 (() => {

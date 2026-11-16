@@ -37,6 +37,14 @@
     $$('.rv').forEach(el => io.observe(el));
   } else $$('.rv').forEach(el => el.classList.add('in'));
 
+  // cards lift a little and glow on hover, with a soft light that follows the pointer (pages can turn the glow off)
+  if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    $$('.feat, .tier').forEach(c => {
+      c.classList.add('lift');
+      c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); c.style.setProperty('--lx', (e.clientX - r.left) + 'px'); c.style.setProperty('--ly', (e.clientY - r.top) + 'px'); });
+    });
+  }
+
   // headings light up word by word as you scroll past them (like the Ziman Sites home page). The text stays in the page as
   // normal text for screen readers. A word in gradient lettering lights up as one piece.
   if (!reduce && 'IntersectionObserver' in window) {

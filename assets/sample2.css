@@ -184,3 +184,13 @@ p{margin:0}
 
 /* headings light up word by word as you scroll (sample2.js) */
 .sw-word{opacity:var(--wo,.14);transition:opacity .25s linear}
+
+/* cards lift and glow on hover (sample2.js adds .lift on computers). "translate" works alongside each page's own transforms. */
+.lift{position:relative;transition:translate .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .3s}
+.lift::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(320px circle at var(--lx,50%) var(--ly,50%),color-mix(in srgb,var(--acc) 16%,transparent),transparent 65%)}
+.lift:hover{translate:0 -6px;box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 55%,transparent),0 28px 60px -26px color-mix(in srgb,var(--acc) 60%,transparent)}
+.lift:hover::after{opacity:1}
+/* a page that wants the lift without any glow */
+.no-glow .lift:hover{box-shadow:none}
+.no-glow .lift::after{content:none}
