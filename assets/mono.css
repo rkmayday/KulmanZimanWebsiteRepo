@@ -719,3 +719,10 @@ html.kz-loader #kz-load{display:block;position:fixed;inset:0;z-index:2147483640;
 
 /* the loader runs while the rest of the page holds still */
 html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running!important}
+
+/* stack slider: a full-width section, edge to edge (no box): no inset, no rounded corners, no outline */
+.ss-pin{--fi:0px;clip-path:inset(0)}
+.ss-frame{inset:0;border-radius:0;box-shadow:none}
+.ss-frame::after{border-radius:0}
+@media (min-width:861px){.ss-pin{padding-inline:max(24px,calc((100vw - 1240px) / 2 + 24px))}}
+@media (max-width:860px){.ss-pin{grid-template-columns:minmax(0,1fr);padding-inline:18px}.ss-cards{margin-inline:0}.ss-word{padding-inline:0}.ss-info{padding-inline:0}}
