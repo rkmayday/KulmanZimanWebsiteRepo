@@ -93,8 +93,8 @@ ul,ol{margin:0}
 .js .reveal.in{opacity:1;transform:none}
 
 /* ================= the KZ logo stage (home) ================= */
-.kz-stage{position:relative;height:calc(237.2vh - 37px)}
-.kz-pin{--lw:min(66vw,820px,max(260px,calc((50vh - 138px) * 2.75)));--lw:min(66vw,820px,max(260px,calc((50svh - 138px) * 2.75)));position:sticky;top:72px;height:calc(100vh - 72px);height:calc(100svh - 72px);overflow:hidden;display:grid;place-items:center;isolation:isolate}
+.kz-stage{position:relative;height:calc(calc(237.2 * var(--vh, 1vh)) - 37px)}
+.kz-pin{--lw:min(66vw,820px,max(260px,calc((calc(50 * var(--vh, 1vh)) - 138px) * 2.75)));--lw:min(66vw,820px,max(260px,calc((calc(50 * var(--vh, 1svh)) - 138px) * 2.75)));position:sticky;top:72px;height:calc(calc(100 * var(--vh, 1vh)) - 72px);height:calc(calc(100 * var(--vh, 1svh)) - 72px);overflow:hidden;display:grid;place-items:center;isolation:isolate}
 .kz-grid{position:absolute;inset:-10%;z-index:-1;pointer-events:none;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;
   -webkit-mask-image:radial-gradient(60% 55% at 50% 48%,#000 20%,transparent 75%);mask-image:radial-gradient(60% 55% at 50% 48%,#000 20%,transparent 75%);
@@ -119,7 +119,7 @@ ul,ol{margin:0}
 .kz-copy .hero-tags li{padding:8px 13px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2)}
 .kz-copy .hero-tags li.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink);margin-right:8px;vertical-align:1px}
 @media (max-width:720px){
-  .kz-stage{height:calc(208.1vh - 37px)}
+  .kz-stage{height:calc(calc(208.1 * var(--vh, 1vh)) - 37px)}
   .kz-pin{--lw:86vw}
   .kz-word{top:calc(50% + var(--lw) * .337);width:calc(var(--lw) * .565)}
   .kz-cue{top:calc(50% + var(--lw) * .4 + 18px)}
@@ -376,10 +376,10 @@ footer .base-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 /* package pop-up */
-.pkg-modal{width:min(560px,calc(100% - 28px));max-height:calc(100dvh - 40px);margin:auto;padding:0;border:0;background:transparent;color:var(--ink);overflow:visible}
+.pkg-modal{width:min(560px,calc(100% - 28px));max-height:calc(calc(100 * var(--vh, 1dvh)) - 40px);margin:auto;padding:0;border:0;background:transparent;color:var(--ink);overflow:visible}
 .pkg-modal::backdrop{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1);opacity:0;transition:opacity .22s}
 .pkg-modal.open::backdrop{opacity:1}
-.pm-box{position:relative;max-height:calc(100dvh - 40px);overflow:auto;padding:clamp(22px,4vw,32px);border-radius:26px;background:var(--paper);box-shadow:0 0 0 1px var(--line-2),0 40px 100px -30px rgba(0,0,0,.4);
+.pm-box{position:relative;max-height:calc(calc(100 * var(--vh, 1dvh)) - 40px);overflow:auto;padding:clamp(22px,4vw,32px);border-radius:26px;background:var(--paper);box-shadow:0 0 0 1px var(--line-2),0 40px 100px -30px rgba(0,0,0,.4);
   opacity:0;transform:translateY(14px) scale(.97);transition:opacity .22s,transform .3s var(--ease)}
 .pkg-modal.open .pm-box{opacity:1;transform:none}
 .pm-box h2{font-size:clamp(1.6rem,4vw,2.1rem);margin:10px 0 6px}
@@ -621,7 +621,7 @@ html.pt-in body{animation:ptIn .25s ease both}
 @media (hover:hover){.btn.ghost.solid:hover{background:var(--ink);color:var(--paper)}}
 
 /* the cursor switch: a small notch on the right edge (computers only) that pulls out an on/off switch */
-.cur-ctl{position:fixed;left:0;top:clamp(96px,16vh,150px);z-index:90;display:flex;flex-direction:row-reverse;align-items:center;transform:translateX(calc(-100% + 32px));transition:transform .45s cubic-bezier(.2,.8,.2,1);
+.cur-ctl{position:fixed;left:0;top:clamp(96px,calc(16 * var(--vh, 1vh)),150px);z-index:90;display:flex;flex-direction:row-reverse;align-items:center;transform:translateX(calc(-100% + 32px));transition:transform .45s cubic-bezier(.2,.8,.2,1);
   border-radius:0 14px 14px 0;background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
   box-shadow:inset 0 0 0 1px rgba(10,10,10,.2),inset 0 1px 0 rgba(255,255,255,.7),0 14px 36px -10px rgba(0,0,0,.4)}
 .cur-ctl.open{transform:none}
@@ -643,13 +643,13 @@ html:has(dialog[open]) .cur-ctl{display:none}
 
 /* ================= Portfolio: stack slider. One slide per demo: a giant word, a rolling stack of cards with
    blurred neighbours, a frame that washes into each demo's colours, and a title that swaps letter by letter ================= */
-.stack-show{position:relative;height:calc(100svh + 3 * 75vh)}
-.ss-pin{position:sticky;top:72px;height:calc(100vh - 72px);height:calc(100svh - 72px);overflow:hidden;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;
+.stack-show{position:relative;height:calc(calc(100 * var(--vh, 1svh)) + 3 * calc(75 * var(--vh, 1vh)))}
+.ss-pin{position:sticky;top:72px;height:calc(calc(100 * var(--vh, 1vh)) - 72px);height:calc(calc(100 * var(--vh, 1svh)) - 72px);overflow:hidden;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;
   padding:clamp(16px,2.4vw,28px);--bg:#08080d;--ac:#a78bfa;--tx:#f3f2f8;--mu:rgba(243,242,248,.7);color:var(--tx);transition:color .6s}
 .ss-frame{position:absolute;inset:clamp(10px,1.4vw,18px);border-radius:28px;background:radial-gradient(ellipse 70% 80% at 72% 50%,color-mix(in srgb,var(--ac) 32%,transparent),transparent 70%),var(--bg);
   transition:background-color .7s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
 .ss-frame::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--bg);opacity:0;transition:opacity .7s}
-.ss-word{position:absolute;left:clamp(30px,4vw,64px);right:clamp(30px,4vw,64px);top:clamp(26px,5vh,60px);z-index:1;pointer-events:none;
+.ss-word{position:absolute;left:clamp(30px,4vw,64px);right:clamp(30px,4vw,64px);top:clamp(26px,calc(5 * var(--vh, 1vh)),60px);z-index:1;pointer-events:none;
   font:800 clamp(3.4rem,11.5vw,11rem)/.86 var(--font-display);letter-spacing:-.055em;text-transform:uppercase;white-space:nowrap;color:var(--tx);opacity:.95;transition:color .6s}
 .ss-word span{display:inline-block;transform-origin:50% 100%;animation:ssIn .62s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 26ms)}
 .ss-word span.sp{width:.28em}
@@ -660,17 +660,17 @@ html:has(dialog[open]) .cur-ctl{display:none}
 .ss-card img,.ss-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .ss-card video{opacity:0;transition:opacity .4s}
 .ss-card.on video{opacity:1}
-.ss-info{position:relative;z-index:2;grid-column:1;grid-row:1;align-self:end;display:grid;gap:12px;justify-items:start;max-width:440px;padding:0 0 clamp(20px,4vh,48px) clamp(18px,2.6vw,40px)}
+.ss-info{position:relative;z-index:2;grid-column:1;grid-row:1;align-self:end;display:grid;gap:12px;justify-items:start;max-width:440px;padding:0 0 clamp(20px,calc(4 * var(--vh, 1vh)),48px) clamp(18px,2.6vw,40px)}
 .ss-count{font:500 .8rem var(--font-mono);letter-spacing:.14em;color:var(--mu)}.ss-count b{color:var(--tx);font-weight:500}
 .ss-ind{font:500 .74rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
 .ss-desc{color:var(--mu);font-size:1.02rem;line-height:1.55;min-height:3.1em}
 .ss-open{background:var(--tx);color:var(--bg)}
 @media (hover:hover){.ss-open:hover{background:var(--ac);color:var(--bg)}}
-.ss-hint{position:absolute;right:clamp(30px,4vw,60px);bottom:clamp(22px,4vh,44px);z-index:2;font:500 .72rem var(--font-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mu);transition:opacity .4s}
+.ss-hint{position:absolute;right:clamp(30px,4vw,60px);bottom:clamp(22px,calc(4 * var(--vh, 1vh)),44px);z-index:2;font:500 .72rem var(--font-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mu);transition:opacity .4s}
 .ss-hint::after{content:"";display:block;width:1px;height:28px;margin:8px auto 0;background:currentColor;animation:ssHint 1.6s ease-in-out infinite}
 @keyframes ssHint{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
 @media (max-width:860px){
-  .stack-show{height:calc(100svh + 3 * 62vh)}
+  .stack-show{height:calc(calc(100 * var(--vh, 1svh)) + 3 * calc(62 * var(--vh, 1vh)))}
   .ss-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;align-items:start}
   .ss-word{position:relative;left:auto;right:auto;top:auto;grid-row:1;padding:clamp(18px,4vw,30px) 14px 0;font-size:clamp(2.6rem,14vw,6rem)}
   .ss-cards{grid-column:1;grid-row:2;height:auto;align-self:center;margin-inline:6px;aspect-ratio:16/10}
@@ -687,9 +687,9 @@ html:has(dialog[open]) .cur-ctl{display:none}
 .ss-word{z-index:3}
 @media (min-width:861px){
   .ss-pin{grid-template-rows:auto minmax(0,1fr);column-gap:clamp(20px,3vw,48px);align-items:stretch;
-    padding:calc(var(--fi) + clamp(14px,3vh,32px)) calc(var(--fi) + clamp(18px,2.6vw,40px)) calc(var(--fi) + clamp(20px,4vh,44px))}
-  .ss-word{position:relative;left:auto;right:auto;top:auto;grid-column:1/-1;grid-row:1;font-size:clamp(2.8rem,min(10.5vw,15vh),10rem);padding:0}
-  .ss-cards{grid-column:2;grid-row:2;height:auto;align-self:stretch;container-type:size;margin-top:clamp(10px,2vh,24px)}
+    padding:calc(var(--fi) + clamp(14px,calc(3 * var(--vh, 1vh)),32px)) calc(var(--fi) + clamp(18px,2.6vw,40px)) calc(var(--fi) + clamp(20px,calc(4 * var(--vh, 1vh)),44px))}
+  .ss-word{position:relative;left:auto;right:auto;top:auto;grid-column:1/-1;grid-row:1;font-size:clamp(2.8rem,min(10.5vw,calc(15 * var(--vh, 1vh))),10rem);padding:0}
+  .ss-cards{grid-column:2;grid-row:2;height:auto;align-self:stretch;container-type:size;margin-top:clamp(10px,calc(2 * var(--vh, 1vh)),24px)}
   .ss-card{width:min(100cqw,150cqh);height:auto;margin-inline:auto;right:auto;left:50%;max-height:none}
   .ss-info{grid-column:1;grid-row:2;align-self:end;padding:0;max-width:440px}
 }
@@ -793,10 +793,10 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* demo slider, arrow version: one screen tall (no long scroll), cards side by side, arrows to move between them */
 .stack-show{height:auto}
-.ss-pin{position:relative;top:auto;height:calc(100vh - 72px);height:calc(100svh - 72px);min-height:560px}
+.ss-pin{position:relative;top:auto;height:calc(calc(100 * var(--vh, 1vh)) - 72px);height:calc(calc(100 * var(--vh, 1svh)) - 72px);min-height:560px}
 .ss-hint{display:none}
 .ss-card{top:50%}
-.ss-nav{position:absolute;right:max(24px,calc((100vw - 1240px) / 2 + 24px));bottom:clamp(22px,4vh,44px);z-index:4;display:flex;align-items:center;gap:14px}
+.ss-nav{position:absolute;right:max(24px,calc((100vw - 1240px) / 2 + 24px));bottom:clamp(22px,calc(4 * var(--vh, 1vh)),44px);z-index:4;display:flex;align-items:center;gap:14px}
 .ss-arrow{width:52px;height:52px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;color:var(--tx);
   background:color-mix(in srgb,var(--tx) 10%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--tx) 35%,transparent);transition:background .25s,color .25s,transform .2s}
 @media (hover:hover){.ss-arrow:hover{background:var(--tx);color:var(--bg)}}
@@ -818,14 +818,14 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 @media (max-width:860px){
   .ss-pin{height:auto;min-height:0;grid-template-rows:auto auto auto auto;padding:18px 18px 34px;align-content:start}
   .ss-word{grid-row:1;padding-top:6px}
-  .ss-cards{grid-row:2;width:min(100%,calc((100svh - 72px - 250px) * 1.6));justify-self:center;margin-block:14px 4px}
+  .ss-cards{grid-row:2;width:min(100%,calc((calc(100 * var(--vh, 1svh)) - 72px - 250px) * 1.6));justify-self:center;margin-block:14px 4px}
   .ss-nav{grid-row:3;justify-self:center;margin:14px 0 18px}
   .ss-info{grid-row:4;padding:0}
 }
 
 /* ================= Home industries: Expanded Cards. A rail of tall slivers; hovering one widens it into a full card
    (its demo behind it) and slides the others aside. Clicking opens the portfolio slider on that demo. ================= */
-.xcards{display:flex;gap:12px;height:clamp(440px,62vh,560px)}
+.xcards{display:flex;gap:12px;height:clamp(440px,calc(62 * var(--vh, 1vh)),560px)}
 .xc{position:relative;flex:1 1 0;min-width:0;border-radius:22px;overflow:hidden;text-decoration:none;color:#f5f4f2;background:var(--bg);
   transition:flex-grow .7s cubic-bezier(.2,.8,.2,1);isolation:isolate}
 .xc.on{flex-grow:4.2}
@@ -887,3 +887,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* the pinned opening sits in a track that ends at the headline; the browser scrolls it away from there (no shaking on phones) */
 .kz-track,.st-track{position:relative}
+
+/* phones and tablets: a solid top bar (a blurred see-through sticky bar can jitter while the browser's own toolbars animate) */
+@media (hover:none){.nav{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}

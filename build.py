@@ -231,6 +231,16 @@ def keep_title(html_text, icons_too=True):
     icons = icons.replace('"/favicon', '"' + (m2.group(1) if m2 else "/") + 'favicon')
     return html_text.replace("</body>", f"<script>document.title={t};{icons}</script>\n</body>", 1)
 
+VH_LOCK = ("<script>/* lock the screen height once: in-app browsers and phone toolbars resize the window while you scroll, which made "
+           "everything sized to the screen jump. Only a real width change (rotating) re-measures. */"
+           "(function(){var r=document.documentElement,w=innerWidth;function s(){r.style.setProperty('--vh',(innerHeight/100)+'px')}s();"
+           "addEventListener('resize',function(){if(innerWidth!==w){w=innerWidth;s()}})})();</script>")
+
+
+def lock_vh(html):
+    return html.replace("<head>", "<head>\n" + VH_LOCK, 1) if "--vh'" not in html else html
+
+
 def head_tags(meta):
     title = meta["title"]
     canonical = SITE + meta["path"]
@@ -433,7 +443,7 @@ def build(preview=False, theme="royal"):
         # products.html at /products with no trailing slash
         out = out_dir / f"{page.stem}.html"
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(html)
+        out.write_text(lock_vh(html))
         print("built", out.relative_to(ROOT))
     # the four sample sites: standalone pages with their own branding
     for sp in sorted((SRC / "samples").glob("*.html")):
@@ -443,7 +453,7 @@ def build(preview=False, theme="royal"):
         html = keep_title(html, icons_too=False)   # the demos keep their own icons
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(html)
+        out.write_text(lock_vh(html))
         print("built", out.relative_to(ROOT))
     if not preview:
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)

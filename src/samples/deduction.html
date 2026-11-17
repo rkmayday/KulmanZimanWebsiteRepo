@@ -30,7 +30,7 @@ h1 em,h2 em{font-style:normal;color:transparent;background:var(--grad);-webkit-b
 main .sec + .sec{border-top:1px solid var(--line)}
 
 /* ===== the opening: a glowing </> draws itself, then the brackets slide out to frame the headline ===== */
-.stage{--bh:clamp(150px,32vh,320px);--spread:min(30vw,430px);--sp:calc(var(--a,0) * .6 + var(--b,0) * .4)}
+.stage{--bh:clamp(150px,calc(32 * var(--vh, 1vh)),320px);--spread:min(30vw,430px);--sp:calc(var(--a,0) * .6 + var(--b,0) * .4)}
 .dd-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .dd-dots{position:absolute;inset:-20% 0;background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1.4px);background-size:28px 28px;
   -webkit-mask:radial-gradient(ellipse 60% 55% at 50% 50%,#000 20%,transparent 75%);mask:radial-gradient(ellipse 60% 55% at 50% 50%,#000 20%,transparent 75%);
@@ -47,7 +47,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .dd-l{transform:translateX(calc(var(--bh) * -.62 - var(--sp) * var(--spread) + var(--mx,0) * -10px)) scale(calc(1 + var(--sp) * .35));opacity:calc(1 - var(--b,0) * .72)}
 .dd-r{transform:translateX(calc(var(--bh) * .62 + var(--sp) * var(--spread) + var(--mx,0) * 10px)) scale(calc(1 + var(--sp) * .35));opacity:calc(1 - var(--b,0) * .72)}
 .dd-sl{transform:rotate(calc(var(--sp) * 220deg + var(--mx,0) * 8deg)) scale(calc(1 - var(--sp) * .75));opacity:calc(1 - var(--sp) * 1.4)}
-.dd-type{position:absolute;left:0;right:0;top:calc(50% + var(--bh) * .5 + clamp(22px,4vh,40px));text-align:center;font:500 clamp(15px,1.6vw,19px)/1 var(--mono);color:var(--mut);
+.dd-type{position:absolute;left:0;right:0;top:calc(50% + var(--bh) * .5 + clamp(22px,calc(4 * var(--vh, 1vh)),40px));text-align:center;font:500 clamp(15px,1.6vw,19px)/1 var(--mono);color:var(--mut);
   opacity:calc(var(--i,1) - var(--a,0) * 2.2)}
 .dd-type b{font-weight:500;color:var(--fg)}
 .dd-type i{display:inline-block;width:.6em;height:1.1em;margin-left:2px;vertical-align:-.18em;background:var(--acc);animation:ddblink 1s steps(1) infinite}
@@ -58,7 +58,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .copy .lede{color:#b3b1c4}
 .cue{color:var(--fg)}
 .cue i{background:var(--acc)}
-@media (max-width:720px){.stage{--bh:clamp(120px,24vh,190px);--spread:24vw}}
+@media (max-width:720px){.stage{--bh:clamp(120px,calc(24 * var(--vh, 1vh)),190px);--spread:24vw}}
 .no-stage .dd-l,.no-stage .dd-r,.no-stage .dd-sl{transform:none;opacity:1}
 .no-stage .dd-type{display:none}
 
