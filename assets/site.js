@@ -434,8 +434,10 @@ window.kzGmail = (to, subject = '', body = '') => {
       pin.addEventListener('touchstart', e => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; swiped = false; }, { passive: true });
       pin.addEventListener('touchmove', e => { if (swiped) return; const t = e.touches[0], dx = t.clientX - tx, dy = t.clientY - ty;
         if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) { swiped = true; go(active + (dx < 0 ? 1 : -1)); } }, { passive: true });
-      // the scroll stops once, with the whole slider in view (smooth.js)
-      const refresh = () => { ss.dataset.stops = String(Math.round(ss.getBoundingClientRect().top + scrollY - 72)); };
+      // computers (mouse or trackpad): the scroll stops once, with the whole slider in view (smooth.js). Phones scroll straight past it.
+      const stopAt = () => Math.round(ss.getBoundingClientRect().top + scrollY - 72);
+      const fineStop = matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const refresh = () => { if (fineStop) ss.dataset.stops = String(stopAt()); };
       ss.__refreshStop = refresh; refresh(); addEventListener('load', refresh);
       new IntersectionObserver(es => { onScreen = es[0].intersectionRatio > .55; play(); }, { threshold: [0, .55, .8] }).observe(ss);
       let pickSlug = /^#slide-/.test(location.hash) ? location.hash.slice(7) : '';
@@ -444,7 +446,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       if (want > 0) { f = target = want; setActive(want); } else setActive(0);
       draw();
       if (want >= 0) {
-        const land = () => { refresh(); scrollTo({ top: +ss.dataset.stops, behavior: 'instant' }); };
+        const land = () => { refresh(); scrollTo({ top: stopAt(), behavior: 'instant' }); };
         land(); requestAnimationFrame(land); addEventListener('load', () => setTimeout(land, 30), { once: true });
         history.replaceState(null, '', location.pathname);
       }
