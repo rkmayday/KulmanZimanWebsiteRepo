@@ -36,7 +36,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
   -webkit-mask:radial-gradient(ellipse 60% 55% at 50% 50%,#000 20%,transparent 75%);mask:radial-gradient(ellipse 60% 55% at 50% 50%,#000 20%,transparent 75%);
   transform:translateY(calc(var(--p,0) * -120px));opacity:calc(.35 + var(--i,1) * .65)}
 .dd-glow{position:absolute;left:50%;top:50%;width:min(80vw,900px);aspect-ratio:1;border-radius:50%;
-  background:radial-gradient(circle,rgba(167,139,250,.32),rgba(244,114,182,.12) 38%,transparent 66%);filter:blur(10px);
+  background:radial-gradient(circle,rgba(167,139,250,.32),rgba(244,114,182,.12) 38%,transparent 68%);will-change:transform;
   transform:translate(calc(-50% + var(--mx,0) * 60px),calc(-50% + var(--my,0) * 40px)) scale(calc(.6 + var(--i,1) * .4 + var(--a,0) * .5));opacity:calc(var(--i,1) * (1 - var(--b,0) * .45))}
 .dd-br,.dd-sl{position:relative;height:var(--bh);overflow:visible;filter:drop-shadow(0 0 16px rgba(167,139,250,.55)) drop-shadow(0 0 2px rgba(196,181,253,.8))}
 .dd-br{width:calc(var(--bh) * .5)}
@@ -60,6 +60,8 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .cue i{background:var(--acc)}
 @media (max-width:720px){.stage{--bh:clamp(120px,calc(24 * var(--vh, 1vh)),190px);--spread:24vw}}
 .no-stage .dd-l,.no-stage .dd-r,.no-stage .dd-sl{transform:none;opacity:1}
+/* the glowing brackets and slash get their own layer, so their glow is drawn once instead of every frame as they move */
+.dd-l,.dd-r,.dd-sl{will-change:transform,opacity}
 .no-stage .dd-type{display:none}
 
 /* ===== sections ===== */

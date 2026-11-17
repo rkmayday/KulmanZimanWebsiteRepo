@@ -12,7 +12,7 @@
     const scene3 = L.scene, logoCv = scene3.querySelector('.kz-canvas');
     let renderer;
     const canvas = document.createElement('canvas'); canvas.className = 'kz-gl';
-    try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return; }
+    try { renderer = new T.WebGLRenderer({ canvas, antialias: (devicePixelRatio || 1) < 1.5, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return; }
     if (!renderer.getContext()) return;
     scene3.append(canvas);
     renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1;
@@ -53,7 +53,7 @@
     let cw = 0, ch = 0;
     const size = () => {
       cw = scene3.clientWidth; ch = scene3.clientHeight;
-      renderer.setPixelRatio(Math.min(phone ? 3 : 2, devicePixelRatio || 1)); renderer.setSize(cw, ch, false);
+      renderer.setPixelRatio(Math.min(phone ? 2 : 1.5, devicePixelRatio || 1)); renderer.setSize(cw, ch, false);
       camera.aspect = cw / ch; camera.fov = 2 * Math.atan(ch / 2 / D) * 180 / Math.PI; camera.position.set(0, 0, D); camera.lookAt(0, 0, 0); camera.updateProjectionMatrix();
     };
     size(); addEventListener('resize', () => { size(); window.__kzKick && window.__kzKick(); });

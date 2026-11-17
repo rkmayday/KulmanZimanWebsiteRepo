@@ -8,7 +8,7 @@
   const T = THREE, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canvas = document.createElement('canvas'); canvas.className = 'er-3d';
   let renderer;
-  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return fail(); }
+  try { renderer = new T.WebGLRenderer({ canvas, antialias: (devicePixelRatio || 1) < 1.5, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return fail(); }
   if (!renderer.getContext()) return fail();
   fail(); mark.classList.add('has-3d'); stage.classList.add('er3d'); mark.prepend(canvas);
   renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
@@ -213,7 +213,8 @@
 
   // ---------- run only while the stage is on screen ----------
   let on = true, raf = 0;
-  new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) loop(); }).observe(stage);
+  new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) loop(); }).observe(stage.querySelector('.pin') || stage);
+  document.addEventListener('visibilitychange', () => { on = !document.hidden; if (on && !raf) loop(); });
   const loop = () => { raf = 0; if (!on) return; draw(); raf = requestAnimationFrame(loop); };
   addEventListener('resize', size); size(); loop();
 })();

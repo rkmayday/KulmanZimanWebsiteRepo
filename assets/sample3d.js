@@ -9,7 +9,7 @@ window.S3D = (build, opt = {}) => {
   const T = THREE, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canvas = document.createElement('canvas'); canvas.className = 'x-3d';
   let renderer;
-  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return fail(); }
+  try { renderer = new T.WebGLRenderer({ canvas, antialias: (devicePixelRatio || 1) < 1.5, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return fail(); }
   if (!renderer.getContext()) return fail();
   fail(); mark.classList.add('has-3d'); stage.classList.add('x3d'); mark.prepend(canvas);
   renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = opt.exposure || 1.05;
@@ -49,7 +49,7 @@ window.S3D = (build, opt = {}) => {
       const textW = el => { const rg = document.createRange(); rg.selectNodeContents(el); return rg.getBoundingClientRect().width; };
       const acts = copyEl.querySelector('.actions'), aw = acts ? (() => { const bs = [...acts.children].map(e => e.getBoundingClientRect()); return Math.max(...bs.map(b => b.right)) - Math.min(...bs.map(b => b.left)); })() : 0;
       copy.w = Math.max(aw, ...[...copyEl.children].filter(e => e !== acts).map(textW)); copy.h = copyEl.getBoundingClientRect().height; }
-    renderer.setPixelRatio(Math.min(1.5, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
+    renderer.setPixelRatio(Math.min(1.25, devicePixelRatio || 1)); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); last = ''; };
 
   const ctx = { T, scene, camera, renderer, stage, cl, sm, easeOut, mix, noise, fbm, rnd, C, canvasTex, soft, reduce };
   const draw = build(ctx);
@@ -80,7 +80,9 @@ window.S3D = (build, opt = {}) => {
 
   // ---------- run only while the stage is on screen ----------
   let on = true, raf = 0;
-  new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) loop(); }).observe(stage);
+  // watch the pinned picture itself (the stage runs far down the page, under the next sections), so it pauses once scrolled away
+  new IntersectionObserver(es => { on = es[0].isIntersecting; if (on && !raf) loop(); }).observe(stage.querySelector('.pin') || stage);
+  document.addEventListener('visibilitychange', () => { on = !document.hidden; if (on && !raf) loop(); });
   const loop = () => { raf = 0; if (!on) return; frame(); raf = requestAnimationFrame(loop); };
   addEventListener('resize', size); size(); loop();
 };
