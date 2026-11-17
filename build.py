@@ -233,10 +233,10 @@ def keep_title(html_text, icons_too=True):
 
 VH_LOCK = ("<script>/* lock the screen height once: in-app browsers and phone toolbars resize the window while you scroll, which made "
            "everything sized to the screen jump. Only a real width change (rotating) re-measures. This runs right after the viewport tag: "
-           "before it, iPhones report a desktop-sized screen. The height is also never taller than the phone's actual screen, and a big change (a frame or window growing) re-measures. */"
-           "(function(){var r=document.documentElement,w=0,hh=0;function s(){var h=innerHeight,sh=screen.height||h,sw=screen.width||innerWidth;"
-           "if(innerWidth<=Math.max(sw,screen.height||0)+1)h=Math.min(h,Math.max(sh,sw));if(!(h>100))h=700;r.style.setProperty('--vh',(h/100)+'px');w=innerWidth;hh=innerHeight}s();"
-           "addEventListener('resize',function(){var d=Math.abs(innerHeight-hh);if(innerWidth!==w||d>Math.max(160,hh*.25))s()});document.addEventListener('DOMContentLoaded',s)})();</script>")
+           "before it, iPhones report a desktop-sized screen. The height is also never taller than the phone's actual screen. */"
+           "(function(){var r=document.documentElement,w=0;function s(){var h=innerHeight,sh=screen.height||h,sw=screen.width||innerWidth;"
+           "if(innerWidth<=Math.max(sw,screen.height||0)+1)h=Math.min(h,Math.max(sh,sw));if(!(h>100))h=700;r.style.setProperty('--vh',(h/100)+'px');w=innerWidth}s();"
+           "addEventListener('resize',function(){if(innerWidth!==w)s()});document.addEventListener('DOMContentLoaded',s)})();</script>")
 
 
 def lock_vh(html):
