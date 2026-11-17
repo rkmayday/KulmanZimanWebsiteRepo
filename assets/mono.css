@@ -495,12 +495,13 @@ a.box.lift:active{transform:translateY(-1px)}
 
 /* blend cursor (site.js): inverts what it is over; the normal cursor comes back in text fields and pop-ups */
 .blend-cursor{position:fixed;left:0;top:0;z-index:2147483647;pointer-events:none;width:0;height:0;opacity:0;transition:opacity .2s;mix-blend-mode:difference;will-change:transform}
-.blend-cursor::before{content:"";position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#fff;
+.blend-cursor::before{content:"";position:absolute;left:-6.3px;top:-6.3px;width:12.6px;height:12.6px;border-radius:50%;background:#fff;
   transition:transform .28s cubic-bezier(.2,.7,.2,1)}
 .blend-cursor.on{opacity:1}
-.blend-cursor.big::before{transform:scale(2.3)}
+/* over a button: about 19px across (was 32px) */
+.blend-cursor.big::before{transform:scale(1.533)}
 .blend-cursor.down::before{transform:scale(.75)}
-.blend-cursor.big.down::before{transform:scale(2)}
+.blend-cursor.big.down::before{transform:scale(1.333)}
 .blend-cursor.text{opacity:0}
 html.blend-on,html.blend-on *{cursor:none!important}
 html.blend-on :is(input:not([type=range]):not([type=checkbox]):not([type=radio]),textarea,[contenteditable]){cursor:text!important}
