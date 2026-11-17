@@ -53,7 +53,7 @@
     let cw = 0, ch = 0;
     const size = () => {
       cw = scene3.clientWidth; ch = scene3.clientHeight;
-      renderer.setPixelRatio(Math.min(phone ? 1.5 : 2, devicePixelRatio || 1)); renderer.setSize(cw, ch, false);
+      renderer.setPixelRatio(Math.min(phone ? 3 : 2, devicePixelRatio || 1)); renderer.setSize(cw, ch, false);
       camera.aspect = cw / ch; camera.fov = 2 * Math.atan(ch / 2 / D) * 180 / Math.PI; camera.position.set(0, 0, D); camera.lookAt(0, 0, 0); camera.updateProjectionMatrix();
     };
     size(); addEventListener('resize', () => { size(); window.__kzKick && window.__kzKick(); });

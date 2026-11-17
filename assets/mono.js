@@ -39,7 +39,7 @@
   window.__kzLogo = { S, ZP, SP, phone, scene, get W() { return W; }, get H() { return H; } };
   let W = 0, H = 0, cw = 0, ch = 0, dpr = 1;
   const size = () => {
-    dpr = Math.min(2, devicePixelRatio || 1);
+    dpr = Math.min(3, devicePixelRatio || 1);
     cw = scene.clientWidth; ch = scene.clientHeight;
     cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
     W = logo.offsetWidth; H = W * 335 / 600;
@@ -96,7 +96,10 @@
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
   // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
   // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
-  const pin = $('.kz-pin', stage), HOLD = .85;   // the scene starts moving with the page once the Z and S are in place and the headline is fully in
+  const pin = $('.kz-pin', stage), HOLD = .85;
+  // The pinned scene sits in a "track" that ends exactly where the headline is fully in. From there the browser itself scrolls
+  // the scene away with the page (no JavaScript moving it a frame late, which made it shake on phones).
+  const track = document.createElement('div'); track.className = 'kz-track'; stage.insertBefore(track, pin); track.append(pin);   // the scene starts moving with the page once the Z and S are in place and the headline is fully in
   // No dead scroll after the reveal: the logo turns at a steady pace, then once the Z and S start to separate
   // each bit of scrolling moves them a little less (the pace eases down smoothly), and the page starts carrying
   // the scene away while the split is still finishing, so something is always moving.
@@ -117,11 +120,12 @@
     const uH = k < 1e-4 ? c : (1 - Math.sqrt(Math.max(0, 1 - 2 * k * c))) / k;
     const yHold = y0 + uH * Ls, H = Math.max(1, Rt - yHold), h = clamp(y - yHold, 0, H);
     // from the stop at the headline the scene moves exactly with the page: no scroll room at all
-    pin.style.transform = h > 0 ? `translate3d(0,${(-h).toFixed(1)}px,0)` : '';
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     // ...and also by the empty bottom of the screen below the headline's buttons, so no blank scroll follows the stop
     const blank = Math.max(0, pin.clientHeight - (copy.offsetTop + copy.offsetHeight) - (pin.clientWidth < 720 ? 36 : 56));
-    const mb = Math.round(-H - blank); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    const trackH = Math.round(yHold + pin.offsetHeight);                 // the pin lets go exactly at the stop
+    if (track.__h !== trackH) { track.__h = trackH; track.style.height = trackH + 'px'; }
+    const mb = Math.round(-(r.height - trackH) - blank); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
     // ...exactly where the animation has finished and before the page starts moving on
     stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);

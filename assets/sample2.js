@@ -82,7 +82,10 @@
   const stage = $('.stage');
   if (!stage) return;
   const pin = $('.pin', stage), copy = $('.copy', stage);
+  // the pinned scene sits in a "track" that ends where the headline is in; after that the browser scrolls it natively (no shake)
+  let track = null;
   if (reduce) { root.classList.add('no-stage'); stage.style.cssText += ';--i:1;--p:1;--a:1;--b:1;--c:1'; return; }
+  track = document.createElement('div'); track.className = 'st-track'; stage.insertBefore(track, pin); track.append(pin);
   const navH = () => parseFloat(getComputedStyle(pin).top) || 0;
   let nh = navH(), target = 0, prog = 0, mx = 0, my = 0, tmx = 0, tmy = 0, running = false, last = 0;
   let t0 = performance.now(); const INTRO = 1600;
@@ -97,10 +100,10 @@
     // after the reveal, the scene speeds up gradually into normal scrolling (no jolt at the hand-off)
     const H = (1 - HOLD) * range, h = clamp(target - HOLD, 0, 1 - HOLD) * range;
     // from the stop at the headline, the scene moves exactly with the page: no slow or dead scroll at all
-    const Rm = 0, f = h;
-    pin.style.transform = h > 0 ? `translate3d(0,${(-f).toFixed(1)}px,0)` : '';
+    const trackH = Math.round(HOLD * range + pin.offsetHeight);           // the pin lets go exactly at the hold point
+    if (track.__h !== trackH) { track.__h = trackH; track.style.height = trackH + 'px'; }
     // the next section follows right behind the headline (no empty band)
-    const mb = Math.round(Rm / 2 - H); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    const mb = Math.round(-(r.height - trackH)); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     stage.dataset.stopY = Math.round(scrollY + r.top - nh + STOP * range); stage.dataset.stopUp = '1';   // also stops here on the way back up
     kick();
   };

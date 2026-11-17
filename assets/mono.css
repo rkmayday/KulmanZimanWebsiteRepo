@@ -884,3 +884,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* the section after the home opening is pulled up over the empty bottom of the opening screen: keep it on top */
 .hero + .strip{position:relative;z-index:1;background:var(--paper)}
+
+/* the pinned opening sits in a track that ends at the headline; the browser scrolls it away from there (no shaking on phones) */
+.kz-track,.st-track{position:relative}

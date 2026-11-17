@@ -275,8 +275,12 @@ window.kzGmail = (to, subject = '', body = '') => {
       return { el, words, last: -1 };
     });
     const live = new Set();
+    // a steady screen height: a phone's address bar sliding in and out changes innerHeight while you scroll, which made the
+    // words flicker back and forth. Only a real resize (a new width, or rotating the phone) updates it.
+    let swVH = innerHeight, swW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth !== swW) { swW = innerWidth; swVH = innerHeight; groups.forEach(g => g.last = -1); } });
     const paint = () => {
-      swRaf = 0; const vh = innerHeight;
+      swRaf = 0; const vh = swVH;
       live.forEach(g => {
         const top = g.el.getBoundingClientRect().top;
         const p = Math.min(1, Math.max(0, (vh * .9 - top) / (vh * .42)));   // from 90% down the screen to 48%

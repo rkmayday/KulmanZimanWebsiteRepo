@@ -194,3 +194,6 @@ p{margin:0}
 /* a page that wants the lift without any glow */
 .no-glow .lift:hover{box-shadow:none}
 .no-glow .lift::after{content:none}
+
+/* the pinned opening sits in a track that ends at the headline; the browser scrolls it away from there (no shaking on phones) */
+.kz-track,.st-track{position:relative}
