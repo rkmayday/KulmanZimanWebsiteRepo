@@ -100,10 +100,10 @@ h2{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1}
 /* fig 1: the plan */
 .pl-q{margin:0 0 10px;font-style:italic;color:var(--fg)}
 .plan ol{list-style:none;margin:0;padding:0;display:grid;gap:7px;counter-reset:st}
-.plan li{display:flex;gap:10px;align-items:center;color:var(--mut);counter-increment:st;transition:color .3s}
-.plan li::before{content:counter(st);flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font:600 10px var(--mono);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc);transition:background .3s,color .3s}
+.plan li{display:flex;gap:10px;align-items:center;min-height:22px;line-height:1.3;color:var(--mut);counter-increment:st;transition:color .3s}
+.plan li::before{content:counter(st);flex:none;display:grid;place-items:center;width:20px;height:20px;line-height:20px;border-radius:50%;font:600 10px var(--mono);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc);transition:background .3s,color .3s}
 .plan li.run{color:var(--fg)}
-.plan li.run::before{content:"";background:conic-gradient(var(--acc) 0 30%,transparent 30%);animation:plSpin .7s linear infinite;box-shadow:inset 0 0 0 1px var(--acc)}
+.plan li.run::before{content:"\00a0";line-height:20px;background:conic-gradient(var(--acc) 0 30%,transparent 30%);animation:plSpin .7s linear infinite;box-shadow:inset 0 0 0 1px var(--acc)}
 .plan li.done{color:var(--fg)}
 .plan li.done::before{content:"✓";background:var(--acc);color:var(--on-acc)}
 @keyframes plSpin{to{transform:rotate(360deg)}}
@@ -137,12 +137,13 @@ h2{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1}
 .msg i{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font:600 9px var(--mono);font-style:normal;background:#2a3f6b;color:#fff}
 .msg.b i{background:var(--acc);color:var(--on-acc)}
 .msg p{margin:0}
-.msg.dots{position:absolute;visibility:hidden}
+.chat .msg.dots,.chat .msg.rep{grid-row:3;grid-column:1;position:static;visibility:hidden}
+.chat .tools{grid-row:4}
+.chat .ch-top{grid-row:1}.chat .msg.u{grid-row:2}
 .chat.s1 .msg.u,.chat.s3 .msg.u,.chat.s3 .msg.rep{opacity:1;transform:none}
 .chat.s2 .msg.u{opacity:1;transform:none}
-.chat.s2 .msg.dots{position:static;visibility:visible;opacity:1;transform:none}
-.chat .msg.rep{position:absolute;visibility:hidden}
-.chat.s3 .msg.rep{position:static;visibility:visible}
+.chat.s2 .msg.dots{visibility:visible;opacity:1;transform:none}
+.chat.s3 .msg.rep{visibility:visible}
 .msg.dots p{display:flex;gap:4px;padding-top:9px}
 .msg.dots p span{width:6px;height:6px;border-radius:50%;background:var(--mut);animation:chDot 1s infinite}
 .msg.dots p span:nth-child(2){animation-delay:.15s}.msg.dots p span:nth-child(3){animation-delay:.3s}

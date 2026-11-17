@@ -126,6 +126,13 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .rev.ok .rv-ok{background:#34d399}
 @media (prefers-reduced-motion:reduce){.rv-note,.pg-h,.tm-steps li{transition:none}}
 
+/* numbers that count and words that type keep a fixed width (nothing beside them shifts) */
+.g-pc{min-width:4.5ch;text-align:right;font-variant-numeric:tabular-nums}
+.g-m,.g-n{font-variant-numeric:tabular-nums}
+.g-b3{white-space:nowrap}.g-n{display:inline-block;min-width:2ch;text-align:center}
+.pg-v{display:inline-block;min-width:6.5ch}
+.tm-read b{min-width:4ch}
+
 /* the playground */
 .dd-lab{display:grid;gap:14px}
 .dd-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center}
@@ -293,6 +300,8 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .builds.deck .build{grid-area:1/1;transform:translate3d(calc(var(--dx,0) * 1px),calc(var(--k,0) * 16px),0) rotate(calc(var(--dx,0) * .05deg)) scale(calc(1 - var(--k,0) * .06));
   transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s;z-index:calc(10 - var(--k,0));opacity:calc(1 - var(--k,0) * .25);touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .builds.deck .build.drag{transition:none}
+.builds.deck .build{transform-style:flat;will-change:auto}
+.builds.deck .glare{display:none}
 .builds.deck .build.out{opacity:0}
 .deck-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:40px}
 .deck-nav button{width:46px;height:46px;border-radius:50%;border:0;display:grid;place-items:center;color:var(--fg);background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);cursor:pointer}

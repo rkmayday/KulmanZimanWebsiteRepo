@@ -65,7 +65,11 @@
       walk(el); return { el, words, last: -1 };
     });
     const live = new Set(); let swRaf = 0;
-    const paint = () => { swRaf = 0; const vh = innerHeight;
+    // a steady screen height: phones change innerHeight as the address bar slides in and out while you scroll,
+    // which made the words flicker back and forth. Only a real resize (new width, or rotating) updates it.
+    let swVH = innerHeight, swW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth !== swW) { swW = innerWidth; swVH = innerHeight; groups.forEach(g => g.last = -1); } });
+    const paint = () => { swRaf = 0; const vh = swVH;
       live.forEach(g => { const p = clamp((vh * .9 - g.el.getBoundingClientRect().top) / (vh * .42)); if (Math.abs(p - g.last) < .002) return; g.last = p;
         const n = g.words.length; g.words.forEach((w, i) => w.style.setProperty('--wo', (.14 + .86 * clamp(p * (n + 2) - i)).toFixed(3))); }); };
     const ask = () => { if (!swRaf) swRaf = requestAnimationFrame(paint); };

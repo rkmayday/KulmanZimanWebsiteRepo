@@ -194,8 +194,10 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 .sc-order .fr10{right:6%;bottom:6%;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;text-align:center;font:700 11px/1.1 var(--mono);color:var(--acc);background:#fff8f0;border:2px dashed var(--acc);rotate:-12deg}
 @media (prefers-reduced-motion:reduce){.tc,.tc-in,.tc-scene .L{transition:none}.tc{opacity:1;transform:none}.sc-farm .sun,.sc-shot .drip,.sc-order .rdy{animation:none}}
 /* touch screens: the layers drift gently on their own */
-@media (hover:none){.tc.seen .tc-in{animation:tcIdle 7s ease-in-out infinite}.tc.flip .tc-in{animation:none}}
-@keyframes tcIdle{0%,100%{transform:rotateX(4deg) rotateY(-6deg)}50%{transform:rotateX(-3deg) rotateY(6deg)}}
+/* touch screens: the cards sit still and flat while you scroll (3D layers can jitter on phones); a tap still flips them */
+@media (hover:none){.tc-scene,.tc-f{transform-style:flat}.tc-scene .L,.tc:hover .tc-scene .L{transform:none}.tc-cap{transform:none}.tc-f::after{display:none}
+  .tc{transform:translateY(40px)}.tc.seen{transform:none}
+  .sc-farm .sun,.sc-shot .drip,.sc-order .rdy{animation:none}.sc-order .rdy{opacity:1}}
 
 /* ===== the drink: a real glass ===== */
 .er-cup{width:min(270px,66vw);height:auto;display:block;margin-top:0}
@@ -207,6 +209,7 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 .er-cup .ice rect:nth-child(2){animation-delay:-1.3s}.er-cup .ice rect:nth-child(3){animation-delay:-2.6s}
 @keyframes erBob{50%{translate:0 3px}}
 @media (prefers-reduced-motion:reduce){.er-cup .steam path,.er-cup .ice rect{animation:none}}
+@media (hover:none){.er-cup .steam path{filter:none;stroke-width:4}.er-cup .ice rect{animation:none}}
 
 /* pricing: three separate tickets */
 .tiers{border:0;gap:clamp(18px,2.4vw,30px)}
