@@ -232,13 +232,18 @@ def keep_title(html_text, icons_too=True):
     return html_text.replace("</body>", f"<script>document.title={t};{icons}</script>\n</body>", 1)
 
 VH_LOCK = ("<script>/* lock the screen height once: in-app browsers and phone toolbars resize the window while you scroll, which made "
-           "everything sized to the screen jump. Only a real width change (rotating) re-measures. */"
-           "(function(){var r=document.documentElement,w=innerWidth;function s(){r.style.setProperty('--vh',(innerHeight/100)+'px')}s();"
-           "addEventListener('resize',function(){if(innerWidth!==w){w=innerWidth;s()}})})();</script>")
+           "everything sized to the screen jump. Only a real width change (rotating) re-measures. This runs right after the viewport tag: "
+           "before it, iPhones report a desktop-sized screen. The height is also never taller than the phone's actual screen. */"
+           "(function(){var r=document.documentElement,w=0;function s(){var h=innerHeight,sh=screen.height||h,sw=screen.width||innerWidth;"
+           "if(innerWidth<=Math.max(sw,screen.height||0)+1)h=Math.min(h,Math.max(sh,sw));if(!(h>100))h=700;r.style.setProperty('--vh',(h/100)+'px');w=innerWidth}s();"
+           "addEventListener('resize',function(){if(innerWidth!==w)s()});document.addEventListener('DOMContentLoaded',s)})();</script>")
 
 
 def lock_vh(html):
-    return html.replace("<head>", "<head>\n" + VH_LOCK, 1) if "--vh'" not in html else html
+    if "--vh'" in html:
+        return html
+    m = re.search(r'<meta name="viewport"[^>]*>', html)
+    return html[:m.end()] + "\n" + VH_LOCK + html[m.end():] if m else html.replace("<head>", "<head>\n" + VH_LOCK, 1)
 
 
 def head_tags(meta):

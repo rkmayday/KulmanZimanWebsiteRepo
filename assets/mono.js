@@ -45,6 +45,7 @@
     W = logo.offsetWidth; H = W * 335 / 600;
   };
   const draw = () => {
+    if (scene.clientWidth !== cw || scene.clientHeight !== ch) size();   // never draw into a stretched canvas
     g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     const D = 1500, cx0 = cw / 2, cy0 = ch / 2, depth = W * (phone ? .06 : .075);
