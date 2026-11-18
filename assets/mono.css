@@ -54,7 +54,7 @@ ul,ol{margin:0}
 .btn:active{transform:translateY(1px)}
 .btn svg{width:17px;height:17px;transition:transform .3s var(--ease)}
 @media (hover:hover){.btn:hover svg{transform:translateX(3px)}}
-.btn.ghost,.btn.silver{color:var(--ink);background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.ghost,.btn.silver{color:var(--ink);background:transparent;border:1.5px solid var(--ink)}   /* a real border: even on every side (an inset shadow drew unevenly on some screens) */
 @media (hover:hover){.btn.ghost:hover,.btn.silver:hover{background:var(--ink);color:var(--paper)}}
 .btn.small{height:42px;padding:0 18px;font-size:.88rem}
 .btn-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -177,7 +177,7 @@ ul,ol{margin:0}
 .pkg .btn{width:100%}
 .pkg.best .btn{background:var(--paper);color:var(--ink)}
 @media (hover:hover){.pkg.best .btn:hover{background:#e9e9e9}}
-.pkg.best .btn.ghost{box-shadow:none}
+.pkg.best .btn.ghost{box-shadow:none;border:0}
 .pkg-note{margin-top:20px;font-size:.88rem;max-width:760px}
 
 /* ticks */
@@ -236,7 +236,7 @@ ul,ol{margin:0}
 .aff h2,.aff .lede{color:var(--paper)}.aff .lede{color:#cfcfcf}
 .aff .eyebrow{color:#bdbdbd}.aff .eyebrow::before{background:var(--paper)}
 .aff .big{font:600 clamp(5rem,10vw,8rem)/.9 var(--font-display);letter-spacing:-.07em}
-.aff .btn.silver{background:var(--paper);color:var(--ink);box-shadow:none}
+.aff .btn.silver{background:var(--paper);color:var(--ink);box-shadow:none;border:0}
 @media (max-width:760px){.aff{grid-template-columns:1fr}}
 
 /* brief / contact */
@@ -923,8 +923,11 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 #selling-points.reel-on .section-head::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:60vw;background:var(--paper);pointer-events:none}
 #selling-points.reel-on .section-head::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:clamp(32px,4vw,64px);background:linear-gradient(90deg,var(--paper),transparent);pointer-events:none}
 #selling-points.reel-on .steps{display:flex;gap:24px;flex:none;will-change:transform}
-#selling-points.reel-on .sheet{flex:0 0 clamp(300px,30vw,400px);min-height:min(340px,calc(calc(52 * var(--vh, 1vh))));padding:34px;transform-origin:50% 100%}
-#selling-points.reel-on .sheet .n{font-size:4.4rem}
+#selling-points.reel-on{padding-top:0}
+#selling-points.reel-on .sheet{flex:0 0 clamp(300px,30vw,420px);height:calc(calc(100 * var(--vh, 1vh)) - 72px - clamp(96px,16vh,170px));max-height:720px;min-height:340px;padding:clamp(30px,3vw,44px);transform-origin:50% 100%;display:flex;flex-direction:column;gap:12px}
+#selling-points.reel-on .sheet .when{margin-top:auto;align-self:flex-start}
+#selling-points.reel-on .sheet h3{font-size:1.5rem}#selling-points.reel-on .sheet p{font-size:1.05rem}
+#selling-points.reel-on .sheet .n{font-size:clamp(4.4rem,7vw,6.5rem);margin-bottom:auto}
 #selling-points.reel-on .reel-run + .condition{margin-top:8px}
 .reel-meta{display:flex;align-items:center;gap:16px;margin-top:10px;font:500 .78rem var(--font-mono);color:var(--ink-3)}
 .reel-meta b{color:var(--ink);font-weight:600}
