@@ -638,7 +638,7 @@ window.kzGmail = (to, subject = '', body = '') => {
   if (!sec) return;
   const steps = sec.querySelector('.steps'), head = sec.querySelector('.section-head');
   if (!steps || !head) return;
-  const ok = matchMedia('(min-width: 861px) and (hover: hover) and (pointer: fine)');
+  const ok = matchMedia('(min-width: 700px) and (hover: hover) and (pointer: fine)');
   if (!ok.matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const cards = [...steps.querySelectorAll('.sheet')];
@@ -673,7 +673,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - fx) / vw, a = clamp(Math.abs(off) * 1.6);
       c.style.opacity = (1 - a * .55).toFixed(3); c.style.transform = `scale(${(1 - a * .07).toFixed(4)})`;
     });
-    count.textContent = '0' + (Math.min(cards.length - 1, Math.floor(k * cards.length)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
+    count.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
   };
   addEventListener('scroll', update, { passive: true });
   let lw = innerWidth;
