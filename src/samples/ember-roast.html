@@ -816,15 +816,19 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
 
 </script>
 <script>
-// Ember Roast: the three cards. Computers: the section holds and the cards slide in from the left (to the right).
-// Phones and touch screens: each card swings up from lying flat as it reaches the screen (a different motion from the bean-to-cup stack).
+// Ember Roast: the three cards. Computers (full width, mouse): the section holds and the cards slide in from the left (to the right).
+// Phones, tablets and small windows: the cards are dealt into a fanned hand on one screen.
+// Resizing the window across that line switches between the two at once.
 (() => {
   const sec = document.getElementById('about'); if (!sec) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) return;
   const wrap = sec.querySelector('.wrap'), row = sec.querySelector('.tc3'); if (!row) return;
-  const cards = [...row.querySelectorAll('.tc')];
+  const cards = [...row.querySelectorAll('.tc')], home = [...wrap.children];
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-  if (matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)').matches) {
+  const big = matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)');
+  cards.forEach(c => c.classList.add('seen'));
+
+  const reel = sig => {
     const st = wrap.querySelector('.statement'), links = wrap.querySelector('.er-links');
     const head = document.createElement('div'); head.className = 'tc-head';
     const count = document.createElement('div'); count.className = 'tc-count'; count.setAttribute('aria-hidden', 'true'); count.innerHTML = '<span><b>01</b> / 0' + cards.length + '</span><i><i></i></i>';
@@ -832,11 +836,10 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     const run = document.createElement('div'); run.className = 'tc-run'; const pin = document.createElement('div'); pin.className = 'tc-pin';
     const clip = document.createElement('div'); clip.className = 'tc-clip';
     wrap.prepend(run); run.append(pin); clip.append(row); pin.append(head, clip); row.style.marginTop = '0';
-    row.classList.add('reel'); sec.classList.add('tc-on'); cards.forEach(c => c.classList.add('seen'));
+    row.classList.add('reel'); sec.classList.add('tc-on');
     const b = count.querySelector('b'), bar = count.querySelector('i');
     let travel = 0;
     // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
-    // travel: how far the row must move for the first card to arrive fully in view at the left
     const measure = () => { row.style.transform = 'none'; const cr = clip.getBoundingClientRect();
       travel = Math.max(0, cr.left + cr.width * .08 - cards[0].getBoundingClientRect().left);
       run.style.height = Math.round(pin.offsetHeight + Math.max(travel, innerHeight * .6) * 1.6) + 'px'; update(); };
@@ -847,11 +850,14 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
       row.style.transform = `translate3d(${(k * travel).toFixed(1)}px,0,0)`;
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
-    addEventListener('scroll', update, { passive: true });
-    let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
-    addEventListener('load', measure); measure();
-  } else {
-    row.classList.add('hand'); cards.forEach(c => c.classList.add('seen'));
+    addEventListener('scroll', update, { passive: true, signal: sig });
+    addEventListener('resize', measure, { signal: sig });
+    addEventListener('load', measure, { signal: sig }); measure();
+    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; };
+  };
+
+  const hand = sig => {
+    row.classList.add('hand');
     const nav = document.createElement('div'); nav.className = 'hand-nav'; nav.setAttribute('aria-hidden', 'true'); nav.innerHTML = cards.map(() => '<i></i>').join('');
     const hint = document.createElement('p'); hint.className = 'hand-hint'; hint.textContent = 'Swipe or tap a card · tap the front one to flip it';
     row.after(nav, hint);
@@ -874,17 +880,30 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     // a tap on a card at the side brings it forward instead of flipping it
     let swiped = false;
     row.addEventListener('click', e => { const c = e.target.closest('.tc'); if (!c) return; const i = cards.indexOf(c);
-      if (swiped || i !== order[0]) { e.stopPropagation(); e.preventDefault(); if (!swiped) bring(i); } swiped = false; }, true);
+      if (swiped || i !== order[0]) { e.stopPropagation(); e.preventDefault(); if (!swiped) bring(i); } swiped = false; }, { capture: true, signal: sig });
     let sx = 0, sy = 0;
-    row.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiped = false; }, { passive: true });
+    row.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiped = false; }, { passive: true, signal: sig });
     row.addEventListener('touchend', e => { const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { swiped = true; bring(dx < 0 ? order[1] : order[2]); } }, { passive: true });
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { swiped = true; bring(dx < 0 ? order[1] : order[2]); } }, { passive: true, signal: sig });
     place();
     // deal the hand when it comes up the screen
     const deal = () => { if (dealt) return; dealt = true; row.classList.add('dealt', 'dealing'); place(); setTimeout(() => row.classList.remove('dealing'), 1200); };
-    if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { deal(); io.disconnect(); } }, { threshold: .3 }); io.observe(row); } else deal();
-    let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; place(); } });
-  }
+    let io = null;
+    if ('IntersectionObserver' in window) { io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { deal(); io.disconnect(); } }, { threshold: .3 }); io.observe(row); } else deal();
+    addEventListener('resize', place, { signal: sig });
+    return () => { if (io) io.disconnect(); nav.remove(); hint.remove(); row.classList.remove('hand', 'dealt', 'dealing'); row.style.height = '';
+      cards.forEach(c => { c.style.transform = ''; c.style.zIndex = ''; c.style.filter = ''; }); };
+  };
+
+  let ctl = null, undo = null, mode = '';
+  const pick = () => {
+    const want = big.matches ? 'reel' : 'hand'; if (want === mode) return;
+    if (ctl) ctl.abort(); if (undo) undo();
+    wrap.replaceChildren(...home);   // put the section back the way the page wrote it, then build the other layout
+    mode = want; ctl = new AbortController(); undo = (want === 'reel' ? reel : hand)(ctl.signal);
+  };
+  big.addEventListener ? big.addEventListener('change', pick) : big.addListener(pick);
+  pick();
 })();
 </script>
 </body>
