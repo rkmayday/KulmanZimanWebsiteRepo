@@ -1261,3 +1261,19 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 .ps-ch cite{display:block;margin-top:22px;font:500 .78rem var(--font-mono);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .ps-sig{height:clamp(1.7rem,3.2vw,2.8rem)}
 @media (max-width:760px){.ps-ch blockquote{font-size:clamp(1.45rem,6.6vw,2rem)}.ps-sig{height:clamp(1.45rem,6.6vw,2rem)}}
+
+/* particle backdrops (pfield.js): fixed to the screen but clipped to their section, behind its content */
+.has-pfield{position:relative;clip-path:inset(0)}
+.pfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+.pfield canvas{width:100%;height:100%;display:block}
+.has-pfield > .wrap{position:relative;z-index:1}
+@media (max-width:760px){.page-head .pfield{opacity:.45}}
+
+/* "recommended: full screen", on the opening animation and under the hero buttons (computers and tablets; phones already are full screen) */
+#kz-load .kl-fs{position:absolute;left:0;right:0;bottom:clamp(22px,5vh,48px);margin:0;display:flex;justify-content:center;align-items:center;gap:9px;
+  font:500 .72rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);opacity:0;animation:klWord .6s .9s cubic-bezier(.2,.8,.2,1) forwards}
+.kl-fs i,.fs-note i{width:13px;height:13px;flex:none;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><path d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/></svg>") center/contain no-repeat;
+          mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><path d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/></svg>") center/contain no-repeat}
+.fs-note{display:flex;align-items:center;gap:9px;margin:18px 0 0;font:500 .72rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+@media (max-width:760px){#kz-load .kl-fs,.fs-note{display:none}}
