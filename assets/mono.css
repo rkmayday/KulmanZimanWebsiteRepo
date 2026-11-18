@@ -1090,11 +1090,6 @@ form#brief .btn:not(.ghost){background:linear-gradient(110deg,transparent 38%,rg
 .timeline li .g-ico{filter:drop-shadow(0 8px 10px rgba(0,0,0,.18))}
 @media (max-width:760px){.strip .cell .g-ico{width:32px;top:8px;right:8px}}
 
-/* About: glossy CEO letters under the founder photo */
-.f-side{display:grid;gap:14px;justify-items:center;align-content:start}
-.ceo-3d{width:100%;max-width:120px;height:auto;filter:drop-shadow(0 10px 14px rgba(0,0,0,.55));animation:gIco 5s ease-in-out infinite}
-@media (max-width:560px){.ceo-3d{max-width:96px}}
-@media (prefers-reduced-motion:reduce){.ceo-3d{animation:none}}
 /* About: the dark section gets its own backdrop (soft diagonal light bands and glows, no grid) */
 main:has(> #team) > #team{background:
   radial-gradient(55% 60% at 12% 18%,rgba(255,255,255,.07),transparent 70%),
@@ -1104,6 +1099,3 @@ main:has(> #team) > #team{background:
 
 .btn.ss-open,.ss-open{color:#fff}
 @media (hover:hover){.btn.ss-open:hover{color:#fff}}
-.ceo-3d{max-width:130px}
-/* CEO letters: computers only, and only while the photo sits beside the text */
-@media (max-width:520px),(hover:none),(pointer:coarse){.ceo-3d{display:none}}
