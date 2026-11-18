@@ -891,3 +891,8 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* phones and tablets: a solid top bar (a blurred see-through sticky bar can jitter while the browser's own toolbars animate) */
 @media (hover:none){.nav{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* Pricing: the six tool connections stay compact on phones (two per row, smaller numbers) */
+@media (max-width:860px){#connections .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #connections .sheet{padding:16px;gap:6px}#connections .sheet .n{font-size:1.5rem;margin-bottom:2px}
+  #connections .sheet h3{font-size:1rem}#connections .sheet p{font-size:.86rem}}

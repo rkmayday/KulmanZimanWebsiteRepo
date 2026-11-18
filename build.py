@@ -31,7 +31,7 @@ PACKAGES = [
 ]
 PACKAGE_COMMON = ["Interactive, animated website experience", "Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
                   "Fast turnaround: on time, or a full refund", "First-year domain paid by us when under $30",
-                  "Fully handed over to you: yours to own"]
+                  "Fully handed over to you: yours to own", "Tool connections included: forms, bookings, checkout and more"]
 
 
 def package_modal():
