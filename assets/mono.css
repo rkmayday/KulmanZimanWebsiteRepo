@@ -919,9 +919,9 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 /* "How it works" reel on the home page (computers): the section holds and the steps slide sideways (site.js) */
 #selling-points.reel-on .reel-pin{position:sticky;top:72px;height:calc(calc(100 * var(--vh, 1vh)) - 72px);width:100vw;margin-left:calc(50% - 50vw);
   padding-left:max(20px,calc((100vw - 1200px) / 2 + 20px));display:flex;align-items:center;gap:clamp(32px,4vw,64px);overflow:hidden}
-#selling-points.reel-on .section-head{flex:0 0 min(30vw,400px);margin:0;align-self:stretch;align-content:center;position:relative;z-index:2;background:var(--paper)}
-#selling-points.reel-on .section-head::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:60vw;background:var(--paper);pointer-events:none}
-#selling-points.reel-on .section-head::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:clamp(32px,4vw,64px);background:linear-gradient(90deg,var(--paper),transparent);pointer-events:none}
+#selling-points.reel-on .section-head{flex:0 0 min(30vw,400px);margin:0;align-self:stretch;align-content:center;position:relative;z-index:2;background:var(--hiw-bg);background-attachment:fixed}
+#selling-points.reel-on .section-head::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:60vw;background:var(--hiw-bg);background-attachment:fixed;pointer-events:none}
+#selling-points.reel-on .section-head::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:clamp(32px,4vw,64px);background:var(--hiw-bg);background-attachment:fixed;-webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent);pointer-events:none}
 #selling-points.reel-on .steps{display:flex;gap:24px;flex:none;will-change:transform}
 #selling-points.reel-on{padding-top:0}
 #selling-points.reel-on .sheet{flex:0 0 clamp(300px,30vw,420px);height:calc(calc(100 * var(--vh, 1vh)) - 72px - clamp(96px,16vh,170px));max-height:720px;min-height:340px;padding:clamp(30px,3vw,44px);transform-origin:50% 100%;display:flex;flex-direction:column;gap:12px}
@@ -945,3 +945,22 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   background:var(--paper);color:var(--ink);border-top:0}
 #selling-points + .section{border-top:0}
 #selling-points .sheet{background:var(--paper-2)}
+
+/* How it works: a dark designed backdrop (soft light pools and a faint grid that fades out at the edges) */
+#selling-points{--hiw-bg:
+  radial-gradient(60% 55% at 18% 22%,rgba(255,255,255,.075),transparent 70%),
+  radial-gradient(50% 50% at 88% 78%,rgba(255,255,255,.05),transparent 70%),
+  radial-gradient(120% 90% at 50% 50%,transparent 55%,rgba(0,0,0,.55)),
+  linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/56px 56px,
+  linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/56px 56px,
+  #0b0b0b;
+  background:var(--hiw-bg)}
+@media (hover:hover) and (pointer:fine){#selling-points{background-attachment:fixed}}
+/* computers: see-through steps that light up under the cursor and lean toward it */
+#selling-points.reel-on .sheet{background:rgba(26,26,26,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);
+  overflow:hidden;translate:0 0;transition:translate .45s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+#selling-points.reel-on .sheet > *{position:relative}
+#selling-points.reel-on .sheet::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.13),transparent 65%)}
+#selling-points.reel-on .sheet:hover::before{opacity:1}
+#selling-points.reel-on .sheet:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.26),0 24px 60px rgba(0,0,0,.55)}

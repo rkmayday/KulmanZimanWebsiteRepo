@@ -671,10 +671,19 @@ window.kzGmail = (to, subject = '', body = '') => {
     const vw = innerWidth;
     cards.forEach(c => {
       const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - fx) / vw, a = clamp(Math.abs(off) * 1.6);
-      c.style.opacity = (1 - a * .55).toFixed(3); c.style.transform = `scale(${(1 - a * .07).toFixed(4)})`;
+      c.style.opacity = (1 - a * .55).toFixed(3); c.style.scale = (1 - a * .07).toFixed(4);
     });
     count.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
   };
+  // hover: a soft light follows the cursor inside the step, and the step leans a little toward it
+  cards.forEach(c => {
+    c.addEventListener('pointermove', e => {
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      c.style.translate = `${((x - .5) * 14).toFixed(1)}px ${((y - .5) * 14 - 6).toFixed(1)}px`;
+    });
+    c.addEventListener('pointerleave', () => { c.style.translate = '0 0'; });
+  });
   addEventListener('scroll', update, { passive: true });
   let lw = innerWidth;
   addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
