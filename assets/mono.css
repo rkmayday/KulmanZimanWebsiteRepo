@@ -1271,7 +1271,8 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 
 /* "recommended: full screen", on the opening animation and under the hero buttons (computers and tablets; phones already are full screen) */
 #kz-load .kl-fs{position:absolute;left:0;right:0;bottom:clamp(22px,5vh,48px);margin:0;display:flex;justify-content:center;align-items:center;gap:9px;
-  font:500 .72rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);opacity:0;animation:klWord .6s .9s cubic-bezier(.2,.8,.2,1) forwards}
+  font:500 .72rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);opacity:0;animation:klWord .6s .9s cubic-bezier(.2,.8,.2,1) forwards,klFsOut .3s 2.3s ease forwards}
+@keyframes klFsOut{from{opacity:1;transform:none}to{opacity:0;transform:none}}   /* gone as the ZS fills in */
 .kl-fs i,.fs-note i{width:13px;height:13px;flex:none;background:currentColor;
   -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><path d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/></svg>") center/contain no-repeat;
           mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><path d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/></svg>") center/contain no-repeat}
