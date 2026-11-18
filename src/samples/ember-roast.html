@@ -370,6 +370,31 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
 .er-gap span{font-family:var(--display);font-weight:800;font-style:italic;font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.01em;line-height:1.1;padding-bottom:.15em;mix-blend-mode:normal;color:#f3e5d3;
   text-shadow:0 10px 40px rgba(0,0,0,.6);font-size:clamp(3rem,9vw,8.4rem)}
 </style>
+<style>
+/* ===== the three cards: computers slide them in from the left (to the right); phones swing each up from flat ===== */
+@media (min-width:901px) and (hover:hover) and (pointer:fine){
+  #about.tc-on{padding:0!important}
+  #about.tc-on > .wrap{background:none!important;box-shadow:none!important;padding:0!important;width:100%!important}
+  #about .tc-run{position:relative}
+  #about .tc-pin{position:sticky;top:var(--navh,68px);height:calc(100 * var(--vh, 1vh) - var(--navh,68px));display:flex;flex-direction:row-reverse;align-items:center;gap:clamp(36px,4vw,72px);overflow:hidden;
+    padding-right:max(22px,calc((100vw - 1180px) / 2 + 22px))}
+  #about .tc-head{flex:0 0 min(30vw,420px);position:relative;z-index:2;align-self:stretch;display:grid;align-content:center;gap:22px;padding:clamp(30px,3vw,44px);background:#140c08;border-radius:36px;
+    box-shadow:0 40px 90px -40px rgba(0,0,0,.85),inset 0 0 0 1px rgba(243,229,211,.08);margin-block:clamp(24px,6vh,70px)}
+  #about .tc-head .statement{font-size:clamp(1.6rem,2.3vw,2.2rem)}
+  #about .tc-head .er-links{margin-top:6px;flex-direction:column;gap:14px}
+  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;padding-block:30px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 94%,transparent)}
+  #about .tc3.reel{display:flex;flex:none;gap:28px;will-change:transform;margin:0!important}
+  #about .tc3.reel .tc{flex:0 0 clamp(320px,26vw,400px);opacity:1;transform:none;transition:none}
+  #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
+  #about .tc-count b{color:var(--fg);font-weight:500}
+  #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
+  #about .tc-count > i > i{position:absolute;inset:0;background:var(--acc);transform:scaleX(var(--k,0));transform-origin:right}
+}
+@media (max-width:900px),(hover:none){
+  .tc3.swing{perspective:900px}
+  .tc3.swing .tc{opacity:1;transition:none;transform-origin:50% 100%;transform:rotateX(calc(var(--sw,1) * 78deg)) translateY(calc(var(--sw,1) * 30px));filter:brightness(calc(1 - var(--sw,1) * .5))}
+}
+</style>
 </head>
 <body id="top" class="has-film">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
@@ -380,7 +405,7 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a><a class="btn sm" href="#pricing">Order ahead</a></nav>
 
 <main>
-<div class="film" data-base="{{ASSETS}}ember/" data-n="370" data-sheet="10" data-sheet-tall="8" data-wide="sw/" data-tall="sp/" aria-hidden="true"></div>
+<div class="film" data-wide="{{ASSETS}}ember/film-w.mp4" data-tall="{{ASSETS}}ember/film-p.mp4" aria-hidden="true"></div>
 <section class="fl-hero er-hero" aria-label="Ember Roast">
   <div class="wrap">
     <span class="k fl-in">Neighbourhood coffee, roasted on site</span>
@@ -776,6 +801,46 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
   }
 })();
 
+</script>
+<script>
+// Ember Roast: the three cards. Computers: the section holds and the cards slide in from the left (to the right).
+// Phones and touch screens: each card swings up from lying flat as it reaches the screen (a different motion from the bean-to-cup stack).
+(() => {
+  const sec = document.getElementById('about'); if (!sec) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; if (reduce) return;
+  const wrap = sec.querySelector('.wrap'), row = sec.querySelector('.tc3'); if (!row) return;
+  const cards = [...row.querySelectorAll('.tc')];
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  if (matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)').matches) {
+    const st = wrap.querySelector('.statement'), links = wrap.querySelector('.er-links');
+    const head = document.createElement('div'); head.className = 'tc-head';
+    const count = document.createElement('div'); count.className = 'tc-count'; count.setAttribute('aria-hidden', 'true'); count.innerHTML = '<span><b>01</b> / 0' + cards.length + '</span><i><i></i></i>';
+    if (st) { st.classList.remove('rv'); head.append(st); } head.append(count); if (links) { links.classList.remove('rv'); head.append(links); }
+    const run = document.createElement('div'); run.className = 'tc-run'; const pin = document.createElement('div'); pin.className = 'tc-pin';
+    const clip = document.createElement('div'); clip.className = 'tc-clip';
+    wrap.prepend(run); run.append(pin); clip.append(row); pin.append(head, clip); row.style.marginTop = '0';
+    row.classList.add('reel'); sec.classList.add('tc-on'); cards.forEach(c => c.classList.add('seen'));
+    const b = count.querySelector('b'), bar = count.querySelector('i');
+    let travel = 0;
+    // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
+    const measure = () => { travel = Math.max(0, cards[cards.length - 1].offsetLeft - cards[0].offsetLeft); run.style.height = Math.round(pin.offsetHeight + travel * 1.4) + 'px'; update(); };
+    const update = () => {
+      const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      const k = clamp(((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95);
+      row.style.transform = `translate3d(${(k * travel).toFixed(1)}px,0,0)`;
+      b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
+    };
+    addEventListener('scroll', update, { passive: true });
+    let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
+    addEventListener('load', measure); measure();
+  } else {
+    row.classList.add('swing'); cards.forEach(c => c.classList.add('seen'));
+    const up = () => cards.forEach(c => { const r = c.getBoundingClientRect(); const e = clamp((innerHeight * .98 - r.top) / (innerHeight * .55));
+      c.style.setProperty('--sw', (1 - e * e * (3 - 2 * e)).toFixed(4)); });
+    addEventListener('scroll', up, { passive: true }); up();
+  }
+})();
 </script>
 </body>
 </html>

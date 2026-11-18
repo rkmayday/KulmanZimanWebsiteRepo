@@ -229,3 +229,4 @@ body.has-film main .sec::before,body.has-film main .sec::after{display:none!impo
   animation:flGrain 1s steps(6) infinite}
 @keyframes flGrain{0%{translate:0 0}20%{translate:-4% 3%}40%{translate:3% -5%}60%{translate:-6% -2%}80%{translate:5% 4%}100%{translate:0 0}}
 @media (prefers-reduced-motion:reduce){.film::before{animation:none}}
+.film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}

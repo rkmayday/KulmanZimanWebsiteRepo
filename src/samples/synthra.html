@@ -185,6 +185,37 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 .sy-gap span{font-family:var(--display);font-weight:400;font-style:italic;letter-spacing:-.01em;line-height:1.1;padding-bottom:.12em;mix-blend-mode:normal;color:#fff;text-shadow:0 0 60px rgba(184,203,255,.45);font-size:clamp(3.6rem,11vw,10rem)}
 @media (max-width:760px){.sy-hero h1{font-size:clamp(3rem,15vw,4.4rem)}}
 </style>
+<style>
+/* ===== Synthra v3: the film starts as a small window under the wordmark and grows to fill the screen; then pinned chapters ===== */
+.sy-film{clip-path:inset(var(--wt,32%) var(--wx,34%) var(--wb,14%) var(--wx,34%) round var(--wr,20px));transition:none}
+.sy-film::after{background:radial-gradient(70% 60% at 50% 50%,transparent,rgba(5,7,11,calc(.25 + var(--dim,0) * .5))),linear-gradient(180deg,rgba(5,7,11,.25),transparent 30%,transparent 65%,rgba(5,7,11,.7))}
+.sy-open{height:calc(200 * var(--vh, 1vh))}
+.sy-open .sy-stick,.sy-chapters .sy-stick{position:sticky;top:var(--navh,68px);height:calc(100 * var(--vh, 1vh) - var(--navh,68px));overflow:hidden}
+.sy-word{position:absolute;left:0;right:0;top:4%;text-align:center;font:400 clamp(5rem,19vw,19rem)/1 var(--display);letter-spacing:-.04em;color:#fff;padding-bottom:.08em;
+  opacity:calc(1 - var(--op,0) * 1.4);transform:translateY(calc(var(--op,0) * -12vh)) scale(calc(1 + var(--op,0) * .08))}
+.sy-corner{position:absolute;bottom:clamp(20px,4vh,44px);font:500 12px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#d7deee;opacity:calc(1 - var(--op,0) * 2)}
+.sy-c1{left:max(22px,calc((100vw - 1180px) / 2 + 22px))}.sy-c2{right:max(22px,calc((100vw - 1180px) / 2 + 22px))}
+.sy-chapters{height:calc(330 * var(--vh, 1vh))}
+.sy-ch{position:absolute;left:max(22px,calc((100vw - 1180px) / 2 + 22px));bottom:clamp(28px,7vh,80px);width:min(560px,calc(100% - 44px));display:grid;gap:16px;
+  opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.sy-ch.on{opacity:1;transform:none;pointer-events:auto}
+.sy-ch.sy-right{left:auto;right:max(22px,calc((100vw - 1180px) / 2 + 22px));top:clamp(24px,8vh,90px);bottom:auto;text-align:right;justify-items:end}
+.sy-ch h1{font:400 clamp(3rem,7vw,6.6rem)/1 var(--display);letter-spacing:-.02em;padding-bottom:.08em;color:#fff}
+.sy-ch h2{font:400 clamp(2.6rem,5.4vw,5.2rem)/1.02 var(--display);letter-spacing:-.02em;padding-bottom:.08em;color:#fff}
+.sy-ch h1 em,.sy-ch h2 em{font-style:italic;color:var(--acc)}
+.sy-ch p,.sy-ch .lede{color:#e3e9f6;max-width:44ch;text-shadow:0 2px 16px rgba(0,0,0,.9)}
+.sy-n{font:500 12px var(--mono);letter-spacing:.2em;color:var(--acc)}
+.sy-prog{position:absolute;right:max(22px,calc((100vw - 1180px) / 2 + 22px));bottom:clamp(28px,7vh,80px);width:2px;height:120px;background:rgba(200,214,255,.18)}
+.sy-prog i{position:absolute;left:0;right:0;top:0;height:100%;background:var(--acc);transform:scaleY(var(--cp,0));transform-origin:top}
+@media (max-width:760px){
+  .sy-film{clip-path:inset(var(--wt,36%) var(--wx,14%) var(--wb,16%) var(--wx,14%) round var(--wr,18px))}
+  .sy-word{top:8%;font-size:24vw}
+  .sy-ch,.sy-ch.sy-right{left:22px;right:22px;width:auto;top:auto;bottom:calc(28px + env(safe-area-inset-bottom));text-align:left;justify-items:start}
+  .sy-ch h1{font-size:clamp(2.6rem,13vw,3.8rem)}.sy-ch h2{font-size:clamp(2.3rem,11vw,3.2rem)}
+  .sy-prog{display:none}.sy-c2{display:none}
+}
+@media (prefers-reduced-motion:reduce){.sy-film{clip-path:none}.sy-ch{transition:none}}
+</style>
 </head>
 <body id="top" class="has-film">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
@@ -195,17 +226,28 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 <nav class="drawer" aria-label="Mobile"><a href="#about">Product</a><a href="#agent">Live demo</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Book a demo</a></nav>
 
 <main>
-<div class="film" data-base="{{ASSETS}}synthra/" data-n="322" data-sheet="10" data-sheet-tall="8" data-wide="sw/" data-tall="sp/" aria-hidden="true"></div>
-<section class="fl-hero sy-hero" aria-label="Synthra">
-  <div class="wrap">
-    <span class="k fl-in">AI agents for IT and operations</span>
-    <h1 class="fl-in">The busywork, <em>handled.</em></h1>
-    <p class="lede fl-in">Synthra plans the task, uses your tools, asks before anything risky and reports back when it is done.</p>
-    <div class="actions fl-in"><a class="btn" href="#pricing">Book a demo <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#agent">Watch it work</a></div>
+<div class="film sy-film" data-wide="{{ASSETS}}synthra/film-w.mp4" data-tall="{{ASSETS}}synthra/film-p.mp4" data-end="#sy-chapters" aria-hidden="true"></div>
+<section class="sy-open" id="sy-open" aria-label="Synthra">
+  <div class="sy-stick">
+    <div class="sy-word" aria-hidden="true">Synthra</div>
+    <span class="sy-corner sy-c1">AI agents for IT and operations</span>
+    <span class="sy-corner sy-c2" aria-hidden="true">Scroll to begin</span>
   </div>
-  <span class="fl-scroll" aria-hidden="true">Scroll</span>
 </section>
-<div class="fl-gap sy-gap" aria-hidden="true"><span>Plans.</span></div>
+<section class="sy-chapters" id="sy-chapters" aria-label="What Synthra does" data-no-sw>
+  <div class="sy-stick">
+    <div class="sy-ch on" data-ch="0">
+      <span class="k">AI agents for IT and operations</span>
+      <h1>The busywork, <em>handled.</em></h1>
+      <p class="lede">Synthra plans the task, uses your tools, asks before anything risky and reports back when it is done.</p>
+      <div class="actions"><a class="btn" href="#pricing">Book a demo <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#agent">Watch it work</a></div>
+    </div>
+    <div class="sy-ch sy-right" data-ch="1"><span class="sy-n">01</span><h2>Plans <em>the task.</em></h2><p>It reads the request, checks your runbooks and lays out every step before touching anything.</p></div>
+    <div class="sy-ch" data-ch="2"><span class="sy-n">02</span><h2>Acts with <em>your tools.</em></h2><p>Slack, Okta, Jira, Google Workspace. It works where your team already works, and asks before anything risky.</p></div>
+    <div class="sy-ch sy-right" data-ch="3"><span class="sy-n">03</span><h2>Reports <em>back.</em></h2><p>A clear summary and a full audit trail, so you always know what was done and why.</p></div>
+    <div class="sy-prog" aria-hidden="true"><i></i></div>
+  </div>
+</section>
 
 <section class="sec" id="about"><div class="wrap">
   <p class="statement rv">Your team spends a day a week on requests a machine could finish. <span>Synthra takes those, follows your runbooks and leaves a full audit trail.</span></p>
@@ -225,7 +267,6 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
       <div class="tools" aria-label="Some of the tools Synthra uses"><div class="tl-run"><span>Slack</span><span>Teams</span><span>Okta</span><span>Jira</span><span>Intune</span><span>Datadog</span><span>GitHub</span><span>Zendesk</span><span>Google</span><span>AWS</span><span>Slack</span><span>Teams</span><span>Okta</span><span>Jira</span><span>Intune</span><span>Datadog</span><span>GitHub</span><span>Zendesk</span><span>Google</span><span>AWS</span></div></div></div></div></div>
 </div></section>
 
-<div class="fl-gap sy-gap" aria-hidden="true"><span>Acts.</span></div>
 <section class="sec" id="agent"><div class="wrap">
   <div class="head"><span class="k">Live demo</span><h2>Give it a task. <em>Watch it work.</em></h2><p class="lede">Pick a request or type your own. Synthra plans it, uses the right tools and stops to ask before anything sensitive.</p></div>
   <div class="lab">
@@ -245,7 +286,6 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 </div></section>
 
 
-<div class="fl-gap sy-gap" aria-hidden="true"><span>Reports back.</span></div>
 <section class="sec" id="pricing"><div class="wrap">
   <div class="head rv"><span class="k">Pricing</span><h2>Start small. <em>Scale when it works.</em></h2></div>
   <div class="tiers" data-stagger><div class="tier"><span class="k">Starter</span><div class="price">$0<small> /month</small></div><ul><li>100 tasks a month</li><li>3 connectors</li><li>Slack or Teams</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Book a demo</a></div><div class="tier best"><span class="k">Team</span><div class="price">$29<small> /seat</small></div><ul><li>Unlimited tasks</li><li>All 40+ connectors</li><li>Approvals and audit log</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Book a demo</a></div><div class="tier"><span class="k">Enterprise</span><div class="price">Custom</div><ul><li>SSO and SCIM</li><li>Data residency</li><li>99.95% uptime SLA</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Book a demo</a></div></div>
@@ -366,6 +406,31 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
     if (e.isIntersecting && !c.classList.contains('go')) { c.classList.add('go'); play(c); }
     else if (!e.isIntersecting && c.classList.contains('go')) { c.classList.remove('go'); stop(c); } }), { threshold: .4 });
   cards.forEach(c => io.observe(c));
+})();
+</script>
+<script>
+// Synthra v3: the window grows with the opening scroll, then chapters swap in as the pinned film plays
+(() => {
+  const film = document.querySelector('.sy-film'), open = document.getElementById('sy-open'), chs = document.getElementById('sy-chapters'); if (!film || !open || !chs) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const items = [...chs.querySelectorAll('.sy-ch')], root = document.documentElement;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), sm = v => v * v * (3 - 2 * v);
+  const phone = () => innerWidth <= 760;
+  let lastCh = -1;
+  const up = () => {
+    const ro = open.getBoundingClientRect(), op = reduce ? 1 : clamp(-ro.top / Math.max(1, ro.height - innerHeight * .6)), e = sm(op);
+    const [t0, x0, b0] = phone() ? [36, 14, 16] : [32, 34, 14];
+    film.style.setProperty('--wt', (t0 * (1 - e)).toFixed(2) + '%'); film.style.setProperty('--wx', (x0 * (1 - e)).toFixed(2) + '%');
+    film.style.setProperty('--wb', (b0 * (1 - e)).toFixed(2) + '%'); film.style.setProperty('--wr', (20 * (1 - e)).toFixed(1) + 'px');
+    open.style.setProperty('--op', op.toFixed(4));
+    const rc = chs.getBoundingClientRect(), cp = clamp(-rc.top / Math.max(1, rc.height - innerHeight));
+    chs.style.setProperty('--cp', cp.toFixed(4));
+    const ch = Math.min(items.length - 1, Math.floor(cp * items.length * .999));
+    if (ch !== lastCh) { lastCh = ch; items.forEach((it, i) => it.classList.toggle('on', i === ch)); }
+    // once the chapters are over, the film dims a little behind the content
+    film.style.setProperty('--dim', clamp((-rc.bottom + innerHeight) / innerHeight).toFixed(3));
+  };
+  addEventListener('scroll', up, { passive: true }); addEventListener('resize', up); up();
 })();
 </script>
 </body>

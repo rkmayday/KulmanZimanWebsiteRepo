@@ -6,7 +6,7 @@
 <title>Ironpath — Sample Fitness Site</title>
 <meta name="description" content="Ironpath is a fictional strength-training app: a sample concept site built by Ziman Sites.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#f5f4f0">
+<meta name="theme-color" content="#0a0c0e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f5f4f0'/%3E%3Crect x='10' y='47' width='80' height='6' rx='3' fill='%23111'/%3E%3Crect x='20' y='26' width='9' height='48' rx='3' fill='%23ff3d2e'/%3E%3Crect x='71' y='26' width='9' height='48' rx='3' fill='%23ff3d2e'/%3E%3Crect x='31' y='34' width='6' height='32' rx='2.5' fill='%23111'/%3E%3Crect x='63' y='34' width='6' height='32' rx='2.5' fill='%23111'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -177,6 +177,49 @@ body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{background:rgba(8,10,
 main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
 .tier.best .btn,.tier.best .btn.ghost{background:#0a0c0e!important;color:#eef2f5!important;border-color:#0a0c0e!important}
 </style>
+<style>
+/* ===== Ironpath v3: split screen. The gym film is pinned in a side panel with a live set tracker; the page scrolls beside it ===== */
+.ip-film{--fw:44vw}
+.ip-film::after{background:linear-gradient(180deg,rgba(6,8,10,.55),transparent 22%,transparent 62%,rgba(6,8,10,.85))}
+.ip-hud{position:absolute;inset:0;z-index:3;pointer-events:none;color:#eef2f5;font:500 11px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+.ip-hud > *{position:absolute}
+.h-tl{left:24px;top:22px}.h-tl i{color:var(--acc);font-style:normal}
+.h-tr{right:24px;top:22px;display:flex;align-items:center;gap:8px}.h-tr b{font-weight:500;font-variant-numeric:tabular-nums;color:#fff}
+.h-rec{width:8px;height:8px;border-radius:50%;background:#ff4d3a;box-shadow:0 0 12px #ff4d3a;animation:ipRec 1.2s steps(2,start) infinite}
+@keyframes ipRec{to{opacity:.25}}
+.h-big{left:24px;bottom:22px;display:flex;align-items:baseline;gap:10px}
+.h-big b{font:italic 900 clamp(5rem,9vw,9rem)/.8 var(--display);font-stretch:76%;letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
+.h-sets{right:24px;bottom:26px;display:grid;gap:8px;justify-items:end}
+.h-sets b{color:#fff;font-weight:500}
+.h-sets span{display:flex;gap:5px}
+.h-sets span i{width:26px;height:5px;background:rgba(238,242,245,.22);transform:skewX(-20deg)}
+.h-sets span i.on{background:var(--acc)}.h-sets span i.now{background:#fff}
+.h-load{right:24px;bottom:72px}.h-load b{font:italic 900 1.9rem var(--display);font-stretch:76%;color:var(--acc);letter-spacing:0}
+body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{border-left:0;border-top:3px solid var(--acc)}
+@media (min-width:1000px){
+  .ip-film{top:var(--navh,68px);right:auto;width:var(--fw);border-right:1px solid rgba(220,232,240,.12)}
+  body.has-film main,body.has-film .foot{margin-left:var(--fw,44vw)}
+  body.has-film main .sec > .wrap,body.has-film main .sec > .wrap.cta{width:auto!important;margin-inline:clamp(20px,2.6vw,44px)!important;max-width:none}
+  body.has-film .jr .jr-wrap{width:auto;margin-inline:clamp(20px,2.6vw,44px)}
+  body.has-film .foot{position:relative;background:var(--bg)}
+  .ip-hero{padding-inline:clamp(20px,2.6vw,44px)}
+  .ip-hero .wrap{width:auto;margin:0;padding:0}
+  .ip-hero h1{font-size:clamp(3rem,5.4vw,6rem);max-width:11ch}
+  .jr-grid{grid-template-columns:minmax(0,1fr)}
+  .jr-chart{max-height:150px}.jr-bar{max-height:110px}
+}
+@media (max-width:999px){
+  .ip-film{top:var(--navh,60px);bottom:auto;height:34svh;z-index:4;box-shadow:0 10px 30px -10px rgba(0,0,0,.8)}
+  body.has-film main{padding-top:34svh}
+  .h-tl,.h-tr{top:12px}.h-tl{left:16px}.h-tr{right:16px}.h-big{left:16px;bottom:12px}.h-sets{right:16px;bottom:14px}.h-load{display:none}
+  .h-big b{font-size:4.2rem}.h-sets span i{width:18px}
+  .ip-hero{min-height:auto;padding-block:clamp(36px,8vw,60px) 40px}
+  .jr-pin{top:calc(var(--navh,60px) + 34svh)!important;height:calc(100svh - var(--navh,60px) - 34svh)!important}
+  .jr-head .k,.jr-head .lede,.jr-kg em,.jr-note{display:none}.jr-head h2{font-size:1.5rem}.jr-wrap{gap:8px}.jr-week b{font-size:2.8rem}.jr-kg b{font-size:1.7rem}
+  .jr-bar{max-height:52px}.jr-chart{max-height:70px}.jr-ms{margin-top:4px}.jr-ms li{padding:5px 8px;font-size:.7rem}.jr-ms li b{font-size:.8rem}
+}
+@media (prefers-reduced-motion:reduce){.h-rec{animation:none}}
+</style>
 </head>
 <body id="top" class="no-glow has-film">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
@@ -187,7 +230,15 @@ main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Method</a><a href="#builder">Build your week</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<div class="film" data-base="{{ASSETS}}ironpath/" data-n="370" data-sheet="10" data-sheet-tall="8" data-wide="sw/" data-tall="sp/" aria-hidden="true"></div>
+<div class="film ip-film" data-wide="{{ASSETS}}ironpath/film-w.mp4" data-tall="{{ASSETS}}ironpath/film-p.mp4" aria-hidden="true">
+  <div class="ip-hud">
+    <span class="h-tl">Ironpath <i>/</i> Session 03</span>
+    <span class="h-tr"><i class="h-rec"></i>Live <b class="h-time">00:00</b></span>
+    <div class="h-big"><small>Rep</small><b class="h-rep">01</b><small>of 8</small></div>
+    <div class="h-sets"><small>Set <b class="h-set">1</b> / 4</small><span><i></i><i></i><i></i><i></i></span></div>
+    <span class="h-load"><b>100</b> kg</span>
+  </div>
+</div>
 <section class="fl-hero ip-hero" aria-label="Ironpath">
   <div class="wrap">
     <span class="k fl-in">Strength training, planned for you</span>
@@ -195,16 +246,13 @@ main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
     <p class="lede fl-in">Programs written by real coaches and tuned by your own training data. Every week moves you forward.</p>
     <div class="actions fl-in"><a class="btn" href="#pricing">Start your free week <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#builder">Build your week</a></div>
   </div>
-  <span class="fl-scroll" aria-hidden="true">Scroll</span>
-</section>
-<div class="fl-gap ip-gap" aria-hidden="true"><span>Show up.</span></div>
+  </section>
 
 <section class="sec" id="about"><div class="wrap">
   <p class="statement rv">Most plans are written once and forgotten. <span>Ironpath rewrites yours every week, from what you actually lifted, how you slept and what hurt.</span></p>
   <div class="feats" data-stagger style="margin-top:clamp(56px,7vw,90px)"><div class="feat"><span class="n">01</span><h3>Adaptive loads</h3><p>Weights go up when you are ready, not on a fixed schedule. Miss a day and the week rebalances.</p></div><div class="feat"><span class="n">02</span><h3>Real coaches</h3><p>Every program is written and reviewed by certified strength coaches you can message any day.</p></div><div class="feat"><span class="n">03</span><h3>Recovery built in</h3><p>Deload weeks and a daily recovery score keep you progressing for months, not weeks.</p></div></div>
 </div></section>
 
-<div class="fl-gap ip-gap" aria-hidden="true"><span>Lift heavy.</span></div>
 <section class="sec jr" id="journey" aria-label="Your next 12 weeks"><div class="jr-pin"><div class="wrap jr-wrap">
   <div class="head jr-head"><span class="k">Your next 12 weeks</span><h2>Watch yourself <em>get stronger.</em></h2></div>
   <div class="jr-grid">
@@ -262,7 +310,6 @@ main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
 </div></section>
 
 
-<div class="fl-gap ip-gap" aria-hidden="true"><span>Repeat.</span></div>
 <section class="sec" id="pricing"><div class="wrap">
   <div class="head rv"><span class="k">Pricing</span><h2>Pick a path. <em>First week free.</em></h2></div>
   <div class="tiers" data-stagger><div class="tier"><span class="k">Foundation</span><div class="price">$9<small> /month</small></div><ul><li>3 sessions a week</li><li>Form videos</li><li>Progress tracking</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start free week</a></div><div class="tier best"><span class="k">Build</span><div class="price">$15<small> /month</small></div><ul><li>4–5 sessions a week</li><li>Adaptive loads</li><li>All six programs</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Start free week</a></div><div class="tier"><span class="k">Coach</span><div class="price">$39<small> /month</small></div><ul><li>Everything in Build</li><li>Daily coach chat</li><li>Monthly form review</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Start free week</a></div></div>
@@ -374,6 +421,23 @@ main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
   };
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(read); }, { passive: true });
   addEventListener('resize', read); read();
+})();
+</script>
+<script>
+// Ironpath v3: the set tracker on the film counts reps, sets and time as the film plays
+(() => {
+  const hud = document.querySelector('.ip-hud'); if (!hud) return;
+  const rep = hud.querySelector('.h-rep'), set = hud.querySelector('.h-set'), time = hud.querySelector('.h-time'), bars = [...hud.querySelectorAll('.h-sets span i')];
+  let last = '';
+  const up = () => {
+    const f = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--film')) || 0;
+    const sets = 4, reps = 8, x = Math.min(.9999, f) * sets, si = Math.floor(x), ri = Math.floor((x - si) * reps);
+    const secs = Math.round(f * 1500), key = si + ':' + ri + ':' + secs; if (key === last) return; last = key;
+    rep.textContent = String(ri + 1).padStart(2, '0'); set.textContent = si + 1;
+    time.textContent = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
+    bars.forEach((b, i) => { b.classList.toggle('on', i < si); b.classList.toggle('now', i === si); });
+  };
+  addEventListener('scroll', () => requestAnimationFrame(up), { passive: true }); up();
 })();
 </script>
 </body>
