@@ -50,11 +50,42 @@ def package_modal():
     <button class="pm-x" type="button" aria-label="Close" data-pm-close>×</button>
     <span class="eyebrow">Get started</span>
     <h2 id="pm-title">Choose your package</h2>
-    <p class="pm-lede">You will go to a secure Whop checkout for the package you pick.</p>
+    <p class="pm-lede">Step 1 of 3. Pick a package, tell us about your project, then pay securely on Whop.</p>
     <div class="pm-opts">
 {chr(10).join(rows)}
     </div>
     <p class="pm-fine">One-time payment. Three rounds of refinement, delivered on time or a full refund. Not sure? <a href="/#start" data-pm-close>Send a brief first</a>.</p>
+  </div>
+</dialog>
+"""
+
+
+def order_modal():
+    """Before checkout: a short form (package, name, email, business, domain, what they need) is emailed to us,
+    then the visitor continues to the Whop checkout they picked (site.js). Without JavaScript, checkout links work as before."""
+    plans = {link: f"{name} · ${price}" for key, name, price, scope, best, link in PACKAGES if link}
+    return f"""<dialog class="pkg-modal order-modal" id="order-modal" aria-labelledby="om-title" data-plans='{json.dumps(plans)}'>
+  <div class="pm-box">
+    <button class="pm-x" type="button" aria-label="Close" data-om-close>×</button>
+    <span class="eyebrow">Step 2 of 3 · Your project</span>
+    <h2 id="om-title">Tell us about your project</h2>
+    <p class="pm-lede">You chose <b data-om-pkg>your package</b>. A few details so we can start right away, then you pay securely on Whop.</p>
+    <form class="brief order-form" id="order-form" novalidate>
+      <div class="two">
+        <label for="o-name">Your name<input id="o-name" name="name" required autocomplete="name"></label>
+        <label for="o-email">Your email<input id="o-email" name="email" type="email" required autocomplete="email" inputmode="email"></label>
+      </div>
+      <div class="two">
+        <label for="o-biz">Business name<input id="o-biz" name="business" autocomplete="organization"></label>
+        <label for="o-dom">Domain you'd like<input id="o-dom" name="domain" placeholder="yourbusiness.com"></label>
+      </div>
+      <label for="o-det">What should the site do?<textarea id="o-det" name="details" rows="3" required placeholder="Your business, pages you need, sites you like"></textarea></label>
+      <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Continue to secure checkout <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></button>
+      <small>Your details go straight to our inbox. After you pay, we email you to confirm everything, and we quote your domain before buying it.</small>
+      <div class="brief-fail" role="alert" hidden><b>We couldn't send your details automatically.</b><span>You can still continue: we will contact you at the email you use at checkout.</span>
+        <div class="btn-row"><a class="btn" data-om-continue href="#">Continue to checkout</a><a class="btn ghost" href="mailto:{EMAIL}">Email us instead</a></div></div>
+    </form>
   </div>
 </dialog>
 """
@@ -429,7 +460,7 @@ def build(preview=False, theme="royal"):
         m = re.match(r"---\n(.*?)\n---\n", text, re.S)
         meta = dict(line.split(": ", 1) for line in m.group(1).splitlines())
         body = text[m.end():].replace("{{PACKAGE_FOLDERS}}", package_folders_html()).replace("{{PACKAGE_TEASER}}", package_teaser_html()).replace("{{PACKAGES}}", packages_html()).replace("{{CHECKOUT}}", CHECKOUT).replace("{{EMAIL}}", EMAIL)
-        inner = nav(meta.get("nav", "")) + body + package_modal() + FOOTER
+        inner = nav(meta.get("nav", "")) + body + package_modal() + order_modal() + FOOTER
         if preview and page.stem == "index":
             # the preview host adds the document skeleton around its main page; it gets a short name
             html = head_tags(dict(meta, title=th.get("preview_title", "Ziman Sites Preview"))) + BODY_START + inner

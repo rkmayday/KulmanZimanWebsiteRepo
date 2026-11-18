@@ -896,3 +896,12 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 @media (max-width:860px){#connections .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   #connections .sheet{padding:16px;gap:6px}#connections .sheet .n{font-size:1.5rem;margin-bottom:2px}
   #connections .sheet h3{font-size:1rem}#connections .sheet p{font-size:.86rem}}
+
+/* order form (step 2 before checkout): the brief form's fields inside the package pop-up */
+.order-modal{width:min(620px,calc(100% - 28px))}
+.order-form{padding:0;background:transparent;gap:12px}
+.order-form .btn svg{width:17px;height:17px}
+.order-form textarea{min-height:88px;resize:vertical}
+.order-modal .pm-lede b{color:var(--ink)}
+.order-form .btn{height:auto;min-height:52px;padding-block:12px;text-align:center;line-height:1.25}
+@media (max-width:420px){.order-form .btn{font-size:.92rem;padding-inline:16px;gap:8px}}
