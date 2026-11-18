@@ -638,7 +638,7 @@ window.kzGmail = (to, subject = '', body = '') => {
   if (!sec) return;
   const steps = sec.querySelector('.steps'), head = sec.querySelector('.section-head');
   if (!steps || !head) return;
-  const ok = matchMedia('(min-width: 700px) and (hover: hover) and (pointer: fine)');
+  const ok = matchMedia('(min-width: 861px) and (hover: hover) and (pointer: fine)');
   if (!ok.matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const cards = [...steps.querySelectorAll('.sheet')];
@@ -650,12 +650,10 @@ window.kzGmail = (to, subject = '', body = '') => {
   head.after(run); run.append(pin); pin.append(head, steps); head.append(meta);
   sec.classList.add('reel-on');
   const count = meta.querySelector('b'), fill = meta.querySelector('i i');
-  let travel = 0, last = -1, focusX = 0, focus0 = 0;
+  let travel = 0, last = -1;
   const measure = () => {
-    // the reel lets go as soon as the last step is in the middle of the open area right of the heading (no dead scroll after)
-    const lastC = cards[cards.length - 1], mid = (steps.offsetLeft + pin.clientWidth) / 2;
-    travel = Math.max(0, steps.offsetLeft + lastC.offsetLeft + lastC.offsetWidth / 2 - mid);
-    focusX = mid; focus0 = steps.offsetLeft + cards[0].offsetLeft + cards[0].offsetWidth / 2;
+    const pad = parseFloat(getComputedStyle(pin).paddingLeft) || 0;
+    travel = Math.max(0, steps.offsetLeft + steps.scrollWidth - pin.clientWidth + pad);
     run.style.height = Math.round(pin.offsetHeight + travel * 1.5) + 'px';
     last = -1; update();
   };
@@ -666,14 +664,14 @@ window.kzGmail = (to, subject = '', body = '') => {
     const p = clamp((top - r.top) / span);
     if (Math.abs(p - last) < .00005) return;
     last = p;
-    const k = clamp((p - .06) / .94);                 // a short hold at the start
+    const k = clamp((p - .06) / .88);                 // a short hold at each end
     steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
-    const vw = innerWidth, fx = focus0 + (focusX - focus0) * k;   // focus starts on step 1 and ends in the middle
+    const vw = innerWidth;
     cards.forEach(c => {
-      const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - fx) / vw, a = clamp(Math.abs(off) * 1.6);
+      const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - vw * .62) / vw, a = clamp(Math.abs(off) * 1.6);
       c.style.opacity = (1 - a * .55).toFixed(3); c.style.transform = `scale(${(1 - a * .07).toFixed(4)})`;
     });
-    count.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
+    count.textContent = '0' + (Math.min(cards.length - 1, Math.floor(k * cards.length)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
   };
   addEventListener('scroll', update, { passive: true });
   let lw = innerWidth;
