@@ -908,7 +908,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* the "Custom or extras" choice in the package pop-up */
 .pm-opt.pm-custom{box-shadow:inset 0 0 0 1.5px var(--line-2);background:var(--paper-2)}
-.pm-q{font-size:1.35rem}
 .pm-price,.pm-go{justify-self:end;text-align:right}
 .order-form .brief-done{padding:18px 2px 4px}
 .order-form .brief-done .btn{justify-self:start;margin-top:8px}
