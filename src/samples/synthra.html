@@ -197,8 +197,25 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 .sy-c1{left:max(22px,calc((100vw - 1180px) / 2 + 22px))}.sy-c2{right:max(22px,calc((100vw - 1180px) / 2 + 22px))}
 .sy-chapters{height:calc(420 * var(--vh, 1vh))}
 .sy-photos{position:absolute;inset:0;pointer-events:none}
-.sy-ph{position:absolute;inset:0;opacity:0;transform:scale(1.08);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1.6s cubic-bezier(.2,.8,.2,1)}
-.sy-ph.on{opacity:1;transform:none}
+.sy-ph{position:absolute;inset:0;opacity:0;transform:scale(.3);transition:opacity .5s ease-in,transform .6s cubic-bezier(.6,0,.9,.4)}
+.sy-ph.on{opacity:1;transform:none;transition:opacity .5s ease-out .55s,transform 1.2s cubic-bezier(.12,.9,.25,1) .45s}
+.sy-ph.past{opacity:0;transform:scale(3.2);transition:opacity .45s ease-in .05s,transform .55s cubic-bezier(.7,0,1,.6)}
+.sy-warp{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0}
+.sy-cock{position:absolute;inset:0;pointer-events:none;z-index:1}
+.sy-cock i{position:absolute;width:34px;height:34px;border:1.5px solid rgba(200,214,255,.55)}
+.sy-cock i:nth-child(1){left:16px;top:16px;border-right:0;border-bottom:0}.sy-cock i:nth-child(2){right:16px;top:16px;border-left:0;border-bottom:0}
+.sy-cock i:nth-child(3){left:16px;bottom:16px;border-right:0;border-top:0}.sy-cock i:nth-child(4){right:16px;bottom:16px;border-left:0;border-top:0}
+.sy-ret{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:1px solid rgba(200,214,255,.35);
+  transform:scale(calc(1 + var(--ws,0) * .5));opacity:calc(.55 + var(--ws,0) * .45)}
+.sy-ret::before,.sy-ret::after{content:"";position:absolute;background:rgba(200,214,255,.6)}
+.sy-ret::before{left:50%;top:-12px;bottom:-12px;width:1px}.sy-ret::after{top:50%;left:-12px;right:-12px;height:1px}
+.sy-tel{position:absolute;left:clamp(30px,3vw,46px);top:clamp(30px,3vw,46px);display:grid;gap:6px;font:500 11px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#c9d4ee}
+.sy-tel b{color:#fff;font-weight:500;font-variant-numeric:tabular-nums}
+.sy-tel .v b{color:var(--acc)}
+.sy-tel .w{color:var(--acc);opacity:var(--ws,0)}
+.sy-stick.warping .sy-ch{transition-delay:0s}
+@media (max-width:760px){.sy-tel{left:24px;top:24px;font-size:10px}.sy-cock i{width:24px;height:24px}.sy-ret{width:48px;height:48px;margin:-24px 0 0 -24px}}
+@media (prefers-reduced-motion:reduce){.sy-ph,.sy-ph.on,.sy-ph.past{transform:none;transition:opacity .4s}.sy-warp{display:none}}
 .sy-ph img{width:100%;height:100%;object-fit:cover;display:block}
 .sy-photos::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,transparent 40%,rgba(5,7,11,.6)),linear-gradient(180deg,rgba(5,7,11,.35),transparent 30%,transparent 55%,rgba(5,7,11,.8))}
 .sy-ch{position:absolute;left:max(22px,calc((100vw - 1180px) / 2 + 22px));bottom:clamp(28px,7vh,80px);width:min(560px,calc(100% - 44px));display:grid;gap:16px;
@@ -245,6 +262,10 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
     <picture class="sy-ph" data-ch="1"><source media="(max-aspect-ratio: 3/4)" srcset="{{ASSETS}}synthra/step-1-p.webp"><img src="{{ASSETS}}synthra/step-1.webp" alt="" decoding="async"></picture>
     <picture class="sy-ph" data-ch="2"><source media="(max-aspect-ratio: 3/4)" srcset="{{ASSETS}}synthra/step-2-p.webp"><img src="{{ASSETS}}synthra/step-2.webp" alt="" decoding="async"></picture>
     <picture class="sy-ph" data-ch="3"><source media="(max-aspect-ratio: 3/4)" srcset="{{ASSETS}}synthra/step-3-p.webp"><img src="{{ASSETS}}synthra/step-3.webp" alt="" decoding="async"></picture>
+    </div>
+    <canvas class="sy-warp" aria-hidden="true"></canvas>
+    <div class="sy-cock" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="sy-ret"></span>
+      <div class="sy-tel"><span class="v">Velocity <b class="sy-vel">17,500</b> mph</span><span>Destination <b class="sy-dst">00</b> / 03</span><span class="sy-loc">Leaving orbit</span><span class="w">Warp engaged</span></div>
     </div>
     <div class="sy-ch on" data-ch="0">
       <span class="k">AI agents for IT and operations</span>
@@ -428,6 +449,37 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
   const phone = () => innerWidth <= 760;
   let lastCh = -1;
   const photos = [...chs.querySelectorAll('.sy-ph')];
+  // the cockpit: a hyperspace jump between the steps. Stars stretch into streaks, the current place rushes past,
+  // the next one flies in, and the speed readout jumps to 80,000 mph
+  const stick = chs.querySelector('.sy-stick'), cv = chs.querySelector('.sy-warp'), cx = cv.getContext('2d');
+  const vel = chs.querySelector('.sy-vel'), dst = chs.querySelector('.sy-dst'), loc = chs.querySelector('.sy-loc');
+  const places = ['Leaving orbit', 'Arriving: ring nebula', 'Arriving: stellar nursery', 'Arriving: deep field'];
+  let first = true, prevCh = 0, wraf = 0, wt0 = 0, wdir = 1, W = 0, H = 0, last = 0;
+  const N = innerWidth < 760 ? 220 : 420, stars = Array.from({ length: N }, () => ({ x: (Math.random() - .5) * 2, y: (Math.random() - .5) * 2, z: Math.random() }));
+  const size = () => { const d = Math.min(1.5, devicePixelRatio || 1); W = cv.width = Math.round(cv.clientWidth * d); H = cv.height = Math.round(cv.clientHeight * d); };
+  const env = t => t < .3 ? Math.pow(t / .3, 2) : t < .8 ? 1 : Math.max(0, 1 - Math.pow((t - .8) / .7, 1.5));   // speed over the jump
+  const frame = now => {
+    const t = (now - wt0) / 1000, sp = env(t), dt = Math.min(.05, (now - last) / 1000 || .016); last = now;
+    if (!W) size();
+    cx.clearRect(0, 0, W, H); const f = Math.max(W, H) * .5, mx = W / 2, my = H / 2;
+    cx.lineCap = 'round';
+    for (const st of stars) {
+      const z0 = st.z; st.z -= wdir * sp * dt * 3.4;
+      if (st.z < .02) { st.z += 1; continue; } if (st.z > 1) { st.z -= 1; continue; }
+      const x1 = mx + st.x / st.z * f * .5, y1 = my + st.y / st.z * f * .5, x0 = mx + st.x / z0 * f * .5, y0 = my + st.y / z0 * f * .5;
+      const a = Math.min(1, (1 - st.z) * 1.4) * sp;
+      cx.strokeStyle = `rgba(214,226,255,${a.toFixed(3)})`; cx.lineWidth = (1 - st.z) * 2.6 + .4;
+      cx.beginPath(); cx.moveTo(x0, y0); cx.lineTo(x1, y1); cx.stroke();
+    }
+    const g = cx.createRadialGradient(mx, my, 0, mx, my, f * .6); g.addColorStop(0, `rgba(220,232,255,${(sp * .35).toFixed(3)})`); g.addColorStop(1, 'rgba(220,232,255,0)');
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    cv.style.opacity = Math.min(1, sp * 1.4).toFixed(3); stick.style.setProperty('--ws', sp.toFixed(3));
+    vel.textContent = Math.round(17500 + 62500 * sp).toLocaleString('en-US');
+    const sh = sp * sp * 3; stick.style.transform = sh > .05 ? `translate3d(${((Math.random() - .5) * sh).toFixed(1)}px,${((Math.random() - .5) * sh).toFixed(1)}px,0)` : '';
+    if (t < 1.55) wraf = requestAnimationFrame(frame); else { wraf = 0; cv.style.opacity = 0; stick.style.transform = ''; stick.style.setProperty('--ws', 0); stick.classList.remove('warping'); vel.textContent = '17,500'; }
+  };
+  const warp = (dir, ch) => { if (reduce) return; wdir = dir; wt0 = last = performance.now(); stick.classList.add('warping'); if (!wraf) wraf = requestAnimationFrame(frame); };
+  addEventListener('resize', () => { W = 0; });
   // a scroll stop in the middle of each of the three steps (smooth.js glides to it and holds)
   chs.__refreshStop = () => { const top = chs.getBoundingClientRect().top + scrollY, run = chs.offsetHeight - innerHeight;
     chs.dataset.stops = [1, 2, 3].map(i => Math.round(top + run * (i + .5) / items.length)).join(','); };
@@ -441,7 +493,7 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
     const rc = chs.getBoundingClientRect(), cp = clamp(-rc.top / Math.max(1, rc.height - innerHeight));
     chs.style.setProperty('--cp', cp.toFixed(4));
     const ch = Math.min(items.length - 1, Math.floor(cp * items.length * .999));
-    if (ch !== lastCh) { lastCh = ch; items.forEach((it, i) => it.classList.toggle('on', i === ch)); photos.forEach(ph => ph.classList.toggle('on', +ph.dataset.ch === ch)); }
+    if (ch !== lastCh) { lastCh = ch; items.forEach((it, i) => it.classList.toggle('on', i === ch)); photos.forEach(ph => { const k = +ph.dataset.ch; ph.classList.toggle('on', k === ch); ph.classList.toggle('past', k < ch); }); if (first) first = false; else warp(ch > prevCh ? 1 : -1, ch); prevCh = ch; dst.textContent = '0' + ch; loc.textContent = places[ch]; }
     // once the chapters are over, the film dims a little behind the content
     film.style.setProperty('--dim', clamp((-rc.bottom + innerHeight) / innerHeight).toFixed(3));
   };

@@ -179,7 +179,6 @@ main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
 </style>
 <style>
 /* ===== Ironpath v3: split screen. The gym film is pinned in a side panel with a live set tracker; the page scrolls beside it ===== */
-.ip-film{--fw:44vw}
 .ip-film::after{background:linear-gradient(180deg,rgba(6,8,10,.55),transparent 22%,transparent 62%,rgba(6,8,10,.85))}
 .ip-hud{position:absolute;inset:0;z-index:3;pointer-events:none;color:#eef2f5;font:500 11px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase}
 .ip-hud > *{position:absolute}
@@ -196,7 +195,8 @@ main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
 .h-sets span i.on{background:var(--acc)}.h-sets span i.now{background:#fff}
 .h-load{right:24px;bottom:72px}.h-load b{font:italic 900 1.9rem var(--display);font-stretch:76%;color:var(--acc);letter-spacing:0}
 body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{border-left:0;border-top:3px solid var(--acc)}
-@media (min-width:1000px){
+@media (min-width:700px){
+  :root{--fw:clamp(300px,42vw,46vw)}
   .ip-film{top:var(--navh,68px);right:auto;width:var(--fw);border-right:1px solid rgba(220,232,240,.12)}
   body.has-film main,body.has-film .foot{margin-left:var(--fw,44vw)}
   body.has-film main .sec > .wrap,body.has-film main .sec > .wrap.cta{width:auto!important;margin-inline:clamp(20px,2.6vw,44px)!important;max-width:none}
@@ -208,15 +208,19 @@ body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{border-left:0;border-
   .jr-grid{grid-template-columns:minmax(0,1fr)}
   .jr-chart{max-height:150px}.jr-bar{max-height:110px}
 }
-@media (max-width:999px){
-  .ip-film{top:var(--navh,60px);bottom:auto;height:34svh;z-index:4;box-shadow:0 10px 30px -10px rgba(0,0,0,.8)}
-  body.has-film main{padding-top:34svh}
-  .h-tl,.h-tr{top:12px}.h-tl{left:16px}.h-tr{right:16px}.h-big{left:16px;bottom:12px}.h-sets{right:16px;bottom:14px}.h-load{display:none}
-  .h-big b{font-size:4.2rem}.h-sets span i{width:18px}
-  .ip-hero{min-height:auto;padding-block:clamp(36px,8vw,60px) 40px}
-  .jr-pin{top:calc(var(--navh,60px) + 34svh)!important;height:calc(100svh - var(--navh,60px) - 34svh)!important}
-  .jr-head .k,.jr-head .lede,.jr-kg em,.jr-note{display:none}.jr-head h2{font-size:1.5rem}.jr-wrap{gap:8px}.jr-week b{font-size:2.8rem}.jr-kg b{font-size:1.7rem}
-  .jr-bar{max-height:52px}.jr-chart{max-height:70px}.jr-ms{margin-top:4px}.jr-ms li{padding:5px 8px;font-size:.7rem}.jr-ms li b{font-size:.8rem}
+@media (min-width:700px) and (max-width:999px){
+  .h-big b{font-size:4.6rem}.h-load{display:none}.h-sets span i{width:18px}
+  .ip-hero h1{font-size:clamp(2.4rem,6vw,3.4rem)}
+}
+/* phones: the film fills the screen behind the page, the set tracker stays on it and the slabs scroll over */
+@media (max-width:699px){
+  .ip-film{top:var(--navh,60px)}
+  .ip-film::after{background:linear-gradient(180deg,rgba(6,8,10,.5),rgba(6,8,10,.15) 30%,rgba(6,8,10,.15) 60%,rgba(6,8,10,.75))}
+  .h-tl,.h-tr{display:none}.h-big{left:16px;bottom:calc(14px + env(safe-area-inset-bottom))}.h-sets{right:16px;bottom:calc(18px + env(safe-area-inset-bottom))}.h-load{display:none}
+  .h-big b{font-size:4.4rem}.h-sets span i{width:18px}
+  .ip-hero{padding-bottom:clamp(130px,20vh,170px)}
+  body.has-film main .sec{padding-block:12vh}
+  body.has-film main .sec.jr{padding-block:0}
 }
 @media (prefers-reduced-motion:reduce){.h-rec{animation:none}}
 </style>
