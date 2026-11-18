@@ -763,8 +763,8 @@ window.kzGmail = (to, subject = '', body = '') => {
     const sec = f.closest('section'); if (!sec) return;
     f.classList.add('drift');
     tilt(f, { area: sec, max: 9, idle: true, glare: .7, layers: [['label, .btn, small', 6]], calm: () => f.contains(document.activeElement) });
-    const side = f.previousElementSibling;
-    if (side) tilt(side, { area: sec, max: 3, glare: 0, layers: [['h2', -10], ['.email-big', -6]] });
+    // the light inside the box follows the cursor
+    f.addEventListener('pointermove', e => { const r = f.getBoundingClientRect(); f.style.setProperty('--mx', (e.clientX - r.left) + 'px'); f.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
   });
 
   // About: the founder card in full 3D (portrait pops forward, text drifts behind it)
