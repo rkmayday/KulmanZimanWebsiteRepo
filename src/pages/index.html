@@ -54,22 +54,27 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Custom websi
 </div></div>
 </div>
 
-<!-- MISSION -->
-<section class="section" id="mission">
-  <div class="wrap mission reveal">
-    <span class="eyebrow">Our mission</span>
-    <blockquote class="words">“To build the websites our customers ask for, with a clear process and honest pricing.”<cite>Ryder Ziman, founder</cite></blockquote>
+<!-- MISSION + PACKAGES: two chapters on one pinned stage, with the particle sphere behind them (ps-sphere.js) -->
+<section class="ps-stage" id="ps" aria-label="Our mission and packages">
+  <div class="ps-pin">
+    <div class="wrap ps-chs">
+      <div class="ps-ch ps-c0" id="mission">
+        <span class="eyebrow">Our mission</span>
+        <blockquote class="words">“To build the websites our customers ask for, with a clear process and honest pricing.”<cite>Ryder Ziman, founder</cite></blockquote>
+      </div>
+      <div class="ps-ch ps-c1">
+        <span class="eyebrow">Packages</span>
+        <h2 class="extrude">Three packages. <em>One honest process.</em></h2>
+        <p class="lede">Pick the size that fits. Every package is designed around your business and refined with you over three rounds. Everything included is on the pricing page.</p>
+      </div>
+    </div>
+    <span class="ps-cue" aria-hidden="true"><i></i><i></i></span>
   </div>
 </section>
 
 <!-- PRODUCT: flips in 3D to show what's included -->
 <section class="section" id="featured-product" data-dock="Pricing">
   <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Packages</span>
-      <h2 class="extrude">Three packages. <em>One honest process.</em></h2>
-      <p class="lede">Pick the size that fits. Every package is designed around your business and refined with you over three rounds. Everything included is on the pricing page.</p>
-    </div>
     {{PACKAGE_TEASER}}
   </div>
 </section>
@@ -283,3 +288,4 @@ jsonld: [{"@context":"https://schema.org","@type":"Product","name":"Custom websi
   </div>
 </section>
 </main>
+<script src="/assets/ps-sphere.js" defer></script>

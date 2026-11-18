@@ -1224,3 +1224,33 @@ main.rz .btn.btn-linkedin::after{content:"";position:absolute;inset:0;pointer-ev
   main.rz .btn.btn-linkedin:hover .li-badge{transform:rotate(-8deg) scale(1.12)}
 }
 main.rz .btn.btn-linkedin:active{transform:translateY(1px) scale(.98)}
+
+/* ================= Home: mission + packages on one pinned white stage with the particle sphere (ps-sphere.js) ================= */
+.ps-stage{position:relative;background:#fff;height:calc(260 * var(--vh, 1vh))}
+.ps-pin{position:sticky;top:72px;height:calc(100 * var(--vh, 1vh) - 72px);overflow:hidden;display:grid;align-items:center}
+.ps-gl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.ps-chs{position:relative;z-index:1;height:100%}
+.ps-ch{position:absolute;left:0;top:50%;width:min(620px,52%);transform:translateY(-40%);opacity:0;transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);pointer-events:none;display:grid;gap:18px}
+.ps-ch.on{opacity:1;transform:translateY(-50%);pointer-events:auto}
+.ps-c1{left:auto;right:0}
+.ps-ch .words{margin:0;font-size:clamp(1.9rem,3.4vw,3.1rem)}
+.ps-ch .lede{max-width:46ch}
+/* two little dots: which chapter you are on */
+.ps-cue{position:absolute;left:50%;bottom:clamp(18px,4vh,40px);display:flex;gap:7px;transform:translateX(-50%);z-index:1}
+.ps-cue i{width:7px;height:7px;border-radius:9px;background:rgba(10,10,10,.2);transition:width .3s,background .3s}
+.ps-cue i:first-child{width:calc(7px + (1 - min(1, var(--cp,0) * 2)) * 15px);background:rgba(10,10,10,calc(.2 + (1 - min(1, var(--cp,0) * 2)) * .7))}
+.ps-cue i:last-child{width:calc(7px + max(0, var(--cp,0) * 2 - 1) * 15px);background:rgba(10,10,10,calc(.2 + max(0, var(--cp,0) * 2 - 1) * .7))}
+@media (max-width:760px){
+  .ps-stage{height:calc(240 * var(--vh, 1vh))}
+  .ps-pin{top:60px;height:calc(100 * var(--vh, 1vh) - 60px)}
+  .ps-ch,.ps-c1{left:0;right:0;width:auto;top:auto;bottom:clamp(40px,8vh,80px);transform:translateY(20px)}
+  .ps-ch.on{transform:none}
+  .ps-ch .words{font-size:clamp(1.55rem,7vw,2.1rem)}
+  .ps-ch::before{content:"";position:absolute;inset:-30px -20px -30px;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.88) 30%);pointer-events:none}
+}
+/* no WebGL or reduced motion: the two chapters simply stack */
+.ps-stage.ps-flat{height:auto}
+.ps-flat .ps-pin{position:relative;top:auto;height:auto;display:block;padding-block:clamp(70px,10vw,130px)}
+.ps-flat .ps-chs{height:auto;display:grid;gap:clamp(70px,10vw,130px)}
+.ps-flat .ps-ch{position:static;transform:none;width:auto;opacity:1}
+.ps-flat .ps-cue{display:none}
