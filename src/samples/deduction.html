@@ -91,6 +91,8 @@ main .sec + .sec{border-top:1px solid var(--line)}
 /* ===== the three steps: each one is a little hands-on demo ===== */
 .feats.dxs{align-items:stretch}
 .feat.dx{display:grid;grid-template-rows:auto auto auto 1fr;gap:12px}
+.feat.dx{grid-template-columns:minmax(0,1fr)}.feat.dx > *{min-width:0}
+@media (max-width:380px){.rv-code{font-size:10px}.rv-code .ln{width:22px;padding-right:6px}}
 .dx-art{margin-top:8px;align-self:end;border-radius:14px;padding:14px;background:rgba(0,0,0,.28);box-shadow:inset 0 0 0 1px var(--line);font:500 12.5px var(--mono)}
 /* 1: the lesson timer */
 .timer{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;align-items:center}
@@ -387,7 +389,7 @@ body.has-film{--film-scrim:linear-gradient(180deg,rgba(0,0,0,.25),transparent 30
 </style>
 </head>
 <body id="top" class="has-film">
-<header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
+<header class="nav"><div class="demo-strip"><span><b>Demo</b> · <i class="ds-x">This is a one-page website, built </i>by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back<i class="ds-x"> to Ziman Sites</i></a></div><div class="wrap nav-in">
   <a class="brand" href="#top" aria-label="Facet home"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="fxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#a5f3fc"/><stop offset="1" stop-color="#0891b2"/></linearGradient></defs><path d="M50 6 L88 34 L74 90 L26 90 L12 34 Z" fill="url(#fxg)"/><path d="M50 6 L62 40 L50 90 L38 40 Z" fill="#fff" fill-opacity=".55"/><path d="M12 34 L38 40 L26 90 Z M88 34 L62 40 L74 90 Z" fill="#0d1f26" fill-opacity=".55"/></svg><span>Facet</span></a>
   <nav aria-label="Main"><ul class="links"><li><a href="#path">The path</a></li><li><a href="#play">Try it</a></li><li><a href="#builds">Projects</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
   <div class="actions"><a class="btn sm" href="#pricing">Start free</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>

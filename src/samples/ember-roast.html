@@ -192,6 +192,8 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 .sc-order .rdy{left:8%;right:8%;top:10%;padding:10px 12px;border-radius:12px;background:#24150e;color:#f6efe4;font:600 12px var(--body);box-shadow:0 14px 24px -12px rgba(0,0,0,.7);animation:tcReady 4s ease-in-out infinite}
 @keyframes tcReady{0%,8%{opacity:0;translate:0 -14px}18%,85%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -14px}}
 .sc-order .fr10{right:6%;bottom:6%;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;text-align:center;font:700 11px/1.1 var(--mono);color:var(--acc);background:#fff8f0;border:2px dashed var(--acc);rotate:-12deg}
+/* small phones: room for the whole back of each card */
+@media (max-width:400px){.tc{height:500px}.tc-b{padding:22px 20px;gap:10px}}
 @media (prefers-reduced-motion:reduce){.tc,.tc-in,.tc-scene .L{transition:none}.tc{opacity:1;transform:none}.sc-farm .sun,.sc-shot .drip,.sc-order .rdy{animation:none}}
 /* touch screens: the layers drift gently on their own */
 /* touch screens: the cards sit still and flat while you scroll (3D layers can jitter on phones); a tap still flips them */
@@ -397,7 +399,7 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
 </style>
 </head>
 <body id="top" class="has-film">
-<header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
+<header class="nav"><div class="demo-strip"><span><b>Demo</b> · <i class="ds-x">This is a one-page website, built </i>by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back<i class="ds-x"> to Ziman Sites</i></a></div><div class="wrap nav-in">
   <a class="brand" href="#top" aria-label="Ember Roast home"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(28 50 50)"><path d="M50 8 A30 42 0 0 0 50 92 C60 70 40 30 50 8 Z" fill="#2b1a12"/><path d="M50 8 A30 42 0 0 1 50 92 C60 70 40 30 50 8 Z" fill="#c8743a"/></g></svg><span>Ember Roast</span></a>
   <nav aria-label="Main"><ul class="links"><li><a href="#about">Our roast</a></li><li><a href="#build">Build your drink</a></li><li><a href="#pricing">Subscriptions</a></li></ul></nav>
   <div class="actions"><a class="btn sm" href="#pricing">Order ahead</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>

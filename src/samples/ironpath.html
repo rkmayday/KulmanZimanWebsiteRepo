@@ -87,11 +87,13 @@ main .sec + .sec{border-top:0}
 /* pricing: tickets with a cut corner */
 .tiers{border:0;gap:18px}
 .tier,.tier + .tier{border:0;background:var(--panel);clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,0 100%);border-left:0;box-shadow:inset 0 0 0 1px var(--line)}
-.tier.best{background:var(--acc);color:#fff;--fg:#fff;--mut:rgba(255,255,255,.82)}
-.tier.best .k,.tier.best li::before{color:#fff}
-.tier.best .k::before{background:#fff}
-.tier.best .btn{color:var(--acc)}.tier.best .btn::before{background:#fff}
-.tier .price{font-size:clamp(2.8rem,4.4vw,3.6rem)}
+.tier.best{background:var(--acc);color:#0a0c0e;--fg:#0a0c0e;--mut:rgba(10,12,14,.74)}
+.tier.best .k,.tier.best li::before{color:#0a0c0e}
+.tier.best .k::before{background:#0a0c0e}
+.tier.best .btn,.tier.best .btn.ghost{color:#eef2f5}.tier.best .btn::before{background:#0a0c0e;border-color:#0a0c0e}
+.tier .price{font-size:clamp(2.4rem,3.6vw,3.4rem);display:flex;flex-wrap:wrap;align-items:baseline;column-gap:6px}
+/* the plan buttons fill the card (inside the slant), so they never get cut by the card's corner */
+.tier .btn{align-self:stretch!important;width:auto!important;display:flex;justify-content:center;text-align:center;margin-inline:9px;padding-inline:12px;white-space:normal;line-height:1.15;min-height:46px;height:auto;padding-block:8px;font-size:clamp(.72rem,1vw,.85rem)}
 .tier li::before{content:"/ ";color:var(--acc);font-weight:900}
 .cta h2{font-size:clamp(2.8rem,7vw,6rem);max-width:none;font-style:italic;font-weight:900;font-stretch:76%;text-transform:uppercase}
 .cta input{border-radius:0!important;transform:skewX(-10deg);background:#fff!important;box-shadow:inset 0 0 0 2px var(--fg)!important}
@@ -155,7 +157,7 @@ main .sec + .sec{border-top:0}
   .jr-ms{margin-top:6px;gap:6px}.jr-ms li{padding:7px 9px;font-size:.76rem}
   .jr-note{font-size:10.5px}
 }
-@media (max-height:620px) and (max-width:860px){.jr-head .k{display:none}.jr-head h2{font-size:1.55rem}.jr-wrap{gap:8px}.jr-week b{font-size:3rem}.jr-kg b{font-size:1.8rem}.jr-kg em{display:none}
+@media (max-height:700px) and (max-width:860px){.jr-head .k{display:none}.jr-head h2{font-size:1.55rem}.jr-wrap{gap:8px}.jr-week b{font-size:3rem}.jr-kg b{font-size:1.8rem}.jr-kg em{display:none}
   .jr-bar{max-height:58px}.jr-chart{max-height:74px}.jr-ms li{padding:5px 8px;font-size:.7rem}.jr-ms li b{font-size:.8rem}.jr-note{display:none}}
 @media (prefers-reduced-motion:reduce){.sec.jr{height:auto}.jr-pin{position:relative;top:auto;height:auto;padding-block:90px}.jr-bar .pl,.jr-ms li{transition:none}}
 </style>
@@ -175,7 +177,7 @@ body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{background:rgba(8,10,
   color:transparent;-webkit-text-stroke:2px rgba(238,242,245,.9);mix-blend-mode:normal;font-size:clamp(3.6rem,13vw,12rem)}
 @media (max-width:760px){.ip-hero h1{font-size:clamp(2.6rem,13vw,3.8rem)}.ip-gap span{-webkit-text-stroke:1.5px rgba(238,242,245,.9)}}
 main .btn:not(.ghost){background:var(--acc);color:var(--on-acc)}
-.tier.best .btn,.tier.best .btn.ghost{background:#0a0c0e!important;color:#eef2f5!important;border-color:#0a0c0e!important}
+.tier.best .btn,.tier.best .btn.ghost{background:transparent!important;color:#eef2f5!important}
 </style>
 <style>
 /* ===== Ironpath v3: split screen. The gym film is pinned in a side panel with a live set tracker; the page scrolls beside it ===== */
@@ -205,9 +207,16 @@ body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{border-left:0;border-
   .ip-hero{padding-inline:clamp(20px,2.6vw,44px)}
   .ip-hero .wrap{width:auto;margin:0;padding:0}
   .ip-hero h1{font-size:clamp(3rem,5.4vw,6rem);max-width:11ch}
-  .jr-grid{grid-template-columns:minmax(0,1fr)}
-  .jr-chart{max-height:150px}.jr-bar{max-height:110px}
+  .jr-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  .jr-chart{max-height:110px}.jr-bar{max-height:80px}
+  .jr-head .lede,.jr-note{display:none}
+  .jr-wrap{gap:clamp(12px,2vh,22px)}
+  .jr-week b{font-size:clamp(3.4rem,6vw,5.6rem)}
 }
+/* side-by-side layout with a narrow content column: the plans stack, so each card has room */
+@media (min-width:700px) and (max-width:1299px){.tiers{grid-template-columns:minmax(0,1fr)!important}.tier .btn{align-self:flex-start!important;min-width:220px}}
+/* wide screens: the 12-week view side by side again */
+@media (min-width:1300px){.jr-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.jr-chart{max-height:150px}.jr-bar{max-height:100px}}
 @media (min-width:700px) and (max-width:999px){
   .h-big b{font-size:4.6rem}.h-load{display:none}.h-sets span i{width:18px}
   .ip-hero h1{font-size:clamp(2.4rem,6vw,3.4rem)}
@@ -226,7 +235,7 @@ body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{border-left:0;border-
 </style>
 </head>
 <body id="top" class="no-glow has-film">
-<header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
+<header class="nav"><div class="demo-strip"><span><b>Demo</b> · <i class="ds-x">This is a one-page website, built </i>by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back<i class="ds-x"> to Ziman Sites</i></a></div><div class="wrap nav-in">
   <a class="brand" href="#top" aria-label="Ironpath home"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="47" width="80" height="6" rx="3" fill="currentColor"/><rect x="20" y="26" width="9" height="48" rx="3" fill="#b9d3e0"/><rect x="31" y="34" width="6" height="32" rx="2.5" fill="currentColor"/><rect x="71" y="26" width="9" height="48" rx="3" fill="#b9d3e0"/><rect x="63" y="34" width="6" height="32" rx="2.5" fill="currentColor"/></svg><span>Ironpath</span></a>
   <nav aria-label="Main"><ul class="links"><li><a href="#about">Method</a></li><li><a href="#builder">Build your week</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
   <div class="actions"><a class="btn sm" href="#pricing">Start free</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
