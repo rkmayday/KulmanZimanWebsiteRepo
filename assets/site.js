@@ -155,7 +155,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     btn.disabled = true; btn.textContent = 'Sending…';
     let sent = false;
     try {
-      const r = await fetch('https://formsubmit.co/ajax/zimansites@gmail.com', {
+      const r = await fetch('https://formsubmit.co/ajax/ryder@zimansites.com', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ name: g('name'), email: g('email'), business: g('business') || '-', industry: g('industry'),
           domain: g('domain') || 'Not sure yet', details: g('details'), _subject: subject, _replyto: g('email'), _template: 'table', _captcha: 'false' })
@@ -169,7 +169,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       [...brief.children].forEach(c => { if (c !== done) c.hidden = true; }); done.hidden = false; toast('Brief sent');
     } else {
       // browsers block pop-ups that don't come straight from a click, so offer one-click links instead of opening Gmail ourselves
-      const to = 'zimansites@gmail.com', body = [`Name: ${g('name')}`, `Email: ${g('email')}`, `Business: ${g('business')}`, `Industry: ${g('industry')}`,
+      const to = 'ryder@zimansites.com', body = [`Name: ${g('name')}`, `Email: ${g('email')}`, `Business: ${g('business')}`, `Industry: ${g('industry')}`,
         `Domain I'd like: ${g('domain') || 'Not sure yet'}`, '', 'What I need:', g('details')].join('\n');
       const fail = $('.brief-fail', brief);
       $('[data-brief-gmail]', fail).href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
@@ -293,7 +293,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       let sent = false;
       try {
         const ctl = 'AbortController' in window ? new AbortController() : null, timer = ctl && setTimeout(() => ctl.abort(), 8000);
-        const r = await fetch('https://formsubmit.co/ajax/zimansites@gmail.com', {
+        const r = await fetch('https://formsubmit.co/ajax/ryder@zimansites.com', {
           method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(fields), signal: ctl ? ctl.signal : undefined
         });
         timer && clearTimeout(timer);
@@ -301,7 +301,7 @@ window.kzGmail = (to, subject = '', body = '') => {
         sent = r.ok && String(d.success) === 'true';
       } catch (err) { sent = false; }
       // never show the customer an error: if the normal send fails, try a simpler background send, then go to checkout either way
-      if (!sent) { try { navigator.sendBeacon && navigator.sendBeacon('https://formsubmit.co/zimansites@gmail.com', new URLSearchParams(fields)); } catch (err) {} }
+      if (!sent) { try { navigator.sendBeacon && navigator.sendBeacon('https://formsubmit.co/ryder@zimansites.com', new URLSearchParams(fields)); } catch (err) {} }
       if (quote) {   // a quote request: thank them, no checkout
         btn.disabled = false; btn.innerHTML = html; $('[data-om-email]', om).textContent = g('email');
         [...form.children].forEach(c => { if (c !== T.done) c.hidden = true; }); T.done.hidden = false; form.reset(); return;

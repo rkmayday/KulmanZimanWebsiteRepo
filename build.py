@@ -158,7 +158,7 @@ def package_teaser_html():
     return (f'<div class="pkg-tease reveal">{items}</div>\n'
             '    <p class="reveal" style="margin-top:22px"><a class="btn ghost" href="/products">Compare the packages <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></p>')
 
-EMAIL = "zimansites@gmail.com"
+EMAIL = "ryder@zimansites.com"
 THREE = "/assets/three.min.js"  # self-hosted Three.js r128, no third-party CDN to fail
 FONTS = ("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
          "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
