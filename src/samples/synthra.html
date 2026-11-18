@@ -188,7 +188,7 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 <style>
 /* ===== Synthra v3: the film starts as a small window under the wordmark and grows to fill the screen; then pinned chapters ===== */
 .sy-film{clip-path:inset(var(--wt,32%) var(--wx,34%) var(--wb,14%) var(--wx,34%) round var(--wr,20px));transition:none}
-.sy-film::after{background:radial-gradient(70% 60% at 50% 50%,transparent,rgba(5,7,11,calc(.25 + var(--dim,0) * .5))),linear-gradient(180deg,rgba(5,7,11,.25),transparent 30%,transparent 65%,rgba(5,7,11,.7))}
+.sy-film::after{background:linear-gradient(20deg,rgba(5,7,11,.72),rgba(5,7,11,.15) 55%),radial-gradient(70% 60% at 50% 50%,rgba(5,7,11,.25),rgba(5,7,11,calc(.55 + var(--dim,0) * .35))),linear-gradient(180deg,rgba(5,7,11,.45),rgba(5,7,11,.12) 30%,rgba(5,7,11,.12) 60%,rgba(5,7,11,.85))}
 .sy-open{height:calc(200 * var(--vh, 1vh))}
 .sy-open .sy-stick,.sy-chapters .sy-stick{position:sticky;top:var(--navh,68px);height:calc(100 * var(--vh, 1vh) - var(--navh,68px));overflow:hidden}
 .sy-word{position:absolute;left:0;right:0;top:4%;text-align:center;font:400 clamp(5rem,19vw,19rem)/1 var(--display);letter-spacing:-.04em;color:#fff;padding-bottom:.08em;
@@ -198,7 +198,7 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 .sy-chapters{height:calc(420 * var(--vh, 1vh))}
 .sy-fly{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:var(--fo,0);pointer-events:none}
 .sy-flyv{position:absolute;inset:0;pointer-events:none}
-.sy-flyv::after{content:"";position:absolute;inset:0;background:radial-gradient(85% 75% at 50% 50%,transparent 45%,rgba(5,7,11,.55)),linear-gradient(180deg,rgba(5,7,11,.3),transparent 28%,transparent 58%,rgba(5,7,11,.75));opacity:var(--fo,0)}
+.sy-flyv::after{content:"";position:absolute;inset:0;background:radial-gradient(85% 75% at 50% 50%,rgba(5,7,11,.2) 40%,rgba(5,7,11,.72)),linear-gradient(180deg,rgba(5,7,11,.45),rgba(5,7,11,.1) 28%,rgba(5,7,11,.1) 55%,rgba(5,7,11,.85));opacity:var(--fo,0)}
 .sy-cock{position:absolute;inset:0;pointer-events:none;z-index:1}
 .sy-cock i{position:absolute;width:34px;height:34px;border:1.5px solid rgba(200,214,255,.55)}
 .sy-cock i:nth-child(1){left:16px;top:16px;border-right:0;border-bottom:0}.sy-cock i:nth-child(2){right:16px;top:16px;border-left:0;border-bottom:0}

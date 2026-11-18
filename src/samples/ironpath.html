@@ -80,7 +80,7 @@ main .sec + .sec{border-top:0}
 /* builder: squared, slanted controls */
 .card{border-radius:4px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%);box-shadow:inset 0 0 0 1px var(--line)}
 .seg button{border-radius:0;transform:skewX(-10deg);font-style:italic;font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:.06em}
-.seg button[aria-pressed=true]{background:var(--fg);color:#fff}
+.seg button[aria-pressed=true]{background:var(--fg);color:var(--bg)}
 .range input{accent-color:var(--acc)}
 .lab-stats{border-radius:0}
 .lab-stats b{font-size:1.9rem;color:var(--acc)}
@@ -101,10 +101,10 @@ main .sec + .sec{border-top:0}
 
 .ip-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 .ip-day{display:grid;gap:6px;align-content:start;padding:12px 8px;border-radius:2px;min-height:118px;background:var(--panel2);box-shadow:inset 0 0 0 1px var(--line)}
-.ip-day.on{background:linear-gradient(180deg,rgba(255,61,46,.12),transparent);box-shadow:inset 0 0 0 1px rgba(255,61,46,.45)}
+.ip-day.on{background:linear-gradient(180deg,rgba(185,211,224,.14),transparent);box-shadow:inset 0 0 0 1px rgba(185,211,224,.5)}
 .ip-day small{font:500 11px var(--mono);color:var(--mut);letter-spacing:.08em}
 .ip-day b{font-size:.86rem;line-height:1.2}
-.ip-day i{display:block;height:6px;border-radius:6px;background:rgba(17,17,17,.08);overflow:hidden;margin-top:auto}
+.ip-day i{display:block;height:6px;border-radius:6px;background:rgba(238,242,245,.1);overflow:hidden;margin-top:auto}
 .ip-day i::after{content:"";display:block;height:100%;width:var(--w,0%);background:var(--acc);border-radius:inherit;transition:width .6s cubic-bezier(.2,.8,.2,1)}
 .ip-day.rest b{color:var(--mut);font-weight:500}
 @media (max-width:620px){.ip-week{grid-template-columns:repeat(4,minmax(0,1fr))}.ip-day{min-height:92px}}
@@ -214,6 +214,7 @@ body.has-film main .sec > .wrap,body.has-film .jr .jr-wrap{border-left:0;border-
   .jr-week b{font-size:clamp(3.4rem,6vw,5.6rem)}
 }
 /* side-by-side layout with a narrow content column: the plans stack, so each card has room */
+@media (min-width:700px) and (max-width:1599px){.lab{grid-template-columns:minmax(0,1fr)!important}}
 @media (min-width:700px) and (max-width:1299px){.tiers{grid-template-columns:minmax(0,1fr)!important}.tier .btn{align-self:flex-start!important;min-width:220px}}
 /* wide screens: the 12-week view side by side again */
 @media (min-width:1300px){.jr-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.jr-chart{max-height:150px}.jr-bar{max-height:100px}}
