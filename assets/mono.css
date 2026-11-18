@@ -964,3 +964,12 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.13),transparent 65%)}
 #selling-points.reel-on .sheet:hover::before{opacity:1}
 #selling-points.reel-on .sheet:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.26),0 24px 60px rgba(0,0,0,.55)}
+
+/* computers: boxes light up around the cursor (site.js adds .glow-card). A soft spot inside, and the edge lights up near the cursor. */
+.glow-card{position:relative}
+.glow-card::before,.glow-card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s}
+.glow-card::before{background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),var(--gs,rgba(10,10,10,.035)),transparent 70%)}
+.glow-card::after{padding:1.5px;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),var(--ge,rgba(10,10,10,.55)),transparent 70%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.glow-card:hover::before,.glow-card:hover::after{opacity:1}
+.pkg.best.glow-card{--gs:rgba(255,255,255,.07);--ge:rgba(255,255,255,.6)}

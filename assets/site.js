@@ -691,3 +691,33 @@ window.kzGmail = (to, subject = '', body = '') => {
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
   measure();
 })();
+
+// Computers only: boxes light up around the cursor and lean toward it a little, and buttons lean toward the cursor.
+// Movement eases (no jumps), and nothing runs on touch screens or with reduced motion.
+(() => {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const items = [];
+  const add = (el, amt, lift, glow) => {
+    if (glow) el.classList.add('glow-card');
+    const s = { el, x: 0, y: 0, tx: 0, ty: 0 }; items.push(s);
+    el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      if (glow) { el.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); el.style.setProperty('--my', (y * 100).toFixed(1) + '%'); }
+      s.tx = (x - .5) * amt; s.ty = (y - .5) * amt - lift; kick();
+    });
+    el.addEventListener('pointerleave', () => { s.tx = 0; s.ty = 0; kick(); });
+  };
+  document.querySelectorAll('.pkg, .sample, .box, .steps .sheet').forEach(el => { if (!el.closest('#selling-points')) add(el, 8, 2, true); });
+  document.querySelectorAll('.btn').forEach(el => add(el, 6, 0, false));
+  let running = false;
+  const kick = () => { if (!running) { running = true; requestAnimationFrame(tick); } };
+  const tick = () => {
+    let moving = false;
+    items.forEach(s => {
+      s.x += (s.tx - s.x) * .16; s.y += (s.ty - s.y) * .16;
+      if (Math.abs(s.tx - s.x) > .05 || Math.abs(s.ty - s.y) > .05) moving = true; else { s.x = s.tx; s.y = s.ty; }
+      s.el.style.translate = (s.x || s.y) ? `${s.x.toFixed(2)}px ${s.y.toFixed(2)}px` : '';
+    });
+    if (moving) requestAnimationFrame(tick); else running = false;
+  };
+})();
