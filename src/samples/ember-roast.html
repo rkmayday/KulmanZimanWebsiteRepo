@@ -247,8 +247,110 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 @media (max-width:600px){main .k{width:auto;white-space:normal;letter-spacing:.12em;font-size:10.5px;line-height:1.4;text-align:center}}
 .x3d-wait .er-bean,.x3d-wait .er-steamx{visibility:hidden}
 </style>
-<script>(function(){try{var c=document.createElement('canvas');if(c.getContext('webgl')||c.getContext('experimental-webgl'))document.documentElement.classList.add('x3d-wait')}catch(e){}})()</script>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
+<style>
+/* ===== Ember Roast v2: dark espresso theme ===== */
+:root{--bg:#120b07;--bg2:#1a110b;--fg:#f3e5d3;--mut:#a8907c;--line:#34241a;--acc:#d9884a;--on-acc:#1a0f09;--panel:#1b120c;--panel2:#241812;--glass:rgba(24,16,11,.78);--cream:#f3e5d3;--dk:#0c0705;color-scheme:dark}
+body{background:var(--bg);color:var(--fg)}
+.nav.stuck,body.stuck .nav{background:rgba(18,11,7,.86)}
+main .btn,.er-form button{border-color:#f3e5d3;box-shadow:4px 4px 0 #f3e5d3;color:#1a0f09}
+@media (hover:hover){main .btn:hover,.er-form button:hover{box-shadow:5px 5px 0 #f3e5d3}}
+main .btn.ghost{background:transparent;color:var(--fg)}
+.tier.best .btn{background:#1a0f09;color:#f3e5d3;border-color:#1a0f09;box-shadow:4px 4px 0 #f3e5d3}
+
+/* --- the opening: a shot of espresso that pours as you scroll --- */
+.stage.eh{height:calc(300 * var(--vh, 1vh))}
+.stage.eh .pin{display:block;background:radial-gradient(60% 70% at 50% 45%,#2a170c 0%,#120b07 70%)}
+.eh-words{position:absolute;inset:0;pointer-events:none;z-index:1}
+.eh-words span{position:absolute;top:50%;font:900 clamp(4rem,10.5vw,11rem)/.8 var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.05em;color:#f3e5d3;white-space:nowrap;
+  opacity:calc((.35 + var(--i,1) * .65) * (1 - var(--g,0) * .9))}
+.eh-words .w1{right:calc(50% + 13vw + var(--g,0) * 16vw);transform:translateY(calc(-50% - 9vh + (1 - var(--i,1)) * 40px))}
+.eh-words .w2{left:calc(50% + 13vw + var(--g,0) * 16vw);transform:translateY(calc(-50% + 9vh + (1 - var(--i,1)) * 40px));font-style:italic;color:var(--acc)}
+.eh-win{position:absolute;z-index:2;top:50%;left:50%;overflow:hidden;background:#0d0805;
+  width:calc(22vw + var(--g,0) * 16vw);height:calc((56 + var(--g,0) * 26) * var(--vh, 1vh));border-radius:calc(30px - var(--g,0) * 8px);
+  transform:translate(calc(-50% + var(--g,0) * 22vw),-50%) perspective(1200px) rotateY(calc(var(--mx,0) * 8deg)) rotateX(calc(var(--my,0) * -6deg)) scale(calc(.9 + var(--i,1) * .1));
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 1px rgba(243,229,211,.08)}
+.eh-win img,.eh-win canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.eh-win::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,11,7,.25),transparent 30%,transparent 70%,rgba(18,11,7,.5));pointer-events:none}
+.eh-tag,.eh-time{position:absolute;z-index:2;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(243,229,211,.85);padding:8px 10px;border-radius:99px;background:rgba(18,11,7,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.eh-tag{left:14px;top:14px}.eh-time{right:14px;bottom:14px}.eh-time b{font-weight:500;color:var(--acc)}
+.stage.eh .copy{position:absolute;z-index:3;left:max(22px,calc((100vw - 1180px) / 2 + 22px));top:50%;width:min(40vw,520px);padding:0;justify-items:start;text-align:left;
+  opacity:var(--c,0);transform:translateY(calc(-50% + (1 - var(--c,0)) * 40px))}
+.stage.eh .copy .lede{margin-inline:0;color:var(--mut)}
+.stage.eh .copy .actions{justify-content:flex-start}
+.stage.eh .copy h1{font-size:clamp(2.6rem,4.6vw,4.6rem);color:var(--fg)}
+.stage.eh .copy h1 em{color:var(--acc)}
+.stage.eh .cue{z-index:4;opacity:calc(1 - var(--g,0) * 3)}
+/* phones: the pour fills the whole screen, the lettering stacks above and below it, and the headline sits on the footage */
+@media (max-width:760px){
+  .stage.eh{height:calc(260 * var(--vh, 1vh))}
+  .eh-words span{font-size:clamp(4.2rem,24vw,9rem)}
+  .eh-words .w1{right:auto;left:50%;top:calc(15% - var(--g,0) * 18%);transform:translate(-50%,-50%)}
+  .eh-words .w2{left:50%;top:calc(85% + var(--g,0) * 18%);transform:translate(-50%,-50%)}
+  .eh-win{width:calc(62vw + var(--g,0) * 38vw);height:calc(54% + var(--g,0) * 46%);border-radius:calc((1 - var(--g,0)) * 26px);transform:translate(-50%,-50%) scale(calc(.92 + var(--i,1) * .08))}
+  .eh-win::after{background:linear-gradient(180deg,rgba(18,11,7,.15),transparent 25%,rgba(18,11,7,calc(var(--c,0) * .55)) 50%,rgba(18,11,7,calc(.3 + var(--c,0) * .62)) 100%)}
+  .eh-tag,.stage.eh .cue{display:none}
+  .eh-time{top:14px;bottom:auto}
+  .stage.eh .copy{left:0;right:0;top:auto;bottom:calc(28px + env(safe-area-inset-bottom));width:auto;padding:0 22px;gap:16px;transform:translateY(calc((1 - var(--c,0)) * 40px))}
+  .stage.eh .copy h1{font-size:clamp(2.3rem,10.5vw,3.2rem)}
+  .stage.eh .copy .lede{color:#e6d4bf;font-size:1rem}
+  .stage.eh .copy .k{display:none}
+}
+
+/* --- from bean to cup: computers get a sideways reel; phones get cards that stack as you scroll --- */
+.er-ritual{padding:0!important;background:var(--bg)}
+.rt-head .k{margin-bottom:18px}
+.rt-head h2{font-size:clamp(2.4rem,4.4vw,4.2rem)}
+.rt-head h2 em{color:var(--acc)}
+.rt-count{display:flex;align-items:center;gap:14px;margin-top:26px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
+.rt-count b{color:var(--fg);font-weight:500}
+.rt-count > i{position:relative;width:120px;height:1px;background:var(--line)}
+.rt-count > i > i{position:absolute;inset:0;background:var(--acc);transform:scaleX(var(--k,0));transform-origin:left}
+.rt-track{list-style:none;margin:0;padding:0}
+.rt-card figure{margin:0}
+.rt-img{position:relative;overflow:hidden;border-radius:20px;background:#0d0805}
+.rt-img img{display:block;width:100%;height:100%;object-fit:cover}
+.rt-card figcaption{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin-top:18px}
+.rt-card figcaption span{grid-row:span 2;font:500 12px/1.6 var(--mono);color:var(--acc)}
+.rt-card figcaption b{font:700 1.6rem/1.1 var(--display);letter-spacing:-.02em}
+.rt-card figcaption em{font-style:normal;color:var(--mut);font-size:.98rem;line-height:1.5}
+@media (min-width:761px){
+  .rt-run{position:relative}
+  .rt-pin{position:sticky;top:var(--navh,68px);height:calc(calc(100 * var(--vh, 1vh)) - var(--navh,68px));display:flex;align-items:center;gap:clamp(32px,4vw,64px);overflow:hidden;
+    padding-left:max(22px,calc((100vw - 1180px) / 2 + 22px))}
+  .rt-head{flex:0 0 min(28vw,380px);position:relative;z-index:2;align-self:stretch;display:grid;align-content:center;background:var(--bg)}
+  .rt-head::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:50vw;background:var(--bg)}
+  .rt-head::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:60px;background:linear-gradient(90deg,var(--bg),transparent)}
+  .rt-track{display:flex;gap:28px;flex:none;will-change:transform}
+  .rt-card{flex:0 0 clamp(320px,34vw,520px)}
+  .rt-img{height:calc((100 * var(--vh, 1vh) - var(--navh,68px)) * .58)}
+  .rt-img img{position:absolute;top:0;left:-10%;width:120%;height:100%;max-width:none;translate:var(--px,0) 0}
+}
+@media (max-width:760px){
+  .er-ritual{padding:clamp(70px,16vw,110px) 0 40px!important}
+  .rt-head{padding:0 22px 26px}
+  .rt-count{display:none}
+  .rt-track{display:grid;gap:0;padding:0 16px}
+  .rt-card{position:sticky;top:calc(var(--navh,68px) + 14px + var(--n,0) * 12px);padding-bottom:22px}
+  .rt-card figure{background:var(--panel);border-radius:24px;padding:12px 12px 20px;box-shadow:0 -18px 40px -20px rgba(0,0,0,.8),0 0 0 1px var(--line);
+    transform-origin:50% 0;scale:var(--sc,1);filter:brightness(var(--br,1))}
+  .rt-img{aspect-ratio:4/3;border-radius:16px}
+  .rt-card figcaption{padding:0 8px}
+}
+
+/* --- slow roasted: the steam video shows only through the lettering --- */
+.er-steam-sec{position:relative;background:#000}
+.sx-stage{position:relative;height:calc(100 * var(--vh, 1vh));min-height:520px;overflow:hidden;display:grid;place-items:center}
+.sx-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(1.25) saturate(1.1)}
+.sx-mask{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;background:#000;color:#fff;mix-blend-mode:multiply;
+  font:900 clamp(5.5rem,19vw,22rem)/.82 var(--display);font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.05em;text-align:center;scale:var(--zs,1.6)}
+.sx-mask span:last-child{font-style:italic}
+.sx-cap{position:absolute;left:0;right:0;bottom:clamp(26px,6vh,60px);margin:0;text-align:center;padding:0 22px;color:#cdb8a3;font:500 13px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.sx-cap b{display:block;color:#f3e5d3;font-weight:500}
+@media (max-width:760px){.sx-mask{font-size:31vw}}
+@media (prefers-reduced-motion:reduce){.sx-mask{scale:1}}
+
+</style>
 </head>
 <body id="top">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
@@ -259,21 +361,22 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a><a class="btn sm" href="#pricing">Order ahead</a></nav>
 
 <main>
-<section class="stage" aria-label="Ember Roast" data-hold=".81" data-stop=".81">
+<section class="stage eh" aria-label="Ember Roast" data-hold=".81" data-stop=".81">
   <div class="pin">
-    <div class="mark" aria-hidden="true">
-      <div class="er-glow"></div>
-      <svg class="er-steamx" viewBox="0 0 100 60"><path pathLength="1" d="M38 58 C30 44 46 36 38 22 C32 12 40 6 40 2"/><path pathLength="1" d="M60 58 C52 46 68 38 60 24 C55 14 62 8 62 4"/></svg>
-      <svg class="er-bean" viewBox="0 0 100 100"><g class="er-tilt"><path class="er-l" d="M50 8 A30 42 0 0 0 50 92 C60 70 40 30 50 8 Z"/><path class="er-r" d="M50 8 A30 42 0 0 1 50 92 C60 70 40 30 50 8 Z"/></g></svg>
+    <div class="eh-words" aria-hidden="true"><span class="w1">Ember</span><span class="w2">Roast</span></div>
+    <div class="eh-win" aria-hidden="true">
+      <img class="eh-poster" src="{{ASSETS}}ember/poster.jpg" alt="" width="720" height="1280">
+      <canvas class="eh-cv"></canvas>
+      <span class="eh-tag">Shot 0412 · 18 g in · 36 g out</span>
+      <span class="eh-time"><b>00.0</b> s</span>
     </div>
-    <div class="wordmark" aria-hidden="true">Welcome to <b>Ember Roast</b></div>
     <div class="copy">
       <span class="k">Neighbourhood coffee, roasted on site</span>
       <h1>Your usual, <em>ready when you walk in.</em></h1>
       <p class="lede">Small-batch coffee roasted every Tuesday, two doors down. Sit in with a pastry, or order ahead and skip the line.</p>
       <div class="actions"><a class="btn" href="#pricing">Order ahead <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#build">Build your drink</a></div>
     </div>
-    <div class="cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
+    <div class="cue" aria-hidden="true"><span>Scroll to pull a shot</span><i></i></div>
   </div>
 </section>
 
@@ -340,6 +443,26 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
   <div class="er-links rv"><a class="er-link" href="#build">Build your drink <span>→</span></a><a class="er-link" href="#pricing">Get beans delivered <span>→</span></a></div>
 </div></section>
 
+<section class="sec er-ritual" id="ritual" aria-label="From bean to cup">
+  <div class="rt-run"><div class="rt-pin">
+    <div class="rt-head"><span class="k">From bean to cup</span><h2>Four steps. <em>No shortcuts.</em></h2><div class="rt-count" aria-hidden="true"><b>01</b> / 04<i><i></i></i></div></div>
+    <ol class="rt-track">
+      <li class="rt-card"><figure><div class="rt-img"><img src="{{ASSETS}}ember/beans.webp" alt="Freshly roasted coffee beans pouring from a scoop" loading="lazy" width="1400" height="788"></div><figcaption><span>01</span><b>Roast</b><em>Tuesday mornings, in small batches, so every bag is days old, not months.</em></figcaption></figure></li>
+      <li class="rt-card"><figure><div class="rt-img"><img src="{{ASSETS}}ember/grind.webp" alt="Ground coffee in a portafilter" loading="lazy" width="1400" height="788"></div><figcaption><span>02</span><b>Grind</b><em>Weighed to the gram and ground fresh for every single shot.</em></figcaption></figure></li>
+      <li class="rt-card"><figure><div class="rt-img"><img src="{{ASSETS}}ember/pull.webp" alt="Espresso pouring from the machine into a glass" loading="lazy" width="1400" height="788"></div><figcaption><span>03</span><b>Pull</b><em>Nine bar, twenty-eight seconds. Dialled in before the doors open.</em></figcaption></figure></li>
+      <li class="rt-card"><figure><div class="rt-img"><img src="{{ASSETS}}ember/pour.webp" alt="Steamed milk poured into a latte" loading="lazy" width="1400" height="788"></div><figcaption><span>04</span><b>Pour</b><em>Silky milk, poured by hand, with your name on the cup.</em></figcaption></figure></li>
+    </ol>
+  </div></div>
+</section>
+
+<section class="er-steam-sec" aria-label="Slow roasted">
+  <div class="sx-stage">
+    <video class="sx-vid" src="{{ASSETS}}ember/beans-top.mp4" poster="{{ASSETS}}ember/beans-top.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+    <div class="sx-mask" aria-hidden="true"><span>Slow</span><span>roasted.</span></div>
+    <p class="sx-cap">Never rushed. Never stale. <b>Roasted every Tuesday since 2019.</b></p>
+  </div>
+</section>
+
 <section class="sec" id="build"><div class="wrap">
   <div class="head"><span class="k">Build your drink</span><h2>Make it <em>exactly</em> how you like it.</h2><p class="lede">Choose a drink, your milk and a size. Watch it come together, then add it to your order.</p></div>
   <div class="lab">
@@ -384,8 +507,6 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 
 <script src="{{ASSETS}}sample2.js" defer></script>
 <script src="{{ASSETS}}smooth.js" defer></script>
-<script src="{{THREE}}" defer></script>
-<script src="{{ASSETS}}ember-bean.js" defer></script>
 
 
 <script>
@@ -555,5 +676,98 @@ main .btn.sm{height:46px;padding:0 18px;font-size:12px}
 })();
 </script>
 
+<script>
+// Ember Roast v2: the espresso pour plays frame by frame with the scroll; the ritual reel; the steam lettering.
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const smooth = v => { v = clamp(v); return v * v * (3 - 2 * v); };
+  const base = (document.querySelector('.eh-poster') || {}).getAttribute ? document.querySelector('.eh-poster').getAttribute('src').replace(/poster\.jpg.*$/, '') : '';
+
+  // ---------- the opening ----------
+  const stage = document.querySelector('.stage.eh');
+  if (stage) {
+    const pin = stage.querySelector('.pin'), win = stage.querySelector('.eh-win'), cv = stage.querySelector('.eh-cv'), g = cv.getContext('2d');
+    const timeEl = stage.querySelector('.eh-time b');
+    const N = 96, FPS = 8, frames = new Array(N);
+    let want = 0, drawn = -1;
+    const load = i => new Promise(res => { if (frames[i]) return res(); const im = new Image(); im.decoding = 'async';
+      im.onload = () => { frames[i] = im; res(); if (Math.abs(i - want) < 6) draw(true); }; im.onerror = res;
+      im.src = base + 'f/' + String(i + 1).padStart(3, '0') + '.webp'; });
+    // every 8th frame first (the pour is watchable right away), then fill in the rest
+    (async () => { for (let i = 0; i < N; i += 8) await load(i); for (let s = 4; s >= 1; s = s >> 1) { const jobs = []; for (let i = 0; i < N; i += s) jobs.push(load(i)); await Promise.all(jobs); } })();
+    const size = () => { const r = win.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); const w = Math.round(r.width * d), h = Math.round(r.height * d);
+      if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; drawn = -1; } };
+    function draw(force) {
+      let k = want; while (k > 0 && !frames[k]) k--; if (!frames[k]) { let j = want; while (j < N - 1 && !frames[j]) j++; k = j; }
+      const im = frames[k]; if (!im || (k === drawn && !force)) return; size();
+      const s = Math.max(cv.width / im.width, cv.height / im.height), w = im.width * s, h = im.height * s;
+      g.drawImage(im, (cv.width - w) / 2, (cv.height - h) / 2, w, h); drawn = k; cv.style.opacity = 1;
+    }
+    cv.style.opacity = 0;
+    const tick = () => {
+      const p = reduce ? 1 : parseFloat(stage.style.getPropertyValue('--p')) || 0;
+      const gg = reduce ? 1 : smooth(p / .72);
+      if (pin.__g !== gg) { pin.__g = gg; pin.style.setProperty('--g', gg.toFixed(4)); }
+      want = Math.round(clamp(p / .81) * (N - 1));
+      if (timeEl) timeEl.textContent = (want / FPS * 2.4).toFixed(1).padStart(4, '0');
+      draw();
+    };
+    new MutationObserver(tick).observe(stage, { attributes: true, attributeFilter: ['style'] });
+    addEventListener('resize', () => { drawn = -1; draw(true); });
+    if (window.ResizeObserver) new ResizeObserver(() => { drawn = -1; draw(true); }).observe(win);
+    tick();
+  }
+
+  // ---------- from bean to cup ----------
+  const sec = document.querySelector('.er-ritual');
+  if (sec) {
+    const run = sec.querySelector('.rt-run'), rpin = sec.querySelector('.rt-pin'), track = sec.querySelector('.rt-track'), cards = [...sec.querySelectorAll('.rt-card')];
+    const count = sec.querySelector('.rt-count b'), bar = sec.querySelector('.rt-count');
+    cards.forEach((c, i) => c.style.setProperty('--n', i));
+    const wide = matchMedia('(min-width: 761px)');
+    let travel = 0, f0 = 0;
+    const measure = () => {
+      if (!wide.matches || reduce) { run.style.height = ''; track.style.transform = ''; return; }
+      const last = cards[cards.length - 1];
+      travel = Math.max(0, last.offsetLeft - cards[0].offsetLeft);
+      f0 = track.offsetLeft + cards[0].offsetLeft + cards[0].offsetWidth / 2;
+      run.style.height = Math.round(rpin.offsetHeight + travel * 1.4) + 'px'; update();
+    };
+    const update = () => {
+      if (reduce) return;
+      if (wide.matches) {
+        const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(rpin).top) || 0;
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        const k = clamp((top - r.top) / Math.max(1, r.height - rpin.offsetHeight));
+        const e = clamp((k - .04) / .96);
+        track.style.transform = `translate3d(${(-e * travel).toFixed(1)}px,0,0)`;
+        cards.forEach(c => { const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - f0) / innerWidth, a = clamp(Math.abs(off) * 1.5);
+          c.style.opacity = (1 - a * .5).toFixed(3); c.style.setProperty('--px', clamp(off * -60, -36, 36).toFixed(1) + 'px'); });
+        if (count) count.textContent = '0' + (Math.round(e * (cards.length - 1)) + 1);
+        if (bar) bar.style.setProperty('--k', e.toFixed(4));
+      } else {
+        // phones: each card shrinks and dims a little as the next one slides over it
+        cards.forEach((c, i) => { const nx = cards[i + 1]; if (!nx) return; const a = c.getBoundingClientRect(), b = nx.getBoundingClientRect();
+          const k = clamp(1 - (b.top - a.top) / Math.max(1, a.height)); c.style.setProperty('--sc', (1 - k * .06).toFixed(4)); c.style.setProperty('--br', (1 - k * .45).toFixed(3)); });
+      }
+    };
+    addEventListener('scroll', update, { passive: true });
+    let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
+    addEventListener('load', measure); measure();
+  }
+
+  // ---------- slow roasted ----------
+  const sx = document.querySelector('.er-steam-sec');
+  if (sx) {
+    const mask = sx.querySelector('.sx-mask'), vid = sx.querySelector('.sx-vid');
+    const upd = () => { if (reduce) return; const r = sx.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+      const k = clamp((innerHeight - r.top) / (innerHeight + r.height * .1)); mask.style.setProperty('--zs', (2.2 - smooth(k) * 1.2).toFixed(4)); };
+    addEventListener('scroll', upd, { passive: true }); upd();
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { vid.play && vid.play().catch(() => {}); } else vid.pause && vid.pause(); })).observe(sx);
+  }
+})();
+
+</script>
 </body>
 </html>

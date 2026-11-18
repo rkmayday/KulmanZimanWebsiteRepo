@@ -986,12 +986,12 @@ form.brief.drift{box-shadow:0 30px 70px -30px rgba(0,0,0,.35),inset 0 0 0 1px va
 .fpkg{transition:opacity .45s var(--ease),scale .45s var(--ease),filter .45s var(--ease)}
 .fpkg.dim{opacity:.55;scale:.97;filter:saturate(.6)}
 /* pricing tools: a light that sweeps across the whole grid; borders light up near it */
-#connections .sheet.sweep{position:relative}
-#connections .sheet.sweep::before,#connections .sheet.sweep::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s}
-#connections .sheet.sweep::before{background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(10,10,10,.05),transparent 70%)}
-#connections .sheet.sweep::after{padding:1.5px;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(10,10,10,.7),transparent 70%);
+#connections .sheet.sweep,#refinement-process .sheet.sweep{position:relative}
+#connections .sheet.sweep::before,#connections .sheet.sweep::after,#refinement-process .sheet.sweep::before,#refinement-process .sheet.sweep::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s}
+#connections .sheet.sweep::before,#refinement-process .sheet.sweep::before{background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.09),transparent 70%)}
+#connections .sheet.sweep::after,#refinement-process .sheet.sweep::after{padding:1.5px;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.55),transparent 70%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-#connections .steps.lit .sheet.sweep::before,#connections .steps.lit .sheet.sweep::after{opacity:1}
+#connections .steps.lit .sheet.sweep::before,#connections .steps.lit .sheet.sweep::after,#refinement-process .steps.lit .sheet.sweep::before,#refinement-process .steps.lit .sheet.sweep::after{opacity:1}
 /* affiliates: timeline numbers fill in on hover */
 .timeline li::before{transition:background .3s,color .3s,scale .35s var(--ease)}
 @media (hover:hover){.timeline li:hover::before{background:var(--ink);color:var(--paper);scale:1.12}}
@@ -1018,3 +1018,20 @@ form#brief .btn.ghost{color:#fff;border-color:#fff}
 form#brief a{color:#fff}
 form#brief.drift{box-shadow:0 30px 70px -30px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.1)}
 form#brief.drift:hover{box-shadow:0 30px 70px -30px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.22)}
+
+/* dark grey grid boxes (same look as the brief box): pricing steps and tools, the founder card, the affiliate calculator */
+#connections .sheet,#refinement-process .sheet,.founder,.calc{--paper:#1c1c1c;--paper-2:#151515;--paper-3:#202020;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#2a2a2a;--line-2:#363636;color:var(--ink);
+  background:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,#151515;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
+.founder,.calc{background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,calc(var(--ga) * .09)),transparent 70%),
+  linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,#151515;transition:--ga .4s}
+.founder:hover,.calc:hover{--ga:1}
+.calc.glow-card,.founder{--gs:rgba(255,255,255,.07);--ge:rgba(255,255,255,.55)}
+.calc input[type=range]{accent-color:#fff}
+main:has(> #team) .founder{background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,calc(var(--ga) * .09)),transparent 70%),
+  linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,#151515}
+/* affiliates: "What you do" and "What we do" as shiny white grid cards */
+.box.shine{position:relative;background:linear-gradient(120deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.95) 45%,rgba(255,255,255,0) 60%) -120% 0/250% 100% no-repeat,
+  linear-gradient(rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(90deg,rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(160deg,#ffffff,#f1f1ee);
+  box-shadow:inset 0 0 0 1px var(--line-2),0 18px 40px -26px rgba(0,0,0,.35);transition:background-position 1.1s cubic-bezier(.2,.8,.2,1)}
+@media (hover:hover){.box.shine:hover{background-position:220% 0,0 0,0 0,0 0}}

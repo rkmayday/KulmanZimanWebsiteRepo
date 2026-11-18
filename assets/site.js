@@ -707,7 +707,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     });
     el.addEventListener('pointerleave', () => { s.tx = 0; s.ty = 0; kick(); });
   };
-  document.querySelectorAll('.pkg, .box, .steps .sheet, .stat, .faq details').forEach(el => { if (!el.closest('#selling-points, #connections')) add(el, el.matches('.faq details') ? 3 : 8, el.matches('.faq details') ? 0 : 2, true); });
+  document.querySelectorAll('.pkg, .box, .sample, .calc, .steps .sheet, .stat, .faq details').forEach(el => { if (!el.closest('#selling-points, #connections, #refinement-process')) add(el, el.matches('.faq details') ? 3 : 8, el.matches('.faq details') ? 0 : 2, true); });
   document.querySelectorAll('.btn').forEach(el => add(el, 6, 0, false));
   let running = false;
   const kick = () => { if (!running) { running = true; requestAnimationFrame(tick); } };
@@ -762,43 +762,26 @@ window.kzGmail = (to, subject = '', body = '') => {
   all('form.brief').forEach(f => {
     const sec = f.closest('section'); if (!sec) return;
     f.classList.add('drift');
-    tilt(f, { area: sec, max: 9, idle: true, glare: .7, layers: [['label, .btn, small', 6]], calm: () => f.contains(document.activeElement) });
+    tilt(f, { area: sec, max: 9, idle: true, glare: .7, calm: () => f.contains(document.activeElement) });
     // the light inside the box follows the cursor
     f.addEventListener('pointermove', e => { const r = f.getBoundingClientRect(); f.style.setProperty('--mx', (e.clientX - r.left) + 'px'); f.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
   });
 
   // About: the founder card in full 3D (portrait pops forward, text drifts behind it)
-  all('.founder').forEach(c => tilt(c, { max: 12, layers: [['.portrait', 14], ['h3', 8], ['.role, p', 4], ['.founder-foot', 10]] }));
+  all('.founder').forEach(c => { tilt(c, { max: 10 }); c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px'); }); });
 
   // Portfolio: sample cards tilt, and the clip inside shifts against the card like a window
-  all('.sample').forEach(c => tilt(c, { max: 9, layers: [['.s-shot', -10], ['b', 6], ['em', 9]] }));
-
-  // Affiliates: the earnings calculator leans with the cursor (calmer while the slider is held)
-  all('.calc').forEach(c => {
-    let held = false; c.addEventListener('pointerdown', () => { held = true; }); addEventListener('pointerup', () => { held = false; });
-    tilt(c, { max: 5, glare: .6, layers: [['.out', 10]], calm: () => held });
-  });
-
-  // Pricing: the package folders turn in 3D toward the cursor, their sheets drift on their own depth, and the other packages step back
-  const fp = all('.fpkg');
-  fp.forEach(p => {
-    const f = p.querySelector('.folder'); if (!f) return;
-    tilt(f, { area: p, max: 14, persp: 900, layers: [['.f-sheets', 16], ['.f-front .pkg-price', 8], ['.f-front .eyebrow', 5]] });
-    p.addEventListener('pointerenter', () => fp.forEach(q => q.classList.toggle('dim', q !== p)));
-    p.addEventListener('pointerleave', () => fp.forEach(q => q.classList.remove('dim')));
-  });
 
   // Pricing: one light sweeps across all six tool boxes; each box lights up by how close the cursor is, and its number floats
-  all('#connections .steps').forEach(g => {
+  all('#connections .steps, #refinement-process .steps').forEach(g => {
     const boxes = all('.sheet', g); boxes.forEach(b => b.classList.add('sweep'));
-    const st = boxes.map(b => ({ b, n: b.querySelector('.n'), x: 0, y: 0, tx: 0, ty: 0 }));
+    const st = boxes.map(b => ({ b, x: 0, y: 0, tx: 0, ty: 0 }));
     const step = () => {
       let busy = false;
       st.forEach(s => {
         s.x += (s.tx - s.x) * .12; s.y += (s.ty - s.y) * .12;
         if (Math.abs(s.tx - s.x) > .03 || Math.abs(s.ty - s.y) > .03) busy = true;
         s.b.style.translate = `${s.x.toFixed(2)}px ${s.y.toFixed(2)}px`;
-        if (s.n) s.n.style.translate = `${(-s.x * 1.6).toFixed(2)}px ${(-s.y * 1.6).toFixed(2)}px`;
       });
       return busy;
     };
