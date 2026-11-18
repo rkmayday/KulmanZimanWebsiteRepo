@@ -1000,9 +1000,9 @@ form.brief.drift{box-shadow:0 30px 70px -30px rgba(0,0,0,.35),inset 0 0 0 1px va
   .tab{transition:background .25s,color .25s,translate .3s var(--ease)}.tab:hover{translate:0 -2px}}
 
 /* About: everything below the page heading is dark */
-main:has(> #team) > section:not(.page-head){--paper:#0b0b0b;--paper-2:#141414;--paper-3:#1e1e1e;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;
+main:has(> #team) > section:not(.page-head):not(.cta-final){--paper:#0b0b0b;--paper-2:#141414;--paper-3:#1e1e1e;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;
   background:radial-gradient(70% 60% at 15% 10%,rgba(255,255,255,.06),transparent 70%),radial-gradient(60% 60% at 90% 90%,rgba(255,255,255,.04),transparent 70%),#0b0b0b;color:var(--ink);border-top:0}
-main:has(> #team) > section.cta-final{background:radial-gradient(60% 70% at 85% 20%,rgba(255,255,255,.05),transparent 70%),#0e0e0e}
+main:has(> #team) > section.cta-final{background:#fff}   /* About: the contact section is white; the brief box stays dark */
 main:has(> #team) .founder{background:#141414}
 main:has(> #team) form.brief.drift{box-shadow:0 30px 70px -30px rgba(0,0,0,.8),inset 0 0 0 1px var(--line-2)}
 
