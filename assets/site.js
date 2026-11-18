@@ -650,10 +650,12 @@ window.kzGmail = (to, subject = '', body = '') => {
   head.after(run); run.append(pin); pin.append(head, steps); head.append(meta);
   sec.classList.add('reel-on');
   const count = meta.querySelector('b'), fill = meta.querySelector('i i');
-  let travel = 0, last = -1;
+  let travel = 0, last = -1, fx = 0;
   const measure = () => {
-    const pad = parseFloat(getComputedStyle(pin).paddingLeft) || 0;
-    travel = Math.max(0, steps.offsetLeft + steps.scrollWidth - pin.clientWidth + pad);
+    // the reel stops when the last step sits exactly where step 1 sat at the start (same on every screen width)
+    const lastC = cards[cards.length - 1];
+    travel = Math.max(0, lastC.offsetLeft - cards[0].offsetLeft);
+    fx = steps.offsetLeft + cards[0].offsetLeft + cards[0].offsetWidth / 2;   // the focus line: that spot
     run.style.height = Math.round(pin.offsetHeight + travel * 1.5) + 'px';
     last = -1; update();
   };
@@ -664,14 +666,14 @@ window.kzGmail = (to, subject = '', body = '') => {
     const p = clamp((top - r.top) / span);
     if (Math.abs(p - last) < .00005) return;
     last = p;
-    const k = clamp((p - .06) / .88);                 // a short hold at each end
+    const k = clamp((p - .06) / .94);                 // a short hold at the start, none at the end
     steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
     const vw = innerWidth;
     cards.forEach(c => {
-      const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - vw * .62) / vw, a = clamp(Math.abs(off) * 1.6);
+      const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - fx) / vw, a = clamp(Math.abs(off) * 1.6);
       c.style.opacity = (1 - a * .55).toFixed(3); c.style.transform = `scale(${(1 - a * .07).toFixed(4)})`;
     });
-    count.textContent = '0' + (Math.min(cards.length - 1, Math.floor(k * cards.length)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
+    count.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
   };
   addEventListener('scroll', update, { passive: true });
   let lw = innerWidth;

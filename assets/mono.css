@@ -923,8 +923,11 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 #selling-points.reel-on .section-head::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:60vw;background:var(--paper);pointer-events:none}
 #selling-points.reel-on .section-head::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:clamp(32px,4vw,64px);background:linear-gradient(90deg,var(--paper),transparent);pointer-events:none}
 #selling-points.reel-on .steps{display:flex;gap:24px;flex:none;will-change:transform}
-#selling-points.reel-on .sheet{flex:0 0 clamp(300px,30vw,400px);min-height:min(340px,calc(calc(52 * var(--vh, 1vh))));padding:34px;transform-origin:50% 100%}
-#selling-points.reel-on .sheet .n{font-size:4.4rem}
+#selling-points.reel-on{padding-top:0}
+#selling-points.reel-on .sheet{flex:0 0 clamp(300px,30vw,420px);height:calc(calc(100 * var(--vh, 1vh)) - 72px - clamp(96px,16vh,170px));max-height:720px;min-height:340px;padding:clamp(30px,3vw,44px);transform-origin:50% 100%;display:flex;flex-direction:column;gap:12px}
+#selling-points.reel-on .sheet .when{margin-top:auto;align-self:flex-start}
+#selling-points.reel-on .sheet h3{font-size:1.5rem}#selling-points.reel-on .sheet p{font-size:1.05rem}
+#selling-points.reel-on .sheet .n{font-size:clamp(4.4rem,7vw,6.5rem);margin-bottom:auto}
 #selling-points.reel-on .reel-run + .condition{margin-top:8px}
 .reel-meta{display:flex;align-items:center;gap:16px;margin-top:10px;font:500 .78rem var(--font-mono);color:var(--ink-3)}
 .reel-meta b{color:var(--ink);font-weight:600}
