@@ -1111,3 +1111,63 @@ main:has(> #team) > #team{background:
 .fs-tip svg{flex:none;width:30px;height:30px;padding:6px;border-radius:50%;background:var(--ink,#0a0a0a);color:#fff}
 .fs-tip b{font-weight:650;color:var(--ink,#0a0a0a)}
 @media (max-width:640px){.fs-tip{border-radius:18px;align-items:flex-start}}
+
+/* ================= Ryder's profile: dark theme on the signature dark grey grid.
+   The page lights the grid up around the cursor, the photo card drifts toward the cursor with a soft glare and a glow
+   behind it, and the boxes light up like the rest of the site's dark boxes. Phones get the same look, without the cursor effects. ================= */
+html:has(main.rz){background:#0b0b0b}
+html:has(main.rz) body{background:#0b0b0b}
+main.rz{--paper:#0b0b0b;--paper-2:#161616;--paper-3:#202020;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;
+  position:relative;color:var(--ink);isolation:isolate;
+  background:
+    radial-gradient(60% 50% at 20% 18%,rgba(255,255,255,.07),transparent 70%),
+    radial-gradient(50% 45% at 85% 70%,rgba(255,255,255,.045),transparent 70%),
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/56px 56px,
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/56px 56px,
+    #0b0b0b}
+@media (hover:hover) and (pointer:fine){main.rz{background-attachment:fixed}}
+main.rz > section{background:transparent!important;border:0!important;position:relative;z-index:1}
+main.rz .page-head{background:transparent!important}
+/* the grid lights up around the cursor (computers) */
+.rz-lit{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:var(--lo,0);transition:opacity .4s;
+  background:
+    linear-gradient(rgba(255,255,255,.22) 1px,transparent 1px) 0 0/56px 56px,
+    linear-gradient(90deg,rgba(255,255,255,.22) 1px,transparent 1px) 0 0/56px 56px;
+  -webkit-mask-image:radial-gradient(260px circle at var(--lx,-999px) var(--ly,-999px),#000,transparent 70%);
+  mask-image:radial-gradient(260px circle at var(--lx,-999px) var(--ly,-999px),#000,transparent 70%)}
+@media (hover:none),(pointer:coarse){.rz-lit{display:none}}
+/* the photo: a glowing glass card that drifts toward the cursor */
+main.rz .profile-card{position:relative}
+main.rz .profile-card .portrait.big{position:relative;overflow:hidden;background:#161616;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14),0 30px 80px -30px rgba(0,0,0,.9),0 0 60px -10px rgba(255,255,255,.14);
+  transition:box-shadow .5s}
+main.rz .profile-card .portrait.big::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 32%,transparent 70%,rgba(255,255,255,.06));mix-blend-mode:screen}
+main.rz .profile-card::before{content:"";position:absolute;left:4%;top:4%;width:min(92%,330px);aspect-ratio:4/5;border-radius:30px;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,255,255,.22),rgba(255,255,255,.05) 60%,transparent);filter:blur(30px);opacity:.75;animation:rzHalo 6s ease-in-out infinite}
+@keyframes rzHalo{50%{opacity:.4;transform:scale(.94)}}
+@media (hover:hover){main.rz .profile-card:hover .portrait.big{box-shadow:0 0 0 1px rgba(255,255,255,.3),0 40px 90px -30px rgba(0,0,0,.95),0 0 90px -6px rgba(255,255,255,.26)}}
+main.rz .profile-card .tilt-glare{background:radial-gradient(70% 60% at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.35),transparent 70%);mix-blend-mode:soft-light}
+/* text and boxes */
+main.rz h1,main.rz h3{color:#fff}
+main.rz h1 em{color:#bdbdbd}
+main.rz .lede{color:var(--ink-2)}
+main.rz .eyebrow,main.rz .profile-tag,main.rz .muted{color:var(--ink-3)}
+main.rz .back{color:var(--ink-2)}
+main.rz .facts div,main.rz .box{background:rgba(26,26,26,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);border:0}
+main.rz .facts dt{color:var(--ink-3)}
+main.rz .facts dd{color:#fff}
+main.rz .glow-card{--gs:rgba(255,255,255,.07);--ge:rgba(255,255,255,.55)}
+main.rz .email-big{color:#fff}
+main.rz .btn:not(.ghost){background:#fff;color:#0a0a0a}
+main.rz .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);background:transparent}
+main.rz .btn.btn-linkedin{background:#fff;color:#0a0a0a}
+main.rz .more{color:#fff}
+@media (prefers-reduced-motion:reduce){main.rz .profile-card::before{animation:none}}
+/* Ryder's profile: the top bar and footer go dark too */
+html:has(main.rz) .nav,html:has(main.rz) footer{--paper:#0b0b0b;--paper-2:#161616;--paper-3:#202020;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;color:var(--ink)}
+html:has(main.rz) .nav{background:rgba(11,11,11,.82);box-shadow:inset 0 -1px 0 rgba(255,255,255,.08)}
+html:has(main.rz) footer{background:#0e0e0e;border-top-color:#222}
+html:has(main.rz) .nav .brand img,html:has(main.rz) footer .brand img{filter:invert(1)}
+html:has(main.rz) .nav .btn:not(.ghost){background:#fff!important;background-image:none!important;color:#0a0a0a!important;box-shadow:0 8px 24px -10px rgba(255,255,255,.35)!important}
+html:has(main.rz) .nav .btn.ghost{background:transparent!important;background-image:none!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)!important}

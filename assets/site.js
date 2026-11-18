@@ -805,6 +805,15 @@ window.kzGmail = (to, subject = '', body = '') => {
     f.addEventListener('pointermove', e => { const r = f.getBoundingClientRect(); f.style.setProperty('--mx', (e.clientX - r.left) + 'px'); f.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
   });
 
+  // Ryder's profile: the photo card drifts toward the cursor anywhere in its section and floats gently on its own,
+  // with a soft glare across the photo; the grid behind the page lights up around the cursor
+  all('main.rz .profile-card .portrait.big').forEach(ph => tilt(ph, { area: ph.closest('section'), max: 9, idle: true, glare: .6 }));
+  const lit = document.querySelector('main.rz .rz-lit');
+  if (lit) {
+    addEventListener('pointermove', e => { lit.style.setProperty('--lx', e.clientX + 'px'); lit.style.setProperty('--ly', e.clientY + 'px'); lit.style.setProperty('--lo', 1); }, { passive: true });
+    document.addEventListener('pointerleave', () => lit.style.setProperty('--lo', 0));
+  }
+
   // About: the founder card in full 3D (portrait pops forward, text drifts behind it)
   all('.founder').forEach(c => { tilt(c, { max: 10 }); c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px'); }); });
 
