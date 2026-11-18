@@ -106,6 +106,7 @@
   // the scene away while the split is still finishing, so something is always moving.
   // EXTRA matches the extra height given to .kz-stage in mono.css for this eased part.
   let lastMb = null;
+  const phoneMQ = matchMedia('(max-width: 720px)');
   const EXTRA = .2016, SPLIT = .36 / .87;          // SPLIT: where the Z and S start to separate, on the timeline
   const readScroll = () => {
     const r = stage.getBoundingClientRect(), t = pinT, y = t - r.top;
@@ -123,7 +124,8 @@
     // from the stop at the headline the scene moves exactly with the page: no scroll room at all
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
     // ...and also by the empty bottom of the screen below the headline's buttons, so no blank scroll follows the stop
-    const blank = Math.max(0, pin.clientHeight - (copy.offsetTop + copy.offsetHeight) - (pin.clientWidth < 720 ? 36 : 56));
+    // phones: no pull-up, so the boxes and the moving words start below the screen at the stop and only come in on the next scroll
+    const blank = phoneMQ.matches ? 0 : Math.max(0, pin.clientHeight - (copy.offsetTop + copy.offsetHeight) - (pin.clientWidth < 720 ? 36 : 56));
     const trackH = Math.round(yHold + pin.offsetHeight);                 // the pin lets go exactly at the stop
     if (track.__h !== trackH) { track.__h = trackH; track.style.height = trackH + 'px'; }
     const mb = Math.round(-(r.height - trackH) - blank); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }

@@ -911,3 +911,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 .pm-price,.pm-go{justify-self:end;text-align:right}
 .order-form .brief-done{padding:18px 2px 4px}
 .order-form .brief-done .btn{justify-self:start;margin-top:8px}
+
+/* phones: the commitment boxes under the home opening don't rise in; they simply scroll in after the stop */
+@media (max-width:720px){.js .strip .reveal{opacity:1;transform:none;transition:none}}
