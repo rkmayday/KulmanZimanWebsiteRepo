@@ -22,9 +22,12 @@
       for (let l = 0; l < e; l++) for (let a = 0; a < e; a++) for (let r = 0; r < e && i < N; r++, i++) P.push(l * t - o, a * t - o, r * t - o); },
     nebula: (N, P, rnd) => { const e = 50; for (let t = 0; t < N; t++) { const o = rnd() * Math.PI * 2, i = Math.acos(rnd() * 2 - 1), l = rnd() * rnd() * e;
       P.push(l * Math.sin(i) * Math.cos(o), l * Math.sin(i) * Math.sin(o) * .62, l * Math.cos(i)); } },
+    ring: (N, P) => { for (let i = 0; i < N; i++) { const u = (i / N) * Math.PI * 2, v = (i / N) * Math.PI * 2 * 90, Rr = 27, rr = 7.5, tilt = -1.05;
+      const x = (Rr + rr * Math.cos(v)) * Math.cos(u), y = (Rr + rr * Math.cos(v)) * Math.sin(u), z = rr * Math.sin(v);
+      P.push(x, y * Math.cos(tilt) - z * Math.sin(tilt), y * Math.sin(tilt) + z * Math.cos(tilt)); } },
     fireflies: (N, P, rnd) => { const e = 40; for (let t = 0; t < N; t++) P.push((rnd() - .5) * e * 2.4, (rnd() - .5) * e, (rnd() - .5) * e * 1.6); },
   };
-  const COUNT = { helix: phone ? 1600 : 3200, cube: phone ? 1728 : 4096, nebula: phone ? 3500 : 9000, fireflies: phone ? 500 : 1100 };
+  const COUNT = { helix: phone ? 1600 : 3200, cube: phone ? 1728 : 4096, nebula: phone ? 3500 : 9000, fireflies: phone ? 500 : 1100, ring: 14000 };
 
   const VS = `
     attribute vec3 aS; attribute float aR;
@@ -44,7 +47,7 @@
   const FS = `uniform vec3 uInk; uniform float uAlpha; varying float vA;
     void main(){ vec2 c = gl_PointCoord - .5; float d = dot(c, c); if (d > .25) discard; gl_FragColor = vec4(uInk, vA * uAlpha * smoothstep(.25, .1, d)); }`;
 
-  fields.forEach((el, k) => {
+  const setup = (el, k) => {
     // data-mode="abs": the backdrop is a plain box inside its section (sized and positioned by CSS), not fixed to the screen
     const shape = el.dataset.shape, N = COUNT[shape] || 3000, abs = el.dataset.mode === 'abs' || el.dataset.mode === 'sticky', sec = abs ? el : el.parentElement;
     if (el.dataset.mode === 'abs') el.parentElement.classList.add('has-pfield-abs'); else if (!abs) sec.classList.add('has-pfield');
@@ -82,22 +85,28 @@
       smx += (mx - smx) * .04; smy += (my - smy) * .04;
       const wide = W > 760, x = !wide || side === 'center' ? 0 : side === 'right' ? 34 : -34;
       group.position.set(x, wide ? 0 : 10, 0);
-      const spin = shape === 'cube' ? t * .14 : shape === 'helix' ? t * .25 : t * .06;
+      const spin = shape === 'cube' ? t * .14 : shape === 'helix' ? t * .25 : shape === 'ring' ? t * .12 : t * .06;
       if (shape === 'helix') {   // the DNA strand lies across the band and turns on its own axis
         group.position.set(0, wide ? -4 : 0, 0); group.rotation.set(spin + smx * .5, smy * .2, Math.PI / 2 - .16); group.scale.setScalar(wide ? 1.75 : 1.1);
       } else {
-        group.rotation.set((shape === 'cube' ? .55 : .25) + smy * .3, spin + smx * .5, 0);
+        group.rotation.set((shape === 'cube' ? .55 : shape === 'ring' ? .35 : .25) + smy * .3, spin + smx * .5, shape === 'ring' ? .1 : 0);
         group.scale.setScalar((wide ? 1 : .8) * (shape === 'cube' ? .78 : 1));
         // centre the shape on the part of its section that is on screen, and keep it inside a short section
         if (!abs) {
         const top = Math.max(r.top, 0), bot = Math.min(r.bottom, innerHeight), half = 130 * Math.tan(18 * Math.PI / 180);
         group.position.y = (innerHeight / 2 - (top + bot) / 2) / (innerHeight / 2) * half;
         group.scale.multiplyScalar(Math.min(1, Math.max(.35, (r.bottom - r.top) / innerHeight * 1.25)));
-        } else { group.scale.multiplyScalar(Math.min(.72, H / 720)); if (wide && side === 'right') group.position.x = 46; }
+        } else { group.scale.multiplyScalar(shape === 'ring' ? 1.05 : Math.min(.72, H / 720)); if (wide && side === 'right') group.position.x = 46; }
       }
       renderer.render(scene, cam);
       raf = requestAnimationFrame(frame);
     };
     new IntersectionObserver(es => { vis = es[0].isIntersecting; if (vis && !raf) { size(); raf = requestAnimationFrame(frame); } }, { rootMargin: '100px 0px' }).observe(sec);
+  };
+  fields.forEach((el, k) => {
+    if (!el.dataset.min) return setup(el, k);
+    const mq = matchMedia(`(min-width: ${el.dataset.min}px) and (hover: hover) and (pointer: fine)`);
+    let done = false; const go = () => { if (!done && mq.matches) { done = true; setup(el, k); } };
+    mq.addEventListener ? mq.addEventListener('change', go) : mq.addListener(go); go();
   });
 })();

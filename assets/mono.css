@@ -1301,3 +1301,10 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
   #selling-points.glide-pin .steps{position:sticky;top:calc(60px + 14 * var(--vh, 1vh));z-index:2}
   #selling-points.glide-pin .glide-run{pointer-events:none}
 }
+
+/* Ryder's profile (full-screen computers only): the home page's ring, in white, turning around the photo */
+.rz-ring{display:none}
+@media (min-width:1200px) and (hover:hover) and (pointer:fine){
+  main.rz .profile-card > .pfield.rz-ring{display:block;inset:-38% -60% -30% -60%;z-index:0}
+  main.rz .profile-card > .portrait.big{z-index:2}
+}
