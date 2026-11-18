@@ -630,66 +630,104 @@ window.kzGmail = (to, subject = '', body = '') => {
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
 
-// "How it works" reel (home, computers only): the section holds while the three steps slide sideways with the scroll;
-// the step nearest the focus line is sharp, the others dim back. Phones and touch screens swipe the steps instead (CSS),
-// and reduced motion keeps the plain grid.
+// "How it works" (home). Computers (wide window, mouse): the section holds while the three steps slide sideways with
+// the scroll; the step nearest the focus line is sharp, the others dim back. Phones, tablets and narrow windows: the
+// steps glide sideways by themselves as the section passes up the screen (no holding, no swiping needed). Resizing
+// across the line switches between the two at once. Reduced motion keeps the plain layout.
 (() => {
   const sec = document.getElementById('selling-points');
   if (!sec) return;
-  const steps = sec.querySelector('.steps'), head = sec.querySelector('.section-head');
-  if (!steps || !head) return;
+  const steps = sec.querySelector('.steps'), head = sec.querySelector('.section-head'), wrap = sec.querySelector('.wrap');
+  if (!steps || !head || !wrap) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const ok = matchMedia('(min-width: 861px) and (hover: hover) and (pointer: fine)');
-  if (!ok.matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-  const cards = [...steps.querySelectorAll('.sheet')];
+  const cards = [...steps.querySelectorAll('.sheet')], home = [...wrap.children];
   cards.forEach(c => c.classList.remove('reveal'));
-  const run = document.createElement('div'); run.className = 'reel-run';
-  const pin = document.createElement('div'); pin.className = 'reel-pin';
-  const meta = document.createElement('div'); meta.className = 'reel-meta'; meta.setAttribute('aria-hidden', 'true');
-  meta.innerHTML = '<span><b>01</b> / 0' + cards.length + '</span><i><i></i></i>';
-  head.after(run); run.append(pin); pin.append(head, steps); head.append(meta);
-  sec.classList.add('reel-on');
-  const count = meta.querySelector('b'), fill = meta.querySelector('i i');
-  let travel = 0, last = -1, fx = 0;
-  const measure = () => {
-    // the reel stops when the last step sits exactly where step 1 sat at the start (same on every screen width)
-    const lastC = cards[cards.length - 1];
-    travel = Math.max(0, lastC.offsetLeft - cards[0].offsetLeft);
-    fx = steps.offsetLeft + cards[0].offsetLeft + cards[0].offsetWidth / 2;   // the focus line: that spot
-    run.style.height = Math.round(pin.offsetHeight + travel * 1.5) + 'px';
-    last = -1; update();
-  };
-  const update = () => {
-    const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
-    if (r.bottom < 0 || r.top > innerHeight) return;
-    const span = Math.max(1, r.height - pin.offsetHeight);
-    const p = clamp((top - r.top) / span);
-    if (Math.abs(p - last) < .00005) return;
-    last = p;
-    const k = clamp((p - .06) / .94);                 // a short hold at the start, none at the end
-    steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
-    const vw = innerWidth;
+
+  const reel = sig => {
+    const run = document.createElement('div'); run.className = 'reel-run';
+    const pin = document.createElement('div'); pin.className = 'reel-pin';
+    const meta = document.createElement('div'); meta.className = 'reel-meta'; meta.setAttribute('aria-hidden', 'true');
+    meta.innerHTML = '<span><b>01</b> / 0' + cards.length + '</span><i><i></i></i>';
+    head.after(run); run.append(pin); pin.append(head, steps); head.append(meta);
+    sec.classList.add('reel-on');
+    const count = meta.querySelector('b'), fill = meta.querySelector('i i');
+    let travel = 0, last = -1, fx = 0;
+    const measure = () => {
+      // the reel stops when the last step sits exactly where step 1 sat at the start (same on every screen width)
+      const lastC = cards[cards.length - 1];
+      travel = Math.max(0, lastC.offsetLeft - cards[0].offsetLeft);
+      fx = steps.offsetLeft + cards[0].offsetLeft + cards[0].offsetWidth / 2;   // the focus line: that spot
+      run.style.height = Math.round(pin.offsetHeight + travel * 1.5) + 'px';
+      last = -1; update();
+    };
+    const update = () => {
+      const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      const span = Math.max(1, r.height - pin.offsetHeight);
+      const p = clamp((top - r.top) / span);
+      if (Math.abs(p - last) < .00005) return;
+      last = p;
+      const k = clamp((p - .06) / .94);                 // a short hold at the start, none at the end
+      steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
+      const vw = innerWidth;
+      cards.forEach(c => {
+        const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - fx) / vw, a = clamp(Math.abs(off) * 1.6);
+        c.style.opacity = (1 - a * .55).toFixed(3); c.style.scale = (1 - a * .07).toFixed(4);
+      });
+      count.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
+    };
+    // hover: a soft light follows the cursor inside the step, and the step leans a little toward it
     cards.forEach(c => {
-      const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - fx) / vw, a = clamp(Math.abs(off) * 1.6);
-      c.style.opacity = (1 - a * .55).toFixed(3); c.style.scale = (1 - a * .07).toFixed(4);
+      c.addEventListener('pointermove', e => {
+        const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+        c.style.translate = `${((x - .5) * 14).toFixed(1)}px ${((y - .5) * 14 - 6).toFixed(1)}px`;
+      }, { signal: sig });
+      c.addEventListener('pointerleave', () => { c.style.translate = '0 0'; }, { signal: sig });
     });
-    count.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
+    addEventListener('scroll', update, { passive: true, signal: sig });
+    addEventListener('resize', measure, { signal: sig });
+    addEventListener('load', measure, { signal: sig });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!sig.aborted) measure(); });
+    measure();
+    return () => { sec.classList.remove('reel-on'); meta.remove(); };
   };
-  // hover: a soft light follows the cursor inside the step, and the step leans a little toward it
-  cards.forEach(c => {
-    c.addEventListener('pointermove', e => {
-      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-      c.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); c.style.setProperty('--my', (y * 100).toFixed(1) + '%');
-      c.style.translate = `${((x - .5) * 14).toFixed(1)}px ${((y - .5) * 14 - 6).toFixed(1)}px`;
-    });
-    c.addEventListener('pointerleave', () => { c.style.translate = '0 0'; });
-  });
-  addEventListener('scroll', update, { passive: true });
-  let lw = innerWidth;
-  addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
-  addEventListener('load', measure);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  measure();
+
+  // phones, tablets and narrow windows: the row glides left while the section rises up the screen
+  const glide = sig => {
+    sec.classList.add('glide');
+    let travel = 0, raf = 0;
+    const measure = () => { steps.style.transform = 'none'; const lastC = cards[cards.length - 1];
+      travel = Math.max(0, lastC.offsetLeft + lastC.offsetWidth - steps.clientWidth + 20); update(); };
+    const update = () => {
+      raf = 0;
+      const r = steps.getBoundingClientRect(); if (r.bottom < -200 || r.top > innerHeight + 200) return;
+      const p = clamp((innerHeight * .6 - r.top) / (innerHeight * .48)), k = p * p * (3 - 2 * p);   // starts once the steps are fully on screen
+      steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
+      // the step nearest the middle of the screen is the bright one
+      const mid = innerWidth / 2;
+      cards.forEach(c => { const b = c.getBoundingClientRect(), a = clamp(Math.abs(b.left + b.width / 2 - mid) / (b.width * 1.1));
+        c.style.opacity = (1 - a * .45).toFixed(3); c.style.scale = (1 - a * .05).toFixed(4); });
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true, signal: sig });
+    addEventListener('resize', measure, { signal: sig });
+    addEventListener('load', measure, { signal: sig });
+    measure();
+    return () => { sec.classList.remove('glide'); };
+  };
+
+  let ctl = null, undo = null, mode = '';
+  const pick = () => {
+    const want = ok.matches ? 'reel' : 'glide'; if (want === mode) return;
+    if (ctl) ctl.abort(); if (undo) undo();
+    wrap.replaceChildren(...home);   // the section as the page wrote it, then the other layout on top
+    steps.style.transform = ''; cards.forEach(c => { c.style.opacity = ''; c.style.scale = ''; c.style.translate = ''; });
+    mode = want; ctl = new AbortController(); undo = (want === 'reel' ? reel : glide)(ctl.signal);
+  };
+  ok.addEventListener ? ok.addEventListener('change', pick) : ok.addListener(pick);
+  pick();
 })();
 
 // Computers only: boxes light up around the cursor and lean toward it a little, and buttons lean toward the cursor.

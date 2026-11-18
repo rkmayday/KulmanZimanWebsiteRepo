@@ -940,6 +940,11 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   #selling-points .steps .sheet{flex:0 0 min(82%,380px);scroll-snap-align:start}
   .js #selling-points .steps .reveal{opacity:1;transform:none;transition:none}
 }
+/* ...and with motion allowed, the steps glide sideways by themselves as the section rises up the screen (site.js) */
+@media (max-width:860px),(hover:none){
+  #selling-points.glide .steps{overflow:visible;scroll-snap-type:none;will-change:transform;touch-action:pan-y}
+  #selling-points.glide .steps .sheet{transition:opacity .2s linear}
+}
 /* "How it works" is its own dark band so it stands out (colors flip for everything inside) */
 #selling-points{--paper:#0b0b0b;--paper-2:#161616;--paper-3:#202020;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;
   background:var(--paper);color:var(--ink);border-top:0}
