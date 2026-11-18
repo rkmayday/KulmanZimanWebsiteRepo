@@ -1032,7 +1032,7 @@ main:has(> #team) .founder{background:radial-gradient(420px circle at var(--mx,5
   linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/40px 40px,#151515}
 /* affiliates: "What you do" and "What we do" as shiny white grid cards */
 .box.shine{position:relative;background:linear-gradient(120deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.95) 45%,rgba(255,255,255,0) 60%) -120% 0/250% 100% no-repeat,
-  linear-gradient(rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(90deg,rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(160deg,#ffffff,#f1f1ee);
+  linear-gradient(rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(90deg,rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,#ffffff;
   box-shadow:inset 0 0 0 1px var(--line-2),0 18px 40px -26px rgba(0,0,0,.35);transition:background-position 1.1s cubic-bezier(.2,.8,.2,1)}
 @media (hover:hover){.box.shine:hover{background-position:220% 0,0 0,0 0,0 0}}
 
