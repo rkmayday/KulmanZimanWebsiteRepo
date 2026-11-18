@@ -235,14 +235,14 @@ window.kzGmail = (to, subject = '', body = '') => {
   // If sending fails they can still continue. Without JavaScript the links go straight to checkout, as before.
   const om = $('#order-modal');
   if (om && typeof om.showModal === 'function') {
-    const form = $('#order-form', om), pkgEl = $('[data-om-pkg]', om), fail = $('.brief-fail', om), go = $('[data-om-continue]', om);
+    const form = $('#order-form', om), pkgEl = $('[data-om-pkg]', om);
     let plans = {}; try { plans = JSON.parse(om.dataset.plans || '{}'); } catch (err) {}
     let target = '', label = '';
     const closeOrder = () => { om.classList.remove('open'); setTimeout(() => { if (om.open) om.close(); }, reduce ? 0 : 220); };
     const openOrder = href => {
       target = href;
       const k = Object.keys(plans).find(p => href.indexOf(p) === 0); label = k ? plans[k] : 'your package';
-      pkgEl.textContent = label; fail.hidden = true;
+      pkgEl.textContent = label;
       const pmo = $('#pkg-modal'); if (pmo && pmo.open) { pmo.classList.remove('open'); pmo.close(); }
       nav && nav.classList.remove('open');
       om.showModal(); requestAnimationFrame(() => om.classList.add('open'));
@@ -255,7 +255,6 @@ window.kzGmail = (to, subject = '', body = '') => {
     }, true);
     om.addEventListener('click', e => { if (e.target === om || (e.target.closest && e.target.closest('[data-om-close]'))) closeOrder(); });
     om.addEventListener('cancel', e => { e.preventDefault(); closeOrder(); });
-    go.addEventListener('click', e => { e.preventDefault(); if (target) location.href = target; });
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const f = new FormData(form), g = k => (f.get(k) || '').toString().trim();
@@ -268,18 +267,21 @@ window.kzGmail = (to, subject = '', body = '') => {
       }
       const btn = $('button[type=submit]', form), html = btn.innerHTML;
       btn.disabled = true; btn.textContent = 'Sending…';
+      const fields = { package: label, name: g('name'), email: g('email'), business: g('business') || '-', domain: g('domain') || 'Not sure yet',
+        details: g('details'), _subject: 'New order — ' + label + ' — ' + (g('business') || g('name')), _replyto: g('email'), _template: 'table', _captcha: 'false' };
       let sent = false;
       try {
+        const ctl = 'AbortController' in window ? new AbortController() : null, timer = ctl && setTimeout(() => ctl.abort(), 8000);
         const r = await fetch('https://formsubmit.co/ajax/zimansites@gmail.com', {
-          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ package: label, name: g('name'), email: g('email'), business: g('business') || '-', domain: g('domain') || 'Not sure yet',
-            details: g('details'), _subject: 'New order — ' + label + ' — ' + (g('business') || g('name')), _replyto: g('email'), _template: 'table', _captcha: 'false' })
+          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(fields), signal: ctl ? ctl.signal : undefined
         });
+        timer && clearTimeout(timer);
         const d = await r.json().catch(() => ({}));
         sent = r.ok && String(d.success) === 'true';
       } catch (err) { sent = false; }
-      if (sent) { btn.textContent = 'Opening checkout…'; location.href = target; return; }
-      btn.disabled = false; btn.innerHTML = html; fail.hidden = false; fail.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      // never show the customer an error: if the normal send fails, try a simpler background send, then go to checkout either way
+      if (!sent) { try { navigator.sendBeacon && navigator.sendBeacon('https://formsubmit.co/zimansites@gmail.com', new URLSearchParams(fields)); } catch (err) {} }
+      btn.textContent = 'Opening checkout…'; location.href = target;
     });
   }
 

@@ -30,7 +30,7 @@ PACKAGES = [
     ("premium", "Premium", 994, "4–7-page interactive website", "A full business site: services, about, gallery, pricing and more.", "https://whop.com/checkout/plan_kayas42uF3j2w/"),
 ]
 PACKAGE_COMMON = ["Interactive, animated website experience", "Mobile-friendly design tailored to your industry", "Three rounds of refinement with you",
-                  "Fast turnaround: on time, or a full refund", "First-year domain paid by us when under $30",
+                  "Fast turnaround: on time, or a full refund", "First-year domain paid by us when under $20",
                   "Fully handed over to you: yours to own", "Tool connections included: forms, bookings, checkout and more"]
 
 
@@ -83,8 +83,6 @@ def order_modal():
       <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn" type="submit">Continue to secure checkout <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></button>
       <small>Your details go straight to our inbox. After you pay, we email you to confirm everything, and we quote your domain before buying it.</small>
-      <div class="brief-fail" role="alert" hidden><b>We couldn't send your details automatically.</b><span>You can still continue: we will contact you at the email you use at checkout.</span>
-        <div class="btn-row"><a class="btn" data-om-continue href="#">Continue to checkout</a><a class="btn ghost" href="mailto:{EMAIL}">Email us instead</a></div></div>
     </form>
   </div>
 </dialog>
@@ -108,7 +106,7 @@ def packages_html():
       </article>""")
     return ('<div class="pkgs" id="packages">\n' + "\n".join(cards) + '\n    </div>\n'
             '    <p class="muted reveal pkg-note">One-time payment, no subscription. Hosting and maintenance after delivery are not included. '
-            'Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="/legal#terms">See the terms</a>.</p>')
+            'Domains costing $20 or more carry a 20% markup on the registrar’s cost. Extras like domain fees or more pages are quoted first and paid by a separate Whop invoice. <a href="/legal#terms">See the terms</a>.</p>')
 
 
 PAGE_COUNT = {"starter": 1, "professional": 3, "premium": 7}
@@ -143,7 +141,7 @@ def package_folders_html():
       </article>""")
     return ('<div class="fpkgs" id="packages">\n' + "\n".join(cards) + '\n    </div>\n'
             '    <p class="muted reveal pkg-note">One-time payment, no subscription. Hosting and maintenance after delivery are not included. '
-            'Domains costing $30 or more carry a 20% markup on the registrar’s cost. <a href="/legal#terms">See the terms</a>.</p>')
+            'Domains costing $20 or more carry a 20% markup on the registrar’s cost. Extras like domain fees or more pages are quoted first and paid by a separate Whop invoice. <a href="/legal#terms">See the terms</a>.</p>')
 
 
 def package_teaser_html():
