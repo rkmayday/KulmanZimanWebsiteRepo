@@ -235,19 +235,36 @@ window.kzGmail = (to, subject = '', body = '') => {
   // If sending fails they can still continue. Without JavaScript the links go straight to checkout, as before.
   const om = $('#order-modal');
   if (om && typeof om.showModal === 'function') {
-    const form = $('#order-form', om), pkgEl = $('[data-om-pkg]', om);
+    const form = $('#order-form', om); let pkgEl = $('[data-om-pkg]', om);
     let plans = {}; try { plans = JSON.parse(om.dataset.plans || '{}'); } catch (err) {}
     let target = '', label = '';
     const closeOrder = () => { om.classList.remove('open'); setTimeout(() => { if (om.open) om.close(); }, reduce ? 0 : 220); };
+    // two modes: an order (then checkout) or a custom quote (no checkout: we reply with a quote and a Whop invoice)
+    const q = s => $(s, om), T = { eyebrow: q('[data-om-eyebrow]'), title: q('[data-om-title]'), lede: q('[data-om-lede]'), det: q('[data-om-detlabel]'), btn: q('[data-om-btn]'), fine: q('[data-om-fine]'), done: q('[data-om-done]') };
+    const ORDER_TXT = { eyebrow: T.eyebrow.textContent, title: T.title.textContent, lede: T.lede.innerHTML, det: T.det.textContent, btn: T.btn.textContent, fine: T.fine.textContent };
+    let quote = false;
+    const setMode = isQuote => {
+      quote = isQuote; T.done.hidden = true; [...form.children].forEach(c => { if (c !== T.done && !c.classList.contains('hp')) c.hidden = false; });
+      T.eyebrow.textContent = isQuote ? 'Custom quote' : ORDER_TXT.eyebrow;
+      T.title.textContent = isQuote ? 'Tell us what you need' : ORDER_TXT.title;
+      if (isQuote) T.lede.textContent = 'We reply with a quote. Once you approve it, we send you an invoice through Whop to pay. Nothing is charged before that.'; else T.lede.innerHTML = ORDER_TXT.lede;
+      T.det.textContent = isQuote ? 'What do you need?' : ORDER_TXT.det;
+      $('textarea', form).placeholder = isQuote ? 'More pages, a domain over $20, or anything else' : 'Your business, pages you need, sites you like';
+      T.btn.textContent = isQuote ? 'Request my quote' : ORDER_TXT.btn;
+      T.fine.textContent = isQuote ? 'Your request goes straight to our inbox. No payment now.' : ORDER_TXT.fine;
+    };
     const openOrder = href => {
-      target = href;
-      const k = Object.keys(plans).find(p => href.indexOf(p) === 0); label = k ? plans[k] : 'your package';
-      pkgEl.textContent = label;
+      setMode(href === 'QUOTE');
+      target = href === 'QUOTE' ? '' : href;
+      const k = Object.keys(plans).find(p => href.indexOf(p) === 0); label = href === 'QUOTE' ? 'Custom quote' : (k ? plans[k] : 'your package');
+      if (!quote) pkgEl = $('[data-om-pkg]', om), pkgEl.textContent = label;
       const pmo = $('#pkg-modal'); if (pmo && pmo.open) { pmo.classList.remove('open'); pmo.close(); }
       nav && nav.classList.remove('open');
       om.showModal(); requestAnimationFrame(() => om.classList.add('open'));
     };
     document.addEventListener('click', e => {
+      const qa = e.target.closest && e.target.closest('[data-quote]');
+      if (qa && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.button) { e.preventDefault(); e.stopImmediatePropagation(); openOrder('QUOTE'); return; }
       const a = e.target.closest && e.target.closest('a[href^="https://whop.com/checkout/"]');
       if (!a || om.contains(a) || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
       e.preventDefault(); e.stopImmediatePropagation();
@@ -267,8 +284,12 @@ window.kzGmail = (to, subject = '', body = '') => {
       }
       const btn = $('button[type=submit]', form), html = btn.innerHTML;
       btn.disabled = true; btn.textContent = 'Sending…';
+      // inside a frame (a preview, or another app's built-in browser) Whop's checkout refuses to load and the frame goes blank,
+      // so there checkout opens in a new tab instead. The tab is opened now, during the click, so pop-up blockers allow it.
+      let tab = null;
+      if (!quote && window.top !== window) { try { tab = window.open('', '_blank'); } catch (err) { tab = null; } }
       const fields = { package: label, name: g('name'), email: g('email'), business: g('business') || '-', domain: g('domain') || 'Not sure yet',
-        details: g('details'), _subject: 'New order — ' + label + ' — ' + (g('business') || g('name')), _replyto: g('email'), _template: 'table', _captcha: 'false' };
+        details: g('details'), _subject: (quote ? 'Quote request — ' : 'New order — ' + label + ' — ') + (g('business') || g('name')), _replyto: g('email'), _template: 'table', _captcha: 'false' };
       let sent = false;
       try {
         const ctl = 'AbortController' in window ? new AbortController() : null, timer = ctl && setTimeout(() => ctl.abort(), 8000);
@@ -281,6 +302,11 @@ window.kzGmail = (to, subject = '', body = '') => {
       } catch (err) { sent = false; }
       // never show the customer an error: if the normal send fails, try a simpler background send, then go to checkout either way
       if (!sent) { try { navigator.sendBeacon && navigator.sendBeacon('https://formsubmit.co/zimansites@gmail.com', new URLSearchParams(fields)); } catch (err) {} }
+      if (quote) {   // a quote request: thank them, no checkout
+        btn.disabled = false; btn.innerHTML = html; $('[data-om-email]', om).textContent = g('email');
+        [...form.children].forEach(c => { if (c !== T.done) c.hidden = true; }); T.done.hidden = false; form.reset(); return;
+      }
+      if (tab) { tab.location.href = target; btn.disabled = false; btn.innerHTML = html; closeOrder(); return; }
       btn.textContent = 'Opening checkout…'; location.href = target;
     });
   }

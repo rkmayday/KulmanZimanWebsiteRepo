@@ -53,6 +53,12 @@ def package_modal():
     <p class="pm-lede">Step 1 of 3. Pick a package, tell us about your project, then pay securely on Whop.</p>
     <div class="pm-opts">
 {chr(10).join(rows)}
+      <a class="pm-opt pm-custom" href="mailto:{EMAIL}?subject=Custom%20quote%20request" data-quote>
+        <span class="pm-name">Custom or extras</span>
+        <span class="pm-price pm-q">Quote</span>
+        <span class="pm-scope">More than 7 pages, a domain over $20, or other extras</span>
+        <span class="pm-go" aria-hidden="true">Get a quote →</span>
+      </a>
     </div>
     <p class="pm-fine">One-time payment. Three rounds of refinement, delivered on time or a full refund. Not sure? <a href="/#start" data-pm-close>Send a brief first</a>.</p>
   </div>
@@ -67,9 +73,9 @@ def order_modal():
     return f"""<dialog class="pkg-modal order-modal" id="order-modal" aria-labelledby="om-title" data-plans='{json.dumps(plans)}'>
   <div class="pm-box">
     <button class="pm-x" type="button" aria-label="Close" data-om-close>×</button>
-    <span class="eyebrow">Step 2 of 3 · Your project</span>
-    <h2 id="om-title">Tell us about your project</h2>
-    <p class="pm-lede">You chose <b data-om-pkg>your package</b>. A few details so we can start right away, then you pay securely on Whop.</p>
+    <span class="eyebrow" data-om-eyebrow>Step 2 of 3 · Your project</span>
+    <h2 id="om-title" data-om-title>Tell us about your project</h2>
+    <p class="pm-lede" data-om-lede>You chose <b data-om-pkg>your package</b>. A few details so we can start right away, then you pay securely on Whop.</p>
     <form class="brief order-form" id="order-form" novalidate>
       <div class="two">
         <label for="o-name">Your name<input id="o-name" name="name" required autocomplete="name"></label>
@@ -79,10 +85,11 @@ def order_modal():
         <label for="o-biz">Business name<input id="o-biz" name="business" autocomplete="organization"></label>
         <label for="o-dom">Domain you'd like<input id="o-dom" name="domain" placeholder="yourbusiness.com"></label>
       </div>
-      <label for="o-det">What should the site do?<textarea id="o-det" name="details" rows="3" required placeholder="Your business, pages you need, sites you like"></textarea></label>
+      <label for="o-det"><span data-om-detlabel>What should the site do?</span><textarea id="o-det" name="details" rows="3" required placeholder="Your business, pages you need, sites you like"></textarea></label>
       <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn" type="submit">Continue to secure checkout <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></button>
-      <small>Your details go straight to our inbox. After you pay, we email you to confirm everything, and we quote your domain before buying it.</small>
+      <button class="btn" type="submit"><span data-om-btn>Continue to secure checkout</span> <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></button>
+      <small data-om-fine>Your details go straight to our inbox. After you pay, we email you to confirm everything, and we quote your domain before buying it.</small>
+      <div class="brief-done" data-om-done hidden><b>Request sent. Thank you!</b><span>We will reply to <span data-om-email></span> with a quote. Once you approve it, we send you an invoice through Whop to pay.</span><button class="btn ghost" type="button" data-om-close>Close</button></div>
     </form>
   </div>
 </dialog>
