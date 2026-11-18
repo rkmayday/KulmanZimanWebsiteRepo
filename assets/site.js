@@ -435,8 +435,12 @@ window.kzGmail = (to, subject = '', body = '') => {
   // home industries (Expanded Cards): all even at first; hovering or focusing a card widens it on computers
   const xcs = $$('.xc');
   xcs.forEach(c => c.addEventListener('click', () => { try { sessionStorage.setItem('kz-slide', c.getAttribute('href').split('#slide-')[1] || ''); } catch (e) {} }));
-  if (xcs.length && matchMedia('(hover: hover) and (min-width: 861px)').matches) {
-    const pick = c => xcs.forEach(x => x.classList.toggle('on', x === c));
+  // the hover is set up on every computer and checks the window width as it happens, so going full screen after
+  // opening the page in a smaller window works straight away (no refresh needed)
+  const xcWide = matchMedia('(hover: hover) and (min-width: 861px)');
+  if (xcs.length && matchMedia('(hover: hover)').matches) {
+    const pick = c => xcs.forEach(x => x.classList.toggle('on', !!c && xcWide.matches && x === c));
+    xcWide.addEventListener ? xcWide.addEventListener('change', () => pick(null)) : xcWide.addListener(() => pick(null));
     xcs.forEach(c => { c.addEventListener('mouseenter', () => pick(c)); c.addEventListener('focus', () => pick(c)); });
     // leaving the row (or tabbing out of it) puts all four back to even
     const rail = xcs[0].parentNode;
@@ -525,7 +529,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       try { pickSlug = pickSlug || sessionStorage.getItem('kz-slide') || ''; sessionStorage.removeItem('kz-slide'); } catch (e) {}
       const want = pickSlug ? demos.findIndex(d => d.href.replace(/\.html$/, '').split('/').pop() === pickSlug) : -1;
       if (want > 0) { f = target = want; setActive(want); } else setActive(0);
-      draw();
+      draw(); addEventListener('resize', draw);   // a window resized (or made full screen) redraws the slider at once
       if (want >= 0) {
         const land = () => { refresh(); scrollTo({ top: stopAt(), behavior: 'instant' }); };
         land(); requestAnimationFrame(land); addEventListener('load', () => setTimeout(land, 30), { once: true });
