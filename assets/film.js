@@ -10,8 +10,9 @@
   let set = '', frames = [], want = 0, drawn = -1, cur = 0;
   const pick = () => (innerHeight > innerWidth * 1.05 ? el.dataset.tall : el.dataset.wide);
   // frames come packed in vertical sheets of K frames (data-sheet), named 00.webp, 01.webp ...; the nearest sheets load first
-  const K = +el.dataset.sheet || 12, S = Math.ceil(N / K);
+  let K = 12, S = 1;
   const load = s => {
+    K = +(s === el.dataset.tall && el.dataset.sheetTall || el.dataset.sheet) || 12; S = Math.ceil(N / K);
     set = s; frames = new Array(N); drawn = -1; const mine = frames, sheets = new Array(S);
     const one = k => new Promise(res => { const im = new Image(); im.decoding = 'async';
       im.onload = () => { if (mine !== frames) return res(); sheets[k] = im; for (let i = 0; i < K && k * K + i < N; i++) frames[k * K + i] = { im, row: i };
