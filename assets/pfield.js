@@ -45,8 +45,9 @@
     void main(){ vec2 c = gl_PointCoord - .5; float d = dot(c, c); if (d > .25) discard; gl_FragColor = vec4(uInk, vA * uAlpha * smoothstep(.25, .1, d)); }`;
 
   fields.forEach((el, k) => {
-    const shape = el.dataset.shape, N = COUNT[shape] || 3000, sec = el.parentElement;
-    sec.classList.add('has-pfield');
+    // data-mode="abs": the backdrop is a plain box inside its section (sized and positioned by CSS), not fixed to the screen
+    const shape = el.dataset.shape, N = COUNT[shape] || 3000, abs = el.dataset.mode === 'abs' || el.dataset.mode === 'sticky', sec = abs ? el : el.parentElement;
+    if (el.dataset.mode === 'abs') el.parentElement.classList.add('has-pfield-abs'); else if (!abs) sec.classList.add('has-pfield');
     const rnd = (() => { let s = 11 + k * 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
     const P = []; SHAPES[shape](N, P, rnd);
     const A = new Float32Array(P), S = new Float32Array(N * 3), R = new Float32Array(N);
@@ -88,9 +89,11 @@
         group.rotation.set((shape === 'cube' ? .55 : .25) + smy * .3, spin + smx * .5, 0);
         group.scale.setScalar((wide ? 1 : .8) * (shape === 'cube' ? .78 : 1));
         // centre the shape on the part of its section that is on screen, and keep it inside a short section
+        if (!abs) {
         const top = Math.max(r.top, 0), bot = Math.min(r.bottom, innerHeight), half = 130 * Math.tan(18 * Math.PI / 180);
         group.position.y = (innerHeight / 2 - (top + bot) / 2) / (innerHeight / 2) * half;
         group.scale.multiplyScalar(Math.min(1, Math.max(.35, (r.bottom - r.top) / innerHeight * 1.25)));
+        } else { group.scale.multiplyScalar(Math.min(.72, H / 720)); if (wide && side === 'right') group.position.x = 46; }
       }
       renderer.render(scene, cam);
       raf = requestAnimationFrame(frame);

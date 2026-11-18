@@ -85,7 +85,7 @@
     cp = clamp(-r.top / Math.max(1, r.height - innerHeight));
     const enter = clamp((innerHeight - r.top) / innerHeight);                 // 0 → 1 as the stage comes up the screen
     U.uGather.value = sm(clamp(enter * 1.15 - .1)) ;
-    U.uMorph.value = clamp((cp - .38) / .3);                                 // sphere → ring between the two chapters
+    U.uMorph.value = clamp((cp - .2) / .6);                                  // sphere → ring between the two chapters
     const ch = cp < .5 ? 0 : 1;
     if (ch !== last) { last = ch; chs.forEach((c, i) => c.classList.toggle('on', i === ch)); }
     stage.style.setProperty('--cp', cp.toFixed(4));
@@ -108,8 +108,9 @@
   if (matchMedia('(hover: hover) and (pointer: fine)').matches)
     addEventListener('pointermove', e => { tmx = e.clientX / innerWidth - .5; tmy = e.clientY / innerHeight - .5; }, { passive: true });
   // scroll stops on each chapter
-  stage.__refreshStop = () => { const top = stage.getBoundingClientRect().top + scrollY, run = stage.offsetHeight - innerHeight;
-    stage.dataset.stops = [.22, .78].map(f => Math.round(top + run * f)).join(','); };
+  // one stop with the mission fully in view, one at the end of the short run with the packages heading in view
+  stage.__refreshStop = () => { const top = stage.getBoundingClientRect().top + scrollY, pinTop = parseFloat(getComputedStyle(pin).top) || 0, run = stage.offsetHeight - innerHeight;
+    stage.dataset.stops = [Math.round(top - pinTop), Math.round(top + run)].join(','); };
   stage.__refreshStop();
   read();
 })();

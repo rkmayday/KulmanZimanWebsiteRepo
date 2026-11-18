@@ -1277,3 +1277,20 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
           mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><path d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/></svg>") center/contain no-repeat}
 .fs-note{display:flex;align-items:center;gap:9px;margin:18px 0 0;font:500 .72rem var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
 @media (max-width:760px){#kz-load .kl-fs,.fs-note{display:none}}
+
+/* particle backdrops inside a section (data-mode="abs"): Pricing's last section and Portfolio's "Watch it build" */
+.has-pfield-abs{position:relative}
+.has-pfield-abs > .pfield[data-mode="abs"]{position:absolute;z-index:0;pointer-events:none;inset:0}
+.has-pfield-abs > *:not(.pfield){position:relative;z-index:1}
+.build-wrap > .pfield[data-mode="abs"]{inset:-40px 0 auto 0;height:min(560px,80vh)}
+@media (max-width:760px){.has-pfield-abs > .pfield[data-mode="abs"]{opacity:.5}}
+
+/* How it works: the helix sits in a screen-tall box that stays put while the section scrolls by (no fixed layer) */
+.pfield[data-mode="sticky"]{position:sticky;top:72px;display:block;height:calc(100 * var(--vh, 1vh) - 72px);margin-bottom:calc(-100 * var(--vh, 1vh) + 72px);z-index:0;pointer-events:none}
+#selling-points{padding-top:0}
+#selling-points > .pfield + .g-knot + .wrap,#selling-points > .pfield ~ .wrap{padding-top:clamp(70px,9vw,120px)}
+#selling-points.reel-on > .pfield ~ .wrap{padding-top:0}
+
+/* mission → packages: computers get no extra scroll room (one short glide between two stops); phones a shorter run */
+.ps-stage{height:calc(100 * var(--vh, 1vh) + 34 * var(--vh, 1vh))}
+@media (max-width:760px){.ps-stage{height:calc(170 * var(--vh, 1vh))}}
