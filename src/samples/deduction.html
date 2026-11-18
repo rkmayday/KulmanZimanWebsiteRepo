@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Deduction — Sample Coding Course Site</title>
-<meta name="description" content="Deduction is a fictional coding school for complete beginners: a sample concept site built by Ziman Sites.">
+<title>Facet — Sample Coding Course Site</title>
+<meta name="description" content="Facet is a fictional coding school for complete beginners: a sample concept site built by Ziman Sites.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#08080d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2308080d'/%3E%3Cg fill='none' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 28 L14 50 L34 72' stroke='%23c4b5fd'/%3E%3Cpath d='M57 22 L43 78' stroke='%23f472b6'/%3E%3Cpath d='M66 28 L86 50 L66 72' stroke='%23c4b5fd'/%3E%3C/g%3E%3C/svg%3E">
@@ -330,33 +330,66 @@ main .sec + .sec{border-top:1px solid var(--line)}
 .foot{border-top:1px solid var(--line)}
 </style>
 <script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
+<style>
+/* ===== Facet: glossy glass and chrome ===== */
+:root{--bg:#07060b;--bg2:#0d0b14;--panel:rgba(22,18,34,.55);--panel2:rgba(30,24,46,.6)}
+body{background:radial-gradient(80% 50% at 50% 0%,#151026,#07060b 60%) fixed,#07060b}
+/* chrome lettering for headings */
+main h2,.statement{background:linear-gradient(180deg,#ffffff 0%,#e9e4ff 38%,#8f86b3 50%,#f4f1ff 62%,#bdb4e0 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+main h2 em,.statement span{background:linear-gradient(180deg,#f5d0fe 0%,#c4b5fd 45%,#7c3aed 52%,#e9d5ff 70%,#a78bfa 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* glass cards: frosted, with a bright top edge and a soft sheen */
+.feat,.tier,.build,.card,.step{background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 40%,rgba(167,139,250,.05)),var(--panel)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.08),0 30px 60px -30px rgba(0,0,0,.8)!important}
+/* glossy buttons */
+main .btn:not(.ghost){background:linear-gradient(180deg,#e9e4ff 0%,#b8a6ff 46%,#8b5cf6 54%,#c4b5fd 100%)!important;color:#140d26!important;
+  box-shadow:inset 0 1px 0 #fff,inset 0 -2px 6px rgba(76,29,149,.35),0 14px 30px -12px rgba(139,92,246,.7)!important}
+main .btn.ghost{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.04))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.14)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+/* --- the opening --- */
+.stage.fx{height:calc(300 * var(--vh, 1vh))}
+.stage.fx .pin{display:block;background:#07060b}
+.fx-scene{position:absolute;inset:0;overflow:hidden}
+.fx-scene img,.fx-scene canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#07060b}
+.fx-scene::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 55% at 50% 50%,rgba(7,6,11,calc(var(--c,0) * .72)),transparent 75%),linear-gradient(180deg,rgba(7,6,11,.35),transparent 18%,transparent 80%,rgba(7,6,11,.7))}
+.fx-word{position:absolute;left:50%;bottom:clamp(40px,10vh,110px);transform:translateX(-50%) translateY(calc((1 - var(--i,1)) * 30px));z-index:2;
+  font:800 clamp(4.5rem,13vw,12rem)/.9 var(--display,system-ui);letter-spacing:-.06em;white-space:nowrap;
+  background:linear-gradient(180deg,#ffffff 0%,#ece8ff 36%,#6f6896 49%,#2c2742 51%,#cfc8f0 66%,#ffffff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.6));opacity:calc(var(--i,1) * (1 - var(--b,0) * 1.6))}
+.stage.fx .copy{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,calc(-50% + (1 - var(--c,0)) * 40px));opacity:var(--c,0)}
+.stage.fx .copy h1{background:linear-gradient(180deg,#ffffff 0%,#efeaff 40%,#9d94c4 50%,#ffffff 64%,#d8d0fa 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stage.fx .copy h1 em{background:linear-gradient(180deg,#f5d0fe,#c4b5fd 45%,#7c3aed 53%,#e9d5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stage.fx .cue{z-index:4;opacity:calc(1 - var(--a,0) * 3)}
+@media (max-width:760px){
+  .stage.fx{height:calc(260 * var(--vh, 1vh))}
+  .fx-word{font-size:27vw;bottom:clamp(90px,16vh,140px)}
+  .stage.fx .copy{top:auto;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,calc((1 - var(--c,0)) * 40px));width:100%}
+  .stage.fx .copy h1{font-size:clamp(2.2rem,10vw,3rem)}
+  .stage.fx .cue{display:none}
+}
+
+</style>
 </head>
 <body id="top">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
-  <a class="brand" href="#top" aria-label="Deduction home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="#c4b5fd"/><path d="M58 20 L42 80" stroke="#f472b6"/><path d="M66 26 L88 50 L66 74" stroke="#c4b5fd"/></g></svg><span>Deduction</span></a>
+  <a class="brand" href="#top" aria-label="Facet home"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="fxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><path d="M50 6 L88 34 L74 90 L26 90 L12 34 Z" fill="url(#fxg)"/><path d="M50 6 L62 40 L50 90 L38 40 Z" fill="#fff" fill-opacity=".55"/><path d="M12 34 L38 40 L26 90 Z M88 34 L62 40 L74 90 Z" fill="#1b1430" fill-opacity=".55"/></svg><span>Facet</span></a>
   <nav aria-label="Main"><ul class="links"><li><a href="#path">The path</a></li><li><a href="#play">Try it</a></li><li><a href="#builds">Projects</a></li><li><a href="#pricing">Pricing</a></li></ul></nav>
   <div class="actions"><a class="btn sm" href="#pricing">Start free</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button></div>
 </div></header>
 <nav class="drawer" aria-label="Mobile"><a href="#path">The path</a><a href="#play">Try it</a><a href="#builds">Projects</a><a href="#pricing">Pricing</a><a class="btn sm" href="#pricing">Start free</a></nav>
 
 <main>
-<section class="stage" aria-label="Deduction" data-hold=".77" data-stop=".77">
+<section class="stage fx" aria-label="Facet" data-hold=".8" data-stop=".8">
   <div class="pin">
-    <div class="dd-bg" aria-hidden="true"><div class="dd-dots"></div><div class="dd-glow"></div></div>
-    <div class="mark" aria-hidden="true">
-      <svg class="dd-br dd-l" viewBox="0 0 60 120"><path pathLength="1" d="M52 8 L8 60 L52 112"/></svg>
-      <svg class="dd-sl" viewBox="0 0 40 120"><path pathLength="1" d="M32 6 L8 114"/></svg>
-      <svg class="dd-br dd-r" viewBox="0 0 60 120"><path pathLength="1" d="M8 8 L52 60 L8 112"/></svg>
-      <div class="dd-type"><span class="dd-typed"></span><i></i></div>
-    </div>
-    <div class="wordmark" aria-hidden="true">Welcome to <b>Deduction</b></div>
+    <div class="fx-scene" aria-hidden="true"><img class="fx-poster" src="{{ASSETS}}facet/poster.jpg" alt="" width="960" height="960"><canvas class="fx-cv"></canvas></div>
+    <div class="fx-word" aria-hidden="true">Facet</div>
     <div class="copy">
       <span class="k">Coding courses for complete beginners</span>
       <h1>Learn to code by <em>building real things.</em></h1>
       <p class="lede">Short lessons, a playground beside every one, and six projects you can actually show people. No setup, no jargon, no feeling lost.</p>
       <div class="actions"><a class="btn glow" href="#pricing">Start the first module free <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#play">Try the playground</a></div>
     </div>
-    <div class="cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
+    <div class="cue" aria-hidden="true"><span>Scroll to break it open</span><i></i></div>
   </div>
 </section>
 
@@ -454,14 +487,14 @@ main .sec + .sec{border-top:1px solid var(--line)}
 </div></section>
 </main>
 
-<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="M34 26 L12 50 L34 74" stroke="#c4b5fd"/><path d="M58 20 L42 80" stroke="#f472b6"/><path d="M66 26 L88 50 L66 74" stroke="#c4b5fd"/></g></svg><span>Deduction</span></a>
-  <nav><a href="#path">The path</a><a href="#play">Try it</a><a href="#builds">Projects</a><a href="#pricing">Pricing</a></nav><span>© 2026 Deduction (fictional)</span></div></footer>
+<footer class="foot"><div class="wrap"><a class="brand" href="#top"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="fxg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><path d="M50 6 L88 34 L74 90 L26 90 L12 34 Z" fill="url(#fxg)"/><path d="M50 6 L62 40 L50 90 L38 40 Z" fill="#fff" fill-opacity=".55"/><path d="M12 34 L38 40 L26 90 Z M88 34 L62 40 L74 90 Z" fill="#1b1430" fill-opacity=".55"/></svg><span>Facet</span></a>
+  <nav><a href="#path">The path</a><a href="#play">Try it</a><a href="#builds">Projects</a><a href="#pricing">Pricing</a></nav><span>© 2026 Facet (fictional)</span></div></footer>
 
 <script src="{{ASSETS}}sample2.js" defer></script>
 <script src="{{ASSETS}}smooth.js" defer></script>
 
 <script>
-// Deduction: the three steps are hands-on. A lesson timer runs, colour swatches rewrite the code and the preview, and the mentor review can be approved.
+// Facet: the three steps are hands-on. A lesson timer runs, colour swatches rewrite the code and the preview, and the mentor review can be approved.
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // 1: the timer runs a whole lesson (7:42) in a few seconds, lighting up each step
@@ -502,7 +535,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
 })();
 </script>
 <script>
-// Deduction: the path screen builds a real site as you move through the modules, and the projects are a 3D deck
+// Facet: the path screen builds a real site as you move through the modules, and the projects are a 3D deck
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), sm = v => { v = clamp(v); return v * v * (3 - 2 * v); };
@@ -601,10 +634,10 @@ main .sec + .sec{border-top:1px solid var(--line)}
 })();
 </script>
 <script>
-// Deduction: the address types itself under the logo as the page opens, and the course path fills as you scroll
+// Facet: the address types itself under the logo as the page opens, and the course path fills as you scroll
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const typed = document.querySelector('.dd-typed'), word = 'deduction.dev';
+  const typed = document.querySelector('.dd-typed'), word = 'facet.dev';
   if (typed) {
     if (reduce) typed.innerHTML = '<b>deduction</b>.dev';
     else {
@@ -631,7 +664,7 @@ main .sec + .sec{border-top:1px solid var(--line)}
 })();
 </script>
 <script>
-// Deduction sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.
+// Facet sample: a real live-coding playground. The preview runs in a sandboxed frame; nothing leaves the page.
 (() => {
   const $ = s => document.querySelector(s);
   const CH = [
@@ -696,6 +729,35 @@ main .sec + .sec{border-top:1px solid var(--line)}
   $('#dd-reset').addEventListener('click', () => load(cur));
   load(0);
 })();
+</script>
+<script>
+// Facet: the crystal plays frame by frame with the scroll (rendered ahead of time, so phones get the full glossy look)
+(() => {
+  const stage = document.querySelector('.stage.fx'); if (!stage) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const scene = stage.querySelector('.fx-scene'), cv = stage.querySelector('.fx-cv'), g = cv.getContext('2d');
+  const base = stage.querySelector('.fx-poster').getAttribute('src').replace(/poster\.jpg.*$/, '');
+  const N = 96, frames = []; let want = 0, drawn = -1;
+  const load = i => new Promise(res => { if (frames[i]) return res(); const im = new Image(); im.decoding = 'async';
+    im.onload = () => { frames[i] = im; res(); if (Math.abs(i - want) < 6) draw(true); }; im.onerror = res;
+    im.src = base + 'f/' + String(i + 1).padStart(3, '0') + '.webp'; });
+  (async () => { for (let i = 0; i < N; i += 8) await load(i); for (let s = 4; s >= 1; s >>= 1) { const j = []; for (let i = 0; i < N; i += s) j.push(load(i)); await Promise.all(j); } })();
+  const size = () => { const r = scene.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1), w = Math.round(r.width * d), h = Math.round(r.height * d);
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; drawn = -1; } };
+  function draw(force) {
+    let k = want; while (k > 0 && !frames[k]) k--; if (!frames[k]) return;
+    if (k === drawn && !force) return; size(); const im = frames[k];
+    // fit the square render to the screen (a little larger on tall phone screens); its dark edges blend into the page
+    const tall = cv.height > cv.width, s = Math.min(cv.width / im.width, cv.height / im.height) * (tall ? 1.3 : 1.02), w = im.width * s, h = im.height * s;
+    g.fillStyle = '#07060b'; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(im, (cv.width - w) / 2, (cv.height - h) / 2, w, h); const vg = g.createRadialGradient(cv.width / 2, cv.height / 2, Math.min(w, h) * .3, cv.width / 2, cv.height / 2, Math.min(w, h) * .5); vg.addColorStop(0, 'rgba(7,6,11,0)'); vg.addColorStop(1, '#07060b'); g.fillStyle = vg; g.fillRect(0, 0, cv.width, cv.height); drawn = k;   // the square's edges fade into the page
+  }
+  const tick = () => { const p = reduce ? 1 : parseFloat(stage.style.getPropertyValue('--p')) || 0; want = Math.round(clamp(p / .8) * (N - 1)); draw(); };
+  new MutationObserver(tick).observe(stage, { attributes: true, attributeFilter: ['style'] });
+  addEventListener('resize', () => { drawn = -1; draw(true); });
+  tick();
+})();
+
 </script>
 </body>
 </html>

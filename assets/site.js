@@ -799,19 +799,24 @@ window.kzGmail = (to, subject = '', body = '') => {
 })();
 
 
-// The floating chrome shape: a 72-frame turntable (rendered ahead of time, so phones get it at no cost). It only plays while on screen.
+// The floating chrome shape: a 144-frame turntable (rendered ahead of time, so phones get it at no cost), drawn on a canvas
+// from frames decoded in advance, at a steady 30 frames a second. It only plays while on screen.
 (() => {
   const k1 = document.querySelector('.g-knot.k1'), rp = document.querySelector('#selling-points .reel-pin'); if (k1 && rp) rp.prepend(k1);   // stays in view while How it works holds
-  const knots = [...document.querySelectorAll('.g-knot img')]; if (!knots.length) return;
+  const imgs = [...document.querySelectorAll('.g-knot img')]; if (!imgs.length) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const base = knots[0].getAttribute('src').replace(/000\.webp.*$/, ''), N = 72, frames = [];
-  let loaded = false;
-  const load = () => { if (loaded) return; loaded = true; for (let i = 0; i < N; i++) { const im = new Image(); im.decoding = 'async'; im.src = base + String(i).padStart(3, '0') + '.webp'; frames[i] = im; } };
-  const live = new Set(); let raf = 0, t0 = 0;
+  const base = imgs[0].getAttribute('src').replace(/000\.webp.*$/, ''), N = 144, FPS = 30, frames = new Array(N);
+  const cvs = imgs.map((im, i) => { const c = document.createElement('canvas'); c.width = c.height = 360; c.className = 'g-knot-cv'; if (i) c.style.transform = 'scaleX(-1)'; im.after(c); return c; });
+  let loading = false;
+  const load = () => { if (loading) return; loading = true;
+    for (let i = 0; i < N; i++) { const im = new Image(); im.src = base + String(i).padStart(3, '0') + '.webp';
+      (im.decode ? im.decode() : new Promise(r => im.onload = r)).then(() => { frames[i] = window.createImageBitmap ? createImageBitmap(im).then(b => frames[i] = b) : im; if (!frames[i].then) frames[i] = im; }).catch(() => {}); } };
+  const live = new Set(); let raf = 0, t0 = 0, last = -1;
   const tick = t => { raf = 0; if (!live.size) return; if (!t0) t0 = t;
-    const f = Math.floor((t - t0) / 1000 * 14) % N, im = frames[f];
-    if (im && im.complete && im.naturalWidth) live.forEach(el => { if (el.__f !== f) { el.__f = f; el.src = im.src; } });
+    const f = Math.floor((t - t0) / 1000 * FPS) % N;
+    if (f !== last) { let k = f; while (k > 0 && (!frames[k] || frames[k].then)) k--; const fr = frames[k];
+      if (fr && !fr.then) { live.forEach(c => { const g = c.getContext('2d'); g.clearRect(0, 0, 360, 360); g.drawImage(fr, 0, 0, 360, 360); c.classList.add('on'); }); last = f; } }
     raf = requestAnimationFrame(tick); };
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { load(); live.add(e.target); } else live.delete(e.target); if (live.size && !raf) raf = requestAnimationFrame(tick); }), { rootMargin: '200px' });
-  knots.forEach((k, i) => { k.style.transform = i ? 'scaleX(-1)' : ''; io.observe(k); });
+  const io = new IntersectionObserver(es => es.forEach(e => { const c = e.target.parentNode.querySelector('.g-knot-cv'); if (e.isIntersecting) { load(); live.add(c); } else live.delete(c); if (live.size && !raf) raf = requestAnimationFrame(tick); }), { rootMargin: '200px' });
+  imgs.forEach(im => io.observe(im));
 })();
