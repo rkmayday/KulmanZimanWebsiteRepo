@@ -1305,15 +1305,19 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 /* Ryder's profile (full-screen computers only): the home page's ring, in white, turning around the photo */
 .rz-ring{display:none}
 @media (min-width:1200px) and (hover:hover) and (pointer:fine){
-  main.rz .profile-card > .pfield.rz-ring{display:block;inset:-38% -60% -30% -60%;z-index:0}
-  main.rz .profile-card > .portrait.big{z-index:2}
+  main.rz > section > .pfield.rz-ring{display:block;inset:0;z-index:0;overflow:hidden}
+  main.rz > section.has-pfield-abs{overflow:hidden}
 }
 
 /* a little easter egg: the signature under the home quote opens Ryder's profile */
 .ps-sig-link{display:inline-block;width:max-content;line-height:0;border-radius:6px;cursor:pointer;transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
-@media (hover:hover){.ps-sig-link:hover{transform:rotate(-3deg) scale(1.06)}}
+@media (hover:hover){.ps-sig-link:hover{transform:scale(1.03)}}
 .ps-sig-link:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 /* the mission / packages chapters keep the page's side margin at every width */
 .ps-ch{left:max(clamp(28px,4vw,56px),env(safe-area-inset-left));width:min(620px,calc(52% - 40px))}
 .ps-c1{left:auto;right:max(clamp(28px,4vw,56px),env(safe-area-inset-right))}
 @media (max-width:760px){.ps-ch,.ps-c1{left:max(22px,env(safe-area-inset-left));right:max(22px,env(safe-area-inset-right));width:auto}}
+@media (min-width:1200px) and (hover:hover) and (pointer:fine){
+  /* the two boxes let the ring show through, softly blurred */
+  main.rz > section.has-pfield-abs .box{background:rgba(22,22,22,.28);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
+}

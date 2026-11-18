@@ -80,7 +80,7 @@
     const frame = now => {
       raf = 0; if (!vis) return;
       const r = sec.getBoundingClientRect();
-      U.uGather.value = clamp((innerHeight - r.top) / (innerHeight * .9));
+      U.uGather.value = clamp((innerHeight - r.top) / (innerHeight * .55));
       const t = (now - t0) / 1000; U.uTime.value = t;
       smx += (mx - smx) * .04; smy += (my - smy) * .04;
       const wide = W > 760, x = !wide || side === 'center' ? 0 : side === 'right' ? 34 : -34;
@@ -96,7 +96,9 @@
         const top = Math.max(r.top, 0), bot = Math.min(r.bottom, innerHeight), half = 130 * Math.tan(18 * Math.PI / 180);
         group.position.y = (innerHeight / 2 - (top + bot) / 2) / (innerHeight / 2) * half;
         group.scale.multiplyScalar(Math.min(1, Math.max(.35, (r.bottom - r.top) / innerHeight * 1.25)));
-        } else { group.scale.multiplyScalar(shape === 'ring' ? 1.05 : Math.min(.72, H / 720)); if (wide && side === 'right') group.position.x = 46; }
+        } else { group.scale.multiplyScalar(shape === 'ring' ? (el.dataset.anchor === 'bottom' ? 2.9 : 1.05) : Math.min(.72, H / 720)); if (wide && side === 'right') group.position.x = 46;
+          // data-anchor="bottom": the shape sits on the bottom edge of its box, so its lower half is cut off
+          if (el.dataset.anchor === 'bottom') group.position.y = -130 * Math.tan(18 * Math.PI / 180); }
       }
       renderer.render(scene, cam);
       raf = requestAnimationFrame(frame);
