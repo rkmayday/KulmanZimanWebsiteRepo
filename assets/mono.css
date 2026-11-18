@@ -1313,3 +1313,7 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 .ps-sig-link{display:inline-block;width:max-content;line-height:0;border-radius:6px;cursor:pointer;transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
 @media (hover:hover){.ps-sig-link:hover{transform:rotate(-3deg) scale(1.06)}}
 .ps-sig-link:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+/* the mission / packages chapters keep the page's side margin at every width */
+.ps-ch{left:max(clamp(28px,4vw,56px),env(safe-area-inset-left));width:min(620px,calc(52% - 40px))}
+.ps-c1{left:auto;right:max(clamp(28px,4vw,56px),env(safe-area-inset-right))}
+@media (max-width:760px){.ps-ch,.ps-c1{left:max(22px,env(safe-area-inset-left));right:max(22px,env(safe-area-inset-right));width:auto}}
