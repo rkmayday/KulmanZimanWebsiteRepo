@@ -629,3 +629,54 @@ window.kzGmail = (to, subject = '', body = '') => {
   }
   $$('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
+
+// "How it works" reel (home, computers only): the section holds while the three steps slide sideways with the scroll;
+// the step nearest the focus line is sharp, the others dim back. Phones and touch screens swipe the steps instead (CSS),
+// and reduced motion keeps the plain grid.
+(() => {
+  const sec = document.getElementById('selling-points');
+  if (!sec) return;
+  const steps = sec.querySelector('.steps'), head = sec.querySelector('.section-head');
+  if (!steps || !head) return;
+  const ok = matchMedia('(min-width: 861px) and (hover: hover) and (pointer: fine)');
+  if (!ok.matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const cards = [...steps.querySelectorAll('.sheet')];
+  cards.forEach(c => c.classList.remove('reveal'));
+  const run = document.createElement('div'); run.className = 'reel-run';
+  const pin = document.createElement('div'); pin.className = 'reel-pin';
+  const meta = document.createElement('div'); meta.className = 'reel-meta'; meta.setAttribute('aria-hidden', 'true');
+  meta.innerHTML = '<span><b>01</b> / 0' + cards.length + '</span><i><i></i></i>';
+  head.after(run); run.append(pin); pin.append(head, steps); head.append(meta);
+  sec.classList.add('reel-on');
+  const count = meta.querySelector('b'), fill = meta.querySelector('i i');
+  let travel = 0, last = -1;
+  const measure = () => {
+    const pad = parseFloat(getComputedStyle(pin).paddingLeft) || 0;
+    travel = Math.max(0, steps.offsetLeft + steps.scrollWidth - pin.clientWidth + pad);
+    run.style.height = Math.round(pin.offsetHeight + travel * 1.5) + 'px';
+    last = -1; update();
+  };
+  const update = () => {
+    const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
+    if (r.bottom < 0 || r.top > innerHeight) return;
+    const span = Math.max(1, r.height - pin.offsetHeight);
+    const p = clamp((top - r.top) / span);
+    if (Math.abs(p - last) < .00005) return;
+    last = p;
+    const k = clamp((p - .06) / .88);                 // a short hold at each end
+    steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
+    const vw = innerWidth;
+    cards.forEach(c => {
+      const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - vw * .62) / vw, a = clamp(Math.abs(off) * 1.6);
+      c.style.opacity = (1 - a * .55).toFixed(3); c.style.transform = `scale(${(1 - a * .07).toFixed(4)})`;
+    });
+    count.textContent = '0' + (Math.min(cards.length - 1, Math.floor(k * cards.length)) + 1); fill.style.transform = `scaleX(${k.toFixed(4)})`;
+  };
+  addEventListener('scroll', update, { passive: true });
+  let lw = innerWidth;
+  addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
+  addEventListener('load', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  measure();
+})();

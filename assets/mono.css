@@ -915,3 +915,25 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 
 /* phones: the commitment boxes under the home opening don't rise in; they simply scroll in after the stop */
 @media (max-width:720px){.js .strip .reveal{opacity:1;transform:none;transition:none}}
+
+/* "How it works" reel on the home page (computers): the section holds and the steps slide sideways (site.js) */
+#selling-points.reel-on .reel-pin{position:sticky;top:72px;height:calc(calc(100 * var(--vh, 1vh)) - 72px);width:100vw;margin-left:calc(50% - 50vw);
+  padding-left:max(20px,calc((100vw - 1200px) / 2 + 20px));display:flex;align-items:center;gap:clamp(32px,4vw,64px);overflow:hidden}
+#selling-points.reel-on .section-head{flex:0 0 min(30vw,400px);margin:0;align-self:stretch;align-content:center;position:relative;z-index:2;background:var(--paper)}
+#selling-points.reel-on .section-head::before{content:"";position:absolute;top:0;bottom:0;right:100%;width:60vw;background:var(--paper);pointer-events:none}
+#selling-points.reel-on .section-head::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:clamp(32px,4vw,64px);background:linear-gradient(90deg,var(--paper),transparent);pointer-events:none}
+#selling-points.reel-on .steps{display:flex;gap:24px;flex:none;will-change:transform}
+#selling-points.reel-on .sheet{flex:0 0 clamp(300px,30vw,400px);min-height:min(340px,calc(calc(52 * var(--vh, 1vh))));padding:34px;transform-origin:50% 100%}
+#selling-points.reel-on .sheet .n{font-size:4.4rem}
+#selling-points.reel-on .reel-run + .condition{margin-top:8px}
+.reel-meta{display:flex;align-items:center;gap:16px;margin-top:10px;font:500 .78rem var(--font-mono);color:var(--ink-3)}
+.reel-meta b{color:var(--ink);font-weight:600}
+.reel-meta > i{position:relative;width:120px;height:1px;background:var(--line-2)}
+.reel-meta > i > i{position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left}
+/* phones and touch screens: swipe the steps sideways */
+@media (max-width:860px),(hover:none){
+  #selling-points .steps{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-20px;padding:2px 20px 6px;scroll-padding-inline:20px;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  #selling-points .steps::-webkit-scrollbar{display:none}
+  #selling-points .steps .sheet{flex:0 0 min(82%,380px);scroll-snap-align:start}
+  .js #selling-points .steps .reveal{opacity:1;transform:none;transition:none}
+}
