@@ -797,3 +797,21 @@ window.kzGmail = (to, subject = '', body = '') => {
     g.addEventListener('pointerleave', () => { st.forEach(s => { s.tx = 0; s.ty = 0; }); g.classList.remove('lit'); run(step); });
   });
 })();
+
+
+// The floating chrome shape: a 72-frame turntable (rendered ahead of time, so phones get it at no cost). It only plays while on screen.
+(() => {
+  const k1 = document.querySelector('.g-knot.k1'), rp = document.querySelector('#selling-points .reel-pin'); if (k1 && rp) rp.prepend(k1);   // stays in view while How it works holds
+  const knots = [...document.querySelectorAll('.g-knot img')]; if (!knots.length) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const base = knots[0].getAttribute('src').replace(/000\.webp.*$/, ''), N = 72, frames = [];
+  let loaded = false;
+  const load = () => { if (loaded) return; loaded = true; for (let i = 0; i < N; i++) { const im = new Image(); im.decoding = 'async'; im.src = base + String(i).padStart(3, '0') + '.webp'; frames[i] = im; } };
+  const live = new Set(); let raf = 0, t0 = 0;
+  const tick = t => { raf = 0; if (!live.size) return; if (!t0) t0 = t;
+    const f = Math.floor((t - t0) / 1000 * 14) % N, im = frames[f];
+    if (im && im.complete && im.naturalWidth) live.forEach(el => { if (el.__f !== f) { el.__f = f; el.src = im.src; } });
+    raf = requestAnimationFrame(tick); };
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { load(); live.add(e.target); } else live.delete(e.target); if (live.size && !raf) raf = requestAnimationFrame(tick); }), { rootMargin: '200px' });
+  knots.forEach((k, i) => { k.style.transform = i ? 'scaleX(-1)' : ''; io.observe(k); });
+})();

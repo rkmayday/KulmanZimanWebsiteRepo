@@ -1035,3 +1035,44 @@ main:has(> #team) .founder{background:radial-gradient(420px circle at var(--mx,5
   linear-gradient(rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(90deg,rgba(10,10,10,.06) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(160deg,#ffffff,#f1f1ee);
   box-shadow:inset 0 0 0 1px var(--line-2),0 18px 40px -26px rgba(0,0,0,.35);transition:background-position 1.1s cubic-bezier(.2,.8,.2,1)}
 @media (hover:hover){.box.shine:hover{background-position:220% 0,0 0,0 0,0 0}}
+
+
+/* ===== 3D glossy finish ===== */
+/* buttons: a polished black pill with a lit top edge, and a shine that sweeps across on hover */
+.btn{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.28) 50%,transparent 62%) -160% 0/260% 100% no-repeat,linear-gradient(180deg,#3a3a3a 0%,#121212 48%,#000 52%,#1c1c1c 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 rgba(255,255,255,.08),0 10px 24px -12px rgba(0,0,0,.7);
+  transition:transform .25s var(--ease),background-position .8s var(--ease),box-shadow .25s}
+@media (hover:hover){.btn:hover{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.28) 50%,transparent 62%) 160% 0/260% 100% no-repeat,linear-gradient(180deg,#444 0%,#181818 48%,#050505 52%,#222 100%)}}
+/* outlined buttons: clear glass with a soft top highlight */
+.btn.ghost,.btn.silver{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.9) 50%,transparent 62%) -160% 0/260% 100% no-repeat,linear-gradient(180deg,rgba(255,255,255,.95),rgba(236,236,236,.7));
+  box-shadow:inset 0 1px 0 #fff,0 8px 20px -14px rgba(0,0,0,.5)}
+@media (hover:hover){.btn.ghost:hover,.btn.silver:hover{background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.28) 50%,transparent 62%) 160% 0/260% 100% no-repeat,linear-gradient(180deg,#3a3a3a,#000)}}
+.pkg.best .btn.ghost{background:linear-gradient(180deg,#fff,#e9e9e9)}
+/* buttons inside dark boxes stay white, now with a polished finish */
+form#brief .btn:not(.ghost){background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.9) 50%,transparent 62%) -160% 0/260% 100% no-repeat,linear-gradient(180deg,#fff 0%,#ececec 48%,#dcdcdc 52%,#f4f4f4 100%);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.12),0 10px 24px -12px rgba(0,0,0,.6)}
+@media (hover:hover){form#brief .btn:not(.ghost):hover{background-position:160% 0,0 0}}
+/* pills and badges: glossy */
+.kz-copy .hero-tags li,.pkg-badge,.sheet .when{background:linear-gradient(180deg,#ffffff 0%,#f1f1f1 50%,#e6e6e6 51%,#f7f7f7 100%);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px var(--line-2),0 4px 10px -6px rgba(0,0,0,.35)}
+#selling-points .sheet .when,#connections .sheet .when,#refinement-process .sheet .when{background:linear-gradient(180deg,#3a3a3a 0%,#1d1d1d 50%,#111 51%,#262626 100%);color:#e6e6e6;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 0 0 1px rgba(255,255,255,.08)}
+
+/* glossy 3D icons in the step and tool boxes (they float gently, and move with their box) */
+.sheet{position:relative}
+.g-ico{position:absolute;top:clamp(14px,2vw,22px);right:clamp(14px,2vw,22px);width:clamp(64px,7vw,96px);height:auto;pointer-events:none;
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.45));animation:gIco 6s ease-in-out infinite}
+.sheet:nth-child(2n) .g-ico{animation-delay:-2s}.sheet:nth-child(3n) .g-ico{animation-delay:-4s}
+@keyframes gIco{50%{translate:0 -6px;rotate:4deg}}
+#selling-points.reel-on .g-ico{width:clamp(96px,9vw,140px)}
+
+/* the floating chrome shape */
+#selling-points,#start{position:relative;overflow:clip}
+.g-knot{position:absolute;z-index:0;pointer-events:none;width:clamp(150px,22vw,320px);aspect-ratio:1;animation:gKnot 9s ease-in-out infinite}
+.g-knot img{width:100%;height:100%;display:block;filter:drop-shadow(0 40px 50px rgba(0,0,0,.55))}
+.g-knot.k1{top:clamp(30px,6vw,80px);right:max(10px,calc((100vw - 1200px) / 2 - 40px))}
+.g-knot.k2{top:clamp(10px,3vw,40px);right:max(-40px,calc((100vw - 1200px) / 2 - 110px));width:clamp(120px,16vw,240px);opacity:.95}
+#start .wrap,#selling-points .wrap{position:relative;z-index:1}
+@keyframes gKnot{50%{translate:0 -14px}}
+@media (max-width:760px){.g-knot.k1{top:14px;right:-24px;width:150px}.g-knot.k2{top:-10px;left:auto;right:-30px;width:130px;opacity:.9}}
+@media (prefers-reduced-motion:reduce){.g-ico,.g-knot{animation:none}}
+#selling-points .reel-pin .g-knot.k1{top:auto;bottom:clamp(8px,3vh,40px);right:clamp(10px,3vw,60px);width:clamp(150px,17vw,250px)}
+#selling-points.reel-on .sheet > .g-ico{position:absolute}

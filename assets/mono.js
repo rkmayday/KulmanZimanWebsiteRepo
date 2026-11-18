@@ -62,7 +62,8 @@
       const front = i === 0;
       if (!front && S.ho <= .002) continue;
       const z = -i * depth / Math.max(1, N - 1);
-      const c = DARK ? Math.round(232 - i / Math.max(1, N - 1) * 150) : Math.round(26 + i / Math.max(1, N - 1) * 120);
+      const c0 = DARK ? Math.round(232 - i / Math.max(1, N - 1) * 150) : Math.round(26 + i / Math.max(1, N - 1) * 120);
+      const c = i > 0 && i <= 3 ? Math.min(255, c0 + (4 - i) * 38) : c0;   // the bevel right behind the face catches the light
       for (const sh of SHAPES) {
         const hx = sh.k ? S.kx : S.zx;
         g.beginPath();
@@ -73,10 +74,16 @@
           const dx = Math.sin(115 * Math.PI / 180), dy = -Math.cos(115 * Math.PI / 180), len = Math.abs(W * dx) + Math.abs(H * dy);
           const a = P(-dx * len / 2 + hx, -dy * len / 2, 0), b = P(dx * len / 2 + hx, dy * len / 2, 0);
           const gr = g.createLinearGradient(a[0], a[1], b[0], b[1]), m = clamp(S.sx / 100), col = `rgb(${fc},${fc},${fc})`;
-          gr.addColorStop(0, col); gr.addColorStop(clamp(m - .14), col); gr.addColorStop(m, `rgb(${hi},${hi},${hi})`); gr.addColorStop(clamp(m + .14), col); gr.addColorStop(1, col);
+          // polished finish: soft reflections either side of a sharp bright band that travels as the logo turns
+          const L = k => { const v = Math.round(fc + (255 - fc) * k); return `rgb(${v},${v},${v})`; }, Dk = k => { const v = Math.round(fc * k); return `rgb(${v},${v},${v})`; };
+          gr.addColorStop(0, L(.18)); gr.addColorStop(clamp(m - .34), col); gr.addColorStop(clamp(m - .2), L(.3)); gr.addColorStop(clamp(m - .07), L(.55));
+          gr.addColorStop(clamp(m - .015), L(.95)); gr.addColorStop(clamp(m + .02), Dk(.55)); gr.addColorStop(clamp(m + .16), L(.22)); gr.addColorStop(clamp(m + .3), col);
+          if (m + .44 < .99) { gr.addColorStop(clamp(m + .38), L(.3)); gr.addColorStop(clamp(m + .44), L(.85)); gr.addColorStop(clamp(m + .47), Dk(.6)); gr.addColorStop(clamp(m + .58), L(.16)); }   // a second reflection, so the S shines too
+          gr.addColorStop(1, L(.12));
           g.globalAlpha = 1; g.fillStyle = gr;
         } else { g.globalAlpha = S.ho; g.fillStyle = `rgb(${c},${c},${c})`; }
         g.fill();
+        if (front) { g.globalAlpha = 1; g.lineWidth = Math.max(1, W / 520); g.strokeStyle = `rgba(255,255,255,${(.38 * (1 - S.ho * .3)).toFixed(3)})`; g.stroke(); }   // the fine bright edge of polished material
       }
     }
     g.globalAlpha = 1;
