@@ -1105,3 +1105,5 @@ main:has(> #team) > #team{background:
 .btn.ss-open,.ss-open{color:#fff}
 @media (hover:hover){.btn.ss-open:hover{color:#fff}}
 .ceo-3d{max-width:130px}
+/* CEO letters: computers only, and only while the photo sits beside the text */
+@media (max-width:520px),(hover:none),(pointer:coarse){.ceo-3d{display:none}}
