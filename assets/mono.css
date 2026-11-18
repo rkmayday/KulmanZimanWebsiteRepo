@@ -1308,3 +1308,8 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
   main.rz .profile-card > .pfield.rz-ring{display:block;inset:-38% -60% -30% -60%;z-index:0}
   main.rz .profile-card > .portrait.big{z-index:2}
 }
+
+/* a little easter egg: the signature under the home quote opens Ryder's profile */
+.ps-sig-link{display:inline-block;width:max-content;line-height:0;border-radius:6px;cursor:pointer;transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
+@media (hover:hover){.ps-sig-link:hover{transform:rotate(-3deg) scale(1.06)}}
+.ps-sig-link:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
