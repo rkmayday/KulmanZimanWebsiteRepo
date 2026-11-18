@@ -1099,3 +1099,10 @@ main:has(> #team) > #team{background:
 
 .btn.ss-open,.ss-open{color:#fff}
 @media (hover:hover){.btn.ss-open:hover{color:#fff}}
+
+/* portfolio: "best experienced full screen", like "headphones recommended" */
+.fs-tip{display:inline-flex;align-items:center;gap:12px;margin:22px 0 0;padding:10px 16px 10px 12px;border-radius:999px;font-size:.9rem;line-height:1.35;color:var(--ink-2,#333);
+  background:#fafafa;box-shadow:inset 0 0 0 1px rgba(10,10,10,.12)}
+.fs-tip svg{flex:none;width:30px;height:30px;padding:6px;border-radius:50%;background:var(--ink,#0a0a0a);color:#fff}
+.fs-tip b{font-weight:650;color:var(--ink,#0a0a0a)}
+@media (max-width:640px){.fs-tip{border-radius:18px;align-items:flex-start}}

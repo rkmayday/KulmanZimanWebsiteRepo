@@ -318,7 +318,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     const seen = new Set(); let playing = false;
     const startAll = () => {
       playing = true;
-      clips.forEach(v => { v.preload = 'auto'; v.defaultPlaybackRate = v.playbackRate = 1.25; try { v.currentTime = 0; } catch (e) {} });
+      clips.forEach(v => { v.preload = 'auto'; v.defaultPlaybackRate = v.playbackRate = 1; try { v.currentTime = 0; } catch (e) {} });
       clips.forEach(v => { const pr = v.play(); pr && pr.catch(() => {}); });
     };
     const stopAll = () => { playing = false; clips.forEach(v => v.pause()); };
@@ -469,7 +469,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       });
       dots.innerHTML = demos.map(() => '<i></i>').join('');
       let active = -1, playing = -1, onScreen = false;
-      const RATE = 1.25;   // clips play a little faster than recorded
+      const RATE = 1;   // clips play at the speed they were recorded
       const fit = () => { word.style.fontSize = ''; const cs = getComputedStyle(word), avail = word.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), w = word.scrollWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         if (w > avail && avail > 0) word.style.fontSize = (parseFloat(cs.fontSize) * avail / w * .97).toFixed(1) + 'px'; };
       addEventListener('resize', () => { if (active >= 0) fit(); });
