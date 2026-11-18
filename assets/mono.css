@@ -1101,3 +1101,7 @@ main:has(> #team) > #team{background:
   radial-gradient(45% 55% at 92% 85%,rgba(255,255,255,.05),transparent 70%),
   repeating-linear-gradient(125deg,rgba(255,255,255,.028) 0 2px,transparent 2px 22px),
   linear-gradient(160deg,#1a1a1a 0%,#0b0b0b 45%,#141414 100%)}
+
+.btn.ss-open,.ss-open{color:#fff}
+@media (hover:hover){.btn.ss-open:hover{color:#fff}}
+.ceo-3d{max-width:130px}
