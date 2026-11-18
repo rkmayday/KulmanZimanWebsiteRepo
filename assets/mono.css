@@ -1294,3 +1294,9 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 /* mission → packages: computers get no extra scroll room (one short glide between two stops); phones a shorter run */
 .ps-stage{height:calc(100 * var(--vh, 1vh) + 34 * var(--vh, 1vh))}
 @media (max-width:760px){.ps-stage{height:calc(170 * var(--vh, 1vh))}}
+
+/* phones: the How it works steps hold on screen while they glide (site.js adds the run below them) */
+@media (max-width:760px){
+  #selling-points.glide-pin .steps{position:sticky;top:calc(60px + 14 * var(--vh, 1vh));z-index:2}
+  #selling-points.glide-pin .glide-run{pointer-events:none}
+}

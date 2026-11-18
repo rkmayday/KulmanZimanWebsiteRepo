@@ -702,13 +702,26 @@ window.kzGmail = (to, subject = '', body = '') => {
   // phones, tablets and narrow windows: the row glides left while the section rises up the screen
   const glide = sig => {
     sec.classList.add('glide');
-    let travel = 0, raf = 0;
+    // phones: the row of steps holds on screen while it glides, over twice the scrolling (half the speed), so each
+    // step can be read. Narrow computer windows keep the plain glide as the section passes.
+    const phone = matchMedia('(max-width: 760px)').matches;
+    let travel = 0, raf = 0, run = 0, runEl = null;
+    // the row and its run share a box, so the row lets go as soon as the run ends (before the refund note arrives)
+    let box = null;
+    if (phone) { sec.classList.add('glide-pin'); box = document.createElement('div'); box.className = 'glide-box'; steps.before(box);
+      runEl = document.createElement('div'); runEl.className = 'glide-run'; runEl.setAttribute('aria-hidden', 'true'); box.append(steps, runEl); }
     const measure = () => { steps.style.transform = 'none'; const lastC = cards[cards.length - 1];
-      travel = Math.max(0, lastC.offsetLeft + lastC.offsetWidth - steps.clientWidth + 20); update(); };
+      travel = Math.max(0, lastC.offsetLeft + lastC.offsetWidth - steps.clientWidth + 20);
+      if (runEl) { run = Math.round(innerHeight * .96); runEl.style.height = run + 'px'; }
+      update(); };
     const update = () => {
       raf = 0;
       const r = steps.getBoundingClientRect(); if (r.bottom < -200 || r.top > innerHeight + 200) return;
-      const p = clamp((innerHeight * .6 - r.top) / (innerHeight * .48)), k = p * p * (3 - 2 * p);   // starts once the steps are fully on screen
+      let p;
+      if (runEl) { const stick = parseFloat(getComputedStyle(steps).top) || 0, rr = runEl.getBoundingClientRect();
+        p = clamp((stick + steps.offsetHeight - rr.top) / Math.max(1, run)); }        // 0 until the row is held, 1 at the end of the run
+      else p = clamp((innerHeight * .6 - r.top) / (innerHeight * .48));               // starts once the steps are fully on screen
+      const k = p * p * (3 - 2 * p);
       steps.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
       // the step nearest the middle of the screen is the bright one
       const mid = innerWidth / 2;
@@ -719,7 +732,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     addEventListener('resize', measure, { signal: sig });
     addEventListener('load', measure, { signal: sig });
     measure();
-    return () => { sec.classList.remove('glide'); };
+    return () => { sec.classList.remove('glide', 'glide-pin'); if (runEl) runEl.remove(); if (box) box.remove(); };
   };
 
   let ctl = null, undo = null, mode = '';
