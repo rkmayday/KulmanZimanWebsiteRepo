@@ -392,10 +392,21 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
   #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
   #about .tc-count > i > i{position:absolute;inset:0;background:var(--acc);transform:scaleX(var(--k,0));transform-origin:right}
 }
+/* phones, tablets and small windows: the three cards are dealt into a fanned hand on one screen.
+   Tap or swipe to bring the next card forward; tap the front card to flip it. */
 @media (max-width:900px),(hover:none){
-  .tc3.swing{perspective:900px}
-  .tc3.swing .tc{opacity:1;transition:none;transform-origin:50% 100%;transform:rotateX(calc(var(--sw,1) * 78deg)) translateY(calc(var(--sw,1) * 30px));filter:brightness(calc(1 - var(--sw,1) * .5))}
+  #about{overflow-x:clip}
+  .tc3.hand{display:block;position:relative;max-width:none;perspective:1400px;touch-action:pan-y}
+  .tc3.hand .tc{position:absolute;left:50%;top:10px;width:min(320px,74vw);margin-left:calc(min(320px,74vw) / -2);opacity:1;
+    transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .5s,opacity .5s;transform-origin:50% 90%;will-change:transform}
+  .tc3.hand.dealing .tc{transition-delay:calc(var(--k,0) * .09s)}
+  .tc3.hand:not(.dealt) .tc{opacity:0}
+  .hand-nav{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:6px}
+  .hand-nav i{width:7px;height:7px;border-radius:9px;background:color-mix(in srgb,var(--cream) 30%,transparent);transition:width .3s,background .3s}
+  .hand-nav i.on{width:22px;background:var(--acc)}
+  .hand-hint{margin:12px 0 0;text-align:center;font:500 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
 }
+@media (prefers-reduced-motion:reduce){.tc3.hand .tc{transition:none}}
 </style>
 </head>
 <body id="top" class="has-film">
@@ -840,10 +851,39 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; measure(); } });
     addEventListener('load', measure); measure();
   } else {
-    row.classList.add('swing'); cards.forEach(c => c.classList.add('seen'));
-    const up = () => cards.forEach(c => { const r = c.getBoundingClientRect(); const e = clamp((innerHeight * .98 - r.top) / (innerHeight * .55));
-      c.style.setProperty('--sw', (1 - e * e * (3 - 2 * e)).toFixed(4)); });
-    addEventListener('scroll', up, { passive: true }); up();
+    row.classList.add('hand'); cards.forEach(c => c.classList.add('seen'));
+    const nav = document.createElement('div'); nav.className = 'hand-nav'; nav.setAttribute('aria-hidden', 'true'); nav.innerHTML = cards.map(() => '<i></i>').join('');
+    const hint = document.createElement('p'); hint.className = 'hand-hint'; hint.textContent = 'Swipe or tap a card · tap the front one to flip it';
+    row.after(nav, hint);
+    const dots = [...nav.children];
+    let order = [0, 1, 2], dealt = false;   // order[0] is in front, order[1] on the right, order[2] on the left
+    const place = () => {
+      const w = cards[0].offsetWidth, h = cards[0].offsetHeight, off = Math.min(w * .7, Math.max(w * .3, (row.clientWidth - w) / 2 + w * .12));
+      row.style.height = Math.round(h + 46) + 'px';
+      order.forEach((ci, pos) => {
+        const c = cards[ci], p = pos === 0 ? 0 : pos === 1 ? 1 : -1;
+        c.style.zIndex = pos === 0 ? 3 : 1;
+        c.style.transform = dealt ? `translateX(${(p * off).toFixed(1)}px) translateY(${p ? 22 : 0}px) rotate(${p * 7}deg) scale(${p ? .86 : 1})`
+                                  : `translateY(120px) rotate(${(ci - 1) * 4}deg) scale(.8)`;
+        c.style.filter = dealt && p ? 'brightness(.55) saturate(.8)' : '';
+        if (pos) { c.classList.remove('flip'); c.setAttribute('aria-pressed', 'false'); }
+      });
+      dots.forEach((d, i) => d.classList.toggle('on', i === order[0]));
+    };
+    const bring = i => { if (order[1] === i) order = [order[1], order[2], order[0]]; else if (order[2] === i) order = [order[2], order[0], order[1]]; place(); };
+    // a tap on a card at the side brings it forward instead of flipping it
+    let swiped = false;
+    row.addEventListener('click', e => { const c = e.target.closest('.tc'); if (!c) return; const i = cards.indexOf(c);
+      if (swiped || i !== order[0]) { e.stopPropagation(); e.preventDefault(); if (!swiped) bring(i); } swiped = false; }, true);
+    let sx = 0, sy = 0;
+    row.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; swiped = false; }, { passive: true });
+    row.addEventListener('touchend', e => { const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { swiped = true; bring(dx < 0 ? order[1] : order[2]); } }, { passive: true });
+    place();
+    // deal the hand when it comes up the screen
+    const deal = () => { if (dealt) return; dealt = true; row.classList.add('dealt', 'dealing'); place(); setTimeout(() => row.classList.remove('dealing'), 1200); };
+    if ('IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { deal(); io.disconnect(); } }, { threshold: .3 }); io.observe(row); } else deal();
+    let lw = innerWidth; addEventListener('resize', () => { if (innerWidth !== lw) { lw = innerWidth; place(); } });
   }
 })();
 </script>
