@@ -938,7 +938,6 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   #selling-points .steps{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-20px;padding:2px 20px 6px;scroll-padding-inline:20px;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
   #selling-points .steps::-webkit-scrollbar{display:none}
   #selling-points .steps .sheet{flex:0 0 min(82%,380px);scroll-snap-align:start}
-  .js #selling-points .steps .reveal{opacity:1;transform:none;transition:none}
 }
 /* "How it works" is its own dark band so it stands out (colors flip for everything inside) */
 #selling-points{--paper:#0b0b0b;--paper-2:#161616;--paper-3:#202020;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;
