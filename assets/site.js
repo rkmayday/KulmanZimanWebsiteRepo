@@ -707,7 +707,7 @@ window.kzGmail = (to, subject = '', body = '') => {
     });
     el.addEventListener('pointerleave', () => { s.tx = 0; s.ty = 0; kick(); });
   };
-  document.querySelectorAll('.pkg, .sample, .box, .steps .sheet').forEach(el => { if (!el.closest('#selling-points')) add(el, 8, 2, true); });
+  document.querySelectorAll('.pkg, .box, .steps .sheet, .stat, .faq details').forEach(el => { if (!el.closest('#selling-points, #connections')) add(el, el.matches('.faq details') ? 3 : 8, el.matches('.faq details') ? 0 : 2, true); });
   document.querySelectorAll('.btn').forEach(el => add(el, 6, 0, false));
   let running = false;
   const kick = () => { if (!running) { running = true; requestAnimationFrame(tick); } };
@@ -720,4 +720,97 @@ window.kzGmail = (to, subject = '', body = '') => {
     });
     if (moving) requestAnimationFrame(tick); else running = false;
   };
+})();
+
+
+// Computers only: bigger 3D moments. Each one eases toward the cursor (no jumps) and settles back when the cursor leaves.
+(() => {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const all = (s, r = document) => [...r.querySelectorAll(s)];
+  const live = new Set(); let raf = 0;
+  const loop = () => { raf = 0; live.forEach(f => { if (!f()) live.delete(f); }); if (live.size) raf = requestAnimationFrame(loop); };
+  const run = f => { live.add(f); if (!raf) raf = requestAnimationFrame(loop); };
+  // tilt(el): el turns in 3D toward the cursor, with a glare; `layers` move by depth for parallax; `area` is what listens
+  const tilt = (el, o = {}) => {
+    const area = o.area || el, max = o.max || 8, layers = (o.layers || []).map(([s, d]) => [all(s, el), d]);
+    const glare = document.createElement('span'); glare.className = 'tilt-glare'; glare.setAttribute('aria-hidden', 'true'); el.append(glare);
+    el.classList.add('tilt3d');
+    let x = 0, y = 0, tx = 0, ty = 0, on = 0, ton = 0, t0 = performance.now();
+    const step = () => {
+      if (o.idle && !ton) { const s = (performance.now() - t0) / 1000; tx = Math.sin(s * .5) * .35; ty = Math.cos(s * .37) * .3; }
+      const damp = o.calm && o.calm() ? .3 : 1;
+      x += (tx * damp - x) * .09; y += (ty * damp - y) * .09; on += (ton - on) * .1;
+      el.style.transform = `perspective(${o.persp || 1100}px) rotateX(${(-y * max).toFixed(2)}deg) rotateY(${(x * max).toFixed(2)}deg) translateZ(0)`;
+      glare.style.setProperty('--gx', (50 + x * 50).toFixed(1) + '%'); glare.style.setProperty('--gy', (50 + y * 50).toFixed(1) + '%');
+      glare.style.opacity = (on * (o.glare ?? .9)).toFixed(3);
+      layers.forEach(([els, d]) => els.forEach(n => { n.style.translate = `${(x * d).toFixed(2)}px ${(y * d).toFixed(2)}px`; }));
+      const busy = o.idle || Math.abs(tx - x) > .002 || Math.abs(ty - y) > .002 || Math.abs(ton - on) > .01;
+      if (!busy && !ton) el.style.transform = '';
+      return busy;
+    };
+    area.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - .5) * 2));
+      ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - .5) * 2));
+      ton = 1; run(step);
+    });
+    area.addEventListener('pointerleave', () => { tx = 0; ty = 0; ton = 0; t0 = performance.now(); run(step); });
+    if (o.idle) run(step);
+  };
+
+  // Home and About: the brief form drifts with the cursor anywhere in its section, and floats gently on its own; calmer while typing
+  all('form.brief').forEach(f => {
+    const sec = f.closest('section'); if (!sec) return;
+    f.classList.add('drift');
+    tilt(f, { area: sec, max: 9, idle: true, glare: .7, layers: [['label, .btn, small', 6]], calm: () => f.contains(document.activeElement) });
+    const side = f.previousElementSibling;
+    if (side) tilt(side, { area: sec, max: 3, glare: 0, layers: [['h2', -10], ['.email-big', -6]] });
+  });
+
+  // About: the founder card in full 3D (portrait pops forward, text drifts behind it)
+  all('.founder').forEach(c => tilt(c, { max: 12, layers: [['.portrait', 14], ['h3', 8], ['.role, p', 4], ['.founder-foot', 10]] }));
+
+  // Portfolio: sample cards tilt, and the clip inside shifts against the card like a window
+  all('.sample').forEach(c => tilt(c, { max: 9, layers: [['.s-shot', -10], ['b', 6], ['em', 9]] }));
+
+  // Affiliates: the earnings calculator leans with the cursor (calmer while the slider is held)
+  all('.calc').forEach(c => {
+    let held = false; c.addEventListener('pointerdown', () => { held = true; }); addEventListener('pointerup', () => { held = false; });
+    tilt(c, { max: 5, glare: .6, layers: [['.out', 10]], calm: () => held });
+  });
+
+  // Pricing: the package folders turn in 3D toward the cursor, their sheets drift on their own depth, and the other packages step back
+  const fp = all('.fpkg');
+  fp.forEach(p => {
+    const f = p.querySelector('.folder'); if (!f) return;
+    tilt(f, { area: p, max: 14, persp: 900, layers: [['.f-sheets', 16], ['.f-front .pkg-price', 8], ['.f-front .eyebrow', 5]] });
+    p.addEventListener('pointerenter', () => fp.forEach(q => q.classList.toggle('dim', q !== p)));
+    p.addEventListener('pointerleave', () => fp.forEach(q => q.classList.remove('dim')));
+  });
+
+  // Pricing: one light sweeps across all six tool boxes; each box lights up by how close the cursor is, and its number floats
+  all('#connections .steps').forEach(g => {
+    const boxes = all('.sheet', g); boxes.forEach(b => b.classList.add('sweep'));
+    const st = boxes.map(b => ({ b, n: b.querySelector('.n'), x: 0, y: 0, tx: 0, ty: 0 }));
+    const step = () => {
+      let busy = false;
+      st.forEach(s => {
+        s.x += (s.tx - s.x) * .12; s.y += (s.ty - s.y) * .12;
+        if (Math.abs(s.tx - s.x) > .03 || Math.abs(s.ty - s.y) > .03) busy = true;
+        s.b.style.translate = `${s.x.toFixed(2)}px ${s.y.toFixed(2)}px`;
+        if (s.n) s.n.style.translate = `${(-s.x * 1.6).toFixed(2)}px ${(-s.y * 1.6).toFixed(2)}px`;
+      });
+      return busy;
+    };
+    g.addEventListener('pointermove', e => {
+      st.forEach(s => {
+        const r = s.b.getBoundingClientRect();
+        s.b.style.setProperty('--mx', (e.clientX - r.left) + 'px'); s.b.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy), k = Math.max(0, 1 - d / 420);
+        s.tx = dx / Math.max(1, d) * k * 7; s.ty = dy / Math.max(1, d) * k * 7 - k * 3;
+      });
+      g.classList.add('lit'); run(step);
+    });
+    g.addEventListener('pointerleave', () => { st.forEach(s => { s.tx = 0; s.ty = 0; }); g.classList.remove('lit'); run(step); });
+  });
 })();

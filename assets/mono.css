@@ -973,3 +973,35 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 .glow-card:hover::before,.glow-card:hover::after{opacity:1}
 .pkg.best.glow-card{--gs:rgba(255,255,255,.07);--ge:rgba(255,255,255,.6)}
+
+
+/* ===== bigger 3D moments (computers; site.js) ===== */
+.tilt3d{position:relative;will-change:transform}
+.tilt-glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:3;mix-blend-mode:soft-light;
+  background:radial-gradient(60% 60% at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.75),rgba(255,255,255,0) 70%)}
+.folder .tilt-glare{border-radius:18px;top:22%;mix-blend-mode:overlay}
+/* the brief form: a floating card with a soft shadow */
+form.brief.drift{box-shadow:0 30px 70px -30px rgba(0,0,0,.35),inset 0 0 0 1px var(--line)}
+/* pricing: the other packages step back while one is in focus */
+.fpkg{transition:opacity .45s var(--ease),scale .45s var(--ease),filter .45s var(--ease)}
+.fpkg.dim{opacity:.55;scale:.97;filter:saturate(.6)}
+/* pricing tools: a light that sweeps across the whole grid; borders light up near it */
+#connections .sheet.sweep{position:relative}
+#connections .sheet.sweep::before,#connections .sheet.sweep::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s}
+#connections .sheet.sweep::before{background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(10,10,10,.05),transparent 70%)}
+#connections .sheet.sweep::after{padding:1.5px;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(10,10,10,.7),transparent 70%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+#connections .steps.lit .sheet.sweep::before,#connections .steps.lit .sheet.sweep::after{opacity:1}
+/* affiliates: timeline numbers fill in on hover */
+.timeline li::before{transition:background .3s,color .3s,scale .35s var(--ease)}
+@media (hover:hover){.timeline li:hover::before{background:var(--ink);color:var(--paper);scale:1.12}}
+/* help: questions and filters respond a little */
+@media (hover:hover){.faq summary{transition:padding-left .3s var(--ease)}.faq details:hover summary{padding-left:28px}
+  .tab{transition:background .25s,color .25s,translate .3s var(--ease)}.tab:hover{translate:0 -2px}}
+
+/* About: everything below the page heading is dark */
+main:has(> #team) > section:not(.page-head){--paper:#0b0b0b;--paper-2:#141414;--paper-3:#1e1e1e;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;
+  background:radial-gradient(70% 60% at 15% 10%,rgba(255,255,255,.06),transparent 70%),radial-gradient(60% 60% at 90% 90%,rgba(255,255,255,.04),transparent 70%),#0b0b0b;color:var(--ink);border-top:0}
+main:has(> #team) > section.cta-final{background:radial-gradient(60% 70% at 85% 20%,rgba(255,255,255,.05),transparent 70%),#0e0e0e}
+main:has(> #team) .founder{background:#141414}
+main:has(> #team) form.brief.drift{box-shadow:0 30px 70px -30px rgba(0,0,0,.8),inset 0 0 0 1px var(--line-2)}
