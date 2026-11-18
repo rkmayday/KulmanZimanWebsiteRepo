@@ -382,9 +382,9 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     box-shadow:0 40px 90px -40px rgba(0,0,0,.85),inset 0 0 0 1px rgba(243,229,211,.08);margin-block:clamp(24px,6vh,70px)}
   #about .tc-head .statement{font-size:clamp(1.6rem,2.3vw,2.2rem)}
   #about .tc-head .er-links{margin-top:6px;flex-direction:column;gap:14px}
-  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;padding-block:30px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 94%,transparent)}
+  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;padding-block:30px;padding-right:44px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 calc(100% - 30px),transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 calc(100% - 30px),transparent)}
   #about .tc3.reel{display:flex;flex:none;gap:28px;will-change:transform;margin:0!important}
-  #about .tc3.reel .tc{flex:0 0 clamp(320px,26vw,400px);opacity:1;transform:none;transition:none}
+  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;transform:none;transition:none}
   #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
   #about .tc-count b{color:var(--fg);font-weight:500}
   #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
@@ -823,7 +823,10 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     const b = count.querySelector('b'), bar = count.querySelector('i');
     let travel = 0;
     // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
-    const measure = () => { travel = Math.max(0, cards[cards.length - 1].offsetLeft - cards[0].offsetLeft); run.style.height = Math.round(pin.offsetHeight + travel * 1.4) + 'px'; update(); };
+    // travel: how far the row must move for the first card to arrive fully in view at the left
+    const measure = () => { row.style.transform = 'none'; const cr = clip.getBoundingClientRect();
+      travel = Math.max(0, cr.left + cr.width * .08 - cards[0].getBoundingClientRect().left);
+      run.style.height = Math.round(pin.offsetHeight + Math.max(travel, innerHeight * .6) * 1.6) + 'px'; update(); };
     const update = () => {
       const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
       if (r.bottom < 0 || r.top > innerHeight) return;

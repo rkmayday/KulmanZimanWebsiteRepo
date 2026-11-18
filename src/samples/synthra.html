@@ -195,7 +195,12 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
   opacity:calc(1 - var(--op,0) * 1.4);transform:translateY(calc(var(--op,0) * -12vh)) scale(calc(1 + var(--op,0) * .08))}
 .sy-corner{position:absolute;bottom:clamp(20px,4vh,44px);font:500 12px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#d7deee;opacity:calc(1 - var(--op,0) * 2)}
 .sy-c1{left:max(22px,calc((100vw - 1180px) / 2 + 22px))}.sy-c2{right:max(22px,calc((100vw - 1180px) / 2 + 22px))}
-.sy-chapters{height:calc(330 * var(--vh, 1vh))}
+.sy-chapters{height:calc(420 * var(--vh, 1vh))}
+.sy-photos{position:absolute;inset:0;pointer-events:none}
+.sy-ph{position:absolute;inset:0;opacity:0;transform:scale(1.08);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1.6s cubic-bezier(.2,.8,.2,1)}
+.sy-ph.on{opacity:1;transform:none}
+.sy-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.sy-photos::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,transparent 40%,rgba(5,7,11,.6)),linear-gradient(180deg,rgba(5,7,11,.35),transparent 30%,transparent 55%,rgba(5,7,11,.8))}
 .sy-ch{position:absolute;left:max(22px,calc((100vw - 1180px) / 2 + 22px));bottom:clamp(28px,7vh,80px);width:min(560px,calc(100% - 44px));display:grid;gap:16px;
   opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .sy-ch.on{opacity:1;transform:none;pointer-events:auto}
@@ -236,6 +241,11 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
 </section>
 <section class="sy-chapters" id="sy-chapters" aria-label="What Synthra does" data-no-sw>
   <div class="sy-stick">
+    <div class="sy-photos" aria-hidden="true">
+    <picture class="sy-ph" data-ch="1"><source media="(max-aspect-ratio: 3/4)" srcset="{{ASSETS}}synthra/step-1-p.webp"><img src="{{ASSETS}}synthra/step-1.webp" alt="" decoding="async"></picture>
+    <picture class="sy-ph" data-ch="2"><source media="(max-aspect-ratio: 3/4)" srcset="{{ASSETS}}synthra/step-2-p.webp"><img src="{{ASSETS}}synthra/step-2.webp" alt="" decoding="async"></picture>
+    <picture class="sy-ph" data-ch="3"><source media="(max-aspect-ratio: 3/4)" srcset="{{ASSETS}}synthra/step-3-p.webp"><img src="{{ASSETS}}synthra/step-3.webp" alt="" decoding="async"></picture>
+    </div>
     <div class="sy-ch on" data-ch="0">
       <span class="k">AI agents for IT and operations</span>
       <h1>The busywork, <em>handled.</em></h1>
@@ -417,6 +427,11 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), sm = v => v * v * (3 - 2 * v);
   const phone = () => innerWidth <= 760;
   let lastCh = -1;
+  const photos = [...chs.querySelectorAll('.sy-ph')];
+  // a scroll stop in the middle of each of the three steps (smooth.js glides to it and holds)
+  chs.__refreshStop = () => { const top = chs.getBoundingClientRect().top + scrollY, run = chs.offsetHeight - innerHeight;
+    chs.dataset.stops = [1, 2, 3].map(i => Math.round(top + run * (i + .5) / items.length)).join(','); };
+  chs.__refreshStop();
   const up = () => {
     const ro = open.getBoundingClientRect(), op = reduce ? 1 : clamp(-ro.top / Math.max(1, ro.height - innerHeight * .6)), e = sm(op);
     const [t0, x0, b0] = phone() ? [36, 14, 16] : [32, 34, 14];
@@ -426,7 +441,7 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
     const rc = chs.getBoundingClientRect(), cp = clamp(-rc.top / Math.max(1, rc.height - innerHeight));
     chs.style.setProperty('--cp', cp.toFixed(4));
     const ch = Math.min(items.length - 1, Math.floor(cp * items.length * .999));
-    if (ch !== lastCh) { lastCh = ch; items.forEach((it, i) => it.classList.toggle('on', i === ch)); }
+    if (ch !== lastCh) { lastCh = ch; items.forEach((it, i) => it.classList.toggle('on', i === ch)); photos.forEach(ph => ph.classList.toggle('on', +ph.dataset.ch === ch)); }
     // once the chapters are over, the film dims a little behind the content
     film.style.setProperty('--dim', clamp((-rc.bottom + innerHeight) / innerHeight).toFixed(3));
   };
