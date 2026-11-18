@@ -455,9 +455,9 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
   const ftick = () => { fraf = 0; const d = fwant - fcur; fcur += Math.abs(d) < .05 ? d : d * .2; fseek(); if (Math.abs(fwant - fcur) > .05 || fly.seeking) fraf = requestAnimationFrame(ftick); };
   fly.addEventListener('seeked', () => { if (Math.abs(fwant - fcur) > .05 && !fraf) fraf = requestAnimationFrame(ftick); });
   fload(); addEventListener('resize', fload);
-  // a scroll stop in the middle of each of the three steps (smooth.js glides to it and holds)
+  // a scroll stop on the headline and in the middle of each of the three steps (smooth.js glides to it and holds)
   chs.__refreshStop = () => { const top = chs.getBoundingClientRect().top + scrollY, run = chs.offsetHeight - innerHeight;
-    chs.dataset.stops = [1, 2, 3].map(i => Math.round(top + run * (i + .5) / items.length)).join(','); };
+    chs.dataset.stops = [0, 1, 2, 3].map(i => Math.round(top + run * (i + .5) / items.length)).join(','); };
   chs.__refreshStop();
   const up = () => {
     const ro = open.getBoundingClientRect(), op = reduce ? 1 : clamp(-ro.top / Math.max(1, ro.height - innerHeight * .6)), e = sm(op);
@@ -471,7 +471,7 @@ body.has-film main .sec > .wrap::after{right:-1px;bottom:-1px;border-left:0;bord
     if (ch !== lastCh) { lastCh = ch; items.forEach((it, i) => it.classList.toggle('on', i === ch)); dst.textContent = '0' + ch; loc.textContent = places[ch]; }
     // the flight: frame from the scroll, the readout from how fast the ship is moving between two places
     const [fr, seg, u] = frameAt(cp); fwant = reduce ? KEYS[Math.max(1, Math.min(3, ch))][1] : fr; if (!fraf) fraf = requestAnimationFrame(ftick);
-    flyv.style.setProperty('--fo', clamp((cp - .1) / .07).toFixed(3));
+    flyv.style.setProperty('--fo', clamp((cp - .135) / .07).toFixed(3));
     const sp = seg >= 1 && seg <= 3 && u > 0 && u < 1 ? Math.pow(Math.sin(Math.PI * u), 2) : 0;
     stick.style.setProperty('--ws', sp.toFixed(3)); vel.textContent = Math.round(17500 + 62500 * sp).toLocaleString('en-US');
     // once the chapters are over, the film dims a little behind the content
