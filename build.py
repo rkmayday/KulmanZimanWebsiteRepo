@@ -478,7 +478,7 @@ def build(preview=False, theme="royal"):
         html = gmail_links(html)
         if th.get("strip_comments"):
             html = re.sub(r"<!--(?!\[).*?-->\n?", "", html, flags=re.S)
-        html = relativize(html) if preview else bust(html)
+        html = relativize(bust(html)) if preview else bust(html)   # the preview gets version tags too, so it never shows old cached files
         html = keep_title(html)
         # flat files: Vercel (cleanUrls), Netlify, Cloudflare Pages, GitHub Pages and Whop all serve
         # products.html at /products with no trailing slash
@@ -489,8 +489,7 @@ def build(preview=False, theme="royal"):
     # the four sample sites: standalone pages with their own branding
     for sp in sorted((SRC / "samples").glob("*.html")):
         html = gmail_links(sp.read_text().replace("{{HOME}}portfolio", "../portfolio.html" if preview else "/portfolio").replace("{{HOME}}", "../index.html" if preview else "/").replace("{{THREE}}", "{{ASSETS}}three.min.js").replace("{{ASSETS}}", "../assets/" if preview else "/assets/"))
-        if not preview:
-            html = bust(html)
+        html = bust(html)
         html = keep_title(html, icons_too=False)   # the demos keep their own icons
         out = out_dir / "samples" / sp.name
         out.parent.mkdir(parents=True, exist_ok=True)
