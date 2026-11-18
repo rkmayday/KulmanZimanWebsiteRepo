@@ -351,8 +351,27 @@ main .btn.ghost{background:transparent;color:var(--fg)}
 @media (prefers-reduced-motion:reduce){.sx-mask{scale:1}}
 
 </style>
+<style>
+/* ===== Ember: solid espresso panels over the coffee film (Facet uses glass; Ember is warm and solid) ===== */
+body.has-film{--film-scrim:linear-gradient(180deg,rgba(18,11,7,.35),transparent 30%,transparent 60%,rgba(18,11,7,.75))}
+body.has-film main .sec{padding-block:clamp(16px,3vw,36px)}
+body.has-film main .sec > .wrap,body.has-film .er-ritual .rt-pin{border-radius:36px}
+body.has-film main .sec:not(.er-ritual) > .wrap{background:#140c08;box-shadow:0 50px 100px -40px rgba(0,0,0,.85),inset 0 0 0 1px rgba(243,229,211,.08);padding-block:clamp(40px,6vw,80px);width:min(1180px,calc(100% - 24px))}
+body.has-film main .sec.dk > .wrap{background:#1c110b}
+body.has-film .er-ritual{background:transparent!important}
+body.has-film .er-ritual .rt-pin{background:#140c08}
+.er-hero h1{font-family:var(--display);font-weight:800;font-variation-settings:"SOFT" 100,"WONK" 1;font-size:clamp(3rem,7.4vw,7rem);letter-spacing:-.02em;line-height:1.02;padding-bottom:.1em;max-width:12ch;color:#f3e5d3}
+.er-hero h1 em{font-style:italic;color:var(--acc)}
+.er-hero .lede{color:#f0e2cf;text-shadow:0 2px 18px rgba(0,0,0,.9)}
+.er-hero .k{color:#f3e5d3;text-shadow:0 1px 10px rgba(0,0,0,.9)}
+.er-hero{position:relative}
+.er-hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(14,8,5,.75),rgba(14,8,5,.25) 55%,transparent)}
+@media (max-width:760px){.er-hero::before{background:linear-gradient(180deg,transparent 25%,rgba(14,8,5,.85) 70%)}.er-hero h1{font-size:clamp(2.6rem,12vw,3.6rem)}}
+.er-gap span{font-family:var(--display);font-weight:800;font-style:italic;font-variation-settings:"SOFT" 100,"WONK" 1;letter-spacing:-.01em;line-height:1.1;padding-bottom:.15em;mix-blend-mode:normal;color:#f3e5d3;
+  text-shadow:0 10px 40px rgba(0,0,0,.6);font-size:clamp(3rem,9vw,8.4rem)}
+</style>
 </head>
-<body id="top">
+<body id="top" class="has-film">
 <header class="nav"><div class="demo-strip"><span><b>Demo</b> · This is a one-page website, built by Ziman Sites for <b>$284</b></span><a href="{{HOME}}portfolio">← Back to Ziman Sites</a></div><div class="wrap nav-in">
   <a class="brand" href="#top" aria-label="Ember Roast home"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(28 50 50)"><path d="M50 8 A30 42 0 0 0 50 92 C60 70 40 30 50 8 Z" fill="#2b1a12"/><path d="M50 8 A30 42 0 0 1 50 92 C60 70 40 30 50 8 Z" fill="#c8743a"/></g></svg><span>Ember Roast</span></a>
   <nav aria-label="Main"><ul class="links"><li><a href="#about">Our roast</a></li><li><a href="#build">Build your drink</a></li><li><a href="#pricing">Subscriptions</a></li></ul></nav>
@@ -361,24 +380,17 @@ main .btn.ghost{background:transparent;color:var(--fg)}
 <nav class="drawer" aria-label="Mobile"><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a><a class="btn sm" href="#pricing">Order ahead</a></nav>
 
 <main>
-<section class="stage eh" aria-label="Ember Roast" data-hold=".81" data-stop=".81">
-  <div class="pin">
-    <div class="eh-words" aria-hidden="true"><span class="w1">Ember</span><span class="w2">Roast</span></div>
-    <div class="eh-win" aria-hidden="true">
-      <img class="eh-poster" src="{{ASSETS}}ember/poster.jpg" alt="" width="720" height="1280">
-      <canvas class="eh-cv"></canvas>
-      <span class="eh-tag">Shot 0412 · 18 g in · 36 g out</span>
-      <span class="eh-time"><b>00.0</b> s</span>
-    </div>
-    <div class="copy">
-      <span class="k">Neighbourhood coffee, roasted on site</span>
-      <h1>Your usual, <em>ready when you walk in.</em></h1>
-      <p class="lede">Small-batch coffee roasted every Tuesday, two doors down. Sit in with a pastry, or order ahead and skip the line.</p>
-      <div class="actions"><a class="btn" href="#pricing">Order ahead <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#build">Build your drink</a></div>
-    </div>
-    <div class="cue" aria-hidden="true"><span>Scroll to pull a shot</span><i></i></div>
+<div class="film" data-base="{{ASSETS}}ember/" data-n="370" data-sheet="10" data-sheet-tall="8" data-wide="sw/" data-tall="sp/" aria-hidden="true"></div>
+<section class="fl-hero er-hero" aria-label="Ember Roast">
+  <div class="wrap">
+    <span class="k fl-in">Neighbourhood coffee, roasted on site</span>
+    <h1 class="fl-in">Your usual, <em>ready when you walk in.</em></h1>
+    <p class="lede fl-in">Small-batch coffee roasted every Tuesday, two doors down. Sit in with a pastry, or order ahead and skip the line.</p>
+    <div class="actions fl-in"><a class="btn" href="#pricing">Order ahead <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a><a class="btn ghost" href="#build">Build your drink</a></div>
   </div>
+  <span class="fl-scroll" aria-hidden="true">Scroll</span>
 </section>
+<div class="fl-gap er-gap" aria-hidden="true"><span>Roasted Tuesday.</span></div>
 
 <section class="sec dk" id="about"><div class="wrap">
   <p class="statement rv">We roast on Tuesday and pour all week, <span>so the coffee in your cup is never more than a few days from the roaster.</span></p>
@@ -455,13 +467,7 @@ main .btn.ghost{background:transparent;color:var(--fg)}
   </div></div>
 </section>
 
-<section class="er-steam-sec" aria-label="Slow roasted">
-  <div class="sx-stage">
-    <video class="sx-vid" src="{{ASSETS}}ember/beans-top.mp4" poster="{{ASSETS}}ember/beans-top.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
-    <div class="sx-mask" aria-hidden="true"><span>Slow</span><span>roasted.</span></div>
-    <p class="sx-cap">Never rushed. Never stale. <b>Roasted every Tuesday since 2019.</b></p>
-  </div>
-</section>
+<div class="fl-gap er-gap" aria-hidden="true"><span>Pulled fresh.</span></div>
 
 <section class="sec" id="build"><div class="wrap">
   <div class="head"><span class="k">Build your drink</span><h2>Make it <em>exactly</em> how you like it.</h2><p class="lede">Choose a drink, your milk and a size. Watch it come together, then add it to your order.</p></div>
@@ -483,6 +489,7 @@ main .btn.ghost{background:transparent;color:var(--fg)}
 </div></section>
 
 
+<div class="fl-gap er-gap" aria-hidden="true"><span>Poured by hand.</span></div>
 <section class="sec dk" id="pricing"><div class="wrap">
   <div class="head rv"><span class="k">Pricing</span><h2>Fresh beans, <em>at your door.</em></h2></div>
   <div class="tiers" data-stagger><div class="tier"><span class="k">Every two weeks</span><div class="price">$18<small> /bag</small></div><ul><li>One 250 g bag</li><li>Roaster’s choice</li><li>Free local delivery</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div><div class="tier best"><span class="er-stamp">Best value</span><span class="k">Weekly</span><div class="price">$16<small> /bag</small></div><ul><li>One 250 g bag a week</li><li>Tasting notes card</li><li>10% off in the shop</li></ul><a class="btn sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div><div class="tier"><span class="k">Office</span><div class="price">$70<small> /week</small></div><ul><li>2 kg of whole bean</li><li>Brew guide for your machine</li><li>Quarterly cupping</li></ul><a class="btn ghost sm" href="#top" data-toast="Sample site: sign-up is not live.">Subscribe</a></div></div>
@@ -506,6 +513,7 @@ main .btn.ghost{background:transparent;color:var(--fg)}
   <nav><a href="#about">Our roast</a><a href="#build">Build your drink</a><a href="#pricing">Subscriptions</a></nav><span>© 2026 Ember Roast (fictional)</span></div></footer>
 
 <script src="{{ASSETS}}sample2.js" defer></script>
+<script src="{{ASSETS}}film.js" defer></script>
 <script src="{{ASSETS}}smooth.js" defer></script>
 
 
