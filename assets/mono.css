@@ -1340,3 +1340,14 @@ main:has(> #team) > #team .founder{--paper:#0b0b0b;--paper-2:#141414;--paper-3:#
 main:has(> #team) > #contact{overflow:hidden}
 /* Portfolio: the two links at the bottom are solid buttons */
 .proof-links a{background:var(--paper)}
+
+/* Affiliates: the dot sphere on the bottom of the page, scattered at first and formed by the time you reach it */
+.has-pfield-abs > .pfield.af-sphere{inset:auto 0 0 0;height:min(460px,60vh)}
+main:has(.af-sphere) > section:last-of-type{overflow:hidden}
+
+/* glossy chrome symbols beside the section labels (they replace the little square dot) */
+.eyebrow.eb-has{display:inline-flex;align-items:center;gap:10px}
+.eyebrow.eb-has::before{display:none}
+.eb-ico{width:44px;height:44px;flex:none;object-fit:contain;margin:-12px 0 -12px -6px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.22));transition:transform .5s cubic-bezier(.2,1.4,.4,1)}
+@media (hover:hover){.section-head:hover .eb-ico,.eyebrow.eb-has:hover .eb-ico,.ps-ch:hover .eb-ico{transform:rotate(-10deg) scale(1.12)}}
+@media (max-width:640px){.eb-ico{width:36px;height:36px;margin:-10px 0 -10px -5px}}
