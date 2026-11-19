@@ -81,7 +81,7 @@
     const frame = now => {
       raf = 0; if (!vis) return;
       const r = sec.getBoundingClientRect();
-      U.uGather.value = shape === 'helix' ? 1 : clamp((innerHeight - r.top) / (innerHeight * .55));   // the How it works helix is always fully formed
+      U.uGather.value = shape === 'helix' || shape === 'ring' ? 1 : clamp((innerHeight - r.top) / (innerHeight * .55));   // the How it works helix is always fully formed
       const t = (now - t0) / 1000; U.uTime.value = t;
       smx += (mx - smx) * .04; smy += (my - smy) * .04;
       const wide = W > 760, x = !wide || side === 'center' ? 0 : side === 'right' ? 34 : -34;
