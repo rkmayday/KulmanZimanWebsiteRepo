@@ -1306,7 +1306,6 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 .rz-ring{display:none}
 @media (min-width:1200px) and (hover:hover) and (pointer:fine){
   main.rz > section > .pfield.rz-ring{display:block;inset:0;z-index:0;overflow:hidden}
-  main.rz > section.has-pfield-abs{overflow:hidden}
 }
 
 /* a little easter egg: the signature under the home quote opens Ryder's profile */
@@ -1329,7 +1328,6 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 
 /* Portfolio: the ring on the bottom of the page (black on white), scattered at first and formed by the time you reach it */
 #proof > .pfield.pf-ring{inset:auto 0 0 0;height:min(460px,60vh)}
-#proof{overflow:hidden}
 /* About: "Meet the founder" sits on the site's light grey (no dark lined backdrop); the founder card itself stays dark */
 main:has(> #team) > #team{--paper:#ffffff;--paper-2:#f6f6f4;--paper-3:#efefec;--ink:#0a0a0a;--ink-2:#3a3a3a;--ink-3:#6b6b6b;--ink-4:#9a9a9a;--line:#e6e6e3;--line-2:#d4d4d0;
   background:var(--paper-2);color:var(--ink)}
@@ -1337,13 +1335,11 @@ main:has(> #team) > #team .founder{--paper:#0b0b0b;--paper-2:#141414;--paper-3:#
 
 /* About: the dot sphere on the bottom of the page (black on white), scattered at first and formed by the time you reach it */
 #contact > .pfield.ab-sphere{inset:auto 0 0 0;height:min(460px,60vh)}
-main:has(> #team) > #contact{overflow:hidden}
 /* Portfolio: the two links at the bottom are solid buttons */
 .proof-links a{background:var(--paper)}
 
 /* Affiliates: the dot sphere on the bottom of the page, scattered at first and formed by the time you reach it */
 .has-pfield-abs > .pfield.af-sphere{inset:auto 0 0 0;height:min(460px,60vh)}
-main:has(.af-sphere) > section:last-of-type{overflow:hidden}
 
 /* glossy chrome symbols beside the section labels (they replace the little square dot) */
 .eyebrow.eb-has{display:inline-flex;align-items:center;gap:10px}
