@@ -15,3 +15,9 @@
   Its background is `assets/needle-field.js` (still in the repo).
 - To bring it back: move the file back to `src/pages/`, and put this back in the footer in `build.py`, right after the Founder list:
   `<h4 style="margin-top:22px">Head of Sales</h4><ul><li><a href="/maximzhukovski">Maxim Zhukovski</a></li></ul>`
+
+## IndexNow (tells Bing, Yahoo, DuckDuckGo and others when pages change)
+- Key file: `static/3cc1daffabac516715d3bfad158291d7.txt` (served at https://zimansites.com/3cc1daffabac516715d3bfad158291d7.txt).
+- After a deploy that changes pages, ping them from the project folder:
+  `curl -X POST https://api.indexnow.org/indexnow -H "Content-Type: application/json; charset=utf-8" --data @indexnow.json`
+  (a 200 or 202 answer means it was accepted; add any new page addresses to indexnow.json first).
