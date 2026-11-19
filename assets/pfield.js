@@ -27,7 +27,7 @@
       P.push(x, y * Math.cos(tilt) - z * Math.sin(tilt), y * Math.sin(tilt) + z * Math.cos(tilt)); } },
     fireflies: (N, P, rnd) => { const e = 40; for (let t = 0; t < N; t++) P.push((rnd() - .5) * e * 2.4, (rnd() - .5) * e, (rnd() - .5) * e * 1.6); },
   };
-  const COUNT = { helix: phone ? 1600 : 3200, cube: phone ? 1728 : 4096, nebula: phone ? 3500 : 9000, fireflies: phone ? 500 : 1100, ring: 14000 };
+  const COUNT = { helix: phone ? 1600 : 3200, cube: phone ? 1728 : 4096, nebula: phone ? 3500 : 9000, fireflies: phone ? 500 : 1100, ring: phone ? 6000 : 14000 };
 
   const VS = `
     attribute vec3 aS; attribute float aR;
@@ -81,7 +81,7 @@
     const frame = now => {
       raf = 0; if (!vis) return;
       const r = sec.getBoundingClientRect();
-      U.uGather.value = shape === 'helix' || shape === 'ring' ? 1 : clamp((innerHeight - r.top) / (innerHeight * .55));   // the How it works helix is always fully formed
+      U.uGather.value = (shape === 'helix' || shape === 'ring') && el.dataset.gather !== 'scroll' ? 1 : clamp((innerHeight - r.top) / (innerHeight * .55));   // the How it works helix is always fully formed
       const t = (now - t0) / 1000; U.uTime.value = t;
       smx += (mx - smx) * .04; smy += (my - smy) * .04;
       const wide = W > 760, x = !wide || side === 'center' ? 0 : side === 'right' ? 34 : -34;
