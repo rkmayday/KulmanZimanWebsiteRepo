@@ -829,6 +829,12 @@ window.kzGmail = (to, subject = '', body = '') => {
     addEventListener('pointermove', e => { const on = !(e.target.closest && e.target.closest('footer, .nav'));   // not over the footer or the top bar
       lit.style.setProperty('--lx', e.clientX + 'px'); lit.style.setProperty('--ly', e.clientY + 'px'); lit.style.setProperty('--lo', on ? 1 : 0); }, { passive: true });
     document.addEventListener('pointerleave', () => lit.style.setProperty('--lo', 0));
+    // the glow is a layer over the whole screen: clip it to the part of the page that is on screen, so it never spills
+    // onto the top bar or the footer, even when the cursor is close to them
+    const main = lit.closest('main'), nav = document.querySelector('.nav');
+    const clip = () => { const r = main.getBoundingClientRect(), top = Math.max(r.top, nav ? nav.getBoundingClientRect().bottom : 0), bot = Math.max(0, innerHeight - r.bottom);
+      lit.style.clipPath = `inset(${Math.max(0, top).toFixed(0)}px 0 ${bot.toFixed(0)}px 0)`; };
+    addEventListener('scroll', clip, { passive: true }); addEventListener('resize', clip); addEventListener('pointermove', clip, { passive: true }); clip();
   }
 
   // About: the founder card in full 3D (portrait pops forward, text drifts behind it)
