@@ -110,7 +110,7 @@
     cp = clamp(-r.top / Math.max(1, r.height - innerHeight));
     const enter = clamp((innerHeight - r.top) / innerHeight);                 // 0 → 1 as the stage comes up the screen
     U.uGather.value = sm(clamp(enter * 1.15 - .1)) ;
-    U.uMorph.value = clamp((cp - .2) / .6);                                  // sphere → ring between the two chapters
+    U.uMorph.value = clamp(cp);                                              // sphere → ring across the whole scroll between the two stops (no dead scroll)
     const ch = cp < .5 ? 0 : 1;
     if (ch !== last) { last = ch; chs.forEach((c, i) => c.classList.toggle('on', i === ch)); }
     stage.style.setProperty('--cp', cp.toFixed(4));
