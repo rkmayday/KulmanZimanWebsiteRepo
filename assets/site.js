@@ -826,7 +826,8 @@ window.kzGmail = (to, subject = '', body = '') => {
   all('main.rz .profile-card .portrait.big').forEach(ph => tilt(ph, { max: 9, glare: .6 }));   // still until the cursor is on the photo itself
   const lit = document.querySelector('main.rz .rz-lit');
   if (lit) {
-    addEventListener('pointermove', e => { lit.style.setProperty('--lx', e.clientX + 'px'); lit.style.setProperty('--ly', e.clientY + 'px'); lit.style.setProperty('--lo', 1); }, { passive: true });
+    addEventListener('pointermove', e => { const on = !(e.target.closest && e.target.closest('footer, .nav'));   // not over the footer or the top bar
+      lit.style.setProperty('--lx', e.clientX + 'px'); lit.style.setProperty('--ly', e.clientY + 'px'); lit.style.setProperty('--lo', on ? 1 : 0); }, { passive: true });
     document.addEventListener('pointerleave', () => lit.style.setProperty('--lo', 0));
   }
 

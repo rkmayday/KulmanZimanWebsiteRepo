@@ -1334,3 +1334,9 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
 main:has(> #team) > #team{--paper:#ffffff;--paper-2:#f6f6f4;--paper-3:#efefec;--ink:#0a0a0a;--ink-2:#3a3a3a;--ink-3:#6b6b6b;--ink-4:#9a9a9a;--line:#e6e6e3;--line-2:#d4d4d0;
   background:var(--paper-2);color:var(--ink)}
 main:has(> #team) > #team .founder{--paper:#0b0b0b;--paper-2:#141414;--paper-3:#1e1e1e;--ink:#ffffff;--ink-2:#d2d2d2;--ink-3:#9c9c9c;--ink-4:#6e6e6e;--line:#262626;--line-2:#343434;color:var(--ink)}
+
+/* About: the dot sphere on the bottom of the page (black on white), scattered at first and formed by the time you reach it */
+#contact > .pfield.ab-sphere{inset:auto 0 0 0;height:min(460px,60vh)}
+main:has(> #team) > #contact{overflow:hidden}
+/* Portfolio: the two links at the bottom are solid buttons */
+.proof-links a{background:var(--paper)}
