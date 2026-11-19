@@ -107,7 +107,9 @@
     return [x, y, s]; };
   const read = () => {
     const r = stage.getBoundingClientRect(); vis = r.bottom > 0 && r.top < innerHeight;
-    cp = clamp(-r.top / Math.max(1, r.height - innerHeight));
+    // progress from the mission stop (stage pinned under the top bar) to the packages stop (end of the pin): no dead scroll at either end
+    const pt = parseFloat(getComputedStyle(pin).top) || 0;
+    cp = clamp((pt - r.top) / Math.max(1, r.height - innerHeight + pt));
     const enter = clamp((innerHeight - r.top) / innerHeight);                 // 0 → 1 as the stage comes up the screen
     U.uGather.value = sm(clamp(enter * 1.15 - .1)) ;
     U.uMorph.value = clamp(cp);                                              // sphere → ring across the whole scroll between the two stops (no dead scroll)
