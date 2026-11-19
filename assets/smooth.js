@@ -50,12 +50,21 @@
   let target = scrollY, cur = scrollY, raf = 0, last = 0, held = false, heldUntil = 0, lastAbs = 0, lastWheel = 0;
 
   const max = () => root.scrollHeight - innerHeight;
+  const glideCap = () => {
+    for (const el of document.querySelectorAll('[data-glide][data-stops]')) {
+      const s = el.dataset.stops.split(',').map(Number), lo = Math.min(...s), hi = Math.max(...s);
+      if (cur > lo - 1 && cur < hi + 1 && target > lo - 1 && target < hi + 1) return +el.dataset.glide;
+    }
+    return 0; };
   let lastSet = scrollY;
   const go = y => { lastSet = y; scrollTo({ top: y, behavior: 'instant' }); };
 
   function frame(t) {
     const dt = last ? Math.min(50, t - last) : 16.7; last = t;
-    cur += (target - cur) * (1 - Math.pow(1 - EASE, dt / 16.7));   // same feel at 60 Hz and 120 Hz
+    let step = (target - cur) * (1 - Math.pow(1 - EASE, dt / 16.7));   // same feel at 60 Hz and 120 Hz
+    // inside a stage with data-glide (px per second), the page glides no faster than that, so its animation can be seen
+    const g = glideCap(); if (g) step = Math.sign(step) * Math.min(Math.abs(step), g * dt / 1000);
+    cur += step;
     if (Math.abs(target - cur) < .5) { cur = target; raf = 0; last = 0; } else raf = requestAnimationFrame(frame);
     go(Math.round(cur * 2) / 2);
   }
@@ -91,9 +100,10 @@
     target = Math.max(0, Math.min(max(), target + dy * SPEED));
     // stop points: one scroll plays an opening animation and stops when it is done, instead of flying past it;
     // stepped sections (the Portfolio stack slider) stop at every slide, in both directions
+    // (a step that lands just short of a stop still counts: the next step stops there instead of skipping it)
     const list = stops();
-    if (dy > 0) { const o = list.find(o => from < o.y - 2 && target > o.y); if (o) { target = o.y; held = true; heldUntil = now + 6000; } }
-    else { const o = [...list].reverse().find(o => o.up && from > o.y + 2 && target < o.y); if (o) { target = o.y; held = true; heldUntil = now + 6000; } }
+    if (dy > 0) { const o = list.find(o => from < o.y - .01 && target >= o.y); if (o) { target = o.y; held = true; heldUntil = now + 6000; } }
+    else { const o = [...list].reverse().find(o => o.up && from > o.y + .01 && target <= o.y); if (o) { target = o.y; held = true; heldUntil = now + 6000; } }
     if (!raf) raf = requestAnimationFrame(frame);
   }, { passive: false });
 
