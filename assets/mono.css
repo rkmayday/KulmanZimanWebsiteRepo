@@ -1225,8 +1225,6 @@ main.rz .btn.btn-linkedin:active{transform:translateY(1px) scale(.98)}
 .ps-chs{position:relative;z-index:1;height:100%}
 .ps-ch{position:absolute;left:0;top:50%;width:min(620px,52%);transform:translateY(-40%);opacity:0;transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);pointer-events:none;display:grid;gap:18px}
 .ps-ch.on{opacity:1;transform:translateY(-50%);pointer-events:auto}
-/* with the shape running, the script sets how clear each chapter is (it fades out whenever the shape comes near it) */
-.ps-live .ps-ch{transition:transform .9s cubic-bezier(.2,.8,.2,1)}
 .ps-c1{left:auto;right:0}
 
 .ps-ch .lede{max-width:46ch}

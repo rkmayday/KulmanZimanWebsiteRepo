@@ -93,6 +93,8 @@
     // (trackpad momentum only ever slows down, so a clearly stronger push is a new swipe; small jitters are not)
     // a mouse-wheel click moves in fixed steps (100 or 120); trackpad momentum is a smooth run of uneven values
     const notch = e.deltaMode !== 0 || (Number.isInteger(e.deltaY) && abs >= 100 && (abs % 100 === 0 || abs % 120 === 0));
+    // a stop holds until the page has actually glided all the way to it: swipes before that never carry past it
+    if (held && raf && Math.abs(target - cur) > 2) { lastAbs = Math.min(lastAbs || abs, abs); return; }
     if (held) { const fresh = gap > 320 || (abs > lastAbs * 2 + 12 && abs > 24) || (notch && gap > 100) || now > heldUntil; lastAbs = Math.min(lastAbs || abs, abs); if (!fresh) return; held = false; }
     lastAbs = abs;
     if (!raf) { cur = target = scrollY; }

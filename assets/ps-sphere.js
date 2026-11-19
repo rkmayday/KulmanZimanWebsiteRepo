@@ -13,7 +13,6 @@
   try { const c = document.createElement('canvas'); gl = !reduce && T && (c.getContext('webgl2') || c.getContext('webgl')); } catch (e) {}
   if (!gl) { stage.classList.add('ps-flat'); chs.forEach(c => c.classList.add('on')); return; }
   stage.classList.add('ps-live');
-  chs.forEach(c => { c.style.opacity = 0; });   // the shape decides when the words show (see "keeping the shape off the words")
 
   // ---------- the particles ----------
   const phone = matchMedia('(max-width: 760px)').matches;
@@ -80,43 +79,30 @@
   size(); addEventListener('resize', () => { size(); kick(); });
 
   // ---------- scroll: chapters, gather, morph ----------
-  let cp = 0, last = -1, cur = 0, mx = 0, my = 0, tmx = 0, tmy = 0, vis = false, raf = 0, t0 = performance.now();
-
-  // ---------- keeping the shape off the words ----------
-  // The shape never touches the words: at rest it is moved (and shrunk if it has to be) until it clears them by a gap,
-  // and while it is anywhere near them (gathering out of the dust, or bursting as it turns into the ring) they fade out.
-  const D = 120, TF = Math.tan(18 * Math.PI / 180), GAP = phone ? 26 : 48, fadeIn = chs.map(() => 0);
-  const ppu = () => H / (2 * D * TF);                                         // pixels per world unit, on the shape's plane
-  // a ball of radius R (world units) centred at (x, y): where it lands on screen, as an ellipse in pixels
+  let cp = 0, last = -1, mx = 0, my = 0, tmx = 0, tmy = 0, vis = false, raf = 0, t0 = performance.now();
+  // keep the shape off the words: at rest it is moved (and shrunk if it has to be) until it clears them by a gap
+  const D = 120, TF = Math.tan(18 * Math.PI / 180), GAP = phone ? 26 : 48;
+  const ppu = () => H / (2 * D * TF);
   const ball = (x, y, R) => { const p = ppu();
-    const span = c => { const dist = Math.hypot(c, D), b = Math.asin(Math.min(.98, R / dist)), a = Math.atan(c / D); return [D * Math.tan(Math.max(-1.5, a - b)), D * Math.tan(Math.min(1.5, a + b))]; };   // a huge ball (the dust) fills the screen
+    const span = c => { const dist = Math.hypot(c, D), b = Math.asin(Math.min(.98, R / dist)), a = Math.atan(c / D); return [D * Math.tan(Math.max(-1.5, a - b)), D * Math.tan(Math.min(1.5, a + b))]; };
     const [x0, x1] = span(x), [y0, y1] = span(y);
     return { cx: W / 2 + (x0 + x1) / 2 * p, cy: H / 2 - (y0 + y1) / 2 * p, a: (x1 - x0) / 2 * p, b: (y1 - y0) / 2 * p }; };
-  // the space between that ellipse and a box of words, in pixels (below zero: they overlap)
-  const gapTo = (e, r) => { const px = clamp(e.cx, r.l, r.r), py = clamp(e.cy, r.t, r.b), vx = px - e.cx, vy = py - e.cy, d = Math.hypot(vx, vy);
-    if (d < .5) return -Math.min(e.a, e.b);
-    return d - 1 / Math.hypot(vx / d / e.a, vy / d / e.b); };
-  // the box the words (and the icon and signature) actually take up, not the full width of their column
+  // the box the words, icon and signature actually take up
   const inked = ch => { const P = pin.getBoundingClientRect(), r = { l: 1e9, t: 1e9, r: -1e9, b: -1e9 }, add = q => { if (!q.width || !q.height) return;
       r.l = Math.min(r.l, q.left - P.left); r.r = Math.max(r.r, q.right - P.left); r.t = Math.min(r.t, q.top - P.top); r.b = Math.max(r.b, q.bottom - P.top); };
     const w = document.createTreeWalker(ch, NodeFilter.SHOW_TEXT), rg = document.createRange();
     for (let n = w.nextNode(); n; n = w.nextNode()) if (n.nodeValue.trim()) { rg.selectNodeContents(n); add(rg.getBoundingClientRect()); }
     ch.querySelectorAll('img').forEach(i => add(i.getBoundingClientRect()));
     return r; };
-  // where the shape rests for chapter i (x, y in world units, and a scale), so it clears that chapter's words
   const rest = (i, r, wide, R) => {
     let x = wide ? (i ? -36 : 30) : 0, y = wide ? 0 : 16, s = wide ? 1 : .78; const p = ppu();
+    if (r.r < r.l) return [x, y, s];
     for (let n = 0; n < 16; n++) {
       const e = ball(x, y, R * s);
-      if (wide) {   // words on one side: push the shape out the other side; past half off the screen, shrink it instead
-        const over = i ? (e.cx + e.a) - (r.l - GAP) : (r.r + GAP) - (e.cx - e.a); if (over <= .5) break;
-        x += (i ? -1 : 1) * over / p;
-        const c = ball(x, y, R * s).cx; if (i ? c < 0 : c > W) { x = (i ? -W / 2 : W / 2) / p; s *= .92; }
-      } else {      // phones: words below, so push the shape up; past a third of the way up, shrink it instead
-        const over = (e.cy + e.b) - (r.t - GAP); if (over <= .5) break;
-        y += over / p;
-        const c = ball(x, y, R * s).cy; if (c < H * .3) { y = (H / 2 - H * .3) / p; s *= .92; }
-      }
+      if (wide) { const over = i ? (e.cx + e.a) - (r.l - GAP) : (r.r + GAP) - (e.cx - e.a); if (over <= .5) break;
+        x += (i ? -1 : 1) * over / p; const c = ball(x, y, R * s).cx; if (i ? c < 0 : c > W) { x = (i ? -W / 2 : W / 2) / p; s *= .92; } }
+      else { const over = (e.cy + e.b) - (r.t - GAP); if (over <= .5) break;
+        y += over / p; const c = ball(x, y, R * s).cy; if (c < H * .3) { y = (H / 2 - H * .3) / p; s *= .92; } }
     }
     return [x, y, s]; };
   const read = () => {
@@ -127,7 +113,6 @@
     U.uMorph.value = clamp((cp - .2) / .6);                                  // sphere → ring between the two chapters
     const ch = cp < .5 ? 0 : 1;
     if (ch !== last) { last = ch; chs.forEach((c, i) => c.classList.toggle('on', i === ch)); }
-    cur = ch;
     stage.style.setProperty('--cp', cp.toFixed(4));
     kick();
   };
@@ -135,24 +120,12 @@
     raf = 0; if (!vis) return;
     const t = (now - t0) / 1000; U.uTime.value = t;
     mx += (tmx - mx) * .05; my += (tmy - my) * .05;
-    // where the shape sits: to the right of the words on wide screens, above them on phones; it drifts with the chapter,
-    // and each resting place clears that chapter's words
-    const wide = W > 760, m = sm(U.uMorph.value), k = m, boxes = chs.map(inked);
-    const [x0, y0, s0] = rest(0, boxes[0], wide, 31.5), [x1, y1, s1] = rest(1, boxes[1], wide, 36);
-    const px = x0 + (x1 - x0) * k, py = y0 + (y1 - y0) * k;
-    group.position.set(px, py, 0);
+    // where the shape sits: to the right of the words on wide screens, above them on phones; it drifts with the chapter
+    const wide = W > 760, k = sm(U.uMorph.value);
+    const [x0, y0, s0] = rest(0, inked(chs[0]), wide, 31.5), [x1, y1, s1] = rest(1, inked(chs[1]), wide, 36);
+    group.position.set(x0 + (x1 - x0) * k, y0 + (y1 - y0) * k, 0);
     group.rotation.set(.35 + my * .25 + k * .25, t * .12 + mx * .4, .1 - k * .2);
     const s = (s0 + (s1 - s0) * k) * (1 - (1 - U.uGather.value) * .15); group.scale.setScalar(s);
-    // how far out any point can be right now (the same sums the graphics card does): the dust it gathers out of,
-    // the burst as it changes shape, and the drift; the words fade out as that comes near them, and back in when it is clear
-    const gl = clamp(U.uGather.value * 1.25 - .25), gmin = gl * gl * (3 - 2 * gl);
-    const Rs = 30 + 4.5 * m + Math.sin(Math.PI * m) * 22 + 1.5, Rb = (1 - gmin) * 150 + gmin * Rs + .25 + (1 - gmin) * 2;
-    const e = ball(px, py, Rb * s);
-    chs.forEach((c, i) => {
-      fadeIn[i] += ((i === cur ? 1 : 0) - fadeIn[i]) * .1;
-      const o = fadeIn[i] * clamp((gapTo(e, boxes[i]) - 8) / (GAP - 12));
-      c.style.opacity = o < .005 ? 0 : o.toFixed(3); c.style.pointerEvents = o > .5 ? 'auto' : 'none';
-    });
     renderer.render(scene, cam);
     raf = requestAnimationFrame(frame);
   };
