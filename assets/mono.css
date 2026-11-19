@@ -1321,3 +1321,8 @@ main.rz .btn.btn-linkedin .li-badge svg{width:32px;height:32px;flex:none}
   /* the two boxes let the ring show through, softly blurred */
   main.rz > section.has-pfield-abs .box{background:rgba(22,22,22,.28);-webkit-backdrop-filter:blur(3.5px);backdrop-filter:blur(3.5px)}
 }
+
+/* Portfolio: the nebula sits in the empty space beside "A homepage, built in seconds", clear of the demo browser */
+.build-wrap > .pfield[data-mode="abs"]{inset:-70px 0 auto 56%;height:380px}
+/* Affiliates: the swarm stays in the empty space beside "Your only job is bringing us customers" */
+.has-pfield-abs > .pfield.af-field{inset:0 0 auto 52%;height:min(430px,48%)}

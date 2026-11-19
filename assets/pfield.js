@@ -37,7 +37,8 @@
       float g = smoothstep(0.0, 1.0, clamp(uGather * 1.3 - aR * 0.3, 0.0, 1.0));
       vec3 p = mix(aS, position, g);
       // fireflies keep drifting; the others breathe a little
-      p += vec3(sin(uTime * (.4 + aR) + aR * 50.0), cos(uTime * (.35 + aR * .8) + aR * 40.0), sin(uTime * .3 + aR * 20.0)) * (0.25 + uFly * 3.0 + (1.0 - g) * 2.0);
+      float sp = 1.0 - uFly * 0.82;   // fireflies: a slow, calm drift
+      p += vec3(sin(uTime * sp * (.4 + aR) + aR * 50.0), cos(uTime * sp * (.35 + aR * .8) + aR * 40.0), sin(uTime * sp * .3 + aR * 20.0)) * (0.25 + uFly * 1.1 + (1.0 - g) * 2.0);
       vec4 mv = modelViewMatrix * vec4(p, 1.0);
       gl_Position = projectionMatrix * mv;
       float depth = clamp((-mv.z - 60.0) / 80.0, 0.0, 1.0);
@@ -96,7 +97,7 @@
         const top = Math.max(r.top, 0), bot = Math.min(r.bottom, innerHeight), half = 130 * Math.tan(18 * Math.PI / 180);
         group.position.y = (innerHeight / 2 - (top + bot) / 2) / (innerHeight / 2) * half;
         group.scale.multiplyScalar(Math.min(1, Math.max(.35, (r.bottom - r.top) / innerHeight * 1.25)));
-        } else { group.scale.multiplyScalar(shape === 'ring' ? (el.dataset.anchor === 'bottom' ? 2.9 : 1.05) : Math.min(.72, H / 720)); if (wide && side === 'right') group.position.x = 46;
+        } else { group.scale.multiplyScalar((shape === 'ring' ? (el.dataset.anchor === 'bottom' ? 2.9 : 1.05) : Math.min(.72, H / 720)) * (+el.dataset.scale || 1)); if (wide && side === 'right') group.position.x = 46;
           // data-anchor="bottom": the shape sits on the bottom edge of its box, so its lower half is cut off
           if (el.dataset.anchor === 'bottom') group.position.y = -130 * Math.tan(18 * Math.PI / 180); }
       }
