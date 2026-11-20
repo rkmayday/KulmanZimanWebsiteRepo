@@ -66,9 +66,10 @@ a{color:inherit;text-decoration:none}
 .strip{position:relative;margin-top:clamp(60px,8vw,96px);height:clamp(380px,46vw,560px);perspective:1400px;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .strip .belt{position:absolute;left:0;top:0;display:flex;gap:22px;height:100%;align-items:center;will-change:transform}
+.clip{will-change:transform,opacity;backface-visibility:hidden}
 .clip{position:relative;flex:none;width:clamp(190px,19vw,260px);aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:var(--k2);transform-style:preserve-3d;transition:box-shadow .3s;
   box-shadow:0 0 0 1px rgba(255,255,255,.08),0 30px 60px -30px #000}
-.clip .bg{position:absolute;inset:-25%;background-size:cover;background-position:center;filter:blur(22px) saturate(1.3) brightness(.5)}
+.clip .bg{position:absolute;inset:0;background-size:cover;background-position:center}
 .clip .lg{position:absolute;left:50%;top:42%;width:44%;transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 14px 40px rgba(0,0,0,.6)}
 .clip .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5),transparent 25%,transparent 55%,rgba(0,0,0,.9))}
 .clip .hd{position:absolute;left:12px;right:12px;top:12px;display:flex;align-items:center;gap:8px;font:600 .74rem var(--body)}
@@ -76,7 +77,7 @@ a{color:inherit;text-decoration:none}
 .clip .ft{position:absolute;left:14px;right:14px;bottom:14px;text-align:left}
 .clip .ft b{display:block;font:900 1.05rem/1 var(--disp);font-style:italic;font-stretch:115%;text-transform:uppercase}
 .clip .ft span{display:inline-block;margin-top:8px;font:700 .62rem var(--mono);letter-spacing:.12em;color:#000;background:var(--y);padding:3px 7px;border-radius:4px}
-.clip .pl{position:absolute;right:12px;bottom:14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);display:grid;place-items:center}
+.clip .pl{position:absolute;right:12px;bottom:14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center}
 .clip .pl svg{width:13px;height:13px;fill:#fff;margin-left:2px}
 
 /* scoreboard */
@@ -356,30 +357,37 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
   // filmstrip of reels (each card is a slot for one of the network's best clips)
   const caps = ['Top 10 plays', 'Game-winner breakdown', 'Locker room', 'Draft night', 'Best of the week', 'Behind the scenes', 'Fan reactions'];
   const clip = (a, i) => `<a class="clip" href="https://www.instagram.com/${a[1].slice(1)}" target="_blank" rel="noopener" aria-label="${a[1]} on Instagram">
-    <div class="bg" style="background-image:url(img/${a[0]}.webp)"></div><img class="lg" src="img/${a[0]}.webp" alt="" loading="lazy"><div class="sh"></div>
+    <div class="bg" style="background-image:url(img/bg-${a[0]}.webp)"></div><img class="lg" src="img/${a[0]}.webp" alt="" loading="lazy"><div class="sh"></div>
     <div class="hd"><img src="img/${a[0]}.webp" alt="">${a[1]}</div><div class="ft"><b>${caps[i % caps.length]}</b><span>${a[2]}</span></div><div class="pl">${ARROW}</div></a>`;
   const belt = document.getElementById('belt'), strip = document.getElementById('strip');
   const one = NET.map(clip).join('') + NET.slice().reverse().map((a, i) => clip(a, i + 3)).join('');
   belt.innerHTML = one + one;
-  let x = 0, w = 0, last = performance.now(), hover = false;
-  const measure = () => { w = belt.scrollWidth / 2; };
-  const cards = () => belt.children;
+  // positions are worked out from the card size (measured once, and again on resize), never read back from the page each frame,
+  // and the strip only animates while it is on screen
+  let x = 0, w = 0, cw = 0, gap = 22, stripW = 0, last = 0, hover = false, onScreen = true, raf = 0;
+  const cardsArr = [...belt.children];
+  const measure = () => { cw = cardsArr[0].offsetWidth; gap = parseFloat(getComputedStyle(belt).columnGap) || 22; w = (cw + gap) * cardsArr.length / 2; stripW = strip.clientWidth; };
   const frame = t => {
-    const dt = Math.min(50, t - last); last = t;
+    raf = 0; if (!onScreen) return;
+    const dt = last ? Math.min(50, t - last) : 16; last = t;
     if (!hover && !reduce) x -= dt * .045;
     if (w && -x >= w) x += w;
-    belt.style.transform = `translate3d(${x}px,0,0)`;
+    belt.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
     // each card turns toward you as it reaches the middle
-    const mid = strip.clientWidth / 2;
-    for (const c of cards()) {
-      const r = c.getBoundingClientRect(), sr = strip.getBoundingClientRect(), cx = r.left - sr.left + r.width / 2, k = Math.max(-1, Math.min(1, (cx - mid) / mid));
-      c.style.transform = `rotateY(${(-k * 28).toFixed(2)}deg) translateZ(${((1 - Math.abs(k)) * 60).toFixed(1)}px) scale(${(.86 + (1 - Math.abs(k)) * .14).toFixed(3)})`;
-      c.style.opacity = (1 - Math.abs(k) * .35).toFixed(2);
+    const mid = stripW / 2;
+    for (let i = 0; i < cardsArr.length; i++) {
+      const cx = x + i * (cw + gap) + cw / 2;
+      if (cx < -cw || cx > stripW + cw) continue;
+      const k = Math.max(-1, Math.min(1, (cx - mid) / mid)), a = Math.abs(k), c = cardsArr[i];
+      c.style.transform = `rotateY(${(-k * 28).toFixed(1)}deg) translateZ(${((1 - a) * 60).toFixed(0)}px) scale(${(.86 + (1 - a) * .14).toFixed(3)})`;
+      c.style.opacity = (1 - a * .35).toFixed(2);
     }
-    requestAnimationFrame(frame);
+    raf = requestAnimationFrame(frame);
   };
+  const kick = () => { if (!raf && onScreen) { last = 0; raf = requestAnimationFrame(frame); } };
+  new IntersectionObserver(es => { onScreen = es[0].isIntersecting; kick(); }).observe(strip);
   strip.addEventListener('mouseenter', () => hover = true); strip.addEventListener('mouseleave', () => hover = false);
-  addEventListener('load', measure); addEventListener('resize', measure); measure(); requestAnimationFrame(frame);
+  addEventListener('load', measure); addEventListener('resize', measure); measure(); kick();
 
   // trusted-by grid
   const B = [['polymarket', 'Polymarket'], ['kalshi', 'Kalshi'], ['underdogfantasy', 'Underdog'], ['fanatics', 'Fanatics'], ['celsius', 'Celsius'], ['gametime', 'Gametime'],
