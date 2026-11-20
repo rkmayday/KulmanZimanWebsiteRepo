@@ -384,7 +384,9 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     box-shadow:0 40px 90px -40px rgba(0,0,0,.85),inset 0 0 0 1px rgba(243,229,211,.08);margin-block:clamp(24px,6vh,70px)}
   #about .tc-head .statement{font-size:clamp(1.6rem,2.3vw,2.2rem)}
   #about .tc-head .er-links{margin-top:6px;flex-direction:column;gap:14px}
-  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;padding-block:30px;padding-right:44px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 calc(100% - 30px),transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 calc(100% - 30px),transparent)}
+  /* no mask or clipping here: Safari flickers or stops redrawing 3D cards inside a masked box. The cards slide out from behind the statement panel instead */
+  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;padding-block:30px;padding-right:44px;position:relative;z-index:1;
+    clip-path:inset(-50vh calc(-44px - clamp(36px,4vw,72px) - min(30vw,420px) + 60px) -50vh -100vw)}
   #about .tc3.reel{display:flex;flex:none;gap:28px;will-change:transform;margin:0!important}
   #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;transform:none;transition:none}
   #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
