@@ -390,7 +390,7 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
   #about .tc3.reel{display:flex;flex:none;gap:28px;margin:0!important}
   /* each card is moved by plain positioning, never a transform: Safari stops drawing (or redrawing) these 3D cards
      when they or the row around them are moved with a transform */
-  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;position:relative;left:var(--tx,0px);transform:none;transition:none}
+  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;position:relative;transform:none;transition:none}
   #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
   #about .tc-count b{color:var(--fg);font-weight:500}
   #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
@@ -846,21 +846,22 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     const b = count.querySelector('b'), bar = count.querySelector('i');
     let travel = 0;
     // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
-    const measure = () => { cards.forEach(c => c.style.setProperty('--tx', '0px')); const cr = clip.getBoundingClientRect();
-      const c0 = cards[0], c0left = (c0.offsetParent || row).getBoundingClientRect().left + c0.offsetLeft;   // from the layout (Safari can misreport the on-screen box of 3D cards)
+    const measure = () => { cards.forEach(c => { c.style.left = '0px'; }); const cr = clip.getBoundingClientRect();
+      // the first card is the row's first item, so it starts at the row's left edge (measured from the row, which Safari and Chrome agree on)
+      const c0left = row.getBoundingClientRect().left + (parseFloat(getComputedStyle(row).paddingLeft) || 0);
       travel = Math.max(0, cr.left + cr.width * .08 - c0left);
       run.style.height = Math.round(pin.offsetHeight + Math.max(travel, innerHeight * .6) * 1.6) + 'px'; update(); };
     const update = () => {
       const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
       if (r.bottom < 0 || r.top > innerHeight) return;
       const k = clamp(((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95);
-      cards.forEach(c => c.style.setProperty('--tx', (k * travel).toFixed(1) + 'px'));
+      const lx = (k * travel).toFixed(1) + 'px'; cards.forEach(c => { c.style.left = lx; });
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
     addEventListener('scroll', update, { passive: true, signal: sig });
     addEventListener('resize', measure, { signal: sig });
     addEventListener('load', measure, { signal: sig }); measure();
-    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; cards.forEach(c => { c.style.opacity = ''; c.style.pointerEvents = ''; c.style.removeProperty('--tx'); }); };
+    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; cards.forEach(c => { c.style.opacity = ''; c.style.pointerEvents = ''; c.style.left = ''; }); };
   };
 
   const hand = sig => {
