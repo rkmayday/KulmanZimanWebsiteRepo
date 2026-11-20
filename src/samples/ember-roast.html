@@ -853,8 +853,10 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
       const k = clamp(((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95);
       cards.forEach(c => c.style.setProperty('--tx', (k * travel).toFixed(1) + 'px'));
       // each card fades out as it reaches the statement panel, instead of sliding under it
-      const hl = head.getBoundingClientRect().left - 10;
-      cards.forEach(c => { const q = c.getBoundingClientRect(), gone = clamp((q.right - hl) / (q.width * .4)); c.style.opacity = (1 - gone).toFixed(3); c.style.pointerEvents = gone > .5 ? 'none' : ''; });
+      // worked out from the layout (not from each card's on-screen box, which Safari can over-report for 3D cards)
+      const hl = head.getBoundingClientRect().left - 10, rl = row.getBoundingClientRect().left, tx = k * travel;
+      cards.forEach(c => { const right = rl + c.offsetLeft + c.offsetWidth + tx, gone = clamp((right - hl) / (c.offsetWidth * .4));
+        c.style.opacity = (1 - gone).toFixed(3); c.style.pointerEvents = gone > .5 ? 'none' : ''; });
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
     addEventListener('scroll', update, { passive: true, signal: sig });
