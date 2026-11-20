@@ -387,10 +387,11 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
   /* no mask or clipping here: Safari flickers or stops redrawing 3D cards inside a masked box. The cards slide out from behind the statement panel instead */
   #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;padding-block:30px;padding-right:44px;position:relative;z-index:1;
     clip-path:inset(-50vh calc(-44px - clamp(36px,4vw,72px) - min(30vw,420px) + 60px) -50vh -100vw)}
-  #about .tc3.reel{display:flex;flex:none;gap:28px;margin:0!important}
+  /* every card is placed by the script at an exact spot inside the box (no flex alignment, which Safari lines up differently) */
+  #about .tc3.reel{position:absolute;inset:0;display:block;margin:0!important}
   /* each card is moved by plain positioning, never a transform: Safari stops drawing (or redrawing) these 3D cards
      when they or the row around them are moved with a transform */
-  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;position:relative;transform:none;transition:none}
+  #about .tc3.reel .tc{position:absolute;width:clamp(340px,30vw,460px);opacity:1;transform:none;transition:none}
   #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
   #about .tc-count b{color:var(--fg);font-weight:500}
   #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
@@ -846,22 +847,25 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     const b = count.querySelector('b'), bar = count.querySelector('i');
     let travel = 0;
     // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
-    const measure = () => { cards.forEach(c => { c.style.left = '0px'; }); const cr = clip.getBoundingClientRect();
-      // the first card is the row's first item, so it starts at the row's left edge (measured from the row, which Safari and Chrome agree on)
-      const c0left = row.getBoundingClientRect().left + (parseFloat(getComputedStyle(row).paddingLeft) || 0);
-      travel = Math.max(0, cr.left + cr.width * .08 - c0left);
+    // positions are pure arithmetic from the card width, the gap and the box size, so every browser puts the cards in the same place:
+    // the row starts with its last card next to the statement, then slides right until its first card sits near the left of the box
+    let cw = 0, base = 0; const GAP = 28;
+    const measure = () => {
+      cw = cards[0].offsetWidth; const W = clip.clientWidth, H = clip.clientHeight, total = cards.length * cw + (cards.length - 1) * GAP;
+      base = W - 44 - total; travel = Math.max(0, W * .08 - base);
+      cards.forEach(c => { c.style.top = Math.round((H - c.offsetHeight) / 2) + 'px'; });
       run.style.height = Math.round(pin.offsetHeight + Math.max(travel, innerHeight * .6) * 1.6) + 'px'; update(); };
     const update = () => {
       const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
       if (r.bottom < 0 || r.top > innerHeight) return;
       const k = clamp(((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95);
-      const lx = (k * travel).toFixed(1) + 'px'; cards.forEach(c => { c.style.left = lx; });
+      cards.forEach((c, i) => { c.style.left = (base + i * (cw + GAP) + k * travel).toFixed(1) + 'px'; });
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
     addEventListener('scroll', update, { passive: true, signal: sig });
     addEventListener('resize', measure, { signal: sig });
     addEventListener('load', measure, { signal: sig }); measure();
-    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; cards.forEach(c => { c.style.opacity = ''; c.style.pointerEvents = ''; c.style.left = ''; }); };
+    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; cards.forEach(c => { c.style.opacity = ''; c.style.pointerEvents = ''; c.style.left = ''; c.style.top = ''; }); };
   };
 
   const hand = sig => {
