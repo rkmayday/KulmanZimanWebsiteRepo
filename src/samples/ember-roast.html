@@ -848,18 +848,19 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     let travel = 0;
     // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
     // positions are pure arithmetic from the card width, the gap and the box size, so every browser puts the cards in the same place:
-    // the row starts with its last card next to the statement, then slides right until its first card sits near the left of the box
+    // card 01 starts in the spot next to the statement with 02 and 03 lined up to its left; the row slides right (under the
+    // statement) until card 03 sits in that same spot, so the counter and the card in the spot always match
     let cw = 0, base = 0; const GAP = 28;
     const measure = () => {
       cw = cards[0].offsetWidth; const W = clip.clientWidth, H = clip.clientHeight, total = cards.length * cw + (cards.length - 1) * GAP;
-      base = W - 44 - total; travel = Math.max(0, W * .08 - base);
+      base = W - 44 - cw; travel = (cards.length - 1) * (cw + GAP);
       cards.forEach(c => { c.style.top = Math.round((H - c.offsetHeight) / 2) + 'px'; });
       run.style.height = Math.round(pin.offsetHeight + Math.max(travel, innerHeight * .6) * 1.6) + 'px'; update(); };
     const update = () => {
       const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
       if (r.bottom < 0 || r.top > innerHeight) return;
       const k = clamp(((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95);
-      cards.forEach((c, i) => { c.style.left = (base + i * (cw + GAP) + k * travel).toFixed(1) + 'px'; });
+      cards.forEach((c, i) => { c.style.left = (base - i * (cw + GAP) + k * travel).toFixed(1) + 'px'; });
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
     addEventListener('scroll', update, { passive: true, signal: sig });
