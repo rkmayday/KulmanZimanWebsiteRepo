@@ -775,7 +775,11 @@ body.has-film{--film-scrim:linear-gradient(180deg,rgba(0,0,0,.25),transparent 30
     const k = Math.min(1, Math.max(0, ((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95));
     box.style.transform = `translate3d(${(-k * travel).toFixed(1)}px,0,0)`;
     const f0 = box.offsetLeft + cards[0].offsetLeft + cards[0].offsetWidth / 2 + pin.getBoundingClientRect().left;
-    cards.forEach(c => { const q = c.getBoundingClientRect(), off = (q.left + q.width / 2 - f0) / innerWidth, a = Math.min(1, Math.abs(off) * 1.5); c.style.opacity = (1 - a * .45).toFixed(3); });
+    // a card fades out as it reaches the main box, so nothing slides behind it and out the other side
+    const hr = head.getBoundingClientRect().right + 12;
+    cards.forEach(c => { const q = c.getBoundingClientRect(), off = (q.left + q.width / 2 - f0) / innerWidth, a = Math.min(1, Math.abs(off) * 1.5),
+      gone = Math.min(1, Math.max(0, (hr - q.left) / (q.width * .4)));
+      const o = (1 - a * .45) * (1 - gone); c.style.opacity = o.toFixed(3); c.style.visibility = o < .01 ? 'hidden' : ''; c.style.pointerEvents = gone > .5 ? 'none' : ''; });
     b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
   };
   addEventListener('scroll', update, { passive: true });
