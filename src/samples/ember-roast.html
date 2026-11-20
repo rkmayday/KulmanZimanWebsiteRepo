@@ -385,10 +385,10 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
   #about .tc-head .statement{font-size:clamp(1.6rem,2.3vw,2.2rem)}
   #about .tc-head .er-links{margin-top:6px;flex-direction:column;gap:14px}
   /* no mask or clipping here: Safari flickers or stops redrawing 3D cards inside a masked box. The cards slide out from behind the statement panel instead */
-  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;padding-block:30px;padding-right:44px;position:relative;z-index:1;
-    clip-path:inset(-50vh calc(-44px - clamp(36px,4vw,72px) - min(30vw,420px) + 60px) -50vh -100vw)}
+  #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;padding-block:30px;padding-right:44px;position:relative;z-index:1}
   #about .tc3.reel{display:flex;flex:none;gap:28px;will-change:transform;margin:0!important}
-  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;transform:none;transition:none}
+  /* each card is moved on its own (Safari won't redraw a moving row that holds 3D cards) */
+  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;transform:translate3d(var(--tx,0px),0,0);transition:none;will-change:transform}
   #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
   #about .tc-count b{color:var(--fg);font-weight:500}
   #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
@@ -790,8 +790,10 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
         const k = clamp((top - r.top) / Math.max(1, r.height - rpin.offsetHeight));
         const e = clamp((k - .04) / .96);
         track.style.transform = `translate3d(${(-e * travel).toFixed(1)}px,0,0)`;
-        cards.forEach(c => { const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - f0) / innerWidth, a = clamp(Math.abs(off) * 1.5);
-          c.style.opacity = (1 - a * .5).toFixed(3); c.style.setProperty('--px', clamp(off * -60, -36, 36).toFixed(1) + 'px'); });
+        // each card fades out as it reaches the heading panel, instead of being sliced off by it
+        const hr = sec.querySelector('.rt-head').getBoundingClientRect().right + 10;
+        cards.forEach(c => { const b = c.getBoundingClientRect(), off = (b.left + b.width / 2 - f0) / innerWidth, a = clamp(Math.abs(off) * 1.5), gone = clamp((hr - b.left) / (b.width * .4));
+          c.style.opacity = ((1 - a * .5) * (1 - gone)).toFixed(3); c.style.setProperty('--px', clamp(off * -60, -36, 36).toFixed(1) + 'px'); });
         if (count) count.textContent = '0' + (Math.round(e * (cards.length - 1)) + 1);
         if (bar) bar.style.setProperty('--k', e.toFixed(4));
       } else {
@@ -842,20 +844,23 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
     const b = count.querySelector('b'), bar = count.querySelector('i');
     let travel = 0;
     // the row starts with its last card next to the statement, then slides right (under the edge) until its first card sits there
-    const measure = () => { row.style.transform = 'none'; const cr = clip.getBoundingClientRect();
+    const measure = () => { cards.forEach(c => c.style.setProperty('--tx', '0px')); const cr = clip.getBoundingClientRect();
       travel = Math.max(0, cr.left + cr.width * .08 - cards[0].getBoundingClientRect().left);
       run.style.height = Math.round(pin.offsetHeight + Math.max(travel, innerHeight * .6) * 1.6) + 'px'; update(); };
     const update = () => {
       const r = run.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
       if (r.bottom < 0 || r.top > innerHeight) return;
       const k = clamp(((top - r.top) / Math.max(1, r.height - pin.offsetHeight) - .05) / .95);
-      row.style.transform = `translate3d(${(k * travel).toFixed(1)}px,0,0)`;
+      cards.forEach(c => c.style.setProperty('--tx', (k * travel).toFixed(1) + 'px'));
+      // each card fades out as it reaches the statement panel, instead of sliding under it
+      const hl = head.getBoundingClientRect().left - 10;
+      cards.forEach(c => { const q = c.getBoundingClientRect(), gone = clamp((q.right - hl) / (q.width * .4)); c.style.opacity = (1 - gone).toFixed(3); c.style.pointerEvents = gone > .5 ? 'none' : ''; });
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
     addEventListener('scroll', update, { passive: true, signal: sig });
     addEventListener('resize', measure, { signal: sig });
     addEventListener('load', measure, { signal: sig }); measure();
-    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; };
+    return () => { row.classList.remove('reel'); sec.classList.remove('tc-on'); row.style.transform = ''; row.style.marginTop = ''; cards.forEach(c => { c.style.opacity = ''; c.style.pointerEvents = ''; c.style.removeProperty('--tx'); }); };
   };
 
   const hand = sig => {
