@@ -386,9 +386,10 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
   #about .tc-head .er-links{margin-top:6px;flex-direction:column;gap:14px}
   /* no mask or clipping here: Safari flickers or stops redrawing 3D cards inside a masked box. The cards slide out from behind the statement panel instead */
   #about .tc-clip{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;padding-block:30px;padding-right:44px;position:relative;z-index:1}
-  #about .tc3.reel{display:flex;flex:none;gap:28px;will-change:transform;margin:0!important}
-  /* each card is moved on its own (Safari won't redraw a moving row that holds 3D cards) */
-  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;transform:translate3d(var(--tx,0px),0,0);transition:none;will-change:transform}
+  #about .tc3.reel{display:flex;flex:none;gap:28px;margin:0!important}
+  /* each card is moved by plain positioning, never a transform: Safari stops drawing (or redrawing) these 3D cards
+     when they or the row around them are moved with a transform */
+  #about .tc3.reel .tc{flex:0 0 clamp(340px,30vw,460px);opacity:1;position:relative;left:var(--tx,0px);transform:none;transition:none}
   #about .tc-count{display:flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.12em;color:var(--mut)}
   #about .tc-count b{color:var(--fg);font-weight:500}
   #about .tc-count > i{position:relative;width:120px;height:1px;background:rgba(243,229,211,.18)}
@@ -854,8 +855,8 @@ body.has-film .er-ritual .rt-pin{background:#140c08}
       cards.forEach(c => c.style.setProperty('--tx', (k * travel).toFixed(1) + 'px'));
       // each card fades out as it reaches the statement panel, instead of sliding under it
       // worked out from the layout (not from each card's on-screen box, which Safari can over-report for 3D cards)
-      const hl = head.getBoundingClientRect().left - 10, rl = row.getBoundingClientRect().left, tx = k * travel;
-      cards.forEach(c => { const right = rl + c.offsetLeft + c.offsetWidth + tx, gone = clamp((right - hl) / (c.offsetWidth * .4));
+      const hl = head.getBoundingClientRect().left - 10, rl = row.getBoundingClientRect().left;
+      cards.forEach(c => { const right = rl + c.offsetLeft + c.offsetWidth, gone = clamp((right - hl) / (c.offsetWidth * .4));
         c.style.opacity = (1 - gone).toFixed(3); c.style.pointerEvents = gone > .5 ? 'none' : ''; });
       b.textContent = '0' + (Math.round(k * (cards.length - 1)) + 1); bar.style.setProperty('--k', k.toFixed(4));
     };
