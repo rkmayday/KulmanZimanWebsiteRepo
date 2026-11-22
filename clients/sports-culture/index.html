@@ -199,6 +199,49 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
 .fb nav{display:flex;gap:22px}
 .fb a:hover{color:var(--y)}
 
+
+/* real clips in the strip: a YouTube thumbnail over the brand's blurred colours (shown if the thumbnail can't load) */
+.clip .th{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.clip.vid .sh{background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 28%,transparent 50%,rgba(0,0,0,.92))}
+.clip.vid .pl{right:50%;bottom:50%;transform:translate(50%,50%);width:58px;height:58px;background:var(--y)}
+.clip.vid .pl svg{fill:#000;width:18px;height:18px}
+button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align:left}
+
+/* the player: plays a clip or the Dough Boys series right on the page */
+.player{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.86);backdrop-filter:blur(6px);padding:20px}
+.player.on{display:flex}
+.player .box{position:relative;width:min(1100px,100%);aspect-ratio:16/9;background:#000;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.8)}
+.player.tall .box{width:min(420px,100%,calc((100svh - 80px) * 9 / 16));aspect-ratio:9/16}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player .x{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:0;background:var(--y);color:#000;font:900 1.3rem var(--body);cursor:pointer;z-index:2}
+
+/* featured series: the Dough Boys, with Pepsi */
+.feat{position:relative;display:grid;grid-template-columns:1.25fr 1fr;gap:0;margin-bottom:clamp(40px,6vw,70px);border-radius:24px;overflow:hidden;background:var(--k2);border:1px solid var(--line)}
+.feat .scr{position:relative;aspect-ratio:16/9;background:radial-gradient(120% 120% at 30% 20%,#1b3a8a,#0a1640 55%,#000);cursor:pointer;border:0;padding:0;display:block;width:100%}
+.feat .scr::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent 50%)}
+.feat .scr .logos2{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:22px;z-index:1}
+.feat .scr .logos2 img{width:92px;height:92px;border-radius:50%;background:#fff;padding:8px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.feat .scr .logos2 i{font:900 2rem var(--disp);font-style:italic;color:#fff}
+.feat .scr .bigplay{position:absolute;left:24px;bottom:22px;z-index:2;display:flex;align-items:center;gap:12px;font:800 .95rem var(--disp);font-stretch:110%;text-transform:uppercase;color:#fff}
+.feat .scr .bigplay b{width:52px;height:52px;border-radius:50%;background:var(--y);display:grid;place-items:center}
+.feat .scr .bigplay svg{width:18px;height:18px;fill:#000;margin-left:3px}
+.feat .scr:hover .bigplay b{transform:scale(1.08)}
+.feat .txt{padding:clamp(26px,3vw,40px);display:grid;align-content:center;gap:14px}
+.feat .txt h3{margin:0;font-size:clamp(2rem,3.6vw,3.2rem)}
+.feat .txt p{margin:0;color:var(--w2)}
+.feat .txt a{color:var(--y);font-weight:700}
+@media (max-width:860px){.feat{grid-template-columns:1fr}}
+
+/* brand campaigns: the Instagram ads, shown as real Instagram posts */
+.ads{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
+.ad{background:var(--k2);border:1px solid var(--line);border-radius:18px;overflow:hidden;min-height:200px}
+.ad .instagram-media{margin:0!important;min-width:0!important;width:100%!important;border-radius:0!important;border:0!important}
+.ad .fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:320px;padding:24px;text-align:center;color:var(--w2)}
+.ad .fallback b{font:900 1.3rem var(--disp);font-style:italic;color:#fff;text-transform:uppercase}
+.ad .fallback span{font:700 .72rem var(--mono);letter-spacing:.12em;color:var(--y);text-transform:uppercase}
+@media (max-width:1100px){.ads{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.ads{grid-template-columns:1fr}}
+
 /* reveal */
 .rv{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .rv.in{opacity:1;transform:none}
@@ -218,7 +261,7 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
   <div class="wrap">
     <a class="mark" href="#top"><img src="img/trophy.webp" alt="" width="30" height="30"><b>Sports Culture</b></a>
     <nav class="menu">
-      <a href="#network">Network</a><a href="#audience">Audience</a><a href="#shows">Shows</a><a class="go" href="#partner">Work with us</a>
+      <a href="#network">Network</a><a href="#audience">Audience</a><a href="#shows">Shows</a><a href="#campaigns">Campaigns</a><a class="go" href="#partner">Work with us</a>
     </nav>
   </div>
 </header>
@@ -272,9 +315,21 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
   <section class="sec" id="shows">
     <div class="wrap">
       <div class="top rv"><div><p class="k">Original shows</p><h2 class="d">Built with athletes <span class="y">and creators.</span></h2></div><p>We use our reach to put athletes and creators in front of millions, with shows built around the people who live the game.</p></div>
+      <div class="feat rv">
+        <button class="scr" type="button" data-play="series" aria-label="Play The Dough Boys series">
+          <span class="logos2"><img src="img/trophy.webp" alt=""><i>×</i><img src="img/pepsi.webp" alt=""></span>
+          <span class="bigplay"><b><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></b>Watch the series</span>
+        </button>
+        <div class="txt">
+          <p class="k"><i></i>Featured series</p>
+          <h3 class="d">The Dough Boys <span class="y">× Pepsi</span></h3>
+          <p>An original series we built and produced with Pepsi, from the first idea to distribution across our network.</p>
+          <a href="https://youtube.com/playlist?list=PLMXChctnRkaw" target="_blank" rel="noopener">Open the full playlist on YouTube →</a>
+        </div>
+      </div>
       <div class="shows rv">
-        <a class="show" href="https://www.youtube.com/playlist?list=PLMXChctnRkaw" target="_blank" rel="noopener"><span class="n">01</span><b>The Dough Boys</b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="show" href="https://www.youtube.com/watch?v=JaFEvrTtoXI&list=PLR7G4yyMZKVHOx_AyitU1KLPaZExM7MYs" target="_blank" rel="noopener"><span class="n">02</span><b>The Redhead Sports Podcast</b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="show" href="https://youtube.com/playlist?list=PLMXChctnRkaw" target="_blank" rel="noopener" data-play="series"><span class="n">01</span><b>The Dough Boys <span class="y">× Pepsi</span></b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="show" href="https://youtu.be/JaFEvrTtoXI" target="_blank" rel="noopener" data-play="JaFEvrTtoXI"><span class="n">02</span><b>The Redhead Sports Podcast</b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="show" href="https://youtu.be/1IkZGqGYyjg" target="_blank" rel="noopener"><span class="n">03</span><b>Culture Crazies</b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <div class="show" style="color:var(--w3)"><span class="n">04</span><b>Your show next?</b><span class="st">Coming soon</span><span></span></div>
       </div>
@@ -292,6 +347,20 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
       </div>
     </div>
   </section>
+
+  <section class="sec" id="campaigns" style="padding-top:0">
+    <div class="wrap">
+      <div class="top rv"><div><p class="k">Brand campaigns</p><h2 class="d">Ads that feel like <span class="y">our content.</span></h2></div><p>Partner campaigns made in our own style and run across our network, so fans watch them like everything else we post.</p></div>
+      <div class="ads rv" id="ads">
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DepKkYNlh-a/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DepKkYNlh-a/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DeADV-YFl-b/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DeADV-YFl-b/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DfeBlQ8jnif/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DfeBlQ8jnif/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DV7YQNREQ1G/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DV7YQNREQ1G/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="player" id="player" role="dialog" aria-modal="true" aria-label="Video player"><div class="box"><button class="x" type="button" aria-label="Close">✕</button></div></div>
 
   <section class="cta" id="partner">
     <div class="wrap">
@@ -360,7 +429,13 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
     <div class="bg" style="background-image:url(img/bg-${a[0]}.webp)"></div><img class="lg" src="img/${a[0]}.webp" alt="" loading="lazy"><div class="sh"></div>
     <div class="hd"><img src="img/${a[0]}.webp" alt="">${a[1]}</div><div class="ft"><b>${caps[i % caps.length]}</b><span>${a[2]}</span></div><div class="pl">${ARROW}</div></a>`;
   const belt = document.getElementById('belt'), strip = document.getElementById('strip');
-  const one = NET.map(clip).join('') + NET.slice().reverse().map((a, i) => clip(a, i + 3)).join('');
+  // the network's real clips (YouTube Shorts and an episode), each a card that plays on the page; account cards in between
+  const CLIPS = [['ON5l4uVQ_h8', 'From our shows', 'Short', 1], ['JaFEvrTtoXI', 'Redhead Sports', 'Episode', 0], ['1fA_8r7mlyY', 'From our shows', 'Short', 1], ['cyRYlCqoQbk', 'From our shows', 'Short', 1]];
+  const vcard = (c, i) => `<button class="clip vid" type="button" data-play="${c[0]}" data-tall="${c[3]}" aria-label="Play: ${c[1]}">
+    <div class="bg" style="background-image:url(img/bg-${NET[i % NET.length][0]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
+    <div class="hd"><img src="img/trophy.webp" alt="">Sports Culture</div><div class="ft"><b>${c[1]}</b><span>${c[2]}</span></div><div class="pl">${ARROW}</div></button>`;
+  const seq = []; for (let i = 0; i < NET.length; i++) { seq.push(vcard(CLIPS[i % CLIPS.length], i)); seq.push(clip(NET[i], i)); }
+  const one = seq.join('');
   belt.innerHTML = one + one;
   // positions are worked out from the card size (measured once, and again on resize), never read back from the page each frame,
   // and the strip only animates while it is on screen
@@ -388,6 +463,25 @@ footer{padding:clamp(70px,9vw,110px) 0 36px;overflow:clip}
   new IntersectionObserver(es => { onScreen = es[0].isIntersecting; kick(); }).observe(strip);
   strip.addEventListener('mouseenter', () => hover = true); strip.addEventListener('mouseleave', () => hover = false);
   addEventListener('load', measure); addEventListener('resize', measure); measure(); kick();
+
+  // the player: a clip, an episode or the whole Dough Boys series, right on the page
+  const PL = document.getElementById('player'), box = PL.querySelector('.box');
+  const open = (id, tall) => {
+    const src = id === 'series' ? 'https://www.youtube-nocookie.com/embed/videoseries?list=PLMXChctnRkaw&autoplay=1&rel=0&playsinline=1'
+                                : `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
+    box.querySelectorAll('iframe').forEach(f => f.remove());
+    const f = document.createElement('iframe'); f.src = src; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true; f.title = 'Video';
+    box.append(f); PL.classList.toggle('tall', !!tall); PL.classList.add('on'); document.body.style.overflow = 'hidden';
+  };
+  const close = () => { PL.classList.remove('on'); box.querySelectorAll('iframe').forEach(f => f.remove()); document.body.style.overflow = ''; };
+  document.addEventListener('click', e => { const t = e.target.closest('[data-play]'); if (!t) return; e.preventDefault(); open(t.dataset.play, t.dataset.tall === '1'); });
+  PL.addEventListener('click', e => { if (e.target === PL || e.target.closest('.x')) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && PL.classList.contains('on')) close(); });
+
+  // Instagram campaign posts: Instagram's own embed script, loaded only when the section comes near
+  const ads = document.getElementById('ads');
+  new IntersectionObserver((es, o) => { if (!es[0].isIntersecting) return; o.disconnect();
+    const sc = document.createElement('script'); sc.async = true; sc.src = 'https://www.instagram.com/embed.js'; document.body.append(sc); }, { rootMargin: '600px' }).observe(ads);
 
   // trusted-by grid
   const B = [['polymarket', 'Polymarket'], ['kalshi', 'Kalshi'], ['underdogfantasy', 'Underdog'], ['fanatics', 'Fanatics'], ['celsius', 'Celsius'], ['gametime', 'Gametime'],
