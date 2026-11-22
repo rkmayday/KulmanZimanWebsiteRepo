@@ -504,7 +504,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 
   // scoreboard digits
   document.querySelectorAll('.num').forEach(el => { el.innerHTML = [...el.dataset.n].map(ch => /\d/.test(ch) ? `<u data-d="${ch}">${reduce ? ch : 0}</u>` : `<u class="s">${ch}</u>`).join(''); });
-  const roll = el => { if (reduce) return; el.querySelectorAll('u[data-d]').forEach((u, i) => { const to = +u.dataset.d; let n = 0, k = 0; const spins = 10 + i * 6;
+  const roll = window.__roll = el => { if (reduce) return; el.querySelectorAll('u[data-d]').forEach((u, i) => { const to = +u.dataset.d; let n = 0, k = 0; const spins = 10 + i * 6;
       const tick = () => { k++; n = (n + 1) % 10; u.textContent = k >= spins ? to : n; if (k < spins) setTimeout(tick, 40 + k * 3); }; setTimeout(tick, i * 90); }); };
 
   // count-ups and reveals when things come into view
@@ -531,6 +531,173 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
     location.href = 'mailto:admin@sportsculturehq.com?subject=' + encodeURIComponent('Partnership: ' + f.company.value) + '&body=' + encodeURIComponent(body);
     document.getElementById('thanks').style.display = 'block';
   });
+})();
+</script>
+
+<!-- ================= interaction layer (computers with a mouse only; nothing here runs for "reduce motion") ================= -->
+<style>
+@media (hover:hover) and (pointer:fine){
+  html.fx, html.fx a, html.fx button, html.fx label, html.fx input, html.fx select, html.fx textarea{cursor:none}
+  html.fx input, html.fx textarea{cursor:text}
+  /* the cursor: a dot that sits on the pointer and a ring that drifts after it */
+  .cur-dot,.cur-ring{position:fixed;left:0;top:0;z-index:300;pointer-events:none;border-radius:50%;will-change:transform}
+  .cur-dot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--y)}
+  .cur-ring{width:40px;height:40px;margin:-20px 0 0 -20px;border:1.5px solid rgba(255,204,0,.7);display:grid;place-items:center;
+    transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background .3s,border-color .3s}
+  .cur-ring span{font:800 .62rem var(--disp);font-stretch:110%;letter-spacing:.06em;color:#000;opacity:0;transition:opacity .2s}
+  .cur-ring.big{width:64px;height:64px;margin:-32px 0 0 -32px;background:rgba(255,204,0,.12)}
+  .cur-ring.lbl{width:84px;height:84px;margin:-42px 0 0 -42px;background:var(--y);border-color:var(--y)}
+  .cur-ring.lbl span{opacity:1}
+  .cur-ring.down{width:30px;height:30px;margin:-15px 0 0 -15px}
+  .cur-hide .cur-dot,.cur-hide .cur-ring{opacity:0}
+  /* a soft yellow light that follows the mouse across the page */
+  .cur-glow{position:fixed;left:0;top:0;width:640px;height:640px;margin:-320px 0 0 -320px;z-index:1;pointer-events:none;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(255,204,0,.10),rgba(255,204,0,.04) 45%,transparent);mix-blend-mode:screen;will-change:transform}
+  /* boxes: tilt toward the mouse, drift and lift, with a light that tracks the cursor along their edge */
+  .tilt{transform-style:preserve-3d;transition:transform .5s var(--ease),border-color .3s,box-shadow .4s}
+  .tilt.on{transition:transform .12s linear,border-color .3s,box-shadow .4s;box-shadow:0 30px 60px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,204,0,.35)}
+  .spot{position:relative;isolation:isolate}
+  .spot::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;opacity:0;transition:opacity .3s;
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,204,0,.16),transparent 60%)}
+  .spot::before{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;z-index:3;padding:1px;opacity:0;transition:opacity .3s;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),var(--y),transparent 70%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .spot.on::after,.spot.on::before{opacity:1}
+  .card.spot.hot::after{background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.35),transparent 60%)}
+  .tilt .pic,.tilt .lg,.tilt .logos2,.tilt img.dr{transition:transform .5s var(--ease)}
+  .tilt.on .pic,.tilt.on .lg{transform:translate3d(var(--dx,0),var(--dy,0),40px) scale(1.06)}
+  .tilt.on .logos2{transform:translate3d(var(--dx,0),var(--dy,0),0) scale(1.05)}
+  /* magnetic buttons */
+  .mag{transition:transform .45s var(--ease)}
+  .mag.on{transition:transform .15s linear}
+  /* the headline drifts with the mouse, the yellow word a little more */
+  .hero h1{transition:transform .6s var(--ease);will-change:transform}
+  .hero h1 .swap{transition:width .6s var(--ease),transform .6s var(--ease)}
+  /* shows: a preview card follows the cursor down the list */
+  .peek{position:fixed;left:0;top:0;z-index:60;width:300px;aspect-ratio:16/10;border-radius:16px;overflow:hidden;pointer-events:none;
+    background:var(--k3) center/cover;box-shadow:0 30px 60px -20px rgba(0,0,0,.9),0 0 0 2px var(--y);opacity:0;transform:scale(.7) rotate(-6deg);transition:opacity .25s,transform .35s var(--ease)}
+  .peek.on{opacity:1;transform:scale(1) rotate(-3deg)}
+  .peek b{position:absolute;left:14px;bottom:12px;font:900 1.1rem var(--disp);font-style:italic;text-transform:uppercase;color:#fff;text-shadow:0 2px 12px #000}
+  .peek .pk2{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;background:radial-gradient(120% 120% at 30% 20%,#1b3a8a,#0a1640 55%,#000)}
+  .peek .pk2 img{width:70px;height:70px;border-radius:50%;background:#fff;padding:6px}
+  /* scoreboard cells light up and re-roll */
+  .cell{transition:background .3s}
+  .cell:hover{background:#131108}
+  .cell:hover .num u:not(.s){box-shadow:inset 0 -2px 0 rgba(0,0,0,.6),0 0 22px rgba(255,204,0,.25)}
+  /* logo grid: the logo floats toward the cursor */
+  .logos div img{will-change:transform}
+  /* rings spin a little when you point at them */
+  .ring svg{transition:transform .8s var(--ease)}
+  .ring:hover svg{transform:rotate(-90deg) scale(1.06)}
+  /* the giant footer word lights up under the cursor */
+  .big{background:radial-gradient(240px circle at var(--fx,-999px) var(--fy,-999px),var(--y),transparent 70%);-webkit-background-clip:text;background-clip:text}
+  /* headings slide up word by word as they come into view */
+  .wd{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
+  .wd > i{display:inline-block;font-style:inherit;transform:translateY(105%);transition:transform .9s var(--ease)}
+  .rvw.in .wd > i{transform:none}
+  /* scroll progress along the top */
+  .prog{position:fixed;left:0;top:0;height:3px;width:100%;z-index:80;background:var(--y);transform-origin:left;transform:scaleX(0);pointer-events:none}
+}
+</style>
+<script>
+(() => {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const R = document.documentElement; R.classList.add('fx');
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // cursor, ring and glow
+  const dot = document.createElement('div'), ring = document.createElement('div'), glow = document.createElement('div'), prog = document.createElement('div');
+  dot.className = 'cur-dot'; ring.className = 'cur-ring'; ring.innerHTML = '<span></span>'; glow.className = 'cur-glow'; prog.className = 'prog';
+  document.body.append(glow, dot, ring, prog);
+  const lbl = ring.firstChild;
+  let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, gx = mx, gy = my;
+  addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; R.classList.remove('cur-hide'); }, { passive: true });
+  document.addEventListener('mouseleave', () => R.classList.add('cur-hide'));
+  addEventListener('pointerdown', () => ring.classList.add('down')); addEventListener('pointerup', () => ring.classList.remove('down'));
+  const loop = () => {
+    rx += (mx - rx) * .2; ry += (my - ry) * .2; gx += (mx - gx) * .08; gy += (my - gy) * .08;
+    dot.style.transform = `translate3d(${mx}px,${my}px,0)`; ring.style.transform = `translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0)`;
+    glow.style.transform = `translate3d(${gx.toFixed(1)}px,${gy.toFixed(1)}px,0)`;
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+  // what the ring says over different things
+  const label = el => el.closest('.clip.vid, [data-play]') ? 'PLAY' : el.closest('.roster') ? 'DRAG' : el.closest('.clip') ? 'VIEW' : '';
+  document.addEventListener('pointerover', e => {
+    const t = e.target, l = label(t);
+    ring.classList.toggle('lbl', !!l); lbl.textContent = l;
+    ring.classList.toggle('big', !l && !!t.closest('a, button, label, .tilt, input, select, textarea'));
+  });
+
+  // scroll progress
+  const sp = () => { const m = R.scrollHeight - innerHeight; prog.style.transform = `scaleX(${m > 0 ? (scrollY / m).toFixed(4) : 0})`; };
+  addEventListener('scroll', sp, { passive: true }); sp();
+
+  // tilt + drift + edge light on boxes
+  const tilt = (el, max = 9) => {
+    el.classList.add('tilt', 'spot'); let raf = 0, ev = null;
+    const apply = () => { raf = 0; const r = el.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+      el.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); el.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+      el.style.setProperty('--dx', ((x - .5) * 14).toFixed(1) + 'px'); el.style.setProperty('--dy', ((y - .5) * 14).toFixed(1) + 'px');
+      el.style.transform = `perspective(900px) rotateX(${((.5 - y) * max).toFixed(2)}deg) rotateY(${((x - .5) * max).toFixed(2)}deg) translateY(-6px)`; };
+    el.addEventListener('pointerenter', () => el.classList.add('on'));
+    el.addEventListener('pointermove', e => { ev = e; if (!raf) raf = requestAnimationFrame(apply); });
+    el.addEventListener('pointerleave', () => { el.classList.remove('on'); el.style.transform = ''; });
+  };
+  const boot = () => {
+    $$('.card, .ring, .panel, .feat, .ad, .step, .cell, form').forEach(el => tilt(el, el.matches('.feat, form') ? 4 : el.matches('.cell, .step') ? 6 : 10));
+    // logo grid: light + the logo floats toward the cursor
+    $$('.logos div').forEach(el => { el.classList.add('spot'); const img = el.querySelector('img');
+      el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--mx', x * 100 + '%'); el.style.setProperty('--my', y * 100 + '%'); el.classList.add('on');
+        img.style.transform = `translate(${((x - .5) * 18).toFixed(1)}px,${((y - .5) * 18).toFixed(1)}px) scale(1.15)`; });
+      el.addEventListener('pointerleave', () => { el.classList.remove('on'); img.style.transform = ''; }); });
+    // scoreboard: re-roll the digits when you point at a cell
+    $$('.cell').forEach(c => c.addEventListener('pointerenter', () => window.__roll && window.__roll(c.querySelector('.num'))));
+  };
+  // magnetic buttons
+  $$('.pill, .menu a, .drag button, .mark').forEach(b => { b.classList.add('mag');
+    b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); b.classList.add('on');
+      b.style.transform = `translate(${((e.clientX - r.left - r.width / 2) * .25).toFixed(1)}px,${((e.clientY - r.top - r.height / 2) * .35).toFixed(1)}px)`; });
+    b.addEventListener('pointerleave', () => { b.classList.remove('on'); b.style.transform = ''; }); });
+
+  // the hero headline drifts with the mouse (the yellow word a little more)
+  const h1 = document.querySelector('.hero h1'), sw = document.getElementById('swap'), hero = document.querySelector('.hero');
+  hero.addEventListener('pointermove', e => { const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+    h1.style.transform = `translate(${(x * -18).toFixed(1)}px,${(y * -10).toFixed(1)}px)`; sw.style.transform = `translate(${(x * 22).toFixed(1)}px,${(y * 10).toFixed(1)}px)`; });
+  hero.addEventListener('pointerleave', () => { h1.style.transform = ''; sw.style.transform = ''; });
+
+  // shows: a preview card follows the cursor down the list
+  const peek = document.createElement('div'); peek.className = 'peek'; document.body.append(peek);
+  const PV = { 'The Dough Boys': '<div class="pk2"><img src="img/trophy.webp" alt=""><img src="img/pepsi.webp" alt=""></div><b>Dough Boys × Pepsi</b>',
+    'The Redhead Sports Podcast': 'yt:JaFEvrTtoXI', 'Culture Crazies': 'yt:1IkZGqGYyjg' };
+  let px = 0, py = 0, tx = 0, ty = 0, pOn = false;
+  $$('.show').forEach(row => { const name = (row.querySelector('b') || {}).textContent || '', key = Object.keys(PV).find(k => name.startsWith(k)); if (!key) return;
+    row.addEventListener('pointerenter', () => { const v = PV[key];
+      if (v.startsWith('yt:')) { peek.innerHTML = `<b>${key}</b>`; peek.style.backgroundImage = `url(https://i.ytimg.com/vi/${v.slice(3)}/hqdefault.jpg), radial-gradient(120% 120% at 30% 20%,#3a2a00,#000)`; }
+      else { peek.innerHTML = v; peek.style.backgroundImage = ''; }
+      peek.classList.add('on'); pOn = true; });
+    row.addEventListener('pointerleave', () => { peek.classList.remove('on'); pOn = false; }); });
+  addEventListener('pointermove', e => { tx = e.clientX + 30; ty = e.clientY - 90; }, { passive: true });
+  const pl = () => { px += (tx - px) * .15; py += (ty - py) * .15; if (pOn || peek.classList.contains('on')) peek.style.left = '0', peek.style.translate = `${px.toFixed(1)}px ${py.toFixed(1)}px`; requestAnimationFrame(pl); };
+  requestAnimationFrame(pl);
+
+  // the giant footer word lights up under the cursor
+  const big = document.querySelector('.big');
+  big.parentElement.addEventListener('pointermove', e => { const r = big.getBoundingClientRect(); big.style.setProperty('--fx', (e.clientX - r.left) + 'px'); big.style.setProperty('--fy', (e.clientY - r.top) + 'px'); });
+  big.parentElement.addEventListener('pointerleave', () => { big.style.setProperty('--fx', '-999px'); });
+
+  // headings slide up word by word
+  $$('.top h2.d, .cta h2.d').forEach(h => {
+    const walk = n => { [...n.childNodes].forEach(c => { if (c.nodeType === 3) { const f = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(w => { if (!w) return; if (/^\s+$/.test(w)) f.append(w); else { const s = document.createElement('span'); s.className = 'wd'; s.innerHTML = '<i></i>'; s.firstChild.textContent = w; f.append(s); } });
+        c.replaceWith(f); } else if (c.nodeType === 1) walk(c); }); };
+    walk(h); h.classList.add('rvw'); $$('.wd > i', h).forEach((w, i) => w.style.transitionDelay = (i * .06) + 's');
+    new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { h.classList.add('in'); o.disconnect(); } }, { threshold: .4 }).observe(h);
+  });
+
+  // the roster and network cards are built by the page script, so wire them up once everything is on the page
+  if (document.readyState === 'complete') boot(); else addEventListener('load', boot);
 })();
 </script>
 </body>
