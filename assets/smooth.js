@@ -17,9 +17,43 @@
     // Phones and tablets scroll natively (no snapping). A flick that would carry past a stop point (the end of an opening, or a Portfolio slide)
     // opening stops right there, with the headline fully in: only once the finger has left the screen (never
     // fighting the finger), and the rest of that flick is dropped. The next swipe scrolls on as normal.
-    // the home page's intro and mission/packages stage don't stop on touch screens: iPhones only report a flick after it has
-    // overshot, so the stop snapped the page back up (a visible jump). The sample sites' openings still stop.
+    // Home page on touch screens: a phone's own flick can't be paused partway, so it flew past the ZS intro and the
+    // mission/packages stage. Instead, a swipe down toward one of those stops is taken over: the page glides to the stop at a
+    // set pace (long enough for the animation to finish), then stops there. The next swipe scrolls on as normal, and
+    // scrolling back up is never taken over.
     const homeStop = el => !!el.closest('.kz-stage, #ps');
+    if (document.querySelector('.kz-stage, #ps')) {
+      const homeStops = () => { const out = [];
+        for (const el of document.querySelectorAll('.kz-stage, #ps')) { if (el.__refreshStop) el.__refreshStop();
+          // reach: how close (in screen heights) a swipe has to start for it to be taken over
+          if (el.dataset.stopY) out.push({ k: 'intro', y: +el.dataset.stopY, d: 1900, reach: 1.7 });                              // the ZS intro
+          if (el.dataset.stops) el.dataset.stops.split(',').forEach((v, i) => out.push({ k: 'ps' + i, y: +v, d: i ? 1500 : 800, reach: i ? 1.7 : 1 })); }   // mission, then packages
+        return out.filter(o => o.y > 0).sort((a, b) => a.y - b.y); };
+      let gliding = false, taken = false, sx = 0, sy = 0, decided = false;
+      // the stop is re-measured every frame: the sections above it change height as the intro plays, which moves it
+      const glide = (from, key, dur) => {
+        gliding = true; const t0 = performance.now();
+        const st = now => { const k = Math.min(1, (now - t0) / dur), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+          const s = homeStops().find(o => o.k === key), to = s ? s.y : from;
+          scrollTo({ top: from + (to - from) * e, behavior: 'instant' });
+          if (k < 1) requestAnimationFrame(st); else setTimeout(() => { gliding = false; }, 150); };
+        requestAnimationFrame(st);
+      };
+      addEventListener('touchstart', e => { const p = e.touches[0]; sx = p.clientX; sy = p.clientY; decided = false; taken = false; }, { passive: true });
+      addEventListener('touchmove', e => {
+        if (gliding || taken) { if (e.cancelable) e.preventDefault(); return; }   // hold the page still while it glides, and for the rest of that swipe
+        if (decided || e.touches.length > 1) return;
+        const p = e.touches[0], dy = p.clientY - sy, dx = p.clientX - sx;
+        if (Math.abs(dy) < 6 || Math.abs(dx) > Math.abs(dy)) return;
+        decided = true;
+        if (dy > 0 || getComputedStyle(document.body).overflow === 'hidden') return;   // scrolling up, or a menu is open: leave it
+        const y = scrollY, next = homeStops().find(o => o.y > y + 4);
+        if (!next || next.y - y > innerHeight * next.reach) return;          // nothing close below: a normal scroll
+        if (!e.cancelable) return;                                          // the browser is already scrolling: leave it
+        e.preventDefault(); taken = true;
+        glide(y, next.k, next.d);
+      }, { passive: false });
+    }
     if (![...document.querySelectorAll('[data-stop-y], [data-stops], .stage[data-stop]')].some(el => !homeStop(el))) return;
     const root = document.documentElement;
     const touchStops = () => { const out = [];
