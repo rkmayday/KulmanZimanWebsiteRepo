@@ -76,6 +76,7 @@ def order_modal():
     <span class="eyebrow" data-om-eyebrow>Step 2 of 3 · Your project</span>
     <h2 id="om-title" data-om-title>Tell us about your project</h2>
     <p class="pm-lede" data-om-lede>You chose <b data-om-pkg>your package</b>. A few details so we can start right away, then you pay securely on Whop.</p>
+    <a class="om-skip" href="#" data-om-skip><span><b>Already talked to us?</b> If we've agreed on your project and you're ready to pay, skip this step.</span><em>Skip &amp; pay now <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></em></a>
     <form class="brief order-form" id="order-form" novalidate>
       <div class="two">
         <label for="o-name">Your name<input id="o-name" name="name" required autocomplete="name"></label>

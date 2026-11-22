@@ -258,6 +258,9 @@ window.kzGmail = (to, subject = '', body = '') => {
       target = href === 'QUOTE' ? '' : href;
       const k = Object.keys(plans).find(p => href.indexOf(p) === 0); label = href === 'QUOTE' ? 'Custom quote' : (k ? plans[k] : 'your package');
       if (!quote) pkgEl = $('[data-om-pkg]', om), pkgEl.textContent = label;
+      // "Already talked to us?": straight to the Whop checkout for this package, no form (hidden for a custom quote)
+      const skip = $('[data-om-skip]', om);
+      if (skip) { skip.hidden = quote; skip.href = target || '#'; if (window.top !== window) { skip.target = '_blank'; skip.rel = 'noopener'; } }
       const pmo = $('#pkg-modal'); if (pmo && pmo.open) { pmo.classList.remove('open'); pmo.close(); }
       nav && nav.classList.remove('open');
       om.showModal(); requestAnimationFrame(() => om.classList.add('open'));

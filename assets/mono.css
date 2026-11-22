@@ -1347,3 +1347,14 @@ main:has(> #team) > #team .founder{--paper:#0b0b0b;--paper-2:#141414;--paper-3:#
 .eb-ico{width:44px;height:44px;flex:none;object-fit:contain;margin:-12px 0 -12px -6px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.22));transition:transform .5s cubic-bezier(.2,1.4,.4,1)}
 @media (hover:hover){.section-head:hover .eb-ico,.eyebrow.eb-has:hover .eb-ico,.ps-ch:hover .eb-ico{transform:rotate(-10deg) scale(1.12)}}
 @media (max-width:640px){.eb-ico{width:36px;height:36px;margin:-10px 0 -10px -5px}}
+
+/* order pop-up: "Already talked to us? Skip & pay now" goes straight to checkout */
+.om-skip{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:4px 0 18px;padding:12px 16px;border-radius:14px;background:var(--paper-2);box-shadow:inset 0 0 0 1px var(--line);
+  color:var(--ink-2);font-size:.88rem;line-height:1.4;text-decoration:none;transition:box-shadow .25s,background .25s}
+.om-skip b{color:var(--ink);font-weight:600}
+.om-skip em{flex:none;display:inline-flex;align-items:center;gap:6px;font-style:normal;font-weight:600;color:var(--ink);white-space:nowrap}
+.om-skip em svg{width:15px;height:15px;transition:transform .25s}
+.om-skip:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.om-skip:hover em svg{transform:translateX(3px)}
+.om-skip[hidden]{display:none}
+@media (max-width:520px){.om-skip{flex-direction:column;align-items:flex-start;gap:8px}}
