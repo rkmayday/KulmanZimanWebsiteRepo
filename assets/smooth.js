@@ -17,14 +17,23 @@
     // Phones and tablets scroll natively (no snapping). A flick that would carry past a stop point (the end of an opening, or a Portfolio slide)
     // opening stops right there, with the headline fully in: only once the finger has left the screen (never
     // fighting the finger), and the rest of that flick is dropped. The next swipe scrolls on as normal.
-    if (!document.querySelector('[data-stop-y], [data-stops], .stage[data-stop], .kz-stage')) return;
+    // the home page's intro and mission/packages stage don't stop on touch screens: iPhones only report a flick after it has
+    // overshot, so the stop snapped the page back up (a visible jump). The sample sites' openings still stop.
+    const homeStop = el => !!el.closest('.kz-stage, #ps');
+    if (![...document.querySelectorAll('[data-stop-y], [data-stops], .stage[data-stop]')].some(el => !homeStop(el))) return;
     const root = document.documentElement;
+    const touchStops = () => { const out = [];
+      for (const el of document.querySelectorAll('[data-stop-y], [data-stops]')) { if (homeStop(el)) continue;
+        if (el.__refreshStop) el.__refreshStop();
+        if (el.dataset.stopY) out.push({ y: +el.dataset.stopY, up: !!el.dataset.stopUp });
+        if (el.dataset.stops) el.dataset.stops.split(',').forEach(v => out.push({ y: +v, up: true })); }
+      return out.filter(o => o.y > 0).sort((a, b) => a.y - b.y); };
     let y0 = 0, touching = false, target = null, stopping = false;
     addEventListener('touchstart', () => { touching = true; y0 = scrollY; target = null; }, { passive: true });
     const lift = () => {
       touching = false;
       // the first stop this flick would cross: the next one down, or (if it allows it) the next one up
-      const list = stops(), down = list.find(o => o.y > y0 + 4), up = [...list].reverse().find(o => o.up && o.y < y0 - 4);
+      const list = touchStops(), down = list.find(o => o.y > y0 + 4), up = [...list].reverse().find(o => o.up && o.y < y0 - 4);
       target = { down: down ? down.y : null, up: up ? up.y : null };
       check();
     };

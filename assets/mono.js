@@ -104,7 +104,7 @@
   let target = 0, prog = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false;
   // after the animation, the pinned scene starts moving with the page gradually (its speed ramps from 0 to normal),
   // so the hand-off to normal scrolling has no jolt. Driven straight from the scroll position, so it never lags.
-  const pin = $('.kz-pin', stage), HOLD = .85;
+  const pin = $('.kz-pin', stage), HOLD = .85, TOUCH = matchMedia('(hover: none)').matches;
   // The pinned scene sits in a "track" that ends exactly where the headline is fully in. From there the browser itself scrolls
   // the scene away with the page (no JavaScript moving it a frame late, which made it shake on phones).
   const track = document.createElement('div'); track.className = 'kz-track'; stage.insertBefore(track, pin); track.append(pin);   // the scene starts moving with the page once the Z and S are in place and the headline is fully in
@@ -153,7 +153,8 @@
   let lastT = 0;
   function frame(now) {
     now = now || performance.now(); const dt = lastT ? Math.min(64, now - lastT) : 16.7; lastT = now;
-    const step = (target - prog) * (1 - Math.pow(1 - .2, dt / 16.7)), maxStep = dt / 2300;
+    // touch screens: the animation follows the finger exactly (with a pace limit it fell behind a flick, and the page scrolled on mid-animation)
+    const step = (target - prog) * (1 - Math.pow(1 - .2, dt / 16.7)), maxStep = TOUCH ? 1 : dt / 2300;
     prog += Math.max(-maxStep, Math.min(maxStep, step)); px += (tpx - px) * .08; py += (tpy - py) * .08;
     const p = prog * .87;            // the stage is 13% shorter than the timeline: same animation, half the hold after it
     const a = smooth(p / .42);                    // turn: shows the depth
