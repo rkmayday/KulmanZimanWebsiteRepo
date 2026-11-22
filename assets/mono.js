@@ -153,8 +153,9 @@
   let lastT = 0;
   function frame(now) {
     now = now || performance.now(); const dt = lastT ? Math.min(64, now - lastT) : 16.7; lastT = now;
-    // touch screens: the animation follows the finger exactly (with a pace limit it fell behind a flick, and the page scrolled on mid-animation)
-    const step = (target - prog) * (1 - Math.pow(1 - .2, dt / 16.7)), maxStep = TOUCH ? 1 : dt / 2300;
+    // a pace limit, so a hard flick still plays the animation through instead of skipping it: about 2.3 s on computers and
+    // 1.9 s on touch screens (a little quicker there, so the logo does not fall far behind a swipe)
+    const step = (target - prog) * (1 - Math.pow(1 - .2, dt / 16.7)), maxStep = dt / (TOUCH ? 1900 : 2300);
     prog += Math.max(-maxStep, Math.min(maxStep, step)); px += (tpx - px) * .08; py += (tpy - py) * .08;
     const p = prog * .87;            // the stage is 13% shorter than the timeline: same animation, half the hold after it
     const a = smooth(p / .42);                    // turn: shows the depth
