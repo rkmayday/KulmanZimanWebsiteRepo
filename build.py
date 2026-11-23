@@ -454,7 +454,8 @@ def build(preview=False, theme="royal"):
         shutil.rmtree(out_dir)
     shutil.copytree(ROOT / "assets", out_dir / "assets")
     for f in sorted((ROOT / "static").glob("*")):
-        shutil.copy(f, out_dir / f.name)
+        # folders too (e.g. static/preview: unlisted client previews, served at /preview/<name>)
+        shutil.copytree(f, out_dir / f.name) if f.is_dir() else shutil.copy(f, out_dir / f.name)
     for name in th.get("prune", []):
         t = out_dir / "assets" / name
         shutil.rmtree(t) if t.is_dir() else t.unlink(missing_ok=True)
