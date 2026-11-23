@@ -405,14 +405,62 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 </footer>
 
 <script>
-(() => {
+/* ===================== SITE DATA =====================
+   The numbers, clips and links below can be edited in a Google Sheet, without touching the code.
+   1. Make a Google Sheet with two columns: A = the label (exactly as in sheet-template.csv), B = the value.
+   2. In Google Sheets: File -> Share -> Publish to web -> choose the sheet -> "Comma-separated values (.csv)" -> Publish.
+   3. Paste that link between the quotes on the next line. Leave it empty to use the values written here instead.
+   The page reads the Sheet each time it opens (if the Sheet can't be reached, it falls back to the values here). */
+window.SC_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4UxbQPujhLf3EYlcCr5uLSswX94-vvUJr7qgAwOI-Y5gFPFLjWzC2GTqWGiUJqELbE0D80kIfESb5/pub?gid=1861097211&single=true&output=csv';
+window.SC = {
+  'Monthly views': '200M+', 'Followers (owned brands)': '2M+', 'Extra reach (partner network)': '6M+', 'Audience aged 18-34': '65%',
+  'Ages 18-24 (%)': '26', 'Ages 25-34 (%)': '39', 'Ages 35-44 (%)': '21', 'Male audience (%)': '86',
+  '@sportsculture followers': '600K', '@basketballnews followers': '1M', '@footballnews followers': '113K', '@tacotuuesday followers': '141K',
+  '@jokesofnfl followers': '70K', '@quarterbacksonly followers': '30K', '@dingerculture followers': '17K',
+  'Clip 1 YouTube link': 'https://youtube.com/shorts/ON5l4uVQ_h8', 'Clip 1 title': 'From our shows',
+  'Clip 2 YouTube link': 'https://youtu.be/JaFEvrTtoXI', 'Clip 2 title': 'Redhead Sports',
+  'Clip 3 YouTube link': 'https://youtube.com/shorts/1fA_8r7mlyY', 'Clip 3 title': 'From our shows',
+  'Clip 4 YouTube link': 'https://youtube.com/shorts/cyRYlCqoQbk', 'Clip 4 title': 'From our shows',
+  'Dough Boys playlist link': 'https://youtube.com/playlist?list=PLMXChctnRkaw'
+};
+window.SC_READY = (async () => {
+  if (!window.SC_SHEET) return;
+  try {
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 2500);
+    const text = await (await fetch(window.SC_SHEET, { signal: ctl.signal, cache: 'no-store' })).text(); clearTimeout(timer);
+    // read the CSV: each row is  label,value  (values may be in quotes)
+    for (const line of text.split(/\r?\n/)) {
+      const cells = []; let cur = '', q = false;
+      for (let i = 0; i < line.length; i++) { const c = line[i];
+        if (q) { if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; } else if (c === '"') q = false; else cur += c; }
+        else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; } else cur += c; }
+      cells.push(cur);
+      const k = (cells[0] || '').trim(), v = (cells[1] || '').trim();
+      if (k && v && k in window.SC) window.SC[k] = v;
+    }
+  } catch (e) { /* the Sheet couldn't be reached: keep the values above */ }
+})();
+</script>
+<script>
+window.SC_READY.then(() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const NET = [['sportsculture', '@sportsculture', 'Flagship', 600, 'K'], ['basketballnews', '@basketballnews', 'Hoops', 1, 'M'], ['footballnews', '@footballnews', 'Football', 113, 'K'],
-    ['tacotuesday', '@tacotuuesday', 'Hoops', 141, 'K'], ['logo-jokesofnfl', '@jokesofnfl', 'Football', 70, 'K'], ['quarterbacksonly', '@quarterbacksonly', 'Football', 30, 'K'], ['dingerculture', '@dingerculture', 'Baseball', 17, 'K']];
+  // ---- the site data (from the Google Sheet, or the values in SITE DATA) ----
+  const D = window.SC, num = v => { const m = String(v).trim().match(/^([\d.]+)\s*([A-Za-z%+]*)/); return m ? [+m[1], m[2]] : [0, '']; };
+  const ytId = u => { const m = String(u).match(/(?:youtu\.be\/|shorts\/|[?&]v=|embed\/)([\w-]{11})/); return m ? m[1] : String(u).trim(); };
+  const listId = u => { const m = String(u).match(/[?&]list=([\w-]+)/); return m ? m[1] : String(u).trim(); };
+  const PLAYLIST = listId(D['Dough Boys playlist link']);
+  const h1t = document.querySelector('.hero h1').firstChild; if (h1t && h1t.nodeType === 3) h1t.textContent = 'Reach ' + D['Monthly views'] + ' ';
+  document.querySelector('.hero .lede b').textContent = D['Audience aged 18-34'] + ' of our audience is 18–34.';
+  const cells = document.querySelectorAll('.board .num');
+  [D['Monthly views'], D['Followers (owned brands)'], D['Extra reach (partner network)'], D['Audience aged 18-34']].forEach((v, i) => { if (cells[i]) cells[i].dataset.n = v; });
+  document.querySelectorAll('a[href*="playlist?list="]').forEach(a => a.href = 'https://youtube.com/playlist?list=' + PLAYLIST);
+  const NET = [['sportsculture', '@sportsculture', 'Flagship'], ['basketballnews', '@basketballnews', 'Hoops'], ['footballnews', '@footballnews', 'Football'],
+    ['tacotuesday', '@tacotuuesday', 'Hoops'], ['logo-jokesofnfl', '@jokesofnfl', 'Football'], ['quarterbacksonly', '@quarterbacksonly', 'Football'], ['dingerculture', '@dingerculture', 'Baseball']]
+    .map(a => [...a, ...num(D[a[1] + ' followers'])]);
   const ARROW = '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
 
   // ticker
-  const T = ['200M+ monthly views', '2M+ followers', '7 owned brands', '65% aged 18–34', '3 live shows', 'basketballnews.com live', 'Partnerships open'];
+  const T = [D['Monthly views'] + ' monthly views', D['Followers (owned brands)'] + ' followers', '7 owned brands', D['Audience aged 18-34'] + ' aged 18–34', '3 live shows', 'basketballnews.com live', 'Partnerships open'];
   document.getElementById('tick').innerHTML = [...T, ...T, ...T, ...T].map(t => `<span>${t}</span>`).join('');
 
   // rotating word in the headline (the gap it sits in resizes to each word, so there's never a hole)
@@ -433,7 +481,8 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
     <div class="hd"><img src="img/${a[0]}.webp" alt="">${a[1]}</div><div class="ft"><b>${caps[i % caps.length]}</b><span>${a[2]}</span></div><div class="pl">${ARROW}</div></a>`;
   const belt = document.getElementById('belt'), strip = document.getElementById('strip');
   // the network's real clips (YouTube Shorts and an episode), each a card that plays on the page; account cards in between
-  const CLIPS = [['ON5l4uVQ_h8', 'From our shows', 'Short', 1], ['JaFEvrTtoXI', 'Redhead Sports', 'Episode', 0], ['1fA_8r7mlyY', 'From our shows', 'Short', 1], ['cyRYlCqoQbk', 'From our shows', 'Short', 1]];
+  const CLIPS = [1, 2, 3, 4].map(n => { const link = D['Clip ' + n + ' YouTube link'], tall = /shorts\//.test(link);
+    return [ytId(link), D['Clip ' + n + ' title'], tall ? 'Short' : 'Video', tall ? 1 : 0]; }).filter(c => c[0]);
   const vcard = (c, i) => `<button class="clip vid" type="button" data-play="${c[0]}" data-tall="${c[3]}" aria-label="Play: ${c[1]}">
     <div class="bg" style="background-image:url(img/bg-${NET[i % NET.length][0]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
     <div class="hd"><img src="img/trophy.webp" alt="">Sports Culture</div><div class="ft"><b>${c[1]}</b><span>${c[2]}</span></div><div class="pl">${ARROW}</div></button>`;
@@ -470,7 +519,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
   // the player: a clip, an episode or the whole Dough Boys series, right on the page
   const PL = document.getElementById('player'), box = PL.querySelector('.box');
   const open = (id, tall) => {
-    const src = id === 'series' ? 'https://www.youtube-nocookie.com/embed/videoseries?list=PLMXChctnRkaw&autoplay=1&rel=0&playsinline=1'
+    const src = id === 'series' ? 'https://www.youtube-nocookie.com/embed/videoseries?list=' + PLAYLIST + '&autoplay=1&rel=0&playsinline=1'
                                 : `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
     box.querySelectorAll('iframe').forEach(f => f.remove());
     const f = document.createElement('iframe'); f.src = src; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true; f.title = 'Video';
@@ -500,7 +549,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
   document.querySelectorAll('.drag button').forEach(bn => bn.addEventListener('click', () => ro.scrollBy({ left: +bn.dataset.dir * 300, behavior: reduce ? 'auto' : 'smooth' })));
 
   // audience rings
-  const AUD = [[26, 'Ages 18–24'], [39, 'Ages 25–34'], [21, 'Ages 35–44'], [86, 'Male audience']];
+  const AUD = [[+num(D['Ages 18-24 (%)'])[0], 'Ages 18–24'], [+num(D['Ages 25-34 (%)'])[0], 'Ages 25–34'], [+num(D['Ages 35-44 (%)'])[0], 'Ages 35–44'], [+num(D['Male audience (%)'])[0], 'Male audience']];
   const C = 2 * Math.PI * 62;
   document.getElementById('aud').innerHTML = AUD.map(([v, l]) => `<div class="ring rv"><svg viewBox="0 0 150 150"><circle class="bgc" cx="75" cy="75" r="62"/><circle class="fg" cx="75" cy="75" r="62" data-v="${v}"/></svg>
     <div class="pct"><span class="cu" data-to="${v}" data-suf="%">${v}%</span></div><p>${l}</p></div>`).join('');
@@ -511,8 +560,8 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
       const tick = () => { k++; n = (n + 1) % 10; u.textContent = k >= spins ? to : n; if (k < spins) setTimeout(tick, 40 + k * 3); }; setTimeout(tick, i * 90); }); };
 
   // count-ups and reveals when things come into view
-  const count = el => { const to = +el.dataset.to, suf = el.dataset.suf || ''; if (reduce) { el.textContent = to + suf; return; }
-    const t0 = performance.now(); const st = t => { const k = Math.min(1, (t - t0) / 1500), e = 1 - Math.pow(1 - k, 4); el.textContent = Math.round(to * e) + suf; if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
+  const count = el => { const to = +el.dataset.to, suf = el.dataset.suf || '', dp = (String(el.dataset.to).split('.')[1] || '').length;   // keeps decimals such as 1.2M if (reduce) { el.textContent = to + suf; return; }
+    const t0 = performance.now(); const st = t => { const k = Math.min(1, (t - t0) / 1500), e = 1 - Math.pow(1 - k, 4); el.textContent = (k < 1 ? (to * e).toFixed(dp) : el.dataset.to) + suf; if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
   const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const el = e.target; io.unobserve(el);
     if (el.classList.contains('cu')) count(el);
     else if (el.classList.contains('num')) roll(el);
@@ -535,7 +584,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
     location.href = 'mailto:admin@sportsculturehq.com?subject=' + encodeURIComponent('Partnership: ' + f.company.value) + '&body=' + encodeURIComponent(body);
     document.getElementById('thanks').style.display = 'block';
   });
-})();
+});
 </script>
 
 <!-- ================= interaction layer (computers with a mouse only; nothing here runs for "reduce motion") ================= -->
@@ -674,7 +723,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
   });
 
   // the roster and network cards are built by the page script, so wire them up once everything is on the page
-  if (document.readyState === 'complete') boot(); else addEventListener('load', boot);
+  window.SC_READY.then(() => { if (document.readyState === 'complete') boot(); else addEventListener('load', boot); });
 })();
 </script>
 </body>
