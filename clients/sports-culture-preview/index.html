@@ -462,7 +462,9 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
    1. Make a Google Sheet with two columns: A = the label (exactly as in sheet-template.csv), B = the value.
    2. In Google Sheets: File -> Share -> Publish to web -> choose the sheet -> "Comma-separated values (.csv)" -> Publish.
    3. Paste that link between the quotes on the next line. Leave it empty to use the values written here instead.
-   The page reads the Sheet each time it opens (if the Sheet can't be reached, it falls back to the values here). */
+   The page reads the Sheet each time it opens (if the Sheet can't be reached, it falls back to the values here).
+   Brands: rows "Brand 1" ... "Brand 12" are the logos shown now. Add "Brand 13" + "Brand 13 website" for a new one,
+   type a new name to replace one, or leave a "Brand N" value empty to remove that brand. */
 window.SC_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4UxbQPujhLf3EYlcCr5uLSswX94-vvUJr7qgAwOI-Y5gFPFLjWzC2GTqWGiUJqELbE0D80kIfESb5/pub?gid=1861097211&single=true&output=csv';
 window.SC = {
   'Monthly views': '200M+', 'Followers (owned brands)': '2M+', 'Extra reach (partner network)': '6M+', 'Audience aged 18-34': '65%',
@@ -489,6 +491,8 @@ window.SC_READY = (async () => {
         else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; } else cur += c; }
       cells.push(cur);
       const k = (cells[0] || '').trim(), v = (cells[1] || '').trim();
+      const bm = k.match(/^Brand (\d+)( website| logo link)?$/i);
+      if (bm) { const all = window.SC_BRANDS = window.SC_BRANDS || {}, e = all[+bm[1]] = all[+bm[1]] || {}; e[bm[2] ? bm[2].trim().toLowerCase() : 'name'] = v; continue; }
       if (k && v && (k in window.SC || /^Clip \d+ (YouTube link|title)$/.test(k))) window.SC[k] = v;   // an empty cell keeps the value here; new Clip rows (Clip 5, Clip 6...) add more clips
     }
   } catch (e) { /* the Sheet couldn't be reached: keep the values above */ }
@@ -592,7 +596,22 @@ window.SC_READY.then(() => {
   // brands without a logo file yet show their name as a wordmark
   const B = [['underdogfantasy', 'Underdog'], ['pristineauction', 'Pristine Auction'], ['celsius', 'Celsius'], ['kalshi', 'Kalshi'], ['twitch', 'Twitch'], ['gametime', 'Gametime'],
     ['lobos1707', 'Lobos 1707'], ['novig', 'Novig'], ['ea', 'EA'], ['zamst', 'Zamst'], ['polymarket', 'Polymarket'], ['saputo', 'Saputo Cheese']];
-  document.getElementById('logos').innerHTML = B.map(b => `<div>${b[0] ? `<img src="img/${b[0]}.webp" alt="" loading="lazy">` : `<span class="wm">${b[2]}</span>`}${b[1]}</div>`).join('');
+  // the Sheet can rename, add or remove brands by number: "Brand 13" = name, "Brand 13 website" = its site (the logo is
+  // taken from it), "Brand 13 logo link" = a direct image link instead. An empty "Brand 3" removes brand 3.
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const known = {};
+  B.forEach(x => { if (!x[0]) return; const nm = x[1].toLowerCase(); known[nm] = 'img/' + x[0] + '.webp'; known[nm.split(' ')[0]] = known[nm.split(' ')[0]] || known[nm]; });
+  const logoFor = (name, e) => { const link = (e['logo link'] || '').trim(), site = (e.website || '').trim().replace(/^https?:\/\//i, '').split(/[/?#]/)[0];
+    if (/^https:\/\/\S+$/i.test(link)) return link;
+    if (/^[\w-]+(\.[\w-]+)+$/.test(site)) return 'https://www.google.com/s2/favicons?domain=' + site + '&sz=128';
+    const nm = name.toLowerCase(); return known[nm] || known[nm.split(' ')[0]] || ''; };
+  const slots = {}; B.forEach((x, i) => { slots[i + 1] = { name: x[1], src: x[0] ? 'img/' + x[0] + '.webp' : '' }; });
+  for (const [n, e] of Object.entries(window.SC_BRANDS || {})) {
+    if ('name' in e) { if (!e.name) delete slots[n]; else slots[n] = { name: e.name, src: logoFor(e.name, e) }; }
+    else if (slots[n] && (e.website || e['logo link'])) slots[n].src = logoFor(slots[n].name, e) || slots[n].src;
+  }
+  const brands = Object.keys(slots).map(Number).sort((x, y) => x - y).map(n => slots[n]);
+  document.getElementById('logos').innerHTML = brands.map(x => `<div>${x.src ? `<img src="${esc(x.src)}" alt="" loading="lazy" data-n="${esc(x.name.toUpperCase())}" onerror="const w=document.createElement('span');w.className='wm';w.textContent=this.dataset.n;this.replaceWith(w)">` : `<span class="wm">${esc(x.name.toUpperCase())}</span>`}${esc(x.name)}</div>`).join('');
 
   // the roster
   const ro = document.getElementById('roster');
