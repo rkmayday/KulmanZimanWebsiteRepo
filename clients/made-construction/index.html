@@ -84,16 +84,18 @@ main section[id]{scroll-margin-top:calc(var(--hh,110px) + 10px)}
 @media (max-width:760px){.street{grid-template-columns:1fr}.street .s1,.street .s2,.street .s3{display:none}.street .s0{display:block}}
 .shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(8,8,8,.93) 0%,rgba(8,8,8,.58) 38%,rgba(8,8,8,.14) 68%,rgba(8,8,8,.3) 100%)}
 .enter.live .shade{opacity:0}
-.louvers{position:absolute;inset:0;perspective:1700px}
-.slat{position:absolute;top:0;bottom:0;overflow:hidden;will-change:transform}
-.slat .face{position:absolute;inset:0;background:linear-gradient(90deg,#0b0b0b 0%,#181817 44%,#232322 52%,#0d0d0d 100%);animation:rise 1.2s cubic-bezier(.2,.8,.2,1) calc(.2s + var(--o) * 70ms) both}
-@keyframes rise{from{transform:translateY(102%)}to{transform:none}}
-.slat .face::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 25%,rgba(255,255,255,.11) 50%,transparent 75%);transform:translateX(-130%);animation:glint 1.3s ease-in-out calc(1.8s + var(--i) * 45ms) both}
-@keyframes glint{to{transform:translateX(130%)}}
-.lg{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#efebe3;pointer-events:none}
-.lg svg{width:clamp(54px,6.5vw,92px);height:auto;margin-bottom:clamp(18px,3vh,32px)}
-.lg b{font:500 clamp(3.6rem,14.5vw,13.5rem)/.86 var(--disp);letter-spacing:.28em;margin-right:-.28em}
-.lg small{margin-top:clamp(14px,2.4vh,26px);font:500 clamp(.66rem,1.15vw,.95rem)/1 var(--body);letter-spacing:.78em;margin-right:-.78em;color:#bcb7ac}
+/* the wall is one drawing (SVG): black brick fins, each carrying a slice of the logo, rise into place on load.
+   The logo's square mark is cut through the wall as a window: scrolling fades the logo away, the homes show through
+   the window between the mark's fins, and the view flies through it until the homes fill the screen. */
+.wall{position:absolute;inset:0;width:100%;height:100%;display:block}
+.enter:not(.live) .wall{display:none}
+.wall .fin{animation:rise 1.2s cubic-bezier(.2,.8,.2,1) calc(.2s + var(--o) * 70ms) both}
+@keyframes rise{from{transform:translateY(var(--rise))}to{transform:none}}
+.wall .gl{animation:glint 1.3s ease-in-out calc(1.8s + var(--o) * 45ms) both}
+@keyframes glint{from{transform:translateX(var(--g0))}to{transform:translateX(var(--g1))}}
+.wall.static .fin{animation:none}
+.wall.static .gl{display:none}
+.wall .logo{opacity:var(--lo,1)}
 .cue-wrap{position:absolute;left:0;right:0;bottom:26px;z-index:6;display:flex;justify-content:center;pointer-events:none}
 .enter:not(.live) .cue-wrap{display:none}
 .cue{display:flex;flex-direction:column;align-items:center;gap:12px;color:#cfcabf;font:500 10.5px var(--body);letter-spacing:.32em;text-transform:uppercase;opacity:0;animation:fadeIn .9s 2.3s forwards}
@@ -242,7 +244,7 @@ footer .logo .wm span{color:var(--dink3)}
         <div class="s3"><span>M2018</span></div>
       </div>
       <div class="shade" aria-hidden="true"></div>
-      <div class="louvers" id="louvers" aria-hidden="true"></div>
+      <svg class="wall" id="wall" aria-hidden="true" preserveAspectRatio="none"></svg>
       <div class="enter-copy">
         <div class="wrap">
           <p class="label">Development · Design · Construction</p>
@@ -390,45 +392,70 @@ footer .logo .wm span{color:var(--dink3)}
   const setHH = () => document.documentElement.style.setProperty('--hh', topbar.offsetHeight + 'px');
   setHH(); addEventListener('resize', setHH);
 
-  // the entrance: fins rise in carrying the logo; scrolling swings them open (middle first) onto the street of homes
-  const stage = document.getElementById('enter'), louv = document.getElementById('louvers');
+  // the entrance: a wall of black brick fins rises in, each fin carrying a slice of the logo. Scrolling fades the logo,
+  // its square mark becomes a window onto the homes, and the view flies through the window between two of its fins.
+  const stage = document.getElementById('enter'), wall = document.getElementById('wall'), pin = wall.parentElement;
   const street = stage.querySelector('.street'), shade = stage.querySelector('.shade'), copy = stage.querySelector('.enter-copy'), cue = stage.querySelector('.cue-wrap');
   const clamp = v => Math.max(0, Math.min(1, v)), ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const lim = (v, a, b) => Math.max(a, Math.min(b, v));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const logo = '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="currentColor"/><path d="M10 9v22M17 9v22M24 9v22M31 9v15" stroke="#0a0a0a" stroke-width="3.2"/></svg><b>MADE</b><small>CONSTRUCTION</small>';
-  let slats = [], N = 0, W = 0, raf = 0;
+  let W = 0, H = 0, N = 0, zoom = null, gap = [0, 0], raf = 0, built = false;
   const frame = () => {
     raf = 0;
     const r = stage.getBoundingClientRect();
     nav.classList.toggle('over', r.bottom > topbar.offsetHeight + 2);
-    if (reduce) return;
+    if (reduce || !zoom) return;
     const p = clamp(-r.top / Math.max(1, r.height - innerHeight));
-    slats.forEach((sl, i) => {
-      const c = (i + .5) / N - .5, d = Math.abs(c) * 2;            // c: -0.5 (left) .. 0.5 (right); d: 0 in the middle, 1 at the edges
-      const t = ease(clamp((p - d * .18) / .42));                     // the middle fins open first; all are open by p = .6
-      sl.style.transform = `rotateY(${(t * 90 * (c < 0 ? -1 : 1)).toFixed(2)}deg)`;
-      sl.style.filter = `brightness(${(1 + Math.sin(t * Math.PI) * .9).toFixed(3)})`;   // light catches each fin as it turns
-    });
-    louv.style.opacity = (1 - clamp((p - .5) / .1)).toFixed(3);      // the fins are fully gone before any text appears
-    louv.style.visibility = p > .6 ? 'hidden' : '';
-    street.style.transform = `scale(${(1.16 - .16 * ease(clamp(p / .6))).toFixed(4)})`;
-    shade.style.opacity = clamp((p - .45) / .2).toFixed(3);
-    const k = ease(clamp((p - .63) / .22));                          // the headline starts only after the fins are gone
+    if (p > .005) stage.classList.add('ready');                    // scrolling early still shows the homes in the window
+    wall.style.setProperty('--lo', (1 - clamp(p / .12)).toFixed(3));   // 1) the logo fades; its mark is left as a window
+    const z = ease(clamp((p - .1) / .5));                            // 2) fly through the window, between two of its fins
+    const s = Math.pow(240, z), tx = gap[0] + (W / 2 - gap[0]) * z, ty = gap[1] + (H / 2 - gap[1]) * z;
+    zoom.setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s.toFixed(4)}) translate(${(-gap[0]).toFixed(2)} ${(-gap[1]).toFixed(2)})`);
+    wall.style.opacity = (1 - clamp((p - .56) / .06)).toFixed(3);
+    wall.style.visibility = p > .62 ? 'hidden' : '';
+    street.style.transform = `scale(${(1.25 - .25 * z).toFixed(4)})`;
+    shade.style.opacity = clamp((p - .5) / .15).toFixed(3);
+    const k = ease(clamp((p - .64) / .22));                          // 3) the headline, once the homes fill the screen
     copy.style.opacity = k.toFixed(3); copy.style.transform = `translateY(${((1 - k) * 34).toFixed(1)}px)`;
     copy.style.pointerEvents = k > .5 ? '' : 'none';
     cue.style.opacity = (1 - clamp(p / .07)).toFixed(3);
-    stage.classList.toggle('open', p > .63);
-    if (p > .01) stage.classList.add('ready');                       // scrolling early still reveals the homes
+    stage.classList.toggle('open', p > .64);
   };
   const build = () => {
-    const n = innerWidth < 760 ? 7 : 13, w = louv.clientWidth;
-    if (n === N && Math.abs(w - W) < 2) return;
-    N = n; W = w; const sw = W / N;
-    louv.innerHTML = Array.from({ length: N }, (_, i) => `<div class="slat" style="left:${(i * sw).toFixed(2)}px;width:${(sw + .6).toFixed(2)}px;--i:${i};--o:${i}"><div class="face"><div class="lg" style="left:${(-i * sw).toFixed(2)}px;width:${W}px">${logo}</div></div></div>`).join('');
-    slats = [...louv.children]; frame();
+    const w = pin.clientWidth, h = pin.clientHeight, n = w < 760 ? 7 : 13;
+    if (Math.abs(w - W) < 2 && Math.abs(h - H) < 2 && n === N) return;
+    W = w; H = h; N = n; const sw = W / N;
+    // the logo, laid out like the page's type: mark, MADE, CONSTRUCTION, centred on the screen
+    const ms = lim(W * .065, 54, 92), fs = lim(W * .145, 57.6, 216), sm = lim(W * .0115, 10.56, 15.2);
+    const g1 = lim(H * .03, 18, 32), g2 = lim(H * .024, 14, 26), capH = fs * .7;
+    const mx = (W - ms) / 2, my = (H - (ms + g1 + capH + g2 + sm * .72)) / 2;
+    const base1 = my + ms + g1 + capH, base2 = base1 + g2 + sm * .72, u = ms / 40;
+    const bars = [10, 17, 24, 31].map(b => `M${(mx + b * u).toFixed(2)} ${(my + 9 * u).toFixed(2)}V${(my + (b === 31 ? 24 : 31) * u).toFixed(2)}`).join('');
+    gap = [mx + 20.5 * u, my + 20 * u];                              // the middle of the gap between the mark's 2nd and 3rd fins
+    const ls1 = fs * .28, ls2 = sm * .78, bw = (3.2 * u).toFixed(2), fw = (sw + .6).toFixed(2);
+    const logo = `<g class="logo"><rect x="${mx}" y="${my}" width="${ms}" height="${ms}" fill="#efebe3"/><path d="${bars}" stroke="#0a0a0a" stroke-width="${bw}"/>`
+      + `<text x="${W / 2 + ls1 / 2}" y="${base1}" text-anchor="middle" fill="#efebe3" style="font:500 ${fs.toFixed(1)}px Jost,system-ui,sans-serif;letter-spacing:${ls1.toFixed(2)}px">MADE</text>`
+      + `<text x="${W / 2 + ls2 / 2}" y="${base2}" text-anchor="middle" fill="#bcb7ac" style="font:500 ${sm.toFixed(2)}px Inter,system-ui,sans-serif;letter-spacing:${ls2.toFixed(2)}px">CONSTRUCTION</text></g>`;
+    let clips = '', fins = '';
+    for (let i = 0; i < N; i++) {
+      const x = (i * sw).toFixed(2);
+      clips += `<clipPath id="c${i}"><rect x="${x}" y="0" width="${fw}" height="${H}"/></clipPath>`;
+      fins += `<g class="fin" clip-path="url(#c${i})" style="--o:${i};--rise:${(H * 1.02).toFixed(1)}px">`
+        + `<rect x="${x}" y="0" width="${fw}" height="${H}" fill="url(#finG)" mask="url(#win)"/>${logo}`
+        + `<rect class="gl" x="${x}" y="0" width="${fw}" height="${H}" fill="url(#glG)" style="--o:${i};--g0:${(-sw * 1.3).toFixed(1)}px;--g1:${(sw * 1.3).toFixed(1)}px"/></g>`;
+    }
+    wall.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    wall.innerHTML = '<defs>'
+      + '<linearGradient id="finG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b0b0b"/><stop offset=".44" stop-color="#181817"/><stop offset=".52" stop-color="#232322"/><stop offset="1" stop-color="#0d0d0d"/></linearGradient>'
+      + '<linearGradient id="glG" x1="0" x2="1" y1="0" y2="0"><stop offset=".25" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".11"/><stop offset=".75" stop-color="#fff" stop-opacity="0"/></linearGradient>'
+      + `<mask id="win" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#fff"/>`
+      + `<g id="zoom"><rect x="${mx}" y="${my}" width="${ms}" height="${ms}" fill="#000"/><path d="${bars}" stroke="#fff" stroke-width="${bw}"/></g></mask>`
+      + clips + '</defs>' + fins;
+    if (built) wall.classList.add('static');                         // a resize redraws the wall without replaying the rise
+    zoom = wall.querySelector('#zoom'); frame();
   };
-  if (!reduce) { stage.classList.add('live'); build(); addEventListener('resize', () => { build(); frame(); });
-    setTimeout(() => stage.classList.add('ready'), 2300); }   // the last fin finishes rising at about 2.2 s
+  if (!reduce) { stage.classList.add('live'); build(); built = true; addEventListener('resize', () => { build(); frame(); });
+    setTimeout(() => stage.classList.add('ready'), 2300); }         // the last fin finishes rising at about 2.2 s
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
   frame();
   // sections ease in as they come into view
