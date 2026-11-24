@@ -1,5 +1,5 @@
 # Jason Cutaiar's three draft pages -> hosted previews on the Ziman Sites site:
-#   zimansites.com/preview/madecon         (clients/made-construction)
+#   zimansites.com/preview/madeconstruction (clients/made-construction)
 #   zimansites.com/preview/madeproperties  (clients/made-properties)
 #   zimansites.com/preview/jasoncutaiar    (clients/jason-cutaiar)
 # Each becomes a full HTML page (static/preview/<slug>.html) with its photos in static/preview/<slug>-img/,
@@ -9,9 +9,9 @@ import pathlib, re, shutil
 
 R = pathlib.Path(__file__).resolve().parent
 OUT = R.parent / "static" / "preview"
-SITES = {"made-construction": "madecon", "made-properties": "madeproperties", "jason-cutaiar": "jasoncutaiar"}
+SITES = {"made-construction": "madeconstruction", "made-properties": "madeproperties", "jason-cutaiar": "jasoncutaiar"}
 # the drafts link to each other's claude.ai preview; on zimansites.com they link to each other's /preview page
-LINKS = {"https://claude.ai/artifact/7wPXjGjGr8wShFYU3Coeu6": "madecon", "https://claude.ai/artifact/EfkTubUQpZVN8gDxirbKDE": "madeproperties"}
+LINKS = {"https://claude.ai/artifact/7wPXjGjGr8wShFYU3Coeu6": "madeconstruction", "https://claude.ai/artifact/EfkTubUQpZVN8gDxirbKDE": "madeproperties"}
 
 for folder, slug in SITES.items():
     src = (R / folder / "index.html").read_text()
