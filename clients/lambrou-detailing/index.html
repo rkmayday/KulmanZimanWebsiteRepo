@@ -1,4 +1,4 @@
-<title>Lambrou Detailing</title>
+<title>Afterglow Detailing</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,11 +85,14 @@ section{padding-block:clamp(64px,9vw,120px)}
 .ba .tag.l{left:16px;background:#3b2f22;color:#fff}.ba .tag.r{right:16px;background:var(--aqua);color:#fff}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
 .note{margin-top:14px;color:var(--ink3);font-size:.9rem}
-.ba-slot{display:grid;grid-template-columns:1fr 1fr;gap:10px;aspect-ratio:16/8;max-width:100%}
-.ba-slot > div{position:relative;display:grid;place-items:center;text-align:center;padding:24px;border-radius:24px;border:1.5px dashed var(--line);background:var(--card);color:var(--ink2);font-weight:700}
-.ba-slot .tag{position:absolute;top:16px;padding:7px 14px;border-radius:999px;font:800 .82rem var(--body)}
-.ba-slot .tag.l{left:16px;background:#3a3d40;color:#fff}.ba-slot .tag.r{left:16px;background:var(--aqua);color:#050605}
-@media (max-width:560px){.ba-slot{grid-template-columns:1fr;aspect-ratio:auto}.ba-slot > div{min-height:180px}}
+.ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ba-card{position:relative;margin:0;aspect-ratio:4/3;border-radius:24px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:border-color .35s,box-shadow .35s}
+.ba-card img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.ba-card .tag{position:absolute;top:16px;left:16px;padding:7px 14px;border-radius:999px;font:800 .82rem var(--body)}
+.ba-card .tag.l{background:#3a3d40;color:#fff}.ba-card .tag.r{background:var(--neon);color:#050605}
+.ba-card.after{border-color:rgba(255,122,26,.55);box-shadow:0 0 0 1px rgba(255,46,136,.35),0 0 50px -14px rgba(255,46,136,.55)}
+@media (hover:hover){.ba-card:hover img{transform:scale(1.04)}}
+@media (max-width:640px){.ba-pair{grid-template-columns:1fr}}
 
 /* services */
 .svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
@@ -157,79 +160,13 @@ textarea{min-height:100px;resize:vertical}
 @media (max-width:860px){.book .wrap{grid-template-columns:1fr}form{grid-template-columns:1fr}}
 footer{padding-block:34px;border-top:1px solid var(--line)}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink3);font-size:.9rem;font-weight:600}
-/* Opening screen: the logo draws itself in neon, "Recommended on a computer" shows under it,
-   then the screen splits open onto the site. About 3.9 s on every visit; the script below removes it. */
-#ld-load{position:fixed;inset:0;z-index:2147483000;overflow:hidden;animation:llGone 3.9s linear forwards}
-@keyframes llGone{0%,97%{visibility:visible}100%{visibility:hidden}}
-#ld-load .ll-half{position:absolute;left:0;right:0;height:50.5%}
-#ld-load .ll-top{top:0;background:radial-gradient(55% 80% at 50% 100%,rgba(255,46,136,.11),transparent 70%),var(--bg);animation:llTop .8s 3.05s cubic-bezier(.76,0,.24,1) forwards}
-#ld-load .ll-bot{bottom:0;background:radial-gradient(55% 80% at 50% 0%,rgba(255,122,26,.09),transparent 70%),var(--bg);animation:llBot .8s 3.05s cubic-bezier(.76,0,.24,1) forwards}
-@keyframes llTop{to{transform:translateY(-101%)}}
-@keyframes llBot{to{transform:translateY(101%)}}
-/* a neon line opens across the middle, and the two halves part along it */
-#ld-load .ll-seam{position:absolute;left:0;right:0;top:50%;z-index:1;height:2px;margin-top:-1px;background:var(--neon);box-shadow:0 0 18px rgba(255,59,59,.8);opacity:0;transform:scaleX(0);
-  animation:llSeam .5s 2.72s cubic-bezier(.6,0,.2,1) forwards,llFadeOut .4s 3.2s ease forwards}
-@keyframes llSeam{to{opacity:1;transform:none}}
-@keyframes llFadeOut{to{opacity:0}}
-#ld-load .ll-logo{position:absolute;left:50%;top:50%;z-index:2;display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.6vh,24px);transform:translate(-50%,-50%);animation:llOut .45s 2.6s ease forwards}
-@keyframes llOut{to{opacity:0;transform:translate(-50%,-50%) scale(1.05);filter:blur(4px)}}
-#ld-load .ll-mark{display:block;width:clamp(170px,25vw,300px);height:auto;overflow:visible;animation:llGlow .9s 1.5s ease forwards}
-@keyframes llGlow{to{filter:drop-shadow(0 0 14px rgba(255,46,136,.6))}}
-/* the outline draws itself: body, then windows, then the wheels; hubs and the sparkle pop in last */
-#ld-load .ll-mark .d{fill:none;stroke:url(#ll-neon);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:butt;stroke-dasharray:1;stroke-dashoffset:1;animation:llLine 1.1s .25s cubic-bezier(.45,0,.2,1) forwards}
-#ld-load .ll-mark .win{stroke-width:1.7;animation-duration:.7s;animation-delay:.75s}
-#ld-load .ll-mark .pil{stroke:#ff3b3b;stroke-width:1.7;animation-duration:.25s;animation-delay:1.2s}
-#ld-load .ll-mark .whl{animation-duration:.6s;animation-delay:.95s}
-@keyframes llLine{to{stroke-dashoffset:0}}
-#ld-load .ll-mark .hub{fill:url(#ll-neon);transform-box:fill-box;transform-origin:center;transform:scale(0);animation:llPop .4s 1.5s cubic-bezier(.3,1.6,.5,1) forwards}
-#ld-load .ll-mark .spark{fill:#fff;transform-box:fill-box;transform-origin:center;transform:scale(0) rotate(-90deg);animation:llPop .55s 1.75s cubic-bezier(.3,1.5,.5,1) forwards,llTwinkle .5s 2.3s ease}
-@keyframes llPop{to{transform:none}}
-@keyframes llTwinkle{50%{transform:scale(1.35) rotate(45deg)}}
-#ld-load .ll-wm{margin:0;display:flex;flex-direction:column;align-items:center;line-height:1}
-#ld-load .ll-wm b{font:800 clamp(1.6rem,4vw,2.9rem) var(--display);letter-spacing:.14em;margin-right:-.14em;color:#fff;opacity:0;animation:llWm .7s 1.3s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes llWm{from{opacity:0;letter-spacing:.5em;margin-right:-.5em;filter:blur(6px)}to{opacity:1;letter-spacing:.14em;margin-right:-.14em;filter:none}}
-#ld-load .ll-wm span{margin-top:14px;font:800 clamp(.66rem,1.2vw,.88rem) var(--body);letter-spacing:.55em;margin-right:-.55em;background:var(--neon);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;animation:llFadeIn .6s 1.7s ease forwards}
-@keyframes llFadeIn{to{opacity:1}}
-/* "Recommended on a computer", along the bottom */
-#ld-load .ll-pc{position:absolute;left:0;right:0;bottom:calc(clamp(24px,6vh,52px) + env(safe-area-inset-bottom,0px));z-index:2;margin:0;padding-inline:16px;display:flex;justify-content:center;align-items:center;gap:10px;
-  font:700 .78rem var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);opacity:0;animation:llNote .6s .45s ease forwards,llFadeOut .35s 2.55s ease forwards}
-@keyframes llNote{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-#ld-load .ll-pc i{width:20px;height:15px;flex:none;background:var(--neon);
-  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'><rect x='4' y='2' width='16' height='11' rx='1.5'/><path d='M1.5 16.2h21'/></svg>") center/contain no-repeat;
-          mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'><rect x='4' y='2' width='16' height='11' rx='1.5'/><path d='M1.5 16.2h21'/></svg>") center/contain no-repeat}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}#ld-load{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 </style>
 
-<div id="ld-load" aria-hidden="true">
-  <div class="ll-half ll-top"></div><div class="ll-half ll-bot"></div><div class="ll-seam"></div>
-  <div class="ll-logo">
-    <svg class="ll-mark" viewBox="0 0 84 40"><defs><linearGradient id="ll-neon" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2e88"/><stop offset=".38" stop-color="#ff3b3b"/><stop offset=".7" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffd21f"/></linearGradient></defs><path class="d" pathLength="1" d="M5 30V19.5Q5 15.2 8.4 14.4L13.2 9.4Q14.4 8.2 16.2 8.2H47.6L56.2 14.8L72.6 16.4Q77.2 17 77.2 21V27Q77.2 30 74.4 30H70.4A7.4 7.4 0 0 0 55.6 30H26.4A7.4 7.4 0 0 0 11.6 30Z"/><path class="d win" pathLength="1" d="M13.6 14.6L17.2 10.8H46.8L52.4 14.6Z"/><path class="d pil" pathLength="1" d="M31.5 11v3.4"/><path class="d whl" pathLength="1" d="M13.4 30a5.6 5.6 0 1 0 11.2 0a5.6 5.6 0 1 0-11.2 0"/><path class="d whl" pathLength="1" d="M57.4 30a5.6 5.6 0 1 0 11.2 0a5.6 5.6 0 1 0-11.2 0"/><circle class="hub" cx="19" cy="30" r="2"/><circle class="hub" cx="63" cy="30" r="2"/><path class="spark" d="M71 1.4l1.5 4.1 4.1 1.5-4.1 1.5L71 12.6l-1.5-4.1-4.1-1.5 4.1-1.5z"/></svg>
-    <p class="ll-wm"><b>LAMBROU</b><span>DETAILING</span></p>
-  </div>
-  <p class="ll-pc"><i></i>Recommended on a computer</p>
-</div>
-<script>
-(() => {
-  // the opening screen: keep the page still while it plays, then take it away (not shown at all with reduced motion)
-  const el = document.getElementById('ld-load');
-  if (!el) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.remove(); return; }
-  const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
-  const hold = e => { if (e.type !== 'keydown' || keys.includes(e.key)) e.preventDefault(); };
-  const types = ['wheel', 'touchmove', 'keydown'];
-  types.forEach(t => addEventListener(t, hold, { passive: false }));
-  const release = () => types.forEach(t => removeEventListener(t, hold));
-  // let go of the page as the screen starts to split, and remove the screen once its own animation has ended
-  el.addEventListener('animationstart', e => { if (e.animationName === 'llTop') release(); });
-  el.addEventListener('animationend', e => { if (e.animationName === 'llGone') { release(); el.remove(); } });
-  setTimeout(() => { release(); el.remove(); }, 6000);   // in case the browser skips the animation events
-})();
-</script>
-
-<div class="demo">Demo website by Ziman Sites · Placeholder photos until Lambrou Detailing's own are added</div>
+<div class="demo">Demo · This is a one-page website, built by Ziman Sites for $284</div>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Lambrou Detailing home"><svg class="mark" viewBox="0 0 84 40" aria-hidden="true"><defs><linearGradient id="lg-neon" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2e88"/><stop offset=".38" stop-color="#ff3b3b"/><stop offset=".7" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffd21f"/></linearGradient></defs><path d="M5 30V19.5Q5 15.2 8.4 14.4L13.2 9.4Q14.4 8.2 16.2 8.2H47.6L56.2 14.8L72.6 16.4Q77.2 17 77.2 21V27Q77.2 30 74.4 30H70.4A7.4 7.4 0 0 0 55.6 30H26.4A7.4 7.4 0 0 0 11.6 30Z" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4" stroke-linejoin="round"/><path d="M13.6 14.6L17.2 10.8H46.8L52.4 14.6Z" fill="none" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linejoin="round"/><path d="M31.5 11v3.4" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linecap="round"/><circle cx="19" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="19" cy="30" r="2" fill="url(#lg-neon)"/><circle cx="63" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="63" cy="30" r="2" fill="url(#lg-neon)"/><path d="M71 1.4l1.5 4.1 4.1 1.5-4.1 1.5L71 12.6l-1.5-4.1-4.1-1.5 4.1-1.5z" fill="#fff"/></svg><span class="wm"><b>LAMBROU</b><span>DETAILING</span></span></a>
+    <a class="brand" href="#top" aria-label="Afterglow Detailing home"><svg class="mark" viewBox="0 0 84 40" aria-hidden="true"><defs><linearGradient id="lg-neon" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2e88"/><stop offset=".38" stop-color="#ff3b3b"/><stop offset=".7" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffd21f"/></linearGradient></defs><path d="M5 30V19.5Q5 15.2 8.4 14.4L13.2 9.4Q14.4 8.2 16.2 8.2H47.6L56.2 14.8L72.6 16.4Q77.2 17 77.2 21V27Q77.2 30 74.4 30H70.4A7.4 7.4 0 0 0 55.6 30H26.4A7.4 7.4 0 0 0 11.6 30Z" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4" stroke-linejoin="round"/><path d="M13.6 14.6L17.2 10.8H46.8L52.4 14.6Z" fill="none" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linejoin="round"/><path d="M31.5 11v3.4" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linecap="round"/><circle cx="19" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="19" cy="30" r="2" fill="url(#lg-neon)"/><circle cx="63" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="63" cy="30" r="2" fill="url(#lg-neon)"/><path d="M71 1.4l1.5 4.1 4.1 1.5-4.1 1.5L71 12.6l-1.5-4.1-4.1-1.5 4.1-1.5z" fill="#fff"/></svg><span class="wm"><b>AFTERGLOW</b><span>DETAILING</span></span></a>
     <nav class="links" aria-label="Main">
       <a href="#results">Results</a><a href="#services">Services</a><a href="#area">Service area</a>
       <a class="btn sun-b" href="#book">Book now</a>
@@ -250,12 +187,11 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
 
   <section class="band" id="results">
     <div class="wrap">
-      <div class="head"><p class="eyebrow">Before &amp; after</p><h2>Drag to see the <span class="sun">difference.</span></h2></div>
-      <div class="ba-slot">
-        <div><span class="tag l">Before</span><p>Dirty car photo</p></div>
-        <div><span class="tag r">After</span><p>Same car, same angle, after the detail</p></div>
+      <div class="head"><p class="eyebrow">Before &amp; after</p><h2>See the <span class="sun">difference.</span></h2></div>
+      <div class="ba-pair">
+        <figure class="ba-card"><img src="img/ba-before.webp" alt="A black Bentley Continental covered in grime and foam, halfway through its detail" loading="lazy" width="1200" height="900"><span class="tag l">Before</span></figure>
+        <figure class="ba-card after"><img src="img/ba-after.webp" alt="The same black Bentley Continental after the detail, spotless and glossy" loading="lazy" width="1200" height="900"><span class="tag r">After</span></figure>
       </div>
-      <p class="note">Lambrou Detailing's own before-and-after photos go here, with a slider to compare them.</p>
     </div>
   </section>
 
@@ -303,7 +239,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
         <figure class="g5"><img src="img/engine.webp" alt="A clean engine bay" loading="lazy"><figcaption>Engine bay</figcaption></figure>
         <figure class="g6"><img src="img/panamera.webp" alt="Black Porsche Panamera on the road" loading="lazy"><figcaption>Panamera</figcaption></figure>
       </div>
-      <p class="note">Placeholder photos. Lambrou Detailing's own work replaces these.</p>
+      <p class="note">Placeholder photos. Afterglow Detailing's own work replaces these.</p>
     </div>
   </section>
 
@@ -342,7 +278,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   <section class="book" id="book">
     <div class="wrap">
       <div class="head" style="margin:0"><p class="eyebrow">Book a detail</p><h2>Let's make it <span class="sun">shine.</span></h2>
-        <p>Send your details and Lambrou Detailing will get back to you with a quote and a time that works.</p>
+        <p>Send your details and Afterglow Detailing will get back to you with a quote and a time that works.</p>
         <p style="color:var(--ink3);font-size:.95rem">Phone and email go here once confirmed.</p>
       </div>
       <form id="bk" novalidate>
@@ -353,13 +289,13 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
         <label for="bk-svc" class="full">Service<select id="bk-svc" name="svc"><option>Full Detail</option><option>Wash &amp; Protect</option><option>Interior Reset</option><option>Polish &amp; Coat</option><option>Not sure yet</option></select></label>
         <label for="bk-msg" class="full">Anything else?<textarea id="bk-msg" name="msg" placeholder="Condition, timing, special requests"></textarea></label>
         <button class="btn sun-b full" type="submit">Request a quote</button>
-        <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Lambrou Detailing.</p>
+        <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Afterglow Detailing.</p>
       </form>
     </div>
   </section>
 </main>
 
-<footer><div class="wrap"><span>© Lambrou Detailing · Monmouth County, NJ</span><span>Demo website by Ziman Sites</span></div></footer>
+<footer><div class="wrap"><span>© Afterglow Detailing · Monmouth County, NJ</span><span>Demo website by Ziman Sites</span></div></footer>
 
 <script>
 (() => {
