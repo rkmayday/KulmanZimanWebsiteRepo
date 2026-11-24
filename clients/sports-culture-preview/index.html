@@ -13,7 +13,7 @@
   --disp:Archivo,"Arial Black",sans-serif;--body:"Inter Tight",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--ease:cubic-bezier(.16,1,.3,1)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:clip}
-body{margin:0;background:var(--k);color:var(--w);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;background:var(--k);color:var(--w);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}   /* clip, not hidden: hidden stops the top bar from staying pinned */
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 .wrap{width:min(1280px,100% - 56px);margin-inline:auto}
@@ -36,7 +36,7 @@ a{color:inherit;text-decoration:none}
 .ticker .run{display:flex;gap:44px;width:max-content;animation:tick 34s linear infinite;white-space:nowrap}
 .ticker .run span::before{content:"▲";margin-right:10px;font-size:.6rem}
 @keyframes tick{to{transform:translateX(-50%)}}
-.nav{position:sticky;top:38px;z-index:40;background:rgba(0,0,0,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{position:sticky;top:var(--bh,38px);z-index:40;background:rgba(0,0,0,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
 .mark{display:flex;align-items:center;gap:12px}
 .mark img{width:30px;height:30px}
@@ -53,9 +53,10 @@ a{color:inherit;text-decoration:none}
 .hero{position:relative;padding:clamp(60px,9vw,120px) 0 0;text-align:center;overflow:hidden}
 .hero .glow{position:absolute;left:50%;top:-10%;width:1100px;height:700px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,204,0,.18),transparent);pointer-events:none}
 .hero h1{position:relative;margin:24px auto 0;font-size:clamp(2.6rem,7.4vw,7.6rem);max-width:15ch}
-.swap{display:inline-grid;vertical-align:bottom;color:var(--y);justify-items:start;transition:width .6s var(--ease)}
+/* the rotating word sits on its own line, centred, in a box as wide as the longest word: the words around it never move */
+.swap{display:grid;justify-items:center;color:var(--y);margin:.04em auto}
 .swap span{white-space:nowrap}
-.swap span{grid-area:1/1;opacity:0;transform:translateY(40%) skewY(6deg);transition:opacity .5s var(--ease),transform .7s var(--ease)}
+.swap span{grid-area:1/1;opacity:0;transform:translateY(40%) skewY(6deg);transition:opacity .35s var(--ease),transform .45s var(--ease)}
 .swap span.on{opacity:1;transform:none}
 .swap span.out{opacity:0;transform:translateY(-40%) skewY(-6deg)}
 .hero p.lede{position:relative;margin:28px auto 0;max-width:46ch;font-size:clamp(1.05rem,1.5vw,1.3rem);color:var(--w2)}
@@ -121,8 +122,8 @@ a{color:inherit;text-decoration:none}
 .card.hot .fl b{color:#000}
 .card.hot .pic{box-shadow:0 0 0 6px #000,0 0 0 7px rgba(0,0,0,.3)}
 .card.hot .fl{border-color:rgba(0,0,0,.25)}
-.card.more{display:flex;flex-direction:column;justify-content:space-between;background:transparent;border-style:dashed}
-.card.more b{font:900 2.6rem/.95 var(--disp);font-style:italic;font-stretch:120%;text-transform:uppercase}
+.card.more{width:340px;display:flex;flex-direction:column;justify-content:center;gap:18px;background:transparent;border-style:dashed;padding:30px 28px}
+.card.more b{font:900 1.85rem/1.02 var(--disp);font-style:italic;font-stretch:112%;text-transform:uppercase}
 .card.more p{margin:0;color:var(--w2)}
 .drag{display:flex;align-items:center;gap:12px;margin-top:6px;color:var(--w3);font:600 .74rem var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .drag button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--k2);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s}
@@ -242,6 +243,42 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 @media (max-width:1100px){.ads{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.ads{grid-template-columns:1fr}}
 
+
+/* brands who trust us: Pepsi front and centre */
+.pepsi{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(18px,3vw,36px);margin-bottom:16px;padding:clamp(22px,3vw,34px);border-radius:22px;
+  background:radial-gradient(120% 160% at 0% 0%,#1c46c2,#0b1e63 55%,#050b26);border:1px solid rgba(255,255,255,.12);transition:transform .4s var(--ease)}
+.pepsi:hover{transform:translateY(-3px)}
+.pepsi img{width:clamp(70px,9vw,110px);height:clamp(70px,9vw,110px);border-radius:50%;background:#fff;padding:8px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.pepsi .pp-t{display:grid;gap:6px}
+.pepsi .k{color:rgba(255,255,255,.7)}
+.pepsi b{font:900 clamp(2rem,4vw,3.4rem)/1 var(--disp);font-style:italic;font-stretch:120%;text-transform:uppercase}
+.pepsi .pp-t > span:last-child{color:rgba(255,255,255,.85);max-width:52ch}
+.pepsi em{font-style:normal;font-weight:700;color:#fff}
+.pepsi .pp-go{font:800 .9rem var(--disp);font-stretch:110%;text-transform:uppercase;background:var(--y);color:#000;padding:12px 18px;border-radius:999px;white-space:nowrap}
+@media (max-width:760px){.pepsi{grid-template-columns:auto 1fr}.pepsi .pp-go{grid-column:1/-1;justify-self:start}}
+.logos .wm{height:42px;min-width:42px;display:grid;place-items:center;padding:0 8px;border-radius:10px;background:#fff;color:#000;font:900 .8rem var(--disp);font-stretch:110%;letter-spacing:.02em;filter:grayscale(1)}
+/* a long section heading (the roster) at a calmer size */
+.top h2.long{font-size:clamp(1.9rem,3.6vw,3.3rem);max-width:24ch;line-height:1}
+/* production steps: a simple hover (they don't use the box tilt, which clashed with their numbers and top line) */
+.step{transition:transform .35s var(--ease)}
+.step:hover{transform:translateY(-4px)}
+.step:hover b{color:var(--y)}
+/* web properties: the two live sites in the spotlight */
+.webp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(40px,6vw,64px)}
+.wp{position:relative;display:grid;gap:10px;padding:clamp(24px,3vw,36px);border-radius:22px;overflow:hidden;background:linear-gradient(140deg,#221c05,var(--k2) 60%);border:1px solid rgba(255,204,0,.25);transition:transform .4s var(--ease),border-color .3s}
+.wp:hover{transform:translateY(-4px);border-color:var(--y)}
+.wp .k{color:var(--y)}
+.wp b{font:900 clamp(1.25rem,2.5vw,2.3rem)/1.05 var(--disp);font-style:italic;font-stretch:108%;text-transform:lowercase;white-space:nowrap}
+.wp span:last-child{color:var(--w2);font-weight:600}
+.webp-soon{grid-column:1/-1;justify-self:start;font:600 .9rem var(--body);color:var(--w3);padding:10px 16px;border-radius:999px;border:1px dashed #3a3a3a}
+@media (max-width:760px){.webp{grid-template-columns:1fr}}
+/* Instagram campaigns: who the post was for, and a clear pointer to the photo arrows */
+.ad-wrap{display:grid;gap:10px;align-content:start}
+.ad-tag{justify-self:start;font:800 .8rem var(--disp);font-stretch:110%;text-transform:uppercase;letter-spacing:.02em;background:var(--y);color:#000;padding:7px 12px;border-radius:999px}
+.ad-hint{font:600 .74rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--y);display:flex;align-items:center;gap:8px}
+.ad-hint i{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--y);color:#000;font-style:normal;font-weight:900;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.ad-hint i{animation:none}}
 /* reveal */
 .rv{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .rv.in{opacity:1;transform:none}
@@ -256,10 +293,10 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 </head>
 <body>
 
-<div style="position:sticky;top:0;z-index:200;background:#fff;color:#000;text-align:center;font:600 13px/1.4 system-ui,sans-serif;padding:9px 14px;border-bottom:2px solid #000">
+<div id="dpb" style="position:sticky;top:0;z-index:200;background:#fff;color:#000;text-align:center;font:600 13px/1.4 system-ui,sans-serif;padding:9px 14px;border-bottom:2px solid #000">
   <b>Draft preview by Ziman Sites</b> · Not the live Sports Culture site · For review only ·
   <span>Edits start once checkout is complete:</span> <a href="https://whop.com/checkout/plan_PI6FfWmjEqWBP/" target="_blank" rel="noopener" style="display:inline-block;margin-left:6px;padding:3px 12px;border-radius:999px;background:#000;color:#fff;font-weight:700;text-decoration:none">Pay $284 &amp; start edits →</a></div>
-<div class="ticker" aria-hidden="true"><div class="run" id="tick"></div></div>
+<script>(() => { const b = document.getElementById('dpb'), f = () => document.documentElement.style.setProperty('--bh', b.offsetHeight + 'px'); f(); addEventListener('resize', f); addEventListener('load', f); })();</script>
 <header class="nav">
   <div class="wrap">
     <a class="mark" href="#top"><img src="img/trophy.webp" alt="" width="30" height="30"><b>Sports Culture</b></a>
@@ -274,35 +311,30 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
     <div class="glow"></div>
     <div class="wrap">
       <p class="k"><i></i>Sports media network · Est. 2025</p>
-      <h1 class="d">Reach 200M+ <span class="swap" id="swap"><span class="on">hoops</span><span>football</span><span>baseball</span><span>sports</span></span> fans a month.</h1>
-      <p class="lede"><b>65% of our audience is 18–34.</b> Seven owned brands, athlete-led shows and our own web properties, all built to move sports culture.</p>
+      <h1 class="d">Reach 200M+ <span class="swap" id="swap"><span class="on">sports</span><span>hoops</span><span>football</span></span> fans a month.</h1>
+      <p class="lede"><b>2 million+ followers,</b> athlete-led shows and web properties, all built to move sports culture.</p>
       <div class="ctas">
         <a class="pill y1" href="#partner">Work with us <span class="ar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        <a class="pill g1" href="#partner" data-kit>Get the media kit <span class="ar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></span></a>
       </div>
     </div>
     <div class="strip" id="strip" aria-label="Clips from the Sports Culture network"><div class="belt" id="belt"></div></div>
   </section>
 
-  <div class="board">
-    <div class="wrap">
-      <div class="cell"><div class="num" data-n="200M+"></div><p>Views every month</p></div>
-      <div class="cell"><div class="num" data-n="2M+"></div><p>Followers across owned brands</p></div>
-      <div class="cell"><div class="num" data-n="6M+"></div><p>More through partner network</p></div>
-      <div class="cell"><div class="num" data-n="65%"></div><p>Of the audience aged 18–34</p></div>
-    </div>
-  </div>
-
   <section class="sec">
     <div class="wrap">
-      <div class="top rv"><div><p class="k">Trusted by</p><h2 class="d">Brands already <span class="y">in the game.</span></h2></div><p>From betting and fantasy to energy drinks and collectibles, brands use our network to reach fans where they actually watch.</p></div>
+      <div class="top rv"><div><p class="k">Partners</p><h2 class="d">Brands who <span class="y">trust us.</span></h2></div></div>
+      <a class="pepsi rv" href="https://youtube.com/playlist?list=PLMXChctnRkaw" data-play="series">
+        <img src="img/pepsi.webp" alt="Pepsi">
+        <span class="pp-t"><span class="k"><i></i>Sponsor</span><b>Pepsi</b><span>Presenting sponsor of <em>The Dough Boys</em>, our original series built with Pepsi.</span></span>
+        <span class="pp-go">Watch the series →</span>
+      </a>
       <div class="logos rv" id="logos"></div>
     </div>
   </section>
 
   <section class="sec" id="network" style="padding-top:0">
     <div class="wrap">
-      <div class="top rv"><div><p class="k">The roster</p><h2 class="d">Seven brands. <span class="y">One audience.</span></h2></div>
+      <div class="top rv"><div><p class="k">The roster</p><h2 class="d long">Seven owned Instagram brands <span class="y">covering and amplifying the moments that move sports culture.</span></h2></div>
         <div class="drag"><button type="button" aria-label="Previous" data-dir="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><button type="button" aria-label="Next" data-dir="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>Swipe the roster</div></div>
       <div class="roster" id="roster"></div>
     </div>
@@ -324,7 +356,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
           <span class="bigplay"><b><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></b>Watch the series</span>
         </button>
         <div class="txt">
-          <p class="k"><i></i>Featured series</p>
+          <p class="k"><i></i>Sponsored by Pepsi</p>
           <h3 class="d">The Dough Boys <span class="y">× Pepsi</span></h3>
           <p>An original series we built and produced with Pepsi, from the first idea to distribution across our network.</p>
           <a href="https://youtube.com/playlist?list=PLMXChctnRkaw" target="_blank" rel="noopener">Open the full playlist on YouTube →</a>
@@ -343,10 +375,10 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
         <div class="step"><b>Post-production</b><span>Edit, graphics, cut-downs</span></div>
         <div class="step"><b>Distribution</b><span>Across all seven brands</span></div>
       </div>
-      <div class="props rv">
-        <a href="https://basketballnews.com" target="_blank" rel="noopener">basketballnews.com <em>Live</em></a>
-        <div>footballnews.com <em>Soon</em></div>
-        <div>golfnews.com <em>Soon</em></div>
+      <div class="webp rv">
+        <a class="wp" href="https://basketballnews.com" target="_blank" rel="noopener"><span class="k"><i></i>Live · Web property</span><b>basketballnews.com</b><span>Visit the site →</span></a>
+        <a class="wp" href="https://footballnews.com" target="_blank" rel="noopener"><span class="k"><i></i>Live · Web property</span><b>footballnews.com</b><span>Visit the site →</span></a>
+        <div class="webp-soon">golfnews.com · Coming soon</div>
       </div>
     </div>
   </section>
@@ -355,10 +387,14 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
     <div class="wrap">
       <div class="top rv"><div><p class="k">Brand campaigns</p><h2 class="d">Ads that feel like <span class="y">our content.</span></h2></div><p>Partner campaigns made in our own style and run across our network, so fans watch them like everything else we post.</p></div>
       <div class="ads rv" id="ads">
-        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DepKkYNlh-a/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DepKkYNlh-a/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
-        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DeADV-YFl-b/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DeADV-YFl-b/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
-        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DfeBlQ8jnif/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DfeBlQ8jnif/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
-        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DV7YQNREQ1G/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DV7YQNREQ1G/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div>
+        <div class="ad-wrap"><span class="ad-tag" data-sponsor="1" hidden></span><span class="ad-hint"><i>›</i>Use the arrows to see every photo</span>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DepKkYNlh-a/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DepKkYNlh-a/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div></div>
+        <div class="ad-wrap"><span class="ad-tag" data-sponsor="2" hidden></span><span class="ad-hint"><i>›</i>Use the arrows to see every photo</span>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DeADV-YFl-b/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DeADV-YFl-b/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div></div>
+        <div class="ad-wrap"><span class="ad-tag" data-sponsor="3" hidden></span><span class="ad-hint"><i>›</i>Use the arrows to see every photo</span>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DfeBlQ8jnif/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DfeBlQ8jnif/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div></div>
+        <div class="ad-wrap"><span class="ad-tag" data-sponsor="4" hidden></span><span class="ad-hint"><i>›</i>Use the arrows to see every photo</span>
+        <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DV7YQNREQ1G/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DV7YQNREQ1G/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div></div>
       </div>
     </div>
   </section>
@@ -384,7 +420,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
             <label><input type="checkbox" name="g" value="Sponsored posts"><b>Sponsored posts</b></label>
             <label><input type="checkbox" name="g" value="Show sponsorship"><b>Show sponsorship</b></label>
             <label><input type="checkbox" name="g" value="Athlete content"><b>Athlete content</b></label>
-            <label><input type="checkbox" name="g" value="Media kit" id="kit"><b>Media kit</b></label>
+            <label><input type="checkbox" name="g" value="Other"><b>Other</b></label>
           </div>
         </div>
         <label class="fld"><span>Budget</span><select name="budget"><option value="">Choose a range</option><option>Under $5k</option><option>$5k – $25k</option><option>$25k – $100k</option><option>$100k+</option></select></label>
@@ -421,7 +457,8 @@ window.SC = {
   'Clip 2 YouTube link': 'https://youtu.be/JaFEvrTtoXI', 'Clip 2 title': 'Redhead Sports',
   'Clip 3 YouTube link': 'https://youtube.com/shorts/1fA_8r7mlyY', 'Clip 3 title': 'From our shows',
   'Clip 4 YouTube link': 'https://youtube.com/shorts/cyRYlCqoQbk', 'Clip 4 title': 'From our shows',
-  'Dough Boys playlist link': 'https://youtube.com/playlist?list=PLMXChctnRkaw'
+  'Dough Boys playlist link': 'https://youtube.com/playlist?list=PLMXChctnRkaw',
+  'Campaign 1 sponsor': 'Kalshi', 'Campaign 2 sponsor': '', 'Campaign 3 sponsor': '', 'Campaign 4 sponsor': ''
 };
 window.SC_READY = (async () => {
   if (!window.SC_SHEET) return;
@@ -436,7 +473,7 @@ window.SC_READY = (async () => {
         else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; } else cur += c; }
       cells.push(cur);
       const k = (cells[0] || '').trim(), v = (cells[1] || '').trim();
-      if (k && v && k in window.SC) window.SC[k] = v;
+      if (k && k in window.SC && (v || /sponsor/i.test(k))) window.SC[k] = v;   // an empty cell only clears a sponsor; other empty cells keep the value here
     }
   } catch (e) { /* the Sheet couldn't be reached: keep the values above */ }
 })();
@@ -449,8 +486,10 @@ window.SC_READY.then(() => {
   const ytId = u => { const m = String(u).match(/(?:youtu\.be\/|shorts\/|[?&]v=|embed\/)([\w-]{11})/); return m ? m[1] : String(u).trim(); };
   const listId = u => { const m = String(u).match(/[?&]list=([\w-]+)/); return m ? m[1] : String(u).trim(); };
   const PLAYLIST = listId(D['Dough Boys playlist link']);
+  // "Sports Culture × <sponsor>" above each Instagram campaign that has a sponsor in the Sheet
+  document.querySelectorAll('[data-sponsor]').forEach(t => { const v = (D['Campaign ' + t.dataset.sponsor + ' sponsor'] || '').trim(); t.hidden = false; t.style.visibility = v ? '' : 'hidden'; t.textContent = v ? 'Sports Culture × ' + v : '·'; });   // an empty tag keeps its space, so all four posts line up
   const h1t = document.querySelector('.hero h1').firstChild; if (h1t && h1t.nodeType === 3) h1t.textContent = 'Reach ' + D['Monthly views'] + ' ';
-  document.querySelector('.hero .lede b').textContent = D['Audience aged 18-34'] + ' of our audience is 18–34.';
+  document.querySelector('.hero .lede b').textContent = String(D['Followers (owned brands)']).replace(/(\d)\s*M\b/i, '$1 million').replace(/(\d)\s*K\b/i, '$1 thousand') + ' followers,';
   const cells = document.querySelectorAll('.board .num');
   [D['Monthly views'], D['Followers (owned brands)'], D['Extra reach (partner network)'], D['Audience aged 18-34']].forEach((v, i) => { if (cells[i]) cells[i].dataset.n = v; });
   document.querySelectorAll('a[href*="playlist?list="]').forEach(a => a.href = 'https://youtube.com/playlist?list=' + PLAYLIST);
@@ -460,14 +499,10 @@ window.SC_READY.then(() => {
   const ARROW = '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
 
   // ticker
-  const T = [D['Monthly views'] + ' monthly views', D['Followers (owned brands)'] + ' followers', '7 owned brands', D['Audience aged 18-34'] + ' aged 18–34', '3 live shows', 'basketballnews.com live', 'Partnerships open'];
-  document.getElementById('tick').innerHTML = [...T, ...T, ...T, ...T].map(t => `<span>${t}</span>`).join('');
 
-  // rotating word in the headline (the gap it sits in resizes to each word, so there's never a hole)
+  // rotating word in the headline: its own centred line, so the rest of the headline never moves
   const swp = document.getElementById('swap'), sw = [...swp.children]; let si = 0;
-  const fitSwap = () => { swp.style.width = sw[si].getBoundingClientRect().width + 'px'; };
-  document.fonts && document.fonts.ready.then(fitSwap); addEventListener('resize', fitSwap); fitSwap();
-  if (!reduce) setInterval(() => { const a = sw[si]; si = (si + 1) % sw.length; const b = sw[si]; a.classList.remove('on'); a.classList.add('out'); setTimeout(() => a.classList.remove('out'), 700); b.classList.add('on'); fitSwap(); }, 2200);
+  if (!reduce) setInterval(() => { const a = sw[si]; si = (si + 1) % sw.length; const b = sw[si]; a.classList.remove('on'); a.classList.add('out'); setTimeout(() => a.classList.remove('out'), 450); b.classList.add('on'); }, 1400);
 
   // the giant footer word always fits the screen exactly
   const big = document.querySelector('.big');
@@ -486,7 +521,7 @@ window.SC_READY.then(() => {
   const vcard = (c, i) => `<button class="clip vid" type="button" data-play="${c[0]}" data-tall="${c[3]}" aria-label="Play: ${c[1]}">
     <div class="bg" style="background-image:url(img/bg-${NET[i % NET.length][0]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
     <div class="hd"><img src="img/trophy.webp" alt="">Sports Culture</div><div class="ft"><b>${c[1]}</b><span>${c[2]}</span></div><div class="pl">${ARROW}</div></button>`;
-  const seq = []; for (let i = 0; i < NET.length; i++) { seq.push(vcard(CLIPS[i % CLIPS.length], i)); seq.push(clip(NET[i], i)); }
+  const seq = []; for (let i = 0; i < Math.max(8, CLIPS.length); i++) seq.push(vcard(CLIPS[i % CLIPS.length], i));
   const one = seq.join('');
   belt.innerHTML = one + one;
   // positions are worked out from the card size (measured once, and again on resize), never read back from the page each frame,
@@ -536,9 +571,11 @@ window.SC_READY.then(() => {
     const sc = document.createElement('script'); sc.async = true; sc.src = 'https://www.instagram.com/embed.js'; document.body.append(sc); }, { rootMargin: '600px' }).observe(ads);
 
   // trusted-by grid
-  const B = [['polymarket', 'Polymarket'], ['kalshi', 'Kalshi'], ['underdogfantasy', 'Underdog'], ['fanatics', 'Fanatics'], ['celsius', 'Celsius'], ['gametime', 'Gametime'],
-    ['pristineauction', 'Pristine Auction'], ['lobos1707', 'Lobos 1707'], ['twitch', 'Twitch'], ['novig', 'Novig'], ['madden', 'Madden'], ['pepsi', 'Pepsi']];
-  document.getElementById('logos').innerHTML = B.map(b => `<div><img src="img/${b[0]}.webp" alt="" loading="lazy">${b[1]}</div>`).join('');
+  // the betting and prediction brands (Underdog, Kalshi, Novig, Polymarket) are spread out, never side by side or stacked;
+  // brands without a logo file yet show their name as a wordmark
+  const B = [['underdogfantasy', 'Underdog'], ['pristineauction', 'Pristine Auction'], ['celsius', 'Celsius'], ['kalshi', 'Kalshi'], ['twitch', 'Twitch'], ['gametime', 'Gametime'],
+    ['lobos1707', 'Lobos 1707'], ['novig', 'Novig'], ['', 'EA', 'EA'], ['', 'Zamst', 'ZAMST'], ['polymarket', 'Polymarket'], ['', 'Saputo Cheese', 'SAPUTO']];
+  document.getElementById('logos').innerHTML = B.map(b => `<div>${b[0] ? `<img src="img/${b[0]}.webp" alt="" loading="lazy">` : `<span class="wm">${b[2]}</span>`}${b[1]}</div>`).join('');
 
   // the roster
   const ro = document.getElementById('roster');
@@ -571,8 +608,6 @@ window.SC_READY.then(() => {
   document.querySelectorAll('.num, .fg, .rv').forEach(el => io.observe(el));
   if (reduce) document.querySelectorAll('.fg').forEach(el => el.style.strokeDasharray = `${(C * el.dataset.v / 100).toFixed(1)} 999`);
 
-  // "Get the media kit" ticks Media kit in the form
-  document.querySelectorAll('[data-kit]').forEach(a => a.addEventListener('click', () => { document.getElementById('kit').checked = true; }));
 
   // the form opens a filled-in email to the team (the live site would send it straight to the inbox)
   document.getElementById('pf').addEventListener('submit', e => {
@@ -612,7 +647,7 @@ window.SC_READY.then(() => {
   .mag.on{transition:transform .15s linear}
   /* the headline drifts with the mouse, the yellow word a little more */
   .hero h1{transition:transform .6s var(--ease);will-change:transform}
-  .hero h1 .swap{transition:width .6s var(--ease),transform .6s var(--ease)}
+  .hero h1 .swap{transition:transform .6s var(--ease)}
   /* shows: a preview card follows the cursor down the list */
   .peek{position:fixed;left:0;top:0;z-index:60;width:300px;aspect-ratio:16/10;border-radius:16px;overflow:hidden;pointer-events:none;
     background:var(--k3) center/cover;box-shadow:0 30px 60px -20px rgba(0,0,0,.9),0 0 0 2px var(--y);opacity:0;transform:scale(.7) rotate(-6deg);transition:opacity .25s,transform .35s var(--ease)}
@@ -671,7 +706,7 @@ window.SC_READY.then(() => {
     el.addEventListener('pointerleave', () => { el.classList.remove('on'); el.style.transform = ''; });
   };
   const boot = () => {
-    $$('.card, .ring, .panel, .feat, .ad, .step, .cell, form').forEach(el => tilt(el, el.matches('.feat, form') ? 4 : el.matches('.cell, .step') ? 6 : 10));
+    $$('.card:not(.more), .ring, .panel, .feat, .ad, form, .wp').forEach(el => tilt(el, el.matches('.feat, form') ? 4 : el.matches('.wp') ? 5 : 10));
     // logo grid: light + the logo floats toward the cursor
     $$('.logos div').forEach(el => { el.classList.add('spot'); const img = el.querySelector('img');
       el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
