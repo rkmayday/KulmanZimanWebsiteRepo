@@ -405,18 +405,19 @@ footer .logo .wm span{color:var(--dink3)}
     const p = clamp(-r.top / Math.max(1, r.height - innerHeight));
     slats.forEach((sl, i) => {
       const c = (i + .5) / N - .5, d = Math.abs(c) * 2;            // c: -0.5 (left) .. 0.5 (right); d: 0 in the middle, 1 at the edges
-      const t = ease(clamp((p - d * .22) / .58));                     // the middle fins open first
-      sl.style.transform = `rotateY(${(t * 86 * (c < 0 ? -1 : 1)).toFixed(2)}deg)`;
+      const t = ease(clamp((p - d * .18) / .42));                     // the middle fins open first; all are open by p = .6
+      sl.style.transform = `rotateY(${(t * 90 * (c < 0 ? -1 : 1)).toFixed(2)}deg)`;
       sl.style.filter = `brightness(${(1 + Math.sin(t * Math.PI) * .9).toFixed(3)})`;   // light catches each fin as it turns
     });
-    louv.style.opacity = (1 - clamp((p - .72) / .16)).toFixed(3);
-    street.style.transform = `scale(${(1.16 - .16 * ease(clamp(p / .9))).toFixed(4)})`;
-    shade.style.opacity = clamp((p - .5) / .3).toFixed(3);
-    const k = ease(clamp((p - .66) / .24));
+    louv.style.opacity = (1 - clamp((p - .5) / .1)).toFixed(3);      // the fins are fully gone before any text appears
+    louv.style.visibility = p > .6 ? 'hidden' : '';
+    street.style.transform = `scale(${(1.16 - .16 * ease(clamp(p / .6))).toFixed(4)})`;
+    shade.style.opacity = clamp((p - .45) / .2).toFixed(3);
+    const k = ease(clamp((p - .63) / .22));                          // the headline starts only after the fins are gone
     copy.style.opacity = k.toFixed(3); copy.style.transform = `translateY(${((1 - k) * 34).toFixed(1)}px)`;
     copy.style.pointerEvents = k > .5 ? '' : 'none';
     cue.style.opacity = (1 - clamp(p / .07)).toFixed(3);
-    stage.classList.toggle('open', p > .82);
+    stage.classList.toggle('open', p > .63);
     if (p > .01) stage.classList.add('ready');                       // scrolling early still reveals the homes
   };
   const build = () => {
