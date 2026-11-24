@@ -3,216 +3,231 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: a car-brochure page. Full-bleed photography, a spec-sheet mono for details, and one bold serif voice. */
+/* Layout: Miami modern. Bright white space, ocean aqua and a sunset accent, big rounded photo frames, bold wide headlines. */
 :root{
-  --bg:#0d0f11; --bg2:#15181b; --bg3:#1d2125; --line:#2a2f34;
-  --ink:#f1efea; --ink2:#b9bcc0; --ink3:#7f858b;
-  --champ:#cfb994; --champ2:#e6d6b8;
-  --serif:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
-  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --bg:#ffffff; --bg2:#f2f8f9; --card:#ffffff; --line:#dce8ea;
+  --ink:#0b1d2a; --ink2:#3a4c58; --ink3:#5f717c;
+  --aqua:#00a9b5; --aqua-soft:#d6f4f5; --sun:#ff5f4c; --sun2:#ff8a3d;
+  --on-accent:#ffffff;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --ease:cubic-bezier(.2,.8,.2,1);
-  color-scheme:dark;
 }
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#071620; --bg2:#0c2230; --card:#0f2836; --line:#1d3b4a;
+  --ink:#f2fbfc; --ink2:#c3d4da; --ink3:#93a9b2;
+  --aqua:#2fd3dd; --aqua-soft:#0f3a44; --sun:#ff7a67; --sun2:#ffa05c; --on-accent:#071620; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#071620; --bg2:#0c2230; --card:#0f2836; --line:#1d3b4a;
+  --ink:#f2fbfc; --ink2:#c3d4da; --ink3:#93a9b2;
+  --aqua:#2fd3dd; --aqua-soft:#0f3a44; --sun:#ff7a67; --sun2:#ffa05c; --on-accent:#071620; color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
+body{background:var(--bg);color:var(--ink);font:500 17px/1.65 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
 a{color:inherit}
 img{display:block;max-width:100%}
-.wrap{width:min(1180px,100%);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.mono{font:500 .72rem/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
-h1,h2,h3{font-family:var(--serif);font-weight:500;text-wrap:balance;margin:0;letter-spacing:-.01em}
-h2{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.04}
-h2 em,h1 em{font-style:italic;color:var(--champ)}
+.wrap{width:min(1200px,100%);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;text-wrap:balance;margin:0;line-height:1.05}
+h2{font-size:clamp(1.9rem,4vw,3.1rem)}
 p{margin:0}
-:focus-visible{outline:2px solid var(--champ);outline-offset:3px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:700 .8rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--aqua)}
+.eyebrow::before{content:"";width:22px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--sun),var(--sun2))}
+.sun{background:linear-gradient(90deg,var(--sun),var(--sun2));-webkit-background-clip:text;background-clip:text;color:transparent}
+:focus-visible{outline:3px solid var(--aqua);outline-offset:3px}
 
 /* demo strip + header */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
-.demo{background:var(--champ);color:#1a1510;text-align:center;font:600 .78rem/1.4 var(--sans);padding:7px 16px}
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(13,15,17,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
-.brand{display:flex;flex-direction:column;line-height:1;text-decoration:none}
-.brand b{font:600 1.35rem var(--serif);letter-spacing:.18em}
-.brand span{font:500 .6rem var(--mono);letter-spacing:.42em;color:var(--champ);margin-top:5px}
-.links{display:flex;gap:28px;align-items:center;font:600 .88rem var(--sans)}
+.demo{background:var(--ink);color:var(--bg);text-align:center;font:600 .82rem/1.4 var(--body);padding:8px 16px}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand i{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--aqua),#0b7fa0);display:grid;place-items:center;color:#fff;font:800 1rem var(--display);font-style:normal}
+.brand b{font:800 1.05rem var(--display);letter-spacing:-.01em}
+.brand span{color:var(--aqua)}
+.links{display:flex;gap:26px;align-items:center;font:700 .95rem var(--body)}
 .links a{text-decoration:none;color:var(--ink2)}
 .links a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:2px;font:700 .82rem var(--sans);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:1px solid var(--champ);transition:background .25s,color .25s}
-.btn.fill{background:var(--champ);color:#17130d}
-.btn.fill:hover{background:var(--champ2)}
-.btn.line{color:var(--ink)}
-.btn.line:hover{background:rgba(207,185,148,.12)}
-@media (max-width:760px){.links a:not(.btn){display:none}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;border-radius:999px;font:800 .95rem var(--body);text-decoration:none;border:0;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn.sun-b{background:linear-gradient(90deg,var(--sun),var(--sun2));color:#fff;box-shadow:0 12px 28px -12px var(--sun)}
+.btn.line{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+@media (max-width:780px){.links a:not(.btn){display:none}.links .btn{padding:11px 18px}}
 
-/* hero: the wash, full bleed */
-.hero{position:relative;min-height:min(86vh,780px);display:grid;align-items:end;overflow:hidden}
-.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%;transform:scale(1.04);animation:settle 2.4s var(--ease) both}
-@keyframes settle{from{transform:scale(1.12)}}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,15,17,.35),rgba(13,15,17,.15) 35%,rgba(13,15,17,.92) 88%),linear-gradient(90deg,rgba(13,15,17,.75),transparent 60%)}
-.hero .wrap{position:relative;z-index:1;padding-block:clamp(48px,8vw,96px);display:grid;gap:22px}
-.hero h1{font-size:clamp(2.8rem,7.6vw,6.4rem);line-height:.95;max-width:12ch}
-.hero p.lede{max-width:46ch;color:var(--ink2);font-size:clamp(1rem,1.4vw,1.15rem)}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
-.spec{display:flex;flex-wrap:wrap;gap:10px 26px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);max-width:640px}
-.spec span b{display:block;font:500 1.05rem var(--serif);color:var(--ink);letter-spacing:0;text-transform:none}
+/* hero */
+.hero{padding-block:clamp(36px,6vw,80px)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center}
+.hero h1{font-size:clamp(2.4rem,5.6vw,4.6rem)}
+.hero .lede{margin-top:20px;max-width:44ch;color:var(--ink2);font-size:clamp(1.05rem,1.4vw,1.2rem)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chips span{padding:8px 14px;border-radius:999px;background:var(--aqua-soft);color:var(--ink);font:700 .85rem var(--body)}
+.shot{position:relative}
+.shot::before{content:"";position:absolute;inset:8% -6% -6% 10%;border-radius:40px;background:linear-gradient(135deg,var(--aqua),#7fe3e6 45%,var(--sun2));opacity:.9}
+.shot img{position:relative;border-radius:32px;aspect-ratio:4/4.4;width:100%;object-fit:cover;object-position:60% 50%;box-shadow:0 30px 60px -30px rgba(11,29,42,.55)}
+.shot .badge{position:absolute;left:-14px;bottom:28px;background:var(--card);color:var(--ink);border-radius:18px;padding:12px 16px;box-shadow:0 16px 40px -18px rgba(11,29,42,.5);font:700 .9rem var(--body);display:flex;align-items:center;gap:10px}
+.shot .badge i{width:10px;height:10px;border-radius:50%;background:var(--aqua);box-shadow:0 0 0 5px var(--aqua-soft)}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.shot{max-width:520px}.shot .badge{left:12px}}
 
-section{padding-block:clamp(70px,10vw,130px)}
-.head{display:grid;gap:14px;margin-bottom:clamp(36px,5vw,56px);max-width:720px}
-.head p:not(.mono){color:var(--ink2)}
+section{padding-block:clamp(64px,9vw,120px)}
+.head{display:grid;gap:14px;margin-bottom:clamp(32px,5vw,52px);max-width:720px}
+.head p:not(.eyebrow){color:var(--ink2);font-size:1.08rem}
 
 /* before / after */
-.ba{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden;border:1px solid var(--line);user-select:none;touch-action:pan-y;background:var(--bg2)}
-.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ba .before{clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
-.ba .before img{filter:saturate(.35) brightness(.62) contrast(.82) sepia(.32) blur(.4px)}
-.ba .before::after{content:"";position:absolute;inset:0;background:
-  radial-gradient(1.2px 1.2px at 20% 30%,rgba(255,240,210,.35),transparent 60%),
-  radial-gradient(1px 1px at 70% 60%,rgba(255,240,210,.3),transparent 60%),
-  radial-gradient(1.4px 1.4px at 40% 80%,rgba(255,240,210,.25),transparent 60%),
-  linear-gradient(180deg,rgba(120,100,70,.18),rgba(60,48,30,.32));background-size:23px 19px,31px 27px,17px 29px,100% 100%;mix-blend-mode:screen}
-.ba .bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--champ);transform:translateX(-1px)}
-.ba .knob{position:absolute;top:50%;left:var(--x,50%);width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:var(--champ);color:#17130d;display:grid;place-items:center;font:700 1rem var(--sans);box-shadow:0 10px 30px rgba(0,0,0,.5);cursor:ew-resize}
-.ba .tag{position:absolute;top:14px;padding:5px 10px;background:rgba(13,15,17,.75);font:500 .7rem var(--mono);letter-spacing:.14em;text-transform:uppercase}
-.ba .tag.l{left:14px}.ba .tag.r{right:14px;color:var(--champ)}
+.band{background:var(--bg2)}
+.ba{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden;border-radius:28px;user-select:none;touch-action:pan-y;background:var(--line);box-shadow:0 30px 60px -36px rgba(11,29,42,.6)}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba .before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
+.ba .bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:4px;margin-left:-2px;background:#fff}
+.ba .knob{position:absolute;top:50%;left:var(--x,50%);width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:#fff;color:#0b1d2a;display:grid;place-items:center;font:800 1.1rem var(--body);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.ba .tag{position:absolute;top:16px;padding:7px 14px;border-radius:999px;font:800 .82rem var(--body);letter-spacing:.04em}
+.ba .tag.l{left:16px;background:#3b2f22;color:#fff}.ba .tag.r{right:16px;background:var(--aqua);color:#fff}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
-.ba-note{margin-top:12px}
+.note{margin-top:14px;color:var(--ink3);font-size:.9rem}
 
-/* services: a spec sheet */
-.svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
-.svc article{padding:28px 22px 30px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:12px;align-content:start;transition:background .3s}
-.svc article:first-child{border-left:1px solid var(--line)}
-.svc article:hover{background:var(--bg2)}
-.svc h3{font-size:1.6rem}
-.svc p{color:var(--ink2);font-size:.95rem}
-.svc ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:7px;font-size:.9rem;color:var(--ink2)}
-.svc li::before{content:"—";color:var(--champ);margin-right:8px}
-.svc .price{margin-top:auto;padding-top:14px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline}
-.svc .price b{font:500 1.05rem var(--serif);color:var(--champ)}
-.svc article.star{background:linear-gradient(180deg,#1f1c17,var(--bg2))}
-@media (max-width:980px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}.svc article:nth-child(3){border-left:1px solid var(--line)}}
-@media (max-width:560px){.svc{grid-template-columns:1fr}.svc article{border-left:1px solid var(--line)}}
+/* services */
+.svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.svc article{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px 22px;display:grid;gap:12px;align-content:start;transition:transform .3s var(--ease),box-shadow .3s}
+.svc article:hover{transform:translateY(-6px);box-shadow:0 24px 50px -28px rgba(11,29,42,.45)}
+.svc .ico{width:46px;height:46px;border-radius:14px;background:var(--aqua-soft);display:grid;place-items:center}
+.svc .ico svg{width:24px;height:24px;stroke:var(--aqua);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.svc h3{font-size:1.2rem}
+.svc p{color:var(--ink2);font-size:.98rem}
+.svc ul{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:8px;font-size:.95rem;color:var(--ink2)}
+.svc li{display:flex;gap:8px}
+.svc li::before{content:"✓";color:var(--aqua);font-weight:800}
+.svc .price{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-weight:700;color:var(--ink3);font-size:.9rem}
+.svc .price b{color:var(--ink);font-size:1rem}
+.svc article.star{background:linear-gradient(160deg,#0b1d2a,#0f3448);border-color:transparent;color:#fff}
+.svc article.star p,.svc article.star ul,.svc article.star .price{color:#c9dbe2}
+.svc article.star .price{border-color:rgba(255,255,255,.18)}
+.svc article.star .price b{color:#fff}
+.svc article.star .ico{background:rgba(47,211,221,.18)}
+.pop{justify-self:start;padding:5px 12px;border-radius:999px;background:linear-gradient(90deg,var(--sun),var(--sun2));color:#fff;font:800 .75rem var(--body);letter-spacing:.04em}
+@media (max-width:1000px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.svc{grid-template-columns:1fr}}
 
 /* gallery */
-.gal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(150px,18vw,230px);gap:10px}
-.gal figure{margin:0;position:relative;overflow:hidden;background:var(--bg2)}
-.gal img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
-.gal figure:hover img{transform:scale(1.05)}
-.gal figcaption{position:absolute;left:12px;bottom:10px;font:500 .68rem var(--mono);letter-spacing:.14em;text-transform:uppercase;background:rgba(13,15,17,.72);padding:4px 8px}
-.g1{grid-column:span 3;grid-row:span 2}.g2{grid-column:span 3}.g3{grid-column:span 3}.g4,.g5,.g6{grid-column:span 2}
+.gal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(150px,17vw,220px);gap:14px}
+.gal figure{margin:0;position:relative;overflow:hidden;border-radius:22px;background:var(--line)}
+.gal img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.gal figure:hover img{transform:scale(1.06)}
+.gal figcaption{position:absolute;left:12px;bottom:12px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.92);color:#0b1d2a;font:800 .78rem var(--body)}
+.g1{grid-column:span 3;grid-row:span 2}.g2,.g3{grid-column:span 3}.g4,.g5,.g6{grid-column:span 2}
 @media (max-width:760px){.gal{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:150px}.g1{grid-column:span 2;grid-row:span 2}.g2,.g3,.g4,.g5{grid-column:span 1}.g6{grid-column:span 2}}
 
 /* process */
-.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;counter-reset:s}
-.steps div{border-top:1px solid var(--champ);padding-top:18px;display:grid;gap:8px}
-.steps div::before{counter-increment:s;content:"Step " counter(s);font:500 .7rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--champ)}
-.steps b{font:500 1.3rem var(--serif)}
-.steps span{color:var(--ink2);font-size:.95rem}
-@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;counter-reset:s}
+.steps div{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;gap:8px}
+.steps div::before{counter-increment:s;content:counter(s);width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--sun),var(--sun2));color:#fff;font:800 1rem var(--display)}
+.steps b{font:800 1.05rem var(--display)}
+.steps span{color:var(--ink2);font-size:.98rem}
+@media (max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}}
 
 /* service area */
-.area{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,70px);align-items:center}
-.towns{display:flex;flex-wrap:wrap;gap:8px}
-.towns span{padding:8px 14px;border:1px solid var(--line);font-size:.9rem;color:var(--ink2);transition:border-color .25s,color .25s}
-.towns span:hover{border-color:var(--champ);color:var(--ink)}
-.map{aspect-ratio:1;max-width:100%;border:1px solid var(--line);background:var(--bg2);position:relative;overflow:hidden}
+.area{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center}
+.towns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.towns span{padding:9px 15px;border-radius:999px;background:var(--card);border:1px solid var(--line);font:700 .9rem var(--body);color:var(--ink);transition:background .25s,border-color .25s}
+.towns span:hover{background:var(--aqua-soft);border-color:var(--aqua)}
+.map{aspect-ratio:1;max-width:100%;border-radius:28px;background:var(--card);border:1px solid var(--line);overflow:hidden}
 .map svg{width:100%;height:100%;display:block}
 @media (max-width:860px){.area{grid-template-columns:1fr}}
 
 /* booking */
-.book{background:var(--bg2);border-top:1px solid var(--line)}
-.book .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,70px)}
-form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.book .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,64px);align-items:start}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:clamp(20px,3vw,32px);box-shadow:0 30px 60px -40px rgba(11,29,42,.5)}
 form .full{grid-column:1/-1}
-label{display:grid;gap:7px;font:500 .7rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
-input,select,textarea{font:500 1rem var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:2px;padding:12px 14px;min-width:0}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--champ)}
+label{display:grid;gap:6px;font:700 .85rem var(--body);color:var(--ink)}
+input,select,textarea{font:500 1rem var(--body);color:var(--ink);background:var(--bg2);border:2px solid transparent;border-radius:14px;padding:13px 14px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--aqua);background:var(--card)}
 textarea{min-height:100px;resize:vertical}
-.done{grid-column:1/-1;padding:16px;border:1px solid var(--champ);color:var(--champ2)}
+.done{grid-column:1/-1;padding:14px 16px;border-radius:14px;background:var(--aqua-soft);color:var(--ink);font-weight:700}
 @media (max-width:860px){.book .wrap{grid-template-columns:1fr}form{grid-template-columns:1fr}}
 footer{padding-block:34px;border-top:1px solid var(--line)}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink3);font-size:.85rem}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero img{animation:none}.gal img{transition:none}}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink3);font-size:.9rem;font-weight:600}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
 
 <div class="demo">Demo website by Ziman Sites · Placeholder photos until Lambrou Detailing's own are added</div>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top"><b>LAMBROU</b><span>DETAILING</span></a>
+    <a class="brand" href="#top"><i>L</i><b>Lambrou <span>Detailing</span></b></a>
     <nav class="links" aria-label="Main">
       <a href="#results">Results</a><a href="#services">Services</a><a href="#area">Service area</a>
-      <a class="btn fill" href="#book">Book a detail</a>
+      <a class="btn sun-b" href="#book">Book now</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
-  <section class="hero" style="padding:0">
-    <img src="img/hero-wash.webp" alt="A detailer hand-washing a black car in thick foam" fetchpriority="high">
+  <section class="hero">
     <div class="wrap">
-      <p class="mono" style="color:var(--champ)">Luxury car detailing · Monmouth County, NJ</p>
-      <h1>A showroom finish, <em>by hand.</em></h1>
-      <p class="lede">Careful, hand-done detailing for the cars you care most about, from Range Rovers and G-Wagons to the daily driver that deserves better.</p>
-      <div class="ctas"><a class="btn fill" href="#book">Book a detail</a><a class="btn line" href="#services">See services</a></div>
-      <div class="spec mono">
-        <span>Wash method<b>Two-bucket, hand only</b></span>
-        <span>Finish<b>Clay, polish &amp; protect</b></span>
-        <span>Area<b>Monmouth County</b></span>
+      <div>
+        <p class="eyebrow">Car detailing · Monmouth County, NJ</p>
+        <h1 style="margin-top:16px">Your car, <span class="sun">better than new.</span></h1>
+        <p class="lede">Hand-done detailing for Range Rovers, G-Wagons and every car you care about. Deep clean inside, real shine outside.</p>
+        <div class="ctas"><a class="btn sun-b" href="#book">Book a detail</a><a class="btn line" href="#results">See the results</a></div>
+        <div class="chips"><span>Hand wash only</span><span>Interior deep clean</span><span>Paint polish &amp; coating</span></div>
+      </div>
+      <div class="shot">
+        <img src="img/hero-wash.webp" alt="A detailer hand-washing a black car in thick foam" fetchpriority="high">
+        <div class="badge"><i></i>Booking across Monmouth County</div>
       </div>
     </div>
   </section>
 
-  <section id="results">
+  <section class="band" id="results">
     <div class="wrap">
-      <div class="head"><p class="mono">Before &amp; after</p><h2>Drag to see the <em>difference.</em></h2></div>
+      <div class="head"><p class="eyebrow">Before &amp; after</p><h2>Drag to see the <span class="sun">difference.</span></h2></div>
       <div class="ba" id="ba" style="--x:50%">
-        <img src="img/panamera.webp" alt="A black Porsche after detailing, deep gloss">
-        <div class="before"><img src="img/panamera.webp" alt=""></div>
+        <img src="img/panamera.webp" alt="The same car after detailing: clean, deep black gloss">
+        <div class="before"><img src="img/panamera-dirty.webp" alt="The car before detailing: dusty, with road grime on the lower body"></div>
         <span class="tag l">Before</span><span class="tag r">After</span>
         <div class="bar"></div><div class="knob" aria-hidden="true">⇆</div>
-        <input type="range" id="ba-range" min="0" max="100" value="50" aria-label="Before and after comparison">
+        <input type="range" id="ba-range" min="0" max="100" value="50" aria-label="Slide between before and after">
       </div>
-      <p class="mono ba-note">Illustration with placeholder photos. Real before-and-after shots from Lambrou Detailing go here.</p>
+      <p class="note">Example made from a placeholder photo. Real before-and-after shots from Lambrou Detailing go here.</p>
     </div>
   </section>
 
-  <section id="services" style="padding-top:0">
+  <section id="services">
     <div class="wrap">
-      <div class="head"><p class="mono">Services</p><h2>Pick the level of <em>care.</em></h2><p>Every detail is done by hand. Prices depend on the vehicle's size and condition, so every job starts with a quick quote.</p></div>
+      <div class="head"><p class="eyebrow">Services</p><h2>Pick your <span class="sun">detail.</span></h2><p>Every job is done by hand. Prices depend on your car's size and condition, so each one starts with a quick quote.</p></div>
       <div class="svc">
         <article>
-          <p class="mono">Exterior</p><h3>Wash &amp; Protect</h3>
-          <p>A safe hand wash and a fresh layer of protection.</p>
-          <ul><li>Foam pre-wash</li><li>Two-bucket hand wash</li><li>Wheels, tyres &amp; arches</li><li>Spray sealant</li></ul>
-          <div class="price"><span class="mono">Pricing</span><b>Quote</b></div>
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 10a6 6 0 0 1-12 0c0-3 3-6 6-10z"/></svg></div>
+          <h3>Wash &amp; Protect</h3><p>A safe hand wash and fresh protection.</p>
+          <ul><li>Foam pre-wash</li><li>Two-bucket hand wash</li><li>Wheels &amp; tires</li><li>Spray sealant</li></ul>
+          <div class="price">Pricing<b>Get a quote</b></div>
         </article>
         <article>
-          <p class="mono">Interior</p><h3>Cabin Reset</h3>
-          <p>Leather, carpets and every surface brought back.</p>
-          <ul><li>Deep vacuum</li><li>Leather clean &amp; condition</li><li>Steam on stains</li><li>Glass, inside and out</li></ul>
-          <div class="price"><span class="mono">Pricing</span><b>Quote</b></div>
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 18V9a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v9M3 18h18M8 14h8"/></svg></div>
+          <h3>Interior Reset</h3><p>Seats, carpets and every surface.</p>
+          <ul><li>Deep vacuum</li><li>Leather clean &amp; condition</li><li>Stain steam</li><li>Glass inside &amp; out</li></ul>
+          <div class="price">Pricing<b>Get a quote</b></div>
         </article>
         <article class="star">
-          <p class="mono" style="color:var(--champ)">Most complete</p><h3>Full Detail</h3>
-          <p>Inside and out, the whole car in one visit.</p>
-          <ul><li>Everything in Exterior</li><li>Everything in Interior</li><li>Clay bar decontamination</li><li>Engine bay wipe-down</li></ul>
-          <div class="price"><span class="mono">Pricing</span><b>Quote</b></div>
+          <span class="pop">Most popular</span>
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19l1-5.8L3.5 9.2l5.9-.9z"/></svg></div>
+          <h3>Full Detail</h3><p>Inside and out, the whole car.</p>
+          <ul><li>Everything in Wash &amp; Protect</li><li>Everything in Interior Reset</li><li>Clay bar treatment</li><li>Engine bay wipe-down</li></ul>
+          <div class="price">Pricing<b>Get a quote</b></div>
         </article>
         <article>
-          <p class="mono">Paint</p><h3>Polish &amp; Coat</h3>
-          <p>Swirls polished out, then a lasting gloss.</p>
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 16l6-6 4 4 6-6M14 8h6v6"/></svg></div>
+          <h3>Polish &amp; Coat</h3><p>Swirls out, lasting gloss in.</p>
           <ul><li>Paint inspection</li><li>Machine polish</li><li>Ceramic coating option</li><li>Water-beading finish</li></ul>
-          <div class="price"><span class="mono">Pricing</span><b>Quote</b></div>
+          <div class="price">Pricing<b>Get a quote</b></div>
         </article>
       </div>
     </div>
   </section>
 
-  <section style="padding-top:0">
+  <section class="band">
     <div class="wrap">
-      <div class="head"><p class="mono">The kind of cars we look after</p><h2>Built for <em>luxury.</em></h2></div>
+      <div class="head"><p class="eyebrow">The cars we love</p><h2>Built for <span class="sun">luxury.</span></h2></div>
       <div class="gal">
         <figure class="g1"><img src="img/g-wagon.webp" alt="Silver Mercedes G-Wagon" loading="lazy"><figcaption>G-Class</figcaption></figure>
         <figure class="g2"><img src="img/amg-gt.webp" alt="Grey Mercedes-AMG GT" loading="lazy"><figcaption>AMG GT</figcaption></figure>
@@ -221,38 +236,37 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
         <figure class="g5"><img src="img/engine.webp" alt="A clean engine bay" loading="lazy"><figcaption>Engine bay</figcaption></figure>
         <figure class="g6"><img src="img/panamera.webp" alt="Black Porsche Panamera on the road" loading="lazy"><figcaption>Panamera</figcaption></figure>
       </div>
-      <p class="mono" style="margin-top:12px">Placeholder photos. Lambrou Detailing's own work replaces these.</p>
+      <p class="note">Placeholder photos. Lambrou Detailing's own work replaces these.</p>
     </div>
   </section>
 
-  <section style="padding-top:0">
+  <section>
     <div class="wrap">
-      <div class="head"><p class="mono">How it works</p><h2>Four steps to a <em>better car.</em></h2></div>
+      <div class="head"><p class="eyebrow">How it works</p><h2>Booked in <span class="sun">minutes.</span></h2></div>
       <div class="steps">
-        <div><b>Request</b><span>Send your car, location and what it needs.</span></div>
+        <div><b>Request</b><span>Tell us your car, your town and what it needs.</span></div>
         <div><b>Quote</b><span>Get a price based on size and condition.</span></div>
-        <div><b>Detail</b><span>Every step done by hand, nothing rushed.</span></div>
-        <div><b>Drive</b><span>Pick up a car that looks the way it should.</span></div>
+        <div><b>Detail</b><span>Every step done by hand, never rushed.</span></div>
+        <div><b>Enjoy</b><span>Drive away in a car that looks brand new.</span></div>
       </div>
     </div>
   </section>
 
-  <section id="area" style="padding-top:0">
+  <section class="band" id="area">
     <div class="wrap area">
-      <div class="head" style="margin:0"><p class="mono">Service area</p><h2>Across <em>Monmouth County.</em></h2>
-        <p>Based in Monmouth County, New Jersey. Not sure we cover your town? Ask when you book.</p>
-        <div class="towns" style="margin-top:10px"><span>Rumson</span><span>Red Bank</span><span>Holmdel</span><span>Colts Neck</span><span>Middletown</span><span>Fair Haven</span><span>Marlboro</span><span>Manalapan</span><span>Freehold</span><span>Spring Lake</span><span>Sea Girt</span><span>Long Branch</span></div>
+      <div class="head" style="margin:0"><p class="eyebrow">Service area</p><h2>All over <span class="sun">Monmouth County.</span></h2>
+        <p>Based in Monmouth County, New Jersey. Not sure we cover your town? Just ask when you book.</p>
+        <div class="towns"><span>Rumson</span><span>Red Bank</span><span>Holmdel</span><span>Colts Neck</span><span>Middletown</span><span>Fair Haven</span><span>Marlboro</span><span>Manalapan</span><span>Freehold</span><span>Spring Lake</span><span>Sea Girt</span><span>Long Branch</span></div>
       </div>
       <div class="map" aria-hidden="true">
         <svg viewBox="0 0 400 400">
-          <defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#2a2f34" stroke-width="1"/></pattern></defs>
-          <rect width="400" height="400" fill="url(#g)"/>
-          <path d="M60 110 L170 70 L270 95 L330 150 L345 250 L300 330 L190 345 L95 300 L55 210 Z" fill="rgba(207,185,148,.08)" stroke="#cfb994" stroke-width="1.5"/>
-          <path d="M345 60 Q360 200 352 360" fill="none" stroke="#7f858b" stroke-dasharray="4 5"/>
-          <text x="362" y="210" fill="#7f858b" font-family="IBM Plex Mono, monospace" font-size="10" transform="rotate(90 362 210)">ATLANTIC</text>
-          <g fill="#cfb994"><circle cx="268" cy="132" r="4"/><circle cx="240" cy="140" r="4"/><circle cx="190" cy="150" r="4"/><circle cx="215" cy="205" r="4"/><circle cx="150" cy="245" r="4"/><circle cx="300" cy="275" r="4"/></g>
-          <g fill="#b9bcc0" font-family="Manrope, sans-serif" font-size="11"><text x="276" y="128">Rumson</text><text x="214" y="128">Red Bank</text><text x="150" y="140">Holmdel</text><text x="222" y="210">Colts Neck</text><text x="112" y="263">Freehold</text><text x="258" y="296">Spring Lake</text></g>
-          <text x="70" y="370" fill="#7f858b" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="2">MONMOUTH COUNTY · NJ</text>
+          <rect width="400" height="400" fill="var(--card)"/>
+          <path d="M346 40 Q372 200 360 380 L400 380 L400 40 Z" fill="var(--aqua-soft)"/>
+          <path d="M60 110 L170 70 L270 95 L330 150 L345 250 L300 330 L190 345 L95 300 L55 210 Z" fill="var(--bg2)" stroke="var(--aqua)" stroke-width="2.5" stroke-linejoin="round"/>
+          <g fill="var(--sun)"><circle cx="268" cy="132" r="6"/><circle cx="240" cy="142" r="6"/><circle cx="190" cy="150" r="6"/><circle cx="215" cy="205" r="6"/><circle cx="150" cy="245" r="6"/><circle cx="300" cy="275" r="6"/></g>
+          <g fill="var(--ink)" font-family="Plus Jakarta Sans, sans-serif" font-size="13" font-weight="700"><text x="278" y="126">Rumson</text><text x="204" y="124">Red Bank</text><text x="140" y="140">Holmdel</text><text x="224" y="212">Colts Neck</text><text x="96" y="266">Freehold</text><text x="244" y="298">Spring Lake</text></g>
+          <text x="372" y="230" fill="var(--aqua)" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" letter-spacing="3" transform="rotate(90 372 230)">ATLANTIC</text>
+          <text x="60" y="376" fill="var(--ink3)" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="800" letter-spacing="2">MONMOUTH COUNTY, NJ</text>
         </svg>
       </div>
     </div>
@@ -260,19 +274,19 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
 
   <section class="book" id="book">
     <div class="wrap">
-      <div class="head" style="margin:0"><p class="mono">Book a detail</p><h2>Tell us about <em>your car.</em></h2>
-        <p>Send the details and Lambrou Detailing will come back with a quote and a time that works.</p>
-        <p class="mono" style="margin-top:14px">Phone and email go here once confirmed.</p>
+      <div class="head" style="margin:0"><p class="eyebrow">Book a detail</p><h2>Let's make it <span class="sun">shine.</span></h2>
+        <p>Send your details and Lambrou Detailing will get back to you with a quote and a time that works.</p>
+        <p style="color:var(--ink3);font-size:.95rem">Phone and email go here once confirmed.</p>
       </div>
       <form id="bk" novalidate>
         <label for="bk-name">Name<input id="bk-name" name="name" autocomplete="name" required></label>
         <label for="bk-phone">Phone<input id="bk-phone" name="phone" type="tel" autocomplete="tel" required></label>
         <label for="bk-car">Vehicle<input id="bk-car" name="car" placeholder="e.g. 2023 Range Rover Sport"></label>
         <label for="bk-town">Town<input id="bk-town" name="town" placeholder="e.g. Rumson"></label>
-        <label for="bk-svc" class="full">Service<select id="bk-svc" name="svc"><option>Full Detail</option><option>Wash &amp; Protect</option><option>Cabin Reset</option><option>Polish &amp; Coat</option><option>Not sure yet</option></select></label>
-        <label for="bk-msg" class="full">Anything else<textarea id="bk-msg" name="msg" placeholder="Condition, timing, special requests"></textarea></label>
-        <button class="btn fill full" type="submit" style="justify-content:center;cursor:pointer">Request a quote</button>
-        <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this request goes straight to Lambrou Detailing.</p>
+        <label for="bk-svc" class="full">Service<select id="bk-svc" name="svc"><option>Full Detail</option><option>Wash &amp; Protect</option><option>Interior Reset</option><option>Polish &amp; Coat</option><option>Not sure yet</option></select></label>
+        <label for="bk-msg" class="full">Anything else?<textarea id="bk-msg" name="msg" placeholder="Condition, timing, special requests"></textarea></label>
+        <button class="btn sun-b full" type="submit">Request a quote</button>
+        <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Lambrou Detailing.</p>
       </form>
     </div>
   </section>
@@ -282,20 +296,19 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
 
 <script>
 (() => {
-  // before/after: the range input sits over the image, so it works with mouse, touch and keyboard
+  // before/after: the range input covers the photo, so it works with mouse, touch and keyboard
   const ba = document.getElementById('ba'), r = document.getElementById('ba-range');
   const set = v => ba.style.setProperty('--x', v + '%');
   r.addEventListener('input', () => set(r.value));
-  // a gentle sweep once it comes into view, so people see it moves
+  // a quick sweep when it first comes into view, so people see it moves
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => { if (!es[0].isIntersecting) return; io.disconnect();
-      const t0 = performance.now(); const step = t => { const k = Math.min(1, (t - t0) / 1600), v = 50 + Math.sin(k * Math.PI * 2) * 22 * (1 - k);
+      const t0 = performance.now(); const step = t => { const k = Math.min(1, (t - t0) / 1700), v = 50 + Math.sin(k * Math.PI * 2) * 25 * (1 - k);
         set(v.toFixed(1)); r.value = v; if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }, { threshold: .5 });
     io.observe(ba);
   }
   // booking (demo): check the two required fields, then show the confirmation
-  const f = document.getElementById('bk');
-  f.addEventListener('submit', e => { e.preventDefault();
+  document.getElementById('bk').addEventListener('submit', e => { e.preventDefault();
     for (const id of ['bk-name', 'bk-phone']) { const el = document.getElementById(id); if (!el.value.trim()) { el.focus(); el.setCustomValidity('Please fill this in.'); el.reportValidity(); el.addEventListener('input', () => el.setCustomValidity(''), { once: true }); return; } }
     document.getElementById('bk-done').hidden = false; });
 })();
