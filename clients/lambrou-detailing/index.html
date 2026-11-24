@@ -34,11 +34,11 @@ p{margin:0}
 
 /* demo strip + header */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
-.demo{background:var(--neon);color:#050605;text-align:center;font:600 .82rem/1.4 var(--body);padding:8px 16px}
+.demo{background:var(--bg2);color:var(--ink3);border-bottom:1px solid var(--line);text-align:center;font:600 .82rem/1.4 var(--body);padding:8px 16px}
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand .mark{width:40px;height:40px;filter:drop-shadow(0 0 8px rgba(255,46,136,.55));transition:filter .3s}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand .mark{width:64px;height:auto;filter:drop-shadow(0 0 8px rgba(255,46,136,.55));transition:filter .3s}
 .brand:hover .mark{filter:drop-shadow(0 0 14px rgba(255,90,40,.85))}
 .brand .wm{display:flex;flex-direction:column;line-height:1}
 .brand .wm b{font:800 1.08rem var(--display);letter-spacing:.06em;color:#fff}
@@ -57,21 +57,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .btn.sun-b:hover{box-shadow:0 0 0 1px rgba(255,225,120,.8),0 0 38px 2px rgba(255,59,59,.7),0 16px 40px -14px var(--orange)}
 .btn.line{background:rgba(255,46,136,.08);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--pink),0 0 18px -4px rgba(255,46,136,.6)}
 .btn.line:hover{background:rgba(255,46,136,.16);box-shadow:inset 0 0 0 1.5px var(--pink),0 0 32px 0 rgba(255,46,136,.65)}
-@keyframes breathe{50%{box-shadow:0 0 0 1px rgba(255,225,120,.7),0 0 34px 2px rgba(255,122,26,.7),0 12px 30px -14px var(--pink)}}
-.hero .btn.sun-b{animation:breathe 3.2s ease-in-out infinite}
 @media (max-width:780px){.links a:not(.btn){display:none}.links .btn{padding:11px 18px}}
 
 /* hero */
-.hero{position:relative;min-height:min(88vh,820px);display:grid;align-items:end;overflow:hidden;isolation:isolate}
-.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%;z-index:-2;animation:settle 2.4s var(--ease) both}
-@keyframes settle{from{transform:scale(1.1)}}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,11,12,.25),rgba(10,11,12,.1) 35%,rgba(10,11,12,.92) 92%),linear-gradient(90deg,rgba(10,11,12,.85),rgba(10,11,12,.2) 65%)}
+.hero{position:relative;min-height:min(80vh,740px);display:grid;align-items:center;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;z-index:-2;filter:saturate(.85) brightness(.85)}
+/* the text sits on calm, nearly solid dark on the left; the photo shows through on the right */
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,11,12,.97) 0%,rgba(10,11,12,.9) 34%,rgba(10,11,12,.45) 62%,rgba(10,11,12,.2) 100%),linear-gradient(180deg,transparent 70%,var(--bg) 100%)}
+@media (max-width:760px){.hero::after{background:linear-gradient(180deg,rgba(10,11,12,.55) 0%,rgba(10,11,12,.86) 55%,var(--bg) 100%)}}
 .hero .wrap{padding-block:clamp(56px,9vw,110px);display:grid;gap:0;justify-items:start}
-.hero h1{font-size:clamp(2.5rem,6.6vw,5.6rem);max-width:13ch;margin-top:16px;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hero h1{font-size:clamp(2.4rem,6vw,5rem);max-width:12ch;margin-top:16px}
 .hero .lede{margin-top:20px;max-width:46ch;color:var(--ink);opacity:.9;font-size:clamp(1.05rem,1.4vw,1.2rem)}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
-.chips span{padding:8px 14px;border-radius:999px;background:rgba(10,11,12,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,46,136,.45);color:var(--ink);font:700 .85rem var(--body)}
 
 section{padding-block:clamp(64px,9vw,120px)}
 .head{display:grid;gap:14px;margin-bottom:clamp(32px,5vw,52px);max-width:720px}
@@ -166,7 +163,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
 <div class="demo">Demo website by Ziman Sites · Placeholder photos until Lambrou Detailing's own are added</div>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Lambrou Detailing home"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg-neon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff2e88"/><stop offset=".4" stop-color="#ff3b3b"/><stop offset=".7" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffd21f"/></linearGradient></defs><rect x="2" y="2" width="44" height="44" rx="12" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2"/><path d="M15 11v18.5c0 4.4 2.6 6.5 7 6.5h15" fill="none" stroke="url(#lg-neon)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 8.5l1.7 4.8 4.8 1.7-4.8 1.7L34 21.5l-1.7-4.8-4.8-1.7 4.8-1.7z" fill="#ffffff"/></svg><span class="wm"><b>LAMBROU</b><span>DETAILING</span></span></a>
+    <a class="brand" href="#top" aria-label="Lambrou Detailing home"><svg class="mark" viewBox="0 0 84 40" aria-hidden="true"><defs><linearGradient id="lg-neon" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2e88"/><stop offset=".38" stop-color="#ff3b3b"/><stop offset=".7" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffd21f"/></linearGradient></defs><path d="M5 30V19.5Q5 15.2 8.4 14.4L13.2 9.4Q14.4 8.2 16.2 8.2H47.6L56.2 14.8L72.6 16.4Q77.2 17 77.2 21V27Q77.2 30 74.4 30H70.4A7.4 7.4 0 0 0 55.6 30H26.4A7.4 7.4 0 0 0 11.6 30Z" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4" stroke-linejoin="round"/><path d="M13.6 14.6L17.2 10.8H46.8L52.4 14.6Z" fill="none" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linejoin="round"/><path d="M31.5 11v3.4" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linecap="round"/><circle cx="19" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="19" cy="30" r="2" fill="url(#lg-neon)"/><circle cx="63" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="63" cy="30" r="2" fill="url(#lg-neon)"/><path d="M71 1.4l1.5 4.1 4.1 1.5-4.1 1.5L71 12.6l-1.5-4.1-4.1-1.5 4.1-1.5z" fill="#fff"/></svg><span class="wm"><b>LAMBROU</b><span>DETAILING</span></span></a>
     <nav class="links" aria-label="Main">
       <a href="#results">Results</a><a href="#services">Services</a><a href="#area">Service area</a>
       <a class="btn sun-b" href="#book">Book now</a>
@@ -180,9 +177,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
     <div class="wrap">
       <p class="eyebrow">Car detailing · Monmouth County, NJ</p>
       <h1>Your car, <span class="sun">better than new.</span></h1>
-      <p class="lede">Hand-done detailing for Range Rovers, G-Wagons and every car you care about. Deep clean inside, real shine outside.</p>
+      <p class="lede">Hand-done detailing for Range Rovers, G-Wagons and every car you care about.</p>
       <div class="ctas"><a class="btn sun-b" href="#book">Book a detail</a><a class="btn line" href="#results">See the results</a></div>
-      <div class="chips"><span>Hand wash only</span><span>Interior deep clean</span><span>Paint polish &amp; coating</span></div>
     </div>
   </section>
 
