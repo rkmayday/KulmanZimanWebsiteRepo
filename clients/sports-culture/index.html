@@ -113,6 +113,8 @@ a{color:inherit;text-decoration:none}
 .card:hover{transform:translateY(-6px) rotate(-1deg);border-color:rgba(255,204,0,.5)}
 .card .no{font:700 .74rem var(--mono);color:var(--w3)}
 .card .pic{width:120px;height:120px;border-radius:50%;margin:30px auto 26px;box-shadow:0 0 0 6px var(--k3),0 0 0 7px var(--line)}
+.card .pic.mono{display:grid;place-items:center;background:#000;color:var(--y);font:900 3.4rem/1 var(--disp);font-style:italic;font-stretch:120%}
+.card.hot .pic.mono{background:#000}
 .card h3{margin:0;text-align:center;font:800 1.15rem var(--body)}
 .card .cat{text-align:center;font:600 .72rem var(--mono);letter-spacing:.14em;color:var(--w3);text-transform:uppercase;margin-top:4px}
 .card .fl{margin-top:24px;padding-top:18px;border-top:1px dashed rgba(255,255,255,.14);display:flex;justify-content:space-between;align-items:end}
@@ -347,7 +349,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 
   <section class="sec" id="network" style="padding-top:0">
     <div class="wrap">
-      <div class="top rv"><div><p class="k">The roster</p><h2 class="d long">Seven owned Instagram brands <span class="y">covering and amplifying the moments that move sports culture.</span></h2></div>
+      <div class="top rv"><div><p class="k">The roster</p><h2 class="d long"><span data-count="cap">Seven</span> owned Instagram brands <span class="y">covering and amplifying the moments that move sports culture.</span></h2></div>
         <div class="drag"><button type="button" aria-label="Previous" data-dir="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><button type="button" aria-label="Next" data-dir="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>Swipe the roster</div></div>
       <div class="roster" id="roster"></div>
     </div>
@@ -385,7 +387,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
         <div class="step"><b>Pre-production</b><span>Planning, sets and scripts</span></div>
         <div class="step"><b>Guest booking</b><span>Athletes and creators</span></div>
         <div class="step"><b>Post-production</b><span>Long-form editing, social cut-downs, graphics &amp; animations</span></div>
-        <div class="step"><b>Distribution</b><span>Across all seven brands</span></div>
+        <div class="step"><b>Distribution</b><span>Across all <span data-count>seven</span> brands</span></div>
       </div>
       <div class="webp rv">
         <a class="wp" href="https://basketballnews.com" target="_blank" rel="noopener"><span class="k"><i></i>Live · Web property</span><b>basketballnews.com</b><span>Visit the site →</span></a>
@@ -461,7 +463,9 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
    3. Paste that link between the quotes on the next line. Leave it empty to use the values written here instead.
    The page reads the Sheet each time it opens (if the Sheet can't be reached, it falls back to the values here).
    Brands: rows "Brand 1" ... "Brand 12" are the logos shown now. Add "Brand 13" + "Brand 13 website" for a new one,
-   type a new name to replace one, or leave a "Brand N" value empty to remove that brand. */
+   type a new name to replace one, or leave a "Brand N" value empty to remove that brand.
+   Instagram accounts (the roster): "Account 1" ... "Account 8" are the accounts shown now. Add "Account 9" (the @handle),
+   "Account 9 label", "Account 9 followers" and "Account 9 logo link" for a new one; an empty "Account N" removes it. */
 window.SC_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4UxbQPujhLf3EYlcCr5uLSswX94-vvUJr7qgAwOI-Y5gFPFLjWzC2GTqWGiUJqELbE0D80kIfESb5/pub?gid=1861097211&single=true&output=csv';
 window.SC = {
   'Monthly views': '200M+', 'Followers (owned brands)': '2M+', 'Extra reach (partner network)': '6M+', 'Audience aged 18-34': '65%',
@@ -488,6 +492,8 @@ window.SC_READY = (async () => {
         else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; } else cur += c; }
       cells.push(cur);
       const k = (cells[0] || '').trim(), v = (cells[1] || '').trim();
+      const am = k.match(/^Account (\d+)( label| followers| logo link)?$/i);
+      if (am) { const all = window.SC_ACCOUNTS = window.SC_ACCOUNTS || {}, e = all[+am[1]] = all[+am[1]] || {}; e[am[2] ? am[2].trim().toLowerCase() : 'handle'] = v; continue; }
       const bm = k.match(/^Brand (\d+)( website| logo link)?$/i);
       if (bm) { const all = window.SC_BRANDS = window.SC_BRANDS || {}, e = all[+bm[1]] = all[+bm[1]] || {}; e[bm[2] ? bm[2].trim().toLowerCase() : 'name'] = v; continue; }
       if (k && v && (k in window.SC || /^Clip \d+ (YouTube link|title)$/.test(k))) window.SC[k] = v;   // an empty cell keeps the value here; new Clip rows (Clip 5, Clip 6...) add more clips
@@ -510,9 +516,31 @@ window.SC_READY.then(() => {
   const cells = document.querySelectorAll('.board .num');
   [D['Monthly views'], D['Followers (owned brands)'], D['Extra reach (partner network)'], D['Audience aged 18-34']].forEach((v, i) => { if (cells[i]) cells[i].dataset.n = v; });
   document.querySelectorAll('a[href*="playlist?list="]').forEach(a => a.href = 'https://youtube.com/playlist?list=' + PLAYLIST);
-  const NET = [['sportsculture', '@sportsculture', 'Flagship'], ['basketballnews', '@basketballnews', 'Hoops'], ['footballnews', '@footballnews', 'Football'],
-    ['tacotuesday', '@tacotuuesday', 'Hoops'], ['logo-jokesofnfl', '@jokesofnfl', 'Football'], ['quarterbacksonly', '@quarterbacksonly', 'Football'], ['dingerculture', '@dingerculture', 'Baseball']]
-    .map(a => [...a, ...num(D[a[1] + ' followers'])]);
+  // the roster: built-in accounts, which the Sheet can change, add to or remove by number:
+  //   "Account 9" = @handle, "Account 9 label" = what it covers, "Account 9 followers" = e.g. 250K,
+  //   "Account 9 logo link" = a direct link to its profile picture. An empty "Account 3" removes account 3.
+  const BUILT = [['sportsculture', '@sportsculture', 'Flagship'], ['basketballnews', '@basketballnews', 'Hoops'], ['footballnews', '@footballnews', 'Football'],
+    ['tacotuesday', '@tacotuuesday', 'Hoops'], ['logo-jokesofnfl', '@jokesofnfl', 'Football'], ['quarterbacksonly', '@quarterbacksonly', 'Football'], ['dingerculture', '@dingerculture', 'Baseball'],
+    ['', '@collegehoops', 'College hoops']];
+  const picFor = h => { const b = BUILT.find(x => x[0] && x[1].toLowerCase() === String(h).toLowerCase()); return b ? 'img/' + b[0] + '.webp' : ''; };
+  const acc = {}; BUILT.forEach((b, i) => { acc[i + 1] = { slug: b[0], handle: b[1], label: b[2], pic: b[0] ? 'img/' + b[0] + '.webp' : '', fol: D[b[1] + ' followers'] || '' }; });
+  for (const [n, e] of Object.entries(window.SC_ACCOUNTS || {})) {
+    if ('handle' in e) {
+      const h = e.handle.trim(); if (!h) { delete acc[n]; continue; }
+      const handle = h.startsWith('@') ? h : '@' + h, same = acc[n] && acc[n].handle.toLowerCase() === handle.toLowerCase();
+      acc[n] = same ? acc[n] : { slug: '', handle, label: '', pic: picFor(handle), fol: D[handle + ' followers'] || '' };
+    }
+    if (!acc[n]) continue;
+    if (e.label) acc[n].label = e.label;
+    if (e.followers) acc[n].fol = e.followers;
+    if (/^https:\/\/\S+$/i.test(e['logo link'] || '')) acc[n].pic = e['logo link'].trim();
+  }
+  const NET = Object.keys(acc).map(Number).sort((x, y) => x - y).map(n => acc[n]);
+  NET.forEach(a => { [a.n, a.suf] = num(a.fol); });
+  // "Seven owned Instagram brands", "Across all seven brands": the number always matches the roster
+  const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+  const countWord = WORDS[NET.length] || String(NET.length);
+  document.querySelectorAll('[data-count]').forEach(el => { el.textContent = el.dataset.count === 'cap' ? countWord.charAt(0).toUpperCase() + countWord.slice(1) : countWord; });
   const ARROW = '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
 
   // ticker
@@ -528,16 +556,14 @@ window.SC_READY.then(() => {
 
   // filmstrip of reels (each card is a slot for one of the network's best clips)
   const caps = ['Top 10 plays', 'Game-winner breakdown', 'Locker room', 'Draft night', 'Best of the week', 'Behind the scenes', 'Fan reactions'];
-  const clip = (a, i) => `<a class="clip" href="https://www.instagram.com/${a[1].slice(1)}" target="_blank" rel="noopener" aria-label="${a[1]} on Instagram">
-    <div class="bg" style="background-image:url(img/bg-${a[0]}.webp)"></div><img class="lg" src="img/${a[0]}.webp" alt="" loading="lazy"><div class="sh"></div>
-    <div class="hd"><img src="img/${a[0]}.webp" alt="">${a[1]}</div><div class="ft"><b>${caps[i % caps.length]}</b><span>${a[2]}</span></div><div class="pl">${ARROW}</div></a>`;
   const belt = document.getElementById('belt'), strip = document.getElementById('strip');
+  const BG = BUILT.filter(b => b[0]).map(b => b[0]);
   // the network's real clips (YouTube Shorts and an episode), each a card that plays on the page; account cards in between
   const clipNos = [...new Set(Object.keys(D).map(k => (k.match(/^Clip (\d+) YouTube link$/) || [])[1]).filter(Boolean).map(Number))].sort((x, y) => x - y);
   const CLIPS = clipNos.map(n => { const link = D['Clip ' + n + ' YouTube link'], tall = /shorts\//.test(link);
     return [ytId(link), D['Clip ' + n + ' title'], tall ? 'Short' : 'Video', tall ? 1 : 0]; }).filter(c => c[0]);
   const vcard = (c, i) => `<button class="clip vid" type="button" data-play="${c[0]}" data-tall="${c[3]}" aria-label="Play: ${c[1]}">
-    <div class="bg" style="background-image:url(img/bg-${NET[i % NET.length][0]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
+    <div class="bg" style="background-image:url(img/bg-${BG[i % BG.length]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
     <div class="hd"><img src="img/trophy.webp" alt="">Sports Culture</div><div class="ft"><b>${c[1]}</b><span>${c[2]}</span></div><div class="pl">${ARROW}</div></button>`;
   const seq = []; for (let i = 0; i < Math.max(8, CLIPS.length); i++) seq.push(vcard(CLIPS[i % CLIPS.length], i));
   const one = seq.join('');
@@ -612,9 +638,13 @@ window.SC_READY.then(() => {
 
   // the roster
   const ro = document.getElementById('roster');
-  ro.innerHTML = NET.map((a, i) => `<a class="card${i === 1 ? ' hot' : ''}" href="https://www.instagram.com/${a[1].slice(1)}" target="_blank" rel="noopener">
-      <div class="no">No. ${String(i + 1).padStart(2, '0')}</div><img class="pic" src="img/${a[0]}.webp" alt="" loading="lazy"><h3>${a[1]}</h3><div class="cat">${a[2]}</div>
-      <div class="fl"><span>Followers</span><b><span class="cu" data-to="${a[3]}" data-suf="${a[4]}">${a[3]}${a[4]}</span></b></div></a>`).join('')
+  const escH = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  ro.innerHTML = NET.map((a, i) => {
+    const h = escH(a.handle), first = escH((a.handle.replace(/^@/, '')[0] || '?').toUpperCase());
+    const pic = a.pic ? `<img class="pic" src="${escH(a.pic)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=&quot;pic mono&quot;>${first}</div>'">` : `<div class="pic mono">${first}</div>`;
+    const fl = a.n ? `<div class="fl"><span>Followers</span><b><span class="cu" data-to="${a.n}" data-suf="${escH(a.suf)}">${a.n}${escH(a.suf)}</span></b></div>` : `<div class="fl"><span>New to the roster</span></div>`;
+    return `<a class="card${i === 1 ? ' hot' : ''}" href="https://www.instagram.com/${encodeURIComponent(a.handle.slice(1))}" target="_blank" rel="noopener">
+      <div class="no">No. ${String(i + 1).padStart(2, '0')}</div>${pic}<h3>${h}</h3><div class="cat">${escH(a.label)}</div>${fl}</a>`; }).join('')
     + `<div class="card more"><b>+3M on X.<br><span class="y">+3M more</span> on Instagram.</b><p>Our extended partner network, plus @basketballnews on X, Facebook and YouTube.</p></div>`;
   document.querySelectorAll('.drag button').forEach(bn => bn.addEventListener('click', () => ro.scrollBy({ left: +bn.dataset.dir * 300, behavior: reduce ? 'auto' : 'smooth' })));
 
