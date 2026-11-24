@@ -261,8 +261,8 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 /* a long section heading (the roster) at a calmer size */
 .top h2.long{font-size:clamp(1.9rem,3.6vw,3.3rem);max-width:24ch;line-height:1}
 /* production steps: a simple hover (they don't use the box tilt, which clashed with their numbers and top line) */
-.step{transition:transform .35s var(--ease)}
-.step:hover{transform:translateY(-4px)}
+.step{top:0;transition:top .35s var(--ease)}
+.step:hover{top:-4px}   /* a lift without a transform: Safari draws no layer box around the step */
 .step:hover b{color:var(--y)}
 /* web properties: the two live sites in the spotlight */
 .webp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(40px,6vw,64px)}
