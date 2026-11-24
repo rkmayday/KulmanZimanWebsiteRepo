@@ -160,7 +160,36 @@ textarea{min-height:100px;resize:vertical}
 @media (max-width:860px){.book .wrap{grid-template-columns:1fr}form{grid-template-columns:1fr}}
 footer{padding-block:34px;border-top:1px solid var(--line)}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink3);font-size:.9rem;font-weight:600}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+/* closing call-to-action, FAQ, "Get a quote" links */
+.book-cta{display:grid;justify-items:start;gap:12px;align-self:center}
+.book-cta p{color:var(--ink3);font-size:.92rem}
+.price a{font-weight:800;color:var(--ink);text-decoration:none;display:inline-flex;gap:6px;transition:color .2s}
+@media (hover:hover){.price a:hover{color:var(--orange)}}
+.faq-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,5vw,64px);align-items:start}
+.faq{display:grid;gap:10px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:0 20px;transition:border-color .3s,box-shadow .3s}
+.faq details[open]{border-color:rgba(255,46,136,.5);box-shadow:0 0 34px -14px rgba(255,46,136,.55)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;font:700 1.02rem var(--body)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--bg2);color:var(--orange);font:800 1.2rem/1 var(--body);transition:transform .3s var(--ease)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 18px;color:var(--ink2)}
+@media (max-width:860px){.faq-wrap{grid-template-columns:1fr}}
+/* booking pop-up: the form in the middle of the screen, the page blurred behind it */
+.bk-modal{width:min(640px,calc(100% - 28px));max-height:calc(100dvh - 32px);margin:auto;padding:0;border:0;background:transparent;color:var(--ink);overflow:visible}
+.bk-modal::backdrop{background:rgba(6,7,8,.55);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);opacity:0;transition:opacity .22s}
+.bk-modal.open::backdrop{opacity:1}
+.bk-box{position:relative;max-height:calc(100dvh - 32px);overflow:auto;padding:clamp(22px,4vw,34px);border-radius:28px;background:var(--bg);border:1px solid var(--line);
+  box-shadow:0 0 0 1px rgba(255,46,136,.25),0 0 80px -30px rgba(255,46,136,.6),0 40px 100px -30px rgba(0,0,0,.8);opacity:0;transform:translateY(14px) scale(.97);transition:opacity .22s,transform .3s var(--ease)}
+.bk-modal.open .bk-box{opacity:1;transform:none}
+.bk-box h2{font-size:clamp(1.6rem,4vw,2.2rem);margin:10px 0 6px}
+.bk-lede{color:var(--ink3);margin-bottom:18px}
+.bk-box form{padding:0;border:0;background:none;box-shadow:none}
+.bk-x{position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);cursor:pointer;font-size:1.5rem;line-height:1;color:var(--ink);background:var(--card)}
+@media (hover:hover){.bk-x:hover{border-color:var(--pink)}}
+html:has(.bk-modal[open]){overflow:hidden}
+@media (max-width:560px){.bk-box{padding:20px 16px 16px}.bk-box form{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.bk-box,.bk-modal::backdrop{transition:none}html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 </style>
 
 <div class="demo">Demo · This is a one-page website, built by Ziman Sites for $284</div>
@@ -193,26 +222,26 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
           <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 10a6 6 0 0 1-12 0c0-3 3-6 6-10z"/></svg></div>
           <h3>Wash &amp; Protect</h3><p>A safe hand wash and fresh protection.</p>
           <ul><li>Foam pre-wash</li><li>Two-bucket hand wash</li><li>Wheels &amp; tires</li><li>Spray sealant</li></ul>
-          <div class="price">Pricing<b>Get a quote</b></div>
+          <div class="price">Pricing<a href="#book" data-svc="Wash &amp; Protect">Get a quote <span aria-hidden="true">→</span></a></div>
         </article>
         <article>
           <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 18V9a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v9M3 18h18M8 14h8"/></svg></div>
           <h3>Interior Reset</h3><p>Seats, carpets and every surface.</p>
           <ul><li>Deep vacuum</li><li>Leather clean &amp; condition</li><li>Stain steam</li><li>Glass inside &amp; out</li></ul>
-          <div class="price">Pricing<b>Get a quote</b></div>
+          <div class="price">Pricing<a href="#book" data-svc="Interior Reset">Get a quote <span aria-hidden="true">→</span></a></div>
         </article>
         <article class="star">
           <span class="pop">Most popular</span>
           <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19l1-5.8L3.5 9.2l5.9-.9z"/></svg></div>
           <h3>Full Detail</h3><p>Inside and out, the whole car.</p>
           <ul><li>Everything in Wash &amp; Protect</li><li>Everything in Interior Reset</li><li>Clay bar treatment</li><li>Engine bay wipe-down</li></ul>
-          <div class="price">Pricing<b>Get a quote</b></div>
+          <div class="price">Pricing<a href="#book" data-svc="Full Detail">Get a quote <span aria-hidden="true">→</span></a></div>
         </article>
         <article>
           <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 16l6-6 4 4 6-6M14 8h6v6"/></svg></div>
           <h3>Polish &amp; Coat</h3><p>Swirls out, lasting gloss in.</p>
           <ul><li>Paint inspection</li><li>Machine polish</li><li>Ceramic coating option</li><li>Water-beading finish</li></ul>
-          <div class="price">Pricing<b>Get a quote</b></div>
+          <div class="price">Pricing<a href="#book" data-svc="Polish &amp; Coat">Get a quote <span aria-hidden="true">→</span></a></div>
         </article>
       </div>
     </div>
@@ -265,13 +294,37 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
     </div>
   </section>
 
+  <section class="band" id="faq">
+    <div class="wrap faq-wrap">
+      <div class="head"><p class="eyebrow">Questions</p><h2>Good to <span class="sun">know.</span></h2><p>The things people ask before their first detail.</p></div>
+      <div class="faq">
+        <details><summary>How long does a detail take?</summary><p>A Wash &amp; Protect takes about two hours. A Full Detail takes most of a day, and Polish &amp; Coat can take one to two days, depending on your paint.</p></details>
+        <details><summary>Do you come to me?</summary><p>Yes. We bring our own water and power, so we can work in your driveway or garage anywhere in our service area.</p></details>
+        <details><summary>Is it safe for ceramic-coated or wrapped cars?</summary><p>Yes. We use pH-neutral soaps, clean microfiber for every panel and no brushes on the paint, so coatings, wraps and PPF stay protected.</p></details>
+        <details><summary>How do I get a price?</summary><p>Tap "Book now", tell us your car and what it needs, and we'll reply with a quote. Prices depend on the car's size and condition.</p></details>
+        <details><summary>What if it rains on the day?</summary><p>We'll move your appointment to the next clear day at no cost, or work under cover if your garage has room.</p></details>
+        <details><summary>How often should I get my car detailed?</summary><p>A full detail every three to four months keeps most cars looking new, with a wash every couple of weeks in between.</p></details>
+      </div>
+    </div>
+  </section>
+
   <section class="book" id="book">
     <div class="wrap">
       <div class="head" style="margin:0"><p class="eyebrow">Book a detail</p><h2>Let's make it <span class="sun">shine.</span></h2>
-        <p>Send your details and Afterglow Detailing will get back to you with a quote and a time that works.</p>
-        <p style="color:var(--ink3);font-size:.95rem">Phone and email go here once confirmed.</p>
+        <p>Tell us about your car and Afterglow Detailing will get back to you with a quote and a time that works.</p>
       </div>
-      <form id="bk" novalidate>
+      <div class="book-cta"><a class="btn sun-b" href="#book">Request a quote</a><p>Takes about a minute. No payment needed.</p></div>
+    </div>
+  </section>
+</main>
+
+<dialog class="bk-modal" id="bk-modal" aria-labelledby="bk-title">
+  <div class="bk-box">
+    <button class="bk-x" type="button" aria-label="Close">&times;</button>
+    <p class="eyebrow">Book a detail</p>
+    <h2 id="bk-title">Let's make it <span class="sun">shine.</span></h2>
+    <p class="bk-lede">Send your details and we'll reply with a quote and a time that works.</p>
+    <form id="bk" novalidate>
         <label for="bk-name">Name<input id="bk-name" name="name" autocomplete="name" required></label>
         <label for="bk-phone">Phone<input id="bk-phone" name="phone" type="tel" autocomplete="tel" required></label>
         <label for="bk-car">Vehicle<input id="bk-car" name="car" placeholder="e.g. 2023 Range Rover Sport"></label>
@@ -281,9 +334,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
         <button class="btn sun-b full" type="submit">Request a quote</button>
         <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Afterglow Detailing.</p>
       </form>
-    </div>
-  </section>
-</main>
+  </div>
+</dialog>
 
 <footer><div class="wrap"><span>© Afterglow Detailing · Monmouth County, NJ</span><span>Demo website by Ziman Sites</span></div></footer>
 
@@ -303,6 +355,16 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   // glowing buttons: a light follows the cursor across each one
   document.querySelectorAll('.btn').forEach(b => b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect();
     b.style.setProperty('--mx', (e.clientX - r.left) + 'px'); b.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
+  // booking pop-up: every "Book" / "Get a quote" link opens the form in the middle of the screen
+  const dlg = document.getElementById('bk-modal'), svc = document.getElementById('bk-svc');
+  const openBk = pick => { if (pick) [...svc.options].forEach(o => { if (o.text === pick) svc.value = o.value; });
+    document.getElementById('bk-done').hidden = true; dlg.showModal(); requestAnimationFrame(() => dlg.classList.add('open'));
+    setTimeout(() => document.getElementById('bk-name').focus({ preventScroll: true }), 60); };
+  const closeBk = () => { dlg.classList.remove('open'); setTimeout(() => dlg.open && dlg.close(), 220); };
+  document.addEventListener('click', e => { const a = e.target.closest('a[href="#book"]'); if (!a) return; e.preventDefault(); e.stopPropagation(); openBk(a.dataset.svc); }, true);
+  dlg.querySelector('.bk-x').addEventListener('click', closeBk);
+  dlg.addEventListener('click', e => { if (e.target === dlg) closeBk(); });
+  dlg.addEventListener('cancel', e => { e.preventDefault(); closeBk(); });
   // booking (demo): check the two required fields, then show the confirmation
   document.getElementById('bk').addEventListener('submit', e => { e.preventDefault();
     for (const id of ['bk-name', 'bk-phone']) { const el = document.getElementById(id); if (!el.value.trim()) { el.focus(); el.setCustomValidity('Please fill this in.'); el.reportValidity(); el.addEventListener('input', () => el.setCustomValidity(''), { once: true }); return; } }
