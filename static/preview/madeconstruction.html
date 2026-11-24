@@ -34,9 +34,19 @@ h2 b{font-weight:500}
 .draft{background:var(--ink);color:#cfcabf;text-align:center;font:500 12px/1.4 var(--body);letter-spacing:.03em;padding:8px 16px}
 .draft b{color:#fff;font-weight:600}
 
-/* nav */
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s}
-.nav.scrolled{border-bottom-color:var(--line)}
+/* top bar: the draft note and the nav float over the entrance (light on dark), then turn solid over the page */
+.topbar{position:fixed;left:0;right:0;top:0;z-index:50}
+.nav{background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:background .45s,border-color .45s}
+.nav .logo svg path{stroke:var(--paper);transition:stroke .45s}
+.nav.over{background:transparent;border-bottom-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.nav.over .logo{color:#fff}
+.nav.over .logo svg path{stroke:#0a0a0a}
+.nav.over .logo .wm span{color:rgba(255,255,255,.72)}
+.nav.over .links a{color:rgba(255,255,255,.78)}
+.nav.over .links a:hover{color:#fff}
+.nav.over .btn{background:#fff;border-color:#fff;color:#111!important}
+.nav.over .btn:hover{background:transparent;color:#fff!important}
+main section[id]{scroll-margin-top:calc(var(--hh,110px) + 10px)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
 .logo{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink)}
 .logo svg{width:34px;height:34px;flex:none}
@@ -57,20 +67,57 @@ h2 b{font-weight:500}
 .nav .btn{padding:12px 18px;white-space:nowrap}
 @media (max-width:400px){.nav .btn{padding:11px 13px;font-size:12.5px}.logo .wm b{font-size:17px}}
 
-/* hero */
-.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,84px);align-items:end;padding-block:clamp(40px,6vw,88px) clamp(56px,7vw,100px)}
-.hero h1{font-size:clamp(2.7rem,5.8vw,5.4rem);line-height:1.01;font-weight:300;margin-top:24px;letter-spacing:-.02em}
-.hero h1 b{font-weight:500}
-.hero .lede{margin-top:26px;max-width:46ch;color:var(--ink2);font-size:1.07rem}
-.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-.facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:clamp(20px,4vw,52px);margin-top:52px;padding-top:24px;border-top:1px solid var(--line)}
-.facts dt{font:500 10.5px var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--ink3)}
-.facts dd{margin:7px 0 0;font:400 1.02rem var(--disp)}
-.hero-img{margin:0;position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--paper2)}
-.hero-img img{width:100%;height:100%;object-fit:cover;animation:settle 2.6s var(--ease) both}
-@keyframes settle{from{transform:scale(1.08)}to{transform:none}}
-.hero-img figcaption,.cap{position:absolute;left:16px;bottom:14px;color:#fff;font:500 10.5px var(--body);letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.55)}
-@media (max-width:860px){.hero .wrap{grid-template-columns:1fr;align-items:start}.hero-img{aspect-ratio:4/4.2}.facts{grid-template-columns:1fr 1fr}}
+/* ===== the entrance: a wall of black brick fins rises into place, each fin carrying a slice of the logo.
+   Scrolling swings the fins open like louvers, middle first, revealing a street of Made homes and then the headline.
+   (The fins are the signature facade of M1355.) ===== */
+.enter{position:relative;background:#0a0a0a}
+.enter.live{height:270vh}
+.pin{position:relative;height:100vh;height:100svh;overflow:hidden;background:#0a0a0a}
+.enter.live .pin{position:sticky;top:0}
+.street{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);transform-origin:50% 62%;will-change:transform}
+.enter.live .street{transform:scale(1.16);opacity:0;transition:opacity .5s}
+.enter.live.ready .street{opacity:1}   /* the homes stay hidden until the wall of fins is complete */
+.street div{position:relative;background:#111 center/cover no-repeat}
+.street div + div{box-shadow:inset 1px 0 0 rgba(0,0,0,.65)}
+.street .s0{display:none;background-image:url(madeconstruction-img/fins-street.webp)}
+.street .s1{background-image:url(madeconstruction-img/fins-tall.webp)}
+.street .s2{background-image:url(madeconstruction-img/m1712.webp)}
+.street .s3{background-image:url(madeconstruction-img/m2018.webp)}
+.street span{position:absolute;left:20px;top:calc(var(--hh,110px) + 18px);color:#fff;font:500 10.5px var(--body);letter-spacing:.26em;text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.6);opacity:0;transition:opacity .8s}
+.enter:not(.live) .street span,.enter.open .street span{opacity:.92}
+@media (max-width:760px){.street{grid-template-columns:1fr}.street .s1,.street .s2,.street .s3{display:none}.street .s0{display:block}}
+.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(8,8,8,.93) 0%,rgba(8,8,8,.58) 38%,rgba(8,8,8,.14) 68%,rgba(8,8,8,.3) 100%)}
+.enter.live .shade{opacity:0}
+.louvers{position:absolute;inset:0;perspective:1700px}
+.slat{position:absolute;top:0;bottom:0;overflow:hidden;will-change:transform}
+.slat .face{position:absolute;inset:0;background:linear-gradient(90deg,#0b0b0b 0%,#181817 44%,#232322 52%,#0d0d0d 100%);animation:rise 1.2s cubic-bezier(.2,.8,.2,1) calc(.2s + var(--o) * 70ms) both}
+@keyframes rise{from{transform:translateY(102%)}to{transform:none}}
+.slat .face::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 25%,rgba(255,255,255,.11) 50%,transparent 75%);transform:translateX(-130%);animation:glint 1.3s ease-in-out calc(1.8s + var(--i) * 45ms) both}
+@keyframes glint{to{transform:translateX(130%)}}
+.lg{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#efebe3;pointer-events:none}
+.lg svg{width:clamp(54px,6.5vw,92px);height:auto;margin-bottom:clamp(18px,3vh,32px)}
+.lg b{font:500 clamp(3.6rem,14.5vw,13.5rem)/.86 var(--disp);letter-spacing:.28em;margin-right:-.28em}
+.lg small{margin-top:clamp(14px,2.4vh,26px);font:500 clamp(.66rem,1.15vw,.95rem)/1 var(--body);letter-spacing:.78em;margin-right:-.78em;color:#bcb7ac}
+.cue-wrap{position:absolute;left:0;right:0;bottom:26px;z-index:6;display:flex;justify-content:center;pointer-events:none}
+.enter:not(.live) .cue-wrap{display:none}
+.cue{display:flex;flex-direction:column;align-items:center;gap:12px;color:#cfcabf;font:500 10.5px var(--body);letter-spacing:.32em;text-transform:uppercase;opacity:0;animation:fadeIn .9s 2.3s forwards}
+.cue i{display:block;width:1px;height:46px;background:#cfcabf;transform-origin:top;animation:drip 1.9s 2.6s ease-in-out infinite}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.enter-copy{position:absolute;left:0;right:0;bottom:0;z-index:5;will-change:opacity,transform}
+.enter.live .enter-copy{opacity:0;transform:translateY(34px)}
+.enter-copy .wrap{padding-bottom:clamp(34px,7vh,84px)}
+.enter-copy .label{color:#d8d3c8}
+.enter-copy h1{color:#fff;font-size:clamp(2.6rem,6.2vw,6rem);line-height:1;font-weight:300;letter-spacing:-.02em;max-width:13ch;margin-top:20px}
+.enter-copy h1 b{font-weight:500}
+.enter-copy .lede{color:#d4cfc4;max-width:50ch;margin-top:22px;font-size:1.05rem}
+.enter-copy .btn{background:#fff;border-color:#fff;color:#111!important}
+.enter-copy .btn:hover{background:transparent;color:#fff!important}
+.enter-copy .btn.ghost{background:transparent;border-color:rgba(255,255,255,.55);color:#fff!important}
+.enter-copy .btn.ghost:hover{background:#fff;color:#111!important}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.cap{position:absolute;left:16px;bottom:14px;color:#fff;font:500 10.5px var(--body);letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.55)}
+@media (max-width:760px){.enter.live{height:230vh}.enter-copy .lede{font-size:.98rem}}
 
 /* statement */
 .statement{border-top:1px solid var(--line)}
@@ -174,36 +221,42 @@ footer .logo .wm span{color:var(--dink3)}
 </style>
 </head>
 <body>
-<div class="draft"><b>Draft concept by Ziman Sites</b> · Not the live Made Construction site yet · For review only</div>
-
-<header class="nav" id="nav">
-  <div class="wrap">
-    <a class="logo" href="#top" aria-label="Made Construction home">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="currentColor"/><path d="M10 9v22M17 9v22M24 9v22M31 9v15" stroke="#f2f0eb" stroke-width="3.2"/></svg>
-      <span class="wm"><b>MADE</b><span>CONSTRUCTION</span></span>
-    </a>
-    <nav class="links" aria-label="Main">
-      <a href="#work">Work</a><a href="#approach">Approach</a><a href="#founder">About</a>
-      <a class="btn" href="#contact">Start a project <span class="ar" aria-hidden="true">→</span></a>
-    </nav>
+<header class="topbar" id="topbar">
+  <div class="draft"><b>Draft concept by Ziman Sites</b> · Not the live Made Construction site yet · For review only</div>
+  <div class="nav over" id="nav">
+    <div class="wrap">
+      <a class="logo" href="#top" aria-label="Made Construction home">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="currentColor"/><path d="M10 9v22M17 9v22M24 9v22M31 9v15" stroke="#f2f0eb" stroke-width="3.2"/></svg>
+        <span class="wm"><b>MADE</b><span>CONSTRUCTION</span></span>
+      </a>
+      <nav class="links" aria-label="Main">
+        <a href="#work">Work</a><a href="#approach">Approach</a><a href="#founder">About</a>
+        <a class="btn" href="#contact">Start a project <span class="ar" aria-hidden="true">→</span></a>
+      </nav>
+    </div>
   </div>
 </header>
 
 <main id="top">
-  <section class="hero">
-    <div class="wrap">
-      <div>
-        <p class="label">Development · Design · Construction</p>
-        <h1>Homes with gravity, presence and <b>timelessness.</b></h1>
-        <p class="lede">Made Construction builds one-of-a-kind modern residences in Philadelphia, with acquisitions, finance, development and design handled under one roof.</p>
-        <div class="ctas"><a class="btn" href="#work">See the work <span class="ar" aria-hidden="true">→</span></a><a class="btn ghost" href="#contact">Start a project</a></div>
-        <dl class="facts">
-          <div><dt>Based in</dt><dd>Philadelphia, PA</dd></div>
-          <div><dt>Focus</dt><dd>High-end residential</dd></div>
-          <div><dt>In-house</dt><dd>Lot to keys</dd></div>
-        </dl>
+  <section class="enter" id="enter" aria-label="Made Construction">
+    <div class="pin">
+      <div class="street" aria-hidden="true">
+        <div class="s0"><span>M1355 · Philadelphia</span></div>
+        <div class="s1"><span>M1355</span></div>
+        <div class="s2"><span>M1712</span></div>
+        <div class="s3"><span>M2018</span></div>
       </div>
-      <figure class="hero-img"><img src="madeconstruction-img/fins-street.webp" alt="A four-story brick residence with a facade of vertical brick fins, on a Philadelphia street" width="1100" height="1453" fetchpriority="high"><figcaption>M1355 · Philadelphia</figcaption></figure>
+      <div class="shade" aria-hidden="true"></div>
+      <div class="louvers" id="louvers" aria-hidden="true"></div>
+      <div class="enter-copy">
+        <div class="wrap">
+          <p class="label">Development · Design · Construction</p>
+          <h1>Homes with gravity, presence and <b>timelessness.</b></h1>
+          <p class="lede">Made Construction builds one-of-a-kind modern residences in Philadelphia, with acquisitions, finance, development and design handled under one roof.</p>
+          <div class="ctas"><a class="btn" href="#work">See the work <span class="ar" aria-hidden="true">→</span></a><a class="btn ghost" href="#contact">Start a project</a></div>
+        </div>
+      </div>
+      <div class="cue-wrap" aria-hidden="true"><div class="cue">Scroll to open<i></i></div></div>
     </div>
   </section>
 
@@ -338,10 +391,50 @@ footer .logo .wm span{color:var(--dink3)}
 
 <script>
 (() => {
-  // the nav gets a thin line once the page moves
-  const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  const topbar = document.getElementById('topbar'), nav = document.getElementById('nav');
+  const setHH = () => document.documentElement.style.setProperty('--hh', topbar.offsetHeight + 'px');
+  setHH(); addEventListener('resize', setHH);
+
+  // the entrance: fins rise in carrying the logo; scrolling swings them open (middle first) onto the street of homes
+  const stage = document.getElementById('enter'), louv = document.getElementById('louvers');
+  const street = stage.querySelector('.street'), shade = stage.querySelector('.shade'), copy = stage.querySelector('.enter-copy'), cue = stage.querySelector('.cue-wrap');
+  const clamp = v => Math.max(0, Math.min(1, v)), ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const logo = '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="currentColor"/><path d="M10 9v22M17 9v22M24 9v22M31 9v15" stroke="#0a0a0a" stroke-width="3.2"/></svg><b>MADE</b><small>CONSTRUCTION</small>';
+  let slats = [], N = 0, W = 0, raf = 0;
+  const frame = () => {
+    raf = 0;
+    const r = stage.getBoundingClientRect();
+    nav.classList.toggle('over', r.bottom > topbar.offsetHeight + 2);
+    if (reduce) return;
+    const p = clamp(-r.top / Math.max(1, r.height - innerHeight));
+    slats.forEach((sl, i) => {
+      const c = (i + .5) / N - .5, d = Math.abs(c) * 2;            // c: -0.5 (left) .. 0.5 (right); d: 0 in the middle, 1 at the edges
+      const t = ease(clamp((p - d * .22) / .58));                     // the middle fins open first
+      sl.style.transform = `rotateY(${(t * 86 * (c < 0 ? -1 : 1)).toFixed(2)}deg)`;
+      sl.style.filter = `brightness(${(1 + Math.sin(t * Math.PI) * .9).toFixed(3)})`;   // light catches each fin as it turns
+    });
+    louv.style.opacity = (1 - clamp((p - .72) / .16)).toFixed(3);
+    street.style.transform = `scale(${(1.16 - .16 * ease(clamp(p / .9))).toFixed(4)})`;
+    shade.style.opacity = clamp((p - .5) / .3).toFixed(3);
+    const k = ease(clamp((p - .66) / .24));
+    copy.style.opacity = k.toFixed(3); copy.style.transform = `translateY(${((1 - k) * 34).toFixed(1)}px)`;
+    copy.style.pointerEvents = k > .5 ? '' : 'none';
+    cue.style.opacity = (1 - clamp(p / .07)).toFixed(3);
+    stage.classList.toggle('open', p > .82);
+    if (p > .01) stage.classList.add('ready');                       // scrolling early still reveals the homes
+  };
+  const build = () => {
+    const n = innerWidth < 760 ? 7 : 13, w = louv.clientWidth;
+    if (n === N && Math.abs(w - W) < 2) return;
+    N = n; W = w; const sw = W / N;
+    louv.innerHTML = Array.from({ length: N }, (_, i) => `<div class="slat" style="left:${(i * sw).toFixed(2)}px;width:${(sw + .6).toFixed(2)}px;--i:${i};--o:${i}"><div class="face"><div class="lg" style="left:${(-i * sw).toFixed(2)}px;width:${W}px">${logo}</div></div></div>`).join('');
+    slats = [...louv.children]; frame();
+  };
+  if (!reduce) { stage.classList.add('live'); build(); addEventListener('resize', () => { build(); frame(); });
+    setTimeout(() => stage.classList.add('ready'), 2300); }   // the last fin finishes rising at about 2.2 s
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
+  frame();
   // sections ease in as they come into view
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.rv').forEach(el => io.observe(el));

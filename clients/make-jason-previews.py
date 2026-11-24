@@ -22,6 +22,7 @@ for folder, slug in SITES.items():
     for url, to in LINKS.items():
         body = body.replace(f'href="{url}" target="_blank" rel="noopener"', f'href="{to}"')
     body = body.replace('src="img/', f'src="{slug}-img/')
+    head = head.replace('url(img/', f'url({slug}-img/')      # photos used from the page's styles (the entrance)
     html = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             + head + "\n</head>\n<body>\n" + body.strip() + "\n</body>\n</html>\n")
@@ -32,7 +33,7 @@ for folder, slug in SITES.items():
     if img_out.exists():
         shutil.rmtree(img_out)
     img_out.mkdir()
-    used = sorted(set(re.findall(rf'src="{slug}-img/([^"]+)"', html)))
+    used = sorted(set(re.findall(rf'src="{slug}-img/([^"]+)"', html)) | set(re.findall(rf'url\({slug}-img/([^)]+)\)', html)))
     for name in used:
         shutil.copy(R / folder / "img" / name, img_out / name)
     left = [u for u in LINKS if u in html]
