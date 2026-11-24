@@ -8,3 +8,10 @@ for a, b in R_:
 (R / "sports-culture-preview/index.html").write_text(v)
 (R.parent / "static/preview/sportsculture.html").write_text(v)
 print("preview rebuilt")
+# keep the previews' images in step with the main version (new logos, photos)
+import shutil
+for d in (R / "sports-culture-preview/img", R.parent / "static/preview/img"):
+    d.mkdir(parents=True, exist_ok=True)
+    for f in (R / "sports-culture/img").glob("*.webp"):
+        shutil.copy(f, d / f.name)
+print("images synced")

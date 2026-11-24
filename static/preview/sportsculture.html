@@ -20,6 +20,7 @@ a{color:inherit;text-decoration:none}
 @media (max-width:640px){.wrap{width:calc(100% - 32px)}.roster{margin-inline:-16px;padding-inline:16px}}
 .d{font-family:var(--disp);font-weight:900;font-style:italic;font-stretch:125%;text-transform:uppercase;letter-spacing:-.02em;line-height:.9}
 .k{font:500 .74rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--w3)}
+.fno{color:var(--y);font-weight:700}
 .k i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--y);margin-right:9px;vertical-align:1px;box-shadow:0 0 0 0 rgba(255,204,0,.6);animation:pulse 1.8s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(255,204,0,0)}100%{box-shadow:0 0 0 0 rgba(255,204,0,0)}}
 .y{color:var(--y)}
@@ -289,6 +290,22 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
   .swap span{transition:none}
   .ring .fg{transition:none}
 }
+
+/* ===== phones: calmer spacing, smaller long headings, swipe rows instead of long stacks ===== */
+.ad-hint{display:none}
+@media (max-width:640px){
+  .sec{padding:72px 0}
+  .top h2.long{font-size:clamp(1.55rem,7.2vw,2rem);line-height:1.02}
+  .roster{margin-inline:-16px;padding:6px 16px 26px;scroll-padding-inline:16px}
+  .play{grid-template-columns:1fr;gap:0;margin-top:48px}
+  .step{display:grid;grid-template-columns:44px 1fr;column-gap:10px;padding:18px 0}
+  .step::before{grid-row:1 / span 2;margin:3px 0 0}
+  .step b{font-size:1.08rem}
+  .ads{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-16px;padding:0 16px 8px;scroll-padding-inline:16px;scrollbar-width:none}
+  .ads::-webkit-scrollbar{display:none}
+  .ad-wrap{flex:0 0 86%;scroll-snap-align:start}
+  .ad-hint{display:block;margin-top:14px;font:500 .74rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--w3)}
+}
 </style>
 </head>
 <body>
@@ -355,14 +372,13 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
           <span class="bigplay"><b><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></b>Watch the series</span>
         </button>
         <div class="txt">
-          <p class="k"><i></i>Sponsored by Pepsi</p>
+          <p class="k"><i></i><span class="fno">01</span> · Sponsored by Pepsi</p>
           <h3 class="d">The Dough Boys <span class="y">× Pepsi</span></h3>
           <p>An original series we built and produced with Pepsi, from the first idea to distribution across our network.</p>
           <a href="https://youtube.com/playlist?list=PLMXChctnRkaw" target="_blank" rel="noopener">Open the full playlist on YouTube →</a>
         </div>
       </div>
       <div class="shows rv">
-        <a class="show" href="https://youtube.com/playlist?list=PLMXChctnRkaw" target="_blank" rel="noopener" data-play="series"><span class="n">01</span><b>The Dough Boys <span class="y">× Pepsi</span></b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="show" href="https://youtu.be/JaFEvrTtoXI" target="_blank" rel="noopener" data-play="JaFEvrTtoXI"><span class="n">02</span><b>The Redhead Sports Podcast</b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="show" href="https://youtu.be/1IkZGqGYyjg" target="_blank" rel="noopener"><span class="n">03</span><b>Culture Crazies</b><span class="st live">● Live</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <div class="show" style="color:var(--w3)"><span class="n">04</span><b>Your show next?</b><span class="st">Coming soon</span><span></span></div>
@@ -371,7 +387,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
         <div class="step"><b>Ideation</b><span>Concepts built around the talent</span></div>
         <div class="step"><b>Pre-production</b><span>Planning, sets and scripts</span></div>
         <div class="step"><b>Guest booking</b><span>Athletes and creators</span></div>
-        <div class="step"><b>Post-production</b><span>Edit, graphics, cut-downs</span></div>
+        <div class="step"><b>Post-production</b><span>Long-form editing, social cut-downs, graphics &amp; animations</span></div>
         <div class="step"><b>Distribution</b><span>Across all seven brands</span></div>
       </div>
       <div class="webp rv">
@@ -395,6 +411,7 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
         <div class="ad-wrap"><span class="ad-tag" data-sponsor="4" hidden></span>
         <div class="ad"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DV7YQNREQ1G/" data-instgrm-version="14"><a class="fallback" href="https://www.instagram.com/p/DV7YQNREQ1G/" target="_blank" rel="noopener"><b>Brand campaign</b><span>View on Instagram →</span></a></blockquote></div></div>
       </div>
+      <p class="ad-hint">Swipe for more →</p>
     </div>
   </section>
 
@@ -472,7 +489,7 @@ window.SC_READY = (async () => {
         else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; } else cur += c; }
       cells.push(cur);
       const k = (cells[0] || '').trim(), v = (cells[1] || '').trim();
-      if (k && k in window.SC && v) window.SC[k] = v;   // an empty cell keeps the value here
+      if (k && v && (k in window.SC || /^Clip \d+ (YouTube link|title)$/.test(k))) window.SC[k] = v;   // an empty cell keeps the value here; new Clip rows (Clip 5, Clip 6...) add more clips
     }
   } catch (e) { /* the Sheet couldn't be reached: keep the values above */ }
 })();
@@ -515,7 +532,8 @@ window.SC_READY.then(() => {
     <div class="hd"><img src="img/${a[0]}.webp" alt="">${a[1]}</div><div class="ft"><b>${caps[i % caps.length]}</b><span>${a[2]}</span></div><div class="pl">${ARROW}</div></a>`;
   const belt = document.getElementById('belt'), strip = document.getElementById('strip');
   // the network's real clips (YouTube Shorts and an episode), each a card that plays on the page; account cards in between
-  const CLIPS = [1, 2, 3, 4].map(n => { const link = D['Clip ' + n + ' YouTube link'], tall = /shorts\//.test(link);
+  const clipNos = [...new Set(Object.keys(D).map(k => (k.match(/^Clip (\d+) YouTube link$/) || [])[1]).filter(Boolean).map(Number))].sort((x, y) => x - y);
+  const CLIPS = clipNos.map(n => { const link = D['Clip ' + n + ' YouTube link'], tall = /shorts\//.test(link);
     return [ytId(link), D['Clip ' + n + ' title'], tall ? 'Short' : 'Video', tall ? 1 : 0]; }).filter(c => c[0]);
   const vcard = (c, i) => `<button class="clip vid" type="button" data-play="${c[0]}" data-tall="${c[3]}" aria-label="Play: ${c[1]}">
     <div class="bg" style="background-image:url(img/bg-${NET[i % NET.length][0]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
@@ -573,7 +591,7 @@ window.SC_READY.then(() => {
   // the betting and prediction brands (Underdog, Kalshi, Novig, Polymarket) are spread out, never side by side or stacked;
   // brands without a logo file yet show their name as a wordmark
   const B = [['underdogfantasy', 'Underdog'], ['pristineauction', 'Pristine Auction'], ['celsius', 'Celsius'], ['kalshi', 'Kalshi'], ['twitch', 'Twitch'], ['gametime', 'Gametime'],
-    ['lobos1707', 'Lobos 1707'], ['novig', 'Novig'], ['', 'EA', 'EA'], ['', 'Zamst', 'ZAMST'], ['polymarket', 'Polymarket'], ['', 'Saputo Cheese', 'SAPUTO']];
+    ['lobos1707', 'Lobos 1707'], ['novig', 'Novig'], ['ea', 'EA'], ['zamst', 'Zamst'], ['polymarket', 'Polymarket'], ['saputo', 'Saputo Cheese']];
   document.getElementById('logos').innerHTML = B.map(b => `<div>${b[0] ? `<img src="img/${b[0]}.webp" alt="" loading="lazy">` : `<span class="wm">${b[2]}</span>`}${b[1]}</div>`).join('');
 
   // the roster
