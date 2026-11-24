@@ -167,6 +167,8 @@ textarea{min-height:100px;resize:vertical}
 @media (max-width:860px){.book .wrap{grid-template-columns:1fr}form{grid-template-columns:1fr}}
 footer{padding-block:34px;border-top:1px solid var(--line)}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--ink3);font-size:.9rem;font-weight:600}
+.nav .btn{white-space:nowrap}
+@media (max-width:430px){.nav .btn{padding:10px 15px;font-size:.86rem}.brand{gap:8px}.brand .mark{width:48px}.brand .wm b{font-size:.9rem;letter-spacing:.04em}.brand .wm span{font-size:.5rem;letter-spacing:.32em}}
 /* closing call-to-action, FAQ, "Get a quote" links */
 .book-cta{display:grid;justify-items:start;gap:12px;align-self:center}
 .book-cta p{color:var(--ink3);font-size:.92rem}
@@ -210,7 +212,7 @@ html:has(.bk-modal[open]){overflow:hidden}
     <a class="brand" href="#top" aria-label="Afterglow Detailing home"><svg class="mark" viewBox="0 0 84 40" aria-hidden="true"><defs><linearGradient id="lg-neon" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2e88"/><stop offset=".38" stop-color="#ff3b3b"/><stop offset=".7" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ffd21f"/></linearGradient></defs><path d="M5 30V19.5Q5 15.2 8.4 14.4L13.2 9.4Q14.4 8.2 16.2 8.2H47.6L56.2 14.8L72.6 16.4Q77.2 17 77.2 21V27Q77.2 30 74.4 30H70.4A7.4 7.4 0 0 0 55.6 30H26.4A7.4 7.4 0 0 0 11.6 30Z" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4" stroke-linejoin="round"/><path d="M13.6 14.6L17.2 10.8H46.8L52.4 14.6Z" fill="none" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linejoin="round"/><path d="M31.5 11v3.4" stroke="url(#lg-neon)" stroke-width="1.7" stroke-linecap="round"/><circle cx="19" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="19" cy="30" r="2" fill="url(#lg-neon)"/><circle cx="63" cy="30" r="5.6" fill="#0a0b0c" stroke="url(#lg-neon)" stroke-width="2.4"/><circle cx="63" cy="30" r="2" fill="url(#lg-neon)"/><path d="M71 1.4l1.5 4.1 4.1 1.5-4.1 1.5L71 12.6l-1.5-4.1-4.1-1.5 4.1-1.5z" fill="#fff"/></svg><span class="wm"><b>AFTERGLOW</b><span>DETAILING</span></span></a>
     <nav class="links" aria-label="Main">
       <a href="#services">Services</a><a href="#area">Service area</a>
-      <a class="btn sun-b" href="#book">Book now</a>
+      <a class="btn sun-b" href="#book" data-pop>Book now</a>
     </nav>
   </div>
 </header>
@@ -322,9 +324,18 @@ html:has(.bk-modal[open]){overflow:hidden}
   <section class="book" id="book">
     <div class="wrap">
       <div class="head" style="margin:0"><p class="eyebrow">Book a detail</p><h2>Let's make it <span class="sun">shine.</span></h2>
-        <p>Tell us about your car and Afterglow Detailing will get back to you with a quote and a time that works.</p>
+        <p>Send your details and Afterglow Detailing will get back to you with a quote and a time that works.</p>
       </div>
-      <div class="book-cta"><a class="btn sun-b" href="#book">Request a quote</a><p>Takes about a minute. No payment needed.</p></div>
+      <form id="bk" novalidate>
+          <label for="bk-name">Name<input id="bk-name" name="name" autocomplete="name" required></label>
+          <label for="bk-phone">Phone<input id="bk-phone" name="phone" type="tel" autocomplete="tel" required></label>
+          <label for="bk-car">Vehicle<input id="bk-car" name="car" placeholder="e.g. 2023 Range Rover Sport"></label>
+          <label for="bk-town">Town<input id="bk-town" name="town" placeholder="e.g. Rumson"></label>
+          <label for="bk-svc" class="full">Service<select id="bk-svc" name="svc"><option>Full Detail</option><option>Wash &amp; Protect</option><option>Interior Reset</option><option>Polish &amp; Coat</option><option>Not sure yet</option></select></label>
+          <label for="bk-msg" class="full">Anything else?<textarea id="bk-msg" name="msg" placeholder="Condition, timing, special requests"></textarea></label>
+          <button class="btn sun-b full" type="submit">Request a quote</button>
+          <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Afterglow Detailing.</p>
+        </form>
     </div>
   </section>
 </main>
@@ -335,15 +346,15 @@ html:has(.bk-modal[open]){overflow:hidden}
     <p class="eyebrow">Book a detail</p>
     <h2 id="bk-title">Let's make it <span class="sun">shine.</span></h2>
     <p class="bk-lede">Send your details and we'll reply with a quote and a time that works.</p>
-    <form id="bk" novalidate>
-        <label for="bk-name">Name<input id="bk-name" name="name" autocomplete="name" required></label>
-        <label for="bk-phone">Phone<input id="bk-phone" name="phone" type="tel" autocomplete="tel" required></label>
-        <label for="bk-car">Vehicle<input id="bk-car" name="car" placeholder="e.g. 2023 Range Rover Sport"></label>
-        <label for="bk-town">Town<input id="bk-town" name="town" placeholder="e.g. Rumson"></label>
-        <label for="bk-svc" class="full">Service<select id="bk-svc" name="svc"><option>Full Detail</option><option>Wash &amp; Protect</option><option>Interior Reset</option><option>Polish &amp; Coat</option><option>Not sure yet</option></select></label>
-        <label for="bk-msg" class="full">Anything else?<textarea id="bk-msg" name="msg" placeholder="Condition, timing, special requests"></textarea></label>
+    <form id="bkm" novalidate>
+        <label for="bkm-name">Name<input id="bkm-name" name="name" autocomplete="name" required></label>
+        <label for="bkm-phone">Phone<input id="bkm-phone" name="phone" type="tel" autocomplete="tel" required></label>
+        <label for="bkm-car">Vehicle<input id="bkm-car" name="car" placeholder="e.g. 2023 Range Rover Sport"></label>
+        <label for="bkm-town">Town<input id="bkm-town" name="town" placeholder="e.g. Rumson"></label>
+        <label for="bkm-svc" class="full">Service<select id="bkm-svc" name="svc"><option>Full Detail</option><option>Wash &amp; Protect</option><option>Interior Reset</option><option>Polish &amp; Coat</option><option>Not sure yet</option></select></label>
+        <label for="bkm-msg" class="full">Anything else?<textarea id="bkm-msg" name="msg" placeholder="Condition, timing, special requests"></textarea></label>
         <button class="btn sun-b full" type="submit">Request a quote</button>
-        <p class="done" id="bk-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Afterglow Detailing.</p>
+        <p class="done" id="bkm-done" hidden>Thanks! This is a demo, so nothing was sent. On the live site this goes straight to Afterglow Detailing.</p>
       </form>
   </div>
 </dialog>
@@ -366,20 +377,23 @@ html:has(.bk-modal[open]){overflow:hidden}
   // glowing buttons: a light follows the cursor across each one
   document.querySelectorAll('.btn').forEach(b => b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect();
     b.style.setProperty('--mx', (e.clientX - r.left) + 'px'); b.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
-  // booking pop-up: every "Book" / "Get a quote" link opens the form in the middle of the screen
-  const dlg = document.getElementById('bk-modal'), svc = document.getElementById('bk-svc');
-  const openBk = pick => { if (pick) [...svc.options].forEach(o => { if (o.text === pick) svc.value = o.value; });
-    document.getElementById('bk-done').hidden = true; dlg.showModal(); requestAnimationFrame(() => dlg.classList.add('open'));
-    setTimeout(() => document.getElementById('bk-name').focus({ preventScroll: true }), 60); };
+  // the top-right "Book now" opens the form in a pop-up; the other booking links scroll to the form at the bottom
+  const dlg = document.getElementById('bk-modal');
+  const pickSvc = (id, name) => { const sel = document.getElementById(id); if (name) [...sel.options].forEach(o => { if (o.text === name) sel.value = o.value; }); };
   const closeBk = () => { dlg.classList.remove('open'); setTimeout(() => dlg.open && dlg.close(), 220); };
-  document.addEventListener('click', e => { const a = e.target.closest('a[href="#book"]'); if (!a) return; e.preventDefault(); e.stopPropagation(); openBk(a.dataset.svc); }, true);
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href="#book"]'); if (!a) return;
+    if (a.hasAttribute('data-pop')) { e.preventDefault(); e.stopPropagation(); document.getElementById('bkm-done').hidden = true;
+      dlg.showModal(); requestAnimationFrame(() => dlg.classList.add('open')); setTimeout(() => document.getElementById('bkm-name').focus({ preventScroll: true }), 60); }
+    else pickSvc('bk-svc', a.dataset.svc);
+  }, true);
   dlg.querySelector('.bk-x').addEventListener('click', closeBk);
   dlg.addEventListener('click', e => { if (e.target === dlg) closeBk(); });
   dlg.addEventListener('cancel', e => { e.preventDefault(); closeBk(); });
-  // booking (demo): check the two required fields, then show the confirmation
-  document.getElementById('bk').addEventListener('submit', e => { e.preventDefault();
-    for (const id of ['bk-name', 'bk-phone']) { const el = document.getElementById(id); if (!el.value.trim()) { el.focus(); el.setCustomValidity('Please fill this in.'); el.reportValidity(); el.addEventListener('input', () => el.setCustomValidity(''), { once: true }); return; } }
-    document.getElementById('bk-done').hidden = false; });
+  // booking (demo), both forms: check the two required fields, then show the confirmation
+  for (const k of ['bk', 'bkm']) document.getElementById(k).addEventListener('submit', e => { e.preventDefault();
+    for (const id of [k + '-name', k + '-phone']) { const el = document.getElementById(id); if (!el.value.trim()) { el.focus(); el.setCustomValidity('Please fill this in.'); el.reportValidity(); el.addEventListener('input', () => el.setCustomValidity(''), { once: true }); return; } }
+    document.getElementById(k + '-done').hidden = false; });
 })();
 </script>
 <script src="{{ASSETS}}smooth.js" defer></script>
