@@ -454,7 +454,7 @@ window.SC = {
   'Clip 3 YouTube link': 'https://youtube.com/shorts/1fA_8r7mlyY', 'Clip 3 title': 'From our shows',
   'Clip 4 YouTube link': 'https://youtube.com/shorts/cyRYlCqoQbk', 'Clip 4 title': 'From our shows',
   'Dough Boys playlist link': 'https://youtube.com/playlist?list=PLMXChctnRkaw',
-  'Campaign 1 sponsor': '', 'Campaign 2 sponsor': '', 'Campaign 3 sponsor': '', 'Campaign 4 sponsor': ''
+  'Campaign 1 sponsor': 'Kalshi', 'Campaign 2 sponsor': 'Zamst', 'Campaign 3 sponsor': 'Pristine', 'Campaign 4 sponsor': 'Twitch'
 };
 window.SC_READY = (async () => {
   if (!window.SC_SHEET) return;
@@ -469,7 +469,7 @@ window.SC_READY = (async () => {
         else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; } else cur += c; }
       cells.push(cur);
       const k = (cells[0] || '').trim(), v = (cells[1] || '').trim();
-      if (k && k in window.SC && (v || /sponsor/i.test(k))) window.SC[k] = v;   // an empty cell only clears a sponsor; other empty cells keep the value here
+      if (k && k in window.SC && v) window.SC[k] = v;   // an empty cell keeps the value here
     }
   } catch (e) { /* the Sheet couldn't be reached: keep the values above */ }
 })();
