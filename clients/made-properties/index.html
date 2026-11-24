@@ -1,0 +1,111 @@
+<title>Made Properties</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Made Properties: the quiet, dark sister of Made Construction. One screen: who it is, and how to reach Jason. */
+:root{
+  --bg:#0c0c0b; --ink:#f1eee7; --ink2:#c9c4b9; --ink3:#8f8a80; --line:rgba(241,238,231,.16); --brass:#c2a477;
+  --disp:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.65 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit}
+p{margin:0}
+h1{margin:0}
+.draft{position:relative;z-index:3;background:#f1eee7;color:#3b3a37;text-align:center;font:500 12px/1.4 var(--body);letter-spacing:.03em;padding:8px 16px}
+.draft b{color:#000;font-weight:600}
+
+.page{position:relative;min-height:calc(100svh - 34px);display:grid;grid-template-rows:auto 1fr auto;isolation:isolate;overflow:hidden}
+.bg{position:absolute;inset:0;z-index:-2}
+.bg img{width:100%;height:100%;object-fit:cover;object-position:60% 40%;filter:grayscale(.35) brightness(.55);animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.06) translate(0,0)}to{transform:scale(1.14) translate(-2%,-1.5%)}}
+.page::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(12,12,11,.97) 0%,rgba(12,12,11,.88) 38%,rgba(12,12,11,.45) 70%,rgba(12,12,11,.25) 100%),linear-gradient(0deg,rgba(12,12,11,.9),transparent 38%)}
+@media (max-width:760px){.page::after{background:linear-gradient(180deg,rgba(12,12,11,.6) 0%,rgba(12,12,11,.88) 45%,rgba(12,12,11,.97) 100%)}}
+
+.wrap{width:min(1240px,100%);margin-inline:auto;padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:18px;padding-block:26px}
+.logo{display:flex;align-items:center;gap:13px;text-decoration:none}
+.logo svg{width:34px;height:34px;flex:none}
+.logo .wm{display:flex;flex-direction:column;line-height:1}
+.logo .wm b{font:500 19px/1 var(--disp);letter-spacing:.36em;margin-right:-.36em}
+.logo .wm span{font:500 8.4px/1 var(--body);letter-spacing:.5em;margin-top:6px;color:var(--ink2)}
+.top nav{display:flex;gap:26px;font:500 13px var(--body)}
+.top nav a{text-decoration:none;color:var(--ink2);transition:color .2s}
+.top nav a:hover{color:var(--ink)}
+@media (max-width:520px){.top nav{display:none}}
+
+.main{align-self:center}
+.main .wrap{padding-block:clamp(40px,8vh,90px)}
+.label{display:inline-flex;align-items:center;gap:12px;font:500 11.5px/1.2 var(--body);letter-spacing:.26em;text-transform:uppercase;color:var(--brass)}
+.label::before{content:"";width:28px;height:1px;background:currentColor}
+h1{margin-top:26px;font:300 clamp(3rem,7.4vw,6.6rem)/.98 var(--disp);letter-spacing:-.025em;max-width:11ch}
+h1 b{font-weight:500}
+.lede{margin-top:28px;max-width:46ch;color:var(--ink2);font-size:1.08rem}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:16px 24px;font:500 13.5px/1 var(--body);letter-spacing:.05em;text-decoration:none;border:1px solid var(--ink);background:var(--ink);color:var(--bg);transition:background .25s,color .25s;cursor:pointer}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:rgba(241,238,231,.45)}
+.btn.ghost:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn svg{width:16px;height:16px;flex:none}
+.btn .ar{display:inline-block;transition:transform .25s var(--ease)}
+.btn:hover .ar{transform:translateX(4px)}
+.mail{margin-top:18px;font:400 .95rem var(--body);color:var(--ink3)}
+.mail span{color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;user-select:all}
+
+.base{border-top:1px solid var(--line)}
+.base .wrap{display:grid;grid-template-columns:repeat(3,auto) 1fr;gap:clamp(20px,4vw,56px);align-items:end;padding-block:24px 28px}
+.base dt{font:500 10.5px var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--ink3)}
+.base dd{margin:6px 0 0;font:400 1rem var(--disp)}
+.base .sister{justify-self:end;font:500 13px var(--body);text-decoration:none;color:var(--ink2);display:inline-flex;gap:10px;align-items:center}
+.base .sister b{color:var(--ink);font-weight:500}
+.base .sister:hover b{color:var(--brass)}
+@media (max-width:760px){.base .wrap{grid-template-columns:1fr 1fr}.base .sister{grid-column:1/-1;justify-self:start}}
+
+/* entrance */
+.in{opacity:0;transform:translateY(18px);animation:up 1.1s var(--ease) forwards}
+.in.d1{animation-delay:.12s}.in.d2{animation-delay:.24s}.in.d3{animation-delay:.36s}.in.d4{animation-delay:.48s}
+@keyframes up{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in{opacity:1;transform:none}}
+</style>
+
+<div class="draft"><b>Draft concept by Ziman Sites</b> · Not the live Made Properties site yet · For review only</div>
+
+<div class="page">
+  <div class="bg" aria-hidden="true"><img src="img/fins-wide.webp" alt="" width="1400" height="933"></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#" aria-label="Made Properties">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#f1eee7"/><path d="M10 31V17M17 31V9M24 31V13M31 31V20" stroke="#0c0c0b" stroke-width="3.2"/></svg>
+        <span class="wm"><b>MADE</b><span>PROPERTIES</span></span>
+      </a>
+      <nav aria-label="Contact"><a href="#contact">Contact</a><a href="#" target="_blank" rel="noopener">LinkedIn</a></nav>
+    </div>
+  </header>
+
+  <main class="main" id="contact">
+    <div class="wrap">
+      <p class="label in">Philadelphia real estate</p>
+      <h1 class="in d1">Property, <b>made to last.</b></h1>
+      <p class="lede in d2">Made Properties is the real estate company of Jason Cutaiar, founder of Made Construction. For opportunities, partnerships and inquiries, get in touch.</p>
+      <div class="ctas in d3">
+        <a class="btn" href="mailto:info@madeproperties.com">Email us <span class="ar" aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.6 4.77 6v5.56h-4v-4.93c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62v5.01h-4z"/></svg>Connect on LinkedIn</a>
+      </div>
+      <p class="mail in d4">Or write to <span>info@madeproperties.com</span></p>
+    </div>
+  </main>
+
+  <footer class="base">
+    <div class="wrap">
+      <div><dt>Based in</dt><dd>Philadelphia, PA</dd></div>
+      <div><dt>Led by</dt><dd>Jason Cutaiar</dd></div>
+      <div><dt>Part of</dt><dd>The Made companies</dd></div>
+      <a class="sister" href="https://claude.ai/artifact/7wPXjGjGr8wShFYU3Coeu6" target="_blank" rel="noopener">Building with us? <b>Made Construction →</b></a>
+    </div>
+  </footer>
+</div>
