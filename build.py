@@ -283,6 +283,51 @@ SIDE_LOCK = ("<style>html{overflow-x:hidden}"
              "@media (display-mode:standalone){html,body{overscroll-behavior-x:none}body{touch-action:pan-y pinch-zoom}}</style>\n")
 
 
+PHOTOS = [   # (page and file name, description, width, height): files in static/images/ryder-ziman/
+    ("ryder-ziman-speaking", "Ryder Ziman speaking at a podium", 840, 468),
+    ("ryder-ziman-portrait", "Ryder Ziman in a navy suit", 296, 470),
+    ("ryder-ziman-smiling", "Ryder Ziman smiling", 318, 390),
+    ("ryder-ziman-graduation", "Ryder Ziman at his eighth-grade graduation", 778, 1008),
+    ("ryder-ziman-candid", "Ryder Ziman", 886, 886),
+    ("ryder-ziman-car", "Ryder Ziman sitting in a car", 1600, 1200),
+]
+
+
+def photo_page(slug, alt, w, h):
+    img = f"/images/ryder-ziman/{slug}.jpg"
+    ld = json.dumps({"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": SITE + img, "name": alt,
+                     "description": alt + ", founder of Ziman Sites.",
+                     "about": {"@type": "Person", "name": "Ryder Ziman", "jobTitle": "Founder", "url": SITE + "/ryderziman",
+                               "worksFor": {"@type": "Organization", "name": "Ziman Sites", "url": SITE},
+                               "sameAs": ["https://www.linkedin.com/in/ryderziman"]}})
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ryder Ziman | Founder of Ziman Sites</title>
+<meta name="description" content="{alt}. Ryder Ziman is the founder of Ziman Sites, which builds custom, interactive websites.">
+<link rel="canonical" href="{SITE}/{slug}">
+<meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{ld}</script>
+<style>
+html,body{{margin:0;height:100%;background:#0b0b0c;color:#f2f2f2;font:14px/1.4 system-ui,-apple-system,sans-serif}}
+figure{{margin:0;position:fixed;inset:0}}
+figure img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}}   /* the whole photo, as big as the screen allows */
+figcaption{{position:fixed;left:max(16px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));padding:8px 12px;border-radius:8px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}}
+figcaption b{{font-weight:600}}
+a.home{{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));padding:8px 12px;border-radius:8px;background:rgba(0,0,0,.55);color:#f2f2f2;text-decoration:none;font-size:12px}}
+</style>
+</head>
+<body>
+<figure><img src="{img}" alt="{alt}" width="{w}" height="{h}"><figcaption><b>Ryder Ziman</b> · Founder of Ziman Sites</figcaption></figure>
+<a class="home" href="/ryderziman">zimansites.com</a>
+</body>
+</html>
+"""
+
+
 def lock_sides(html):
     return html.replace("</head>", SIDE_LOCK + "</head>", 1) if "</head>" in html else html + SIDE_LOCK   # the preview's main page has no <head> of its own
 
@@ -509,10 +554,17 @@ def build(preview=False, theme="royal"):
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(lock_vh(html))
         print("built", out.relative_to(ROOT))
+    # photo pages: one page per photo of Ryder, the photo filling the screen, so they can show up in Google Images
+    # when someone searches "Ryder Ziman". Not in any menu; they are in the sitemap (with their images).
+    if not preview:
+        for slug, alt, w, h in PHOTOS:
+            (out_dir / f"{slug}.html").write_text(lock_vh(photo_page(slug, alt, w, h)))
     if not preview:
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
+        urls += "".join(f"<url><loc>{SITE}/{slug}</loc><image:image><image:loc>{SITE}/images/ryder-ziman/{slug}.jpg</image:loc></image:image></url>"
+                        for slug, alt, w, h in PHOTOS)
         # the sample sites are marked "noindex", so they stay out of the sitemap (no mixed signals for Google)
-        (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
+        (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">{urls}</urlset>')
         (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
         (out_dir / "vercel.json").write_text('{"cleanUrls": true, "trailingSlash": false}\n')
         # Netlify / Cloudflare Pages: serve each page at its clean address, and forward old links
