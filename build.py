@@ -290,6 +290,8 @@ PHOTOS = [   # (page and file name, description, width, height): files in static
     ("ryder-ziman-graduation", "Ryder Ziman at his eighth-grade graduation", 778, 1008),
     ("ryder-ziman-candid", "Ryder Ziman", 886, 886),
     ("ryder-ziman-car", "Ryder Ziman sitting in a car", 1600, 1200),
+    ("ryder-ziman-celebration", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066),
+    ("ryder-ziman-beach", "Ryder Ziman at the beach with his dog", 1072, 1600),
 ]
 
 
