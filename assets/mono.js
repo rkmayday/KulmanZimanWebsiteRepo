@@ -95,7 +95,7 @@
   addEventListener('resize', () => {
     const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (innerWidth === lastW && (fine ? innerHeight === lastH : Math.abs(innerHeight - lastH) < 120)) return;   // ignore the phone address bar
-    lastW = innerWidth; lastH = innerHeight; size(); draw(); pinT = pinTop(); measureBar();
+    lastW = innerWidth; lastH = innerHeight; size(); draw(); pinT = pinTop();
   });
 
   if (reduce) { document.documentElement.classList.add('no-kz'); return; }
@@ -113,13 +113,7 @@
   // the scene away while the split is still finishing, so something is always moving.
   // EXTRA matches the extra height given to .kz-stage in mono.css for this eased part.
   let lastMb = null;
-  // How much taller the screen gets when a phone's browser bar slides away while scrolling (0 on computers):
-  // the room below the stop has to cover that too, or the boxes peek in from under the bar.
-  const lvh = document.createElement('div'); lvh.setAttribute('aria-hidden', 'true');
-  lvh.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:100lvh;visibility:hidden;pointer-events:none';
-  document.body.append(lvh);
-  let barGap = 0; const measureBar = () => { barGap = Math.max(0, Math.min(180, lvh.offsetHeight - innerHeight)); };
-  measureBar();
+  const phoneMQ = matchMedia('(max-width: 720px)');
   const EXTRA = .2016, SPLIT = .36 / .87;          // SPLIT: where the Z and S start to separate, on the timeline
   const readScroll = () => {
     const r = stage.getBoundingClientRect(), t = pinT, y = t - r.top;
@@ -136,12 +130,12 @@
     const yHold = y0 + uH * Ls, H = Math.max(1, Rt - yHold), h = clamp(y - yHold, 0, H);
     // from the stop at the headline the scene moves exactly with the page: no scroll room at all
     // easing in only covers half the ramp, so pull the next section up by that half: it arrives right behind the headline (no gap)
-    // The four boxes start just below the bottom of the screen at the stop, on every screen (computer, small window, phone),
-    // so they never peek in while the headline is showing; the next bit of scrolling brings them straight in.
-    const below = 36 + barGap;
+    // ...and also by the empty bottom of the screen below the headline's buttons, so no blank scroll follows the stop
+    // phones: no pull-up, so the boxes and the moving words start below the screen at the stop and only come in on the next scroll
+    const blank = phoneMQ.matches ? 0 : Math.max(0, pin.clientHeight - (copy.offsetTop + copy.offsetHeight) - (pin.clientWidth < 720 ? 36 : 56));
     const trackH = Math.round(yHold + pin.offsetHeight);                 // the pin lets go exactly at the stop
     if (track.__h !== trackH) { track.__h = trackH; track.style.height = trackH + 'px'; }
-    const mb = Math.round(-(r.height - trackH) + below); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
+    const mb = Math.round(-(r.height - trackH) - blank); if (mb !== lastMb) { lastMb = mb; stage.style.marginBottom = mb + 'px'; }
     // one scroll gesture stops here, when the logo animation has finished (smooth.js)
     // ...exactly where the animation has finished and before the page starts moving on
     stage.dataset.stopY = Math.round(scrollY + r.top - t + yHold);
