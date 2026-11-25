@@ -24,7 +24,7 @@ LEFT_CUP = [(550, 653), (500, 660), (455, 678), (422, 700), (400, 735), (389, 78
 RIGHT_CUP = [(800, 668), (760, 690), (735, 730), (712, 790), (705, 850), (712, 900), (740, 950), (790, 990), (850, 1008),
              (905, 1002), (960, 970), (1005, 920), (1032, 865), (1042, 810), (1038, 760), (1018, 720), (985, 690), (930, 668), (860, 662)]
 # the band is dark, so it is found by its darkness (closed so the mesh is solid); the thin metal arms are boxes
-ARMS = [(439, 580, 457, 692), (981, 618, 999, 708)]   # x1, y1, x2, y2
+ARMS = [(442, 580, 457, 692), (981, 618, 999, 708)]   # x1, y1, x2, y2
 
 
 def smooth(pts, n=3):                        # Chaikin corner cutting: a smooth curve through the traced points
@@ -64,6 +64,8 @@ def snap(poly, inner_from=None, inner_to=None):
     k = 16                                                         # smooth out bad rays
     pad = np.concatenate([out[-k:], out, out[:k]])
     med = np.array([np.median(pad[i:i + 2 * k + 1]) for i in range(len(out))])
+    pm = np.concatenate([med[-6:], med, med[:6]])                  # then a gentle average, so the outline is a smooth curve
+    med = np.convolve(pm, np.ones(13) / 13, mode='same')[6:-6]
     angs = np.radians(np.arange(0, 360, 1.5))
     return c, med
 
@@ -77,7 +79,7 @@ cr, rr = snap(RIGHT_CUP)
 degs = np.degrees(ANGS)
 rm = np.interp((180 - degs) % 360, degs, rl, period=360)
 outside = (degs < 140) | (degs > 290)
-rm *= np.median(rr[outside] / rm[outside])
+rm *= np.median(rr[outside] / rm[outside]) * .96   # a touch inside, so none of the table comes with it
 wgt = np.clip(np.minimum(degs - 140, 290 - degs) / 20, 0, 1)
 rr = rr * (1 - wgt) + rm * wgt
 poly = lambda c, r: np.stack([c[0] + r * np.cos(ANGS), c[1] + r * np.sin(ANGS)], 1).astype(np.int32)
@@ -89,7 +91,7 @@ for poly in CUPS:
 mn = cv2.erode(g, np.ones((7, 7), np.uint8)).astype(np.float32)
 C = np.array([718.0, 660.0])
 outer, inner = [], []
-DEGS = np.arange(186, 355, 1.0)
+DEGS = np.arange(196, 353, 1.0)   # from end to end of the band (the arms below its ends are added separately)
 for deg in DEGS:
     d = np.array([np.cos(np.radians(deg)), np.sin(np.radians(deg))])
     rs = np.arange(120, 520, .5)
@@ -130,24 +132,27 @@ band = np.zeros_like(traced); cv2.fillPoly(band, [ring], 1)
 band &= 1 - traced
 traced |= band
 for x1, y1, x2, y2 in ARMS:
-    traced[y1:y2, x1:x2] |= (g[y1:y2, x1:x2] < 215).astype(np.uint8)
+    # the steel rod: its two dark edges, closed across so its bright middle is in too (the table beside it stays out)
+    arm = (g[y1:y2, x1:x2] < 150).astype(np.uint8)
+    traced[y1:y2, x1:x2] |= cv2.morphologyEx(arm, cv2.MORPH_CLOSE, np.ones((3, 9), np.uint8))
 
 fg = traced * 255
 cv2.imwrite(out + '.mask.png', fg)
 
 # full size, soft edge
 a = cv2.resize(fg, (W, H), interpolation=cv2.INTER_LINEAR)
-a = cv2.erode(a, np.ones((3, 3), np.uint8))
-a = cv2.GaussianBlur(a, (0, 0), 1.5).astype(np.float32) / 255
+a = cv2.GaussianBlur(a, (0, 0), 2.5)                         # smooth the upscaled outline...
+a = np.where(a > 150, 255, 0).astype(np.uint8)              # ...re-cut it crisp...
+a = cv2.erode(a, np.ones((5, 5), np.uint8))                  # ...a hair inside the edge, so no table colour comes along
+a = cv2.GaussianBlur(a, (0, 0), 0.9).astype(np.float32) / 255
 # take the white table out of the soft edge, so no light halo shows on a dark page
 f = img.astype(np.float32)
-am = np.clip(a, 0.05, 1)[..., None]
-f = np.clip((f - (1 - am) * 240) / am, 0, 255)
+
 rgba = np.dstack([f, a * 255]).astype(np.uint8)
 ys, xs = np.where(rgba[..., 3] > 8)
 pad = 12
 rgba = rgba[max(0, ys.min() - pad):ys.max() + pad, max(0, xs.min() - pad):xs.max() + pad]
-ow = 1400
+ow = 2000
 rgba = cv2.resize(rgba, (ow, int(rgba.shape[0] * ow / rgba.shape[1])), interpolation=cv2.INTER_AREA)
 cv2.imwrite(out, rgba, [cv2.IMWRITE_WEBP_QUALITY, 90])
 print(out, rgba.shape)

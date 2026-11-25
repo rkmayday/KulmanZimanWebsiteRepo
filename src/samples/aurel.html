@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0a0b0d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0b0d'/%3E%3Cpath d='M24 62V50a26 26 0 0 1 52 0v12' fill='none' stroke='%23eef0f2' stroke-width='7' stroke-linecap='round'/%3E%3Crect x='18' y='56' width='16' height='24' rx='7' fill='%23eef0f2'/%3E%3Crect x='66' y='56' width='16' height='24' rx='7' fill='%23eef0f2'/%3E%3C/svg%3E">
-<title>Aurel One — Sample Headphone Site</title>
+<title>Aurel — Sample Headphone Site</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ASSETS}}sample2.css">
@@ -38,16 +38,14 @@ body{background:var(--bg)}
 
 /* the name, and the headphones: the band passes behind the letters, the ear cups in front of them */
 .ap-name{position:absolute;left:0;right:0;top:calc(30% - var(--fs) * .5);text-align:center;font:900 var(--fs)/1 var(--display);letter-spacing:-.045em;white-space:nowrap;
-  --fs:clamp(64px,17vw,250px);color:var(--fg);
+  --fs:clamp(72px,22vw,330px);color:var(--fg);
   background:linear-gradient(180deg,#fff 20%,#9aa1aa 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   opacity:var(--i);transform:translateY(calc((1 - var(--i)) * 30px)) scale(calc(1 - var(--u) * .04));letter-spacing:calc(-.045em + (1 - var(--i)) * .12em)}
-.ap-hp{position:absolute;left:50%;top:var(--hpTop);width:var(--hpW);aspect-ratio:1400/1499;margin-left:calc(var(--hpW) / -2);
+.ap-hp{position:absolute;left:50%;top:var(--hpTop);width:var(--hpW);aspect-ratio:2000/2142;margin-left:calc(var(--hpW) / -2);
   transform:translate(calc(var(--mx) * -18px),calc((1 - var(--u)) * 62 * var(--vh, 1vh) + var(--my) * -10px)) rotate(calc((1 - var(--u)) * -14deg)) scale(calc(.62 + var(--u) * .38));
-  filter:blur(calc((1 - var(--u)) * 6px)) brightness(calc(.55 + var(--u) * .45))}
+  opacity:calc(.25 + var(--u) * .75)}
 .ap-hp img{position:absolute;inset:0;width:100%;height:100%}
-/* the top of the band runs behind the letters, its sides and the cups in front: the headphones thread through the name */
-.ap-hp.back img{clip-path:inset(0 0 80% 0)}
-.ap-hp.front img{clip-path:inset(20% 0 0 0)}
+/* the headphones float in front of the name, like a product shot over a poster */
 /* the floor shadow under the cups */
 .ap-shadow{position:absolute;left:50%;top:calc(var(--hpTop) + var(--hpW) * 1.04);width:calc(var(--hpW) * .9);height:calc(var(--hpW) * .1);transform:translate(-50%,0) scale(calc(.4 + var(--u) * .6));
   background:radial-gradient(closest-side,rgba(0,0,0,.9),transparent);opacity:var(--u);filter:blur(6px)}
@@ -60,7 +58,7 @@ body{background:var(--bg)}
 .ap-spec b{font:600 clamp(15px,1.5vw,20px)/1.1 var(--display);letter-spacing:-.01em;color:var(--fg);text-transform:none}
 .ap-spec.tl{left:8%;top:50%}.ap-spec.tr{right:8%;top:50%;text-align:right}
 .ap-spec.bl{left:8%;bottom:calc(20% + 14px)}.ap-spec.br{right:8%;bottom:calc(20% + 14px);text-align:right}
-.ap-eyebrow{position:absolute;left:0;right:0;top:calc(30% - var(--fs) * .5 - 34px);--fs:clamp(64px,17vw,250px);text-align:center;opacity:calc(var(--i) - var(--u) * 1.2)}
+.ap-eyebrow{position:absolute;left:0;right:0;top:calc(30% - var(--fs) * .5 - 34px);--fs:clamp(72px,22vw,330px);text-align:center;opacity:calc(var(--i) - var(--u) * 1.2)}
 
 /* the glass dock */
 .ap-dock{position:absolute;left:50%;bottom:clamp(16px,calc(4 * var(--vh, 1vh)),36px);transform:translate(-50%,calc((1 - var(--c)) * 40px));opacity:var(--c);pointer-events:none;
@@ -79,8 +77,8 @@ body{background:var(--bg)}
 
 @media (max-width:720px){
   .stage{height:calc(240 * var(--vh, 1vh))}
-  .ap-name{top:calc(27% - var(--fs) * .5);--fs:19vw}
-  .ap-eyebrow{top:calc(27% - 19vw * .5 - 30px)}
+  .ap-name{top:calc(27% - var(--fs) * .5);--fs:27vw}
+  .ap-eyebrow{top:calc(27% - 27vw * .5 - 30px)}
   .ap-scene{--hpW:min(84vw,calc(52 * var(--vh, 1vh)));--hpTop:calc(50% - var(--hpW) * .47)}
   .ap-spec.tl,.ap-spec.tr{top:calc(12% - 6px)}
   .ap-spec.bl,.ap-spec.br{display:none}
@@ -111,7 +109,7 @@ h2 em{font-style:normal;color:var(--mut)}
 
 /* the closer look: tap the dots */
 .look{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(30px,5vw,80px);align-items:center}
-.look-fig{position:relative;aspect-ratio:1400/1499;width:min(100%,560px);justify-self:center}
+.look-fig{position:relative;aspect-ratio:2000/2142;width:min(100%,560px);justify-self:center}
 .look-fig::before{content:"";position:absolute;inset:8% -6% -4%;background:radial-gradient(50% 50% at 50% 55%,rgba(207,230,255,.08),transparent 70%)}
 .look-fig img{position:relative;width:100%;height:100%;display:block;filter:drop-shadow(0 40px 40px rgba(0,0,0,.6))}
 .hot{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border:0;border-radius:50%;cursor:pointer;background:transparent;padding:0}
@@ -173,23 +171,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
 <nav class="drawer" aria-label="Mobile"><a href="#sound">Sound</a><a href="#design">Design</a><a href="#quiet">Quiet</a><a href="#specs">Specs</a><a class="btn sm" href="#order">Pre-order</a></nav>
 
 <main>
-<section class="stage" data-stop=".8" data-hold=".86" aria-label="Aurel One">
+<section class="stage" data-stop=".8" data-hold=".86" aria-label="Aurel">
   <div class="pin">
     <div class="ap-scene" aria-hidden="true">
       <div class="ap-light"></div><div class="ap-beam"></div>
       <div class="ap-grid"><i></i><i></i><i></i><i></i><i></i><b></b><b></b></div>
       <div class="ap-glow"></div>
-      <div class="ap-hp back"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="1400" height="1499" fetchpriority="high"></div>
       <p class="ap-eyebrow mono">New · Over-ear · Made to disappear</p>
-      <div class="ap-name">AUREL ONE</div>
+      <div class="ap-name">AUREL</div>
       <div class="ap-shadow"></div>
-      <div class="ap-hp front"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="1400" height="1499"></div>
+      <div class="ap-hp"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="2000" height="2142" fetchpriority="high"></div>
       <div class="ap-spec tl"><span class="mono">Driver</span><b>40 mm, beryllium dome</b></div>
       <div class="ap-spec tr"><span class="mono">Noise cancelling</span><b>Adaptive, 8 mics</b></div>
       <div class="ap-spec bl"><span class="mono">Battery</span><b>Up to 38 hours</b></div>
       <div class="ap-spec br"><span class="mono">Weight</span><b>268 g</b></div>
     </div>
-    <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Aurel One over-ear headphones</h1>
+    <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Aurel over-ear headphones</h1>
     <div class="copy ap-dock"><span class="sw" aria-label="Graphite"><span></span></span><span class="pr">$449<small>Ships in March</small></span><a class="btn" href="#order">Pre-order</a></div>
     <div class="cue"><i></i>Scroll</div>
   </div>
@@ -198,7 +195,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
 <section class="sec" id="sound">
   <div class="wrap">
     <p class="kick mono rv">01 · Sound</p>
-    <h2>Most headphones color your music. <em>Aurel One gets out of the way.</em></h2>
+    <h2>Most headphones color your music. <em>Aurel gets out of the way.</em></h2>
     <div class="nums" data-stagger>
       <div><b>40<small>mm</small></b><p>Beryllium-coated drivers, tuned flat by ear in a treated room.</p></div>
       <div><b>5<small>Hz</small>–40<small>kHz</small></b><p>The low end you feel and the air on top you only notice when it is gone.</p></div>
@@ -211,7 +208,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
 <section class="sec" id="design">
   <div class="wrap look">
     <div class="look-fig rv">
-      <img src="{{ASSETS}}aurel/aurel-one.webp" alt="Aurel One headphones in graphite" width="1400" height="1499" loading="lazy">
+      <img src="{{ASSETS}}aurel/aurel-one.webp" alt="Aurel headphones in graphite" width="2000" height="2142" loading="lazy">
       <button class="hot" style="left:50%;top:7%" data-k="0" aria-label="Mesh canopy"></button>
       <button class="hot" style="left:9%;top:29%" data-k="1" aria-label="Stainless arms"></button>
       <button class="hot" style="left:80%;top:47%" data-k="2" aria-label="Turn dial"></button>
@@ -260,7 +257,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
         <div><dt>Charging</dt><dd>USB-C, 10 min for 5 h</dd></div>
         <div><dt>Wireless</dt><dd>Bluetooth 5.4, two devices at once</dd></div>
         <div><dt>Weight</dt><dd>268 g</dd></div>
-        <div><dt>In the box</dt><dd>Aurel One, soft case, USB-C cable</dd></div>
+        <div><dt>In the box</dt><dd>Aurel, soft case, USB-C cable</dd></div>
       </dl>
     </div>
   </div>
@@ -268,12 +265,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
 
 <section class="sec" id="order">
   <div class="wrap order">
-    <div class="order-fig rv"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="1400" height="1499" loading="lazy"></div>
+    <div class="order-fig rv"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="2000" height="2142" loading="lazy"></div>
     <div>
       <p class="kick mono rv">05 · Pre-order</p>
-      <h2>Aurel One. <em>Graphite.</em></h2>
+      <h2>Aurel. <em>Graphite.</em></h2>
       <div class="buy rv" style="margin-top:30px">
-        <div class="row"><span>Aurel One, graphite</span><span>$449</span></div>
+        <div class="row"><span>Aurel, graphite</span><span>$449</span></div>
         <div class="row"><span>Shipping</span><span>Free</span></div>
         <div class="row"><span>Warranty</span><span>2 years</span></div>
         <div class="row total"><span>Today</span><b>$449</b></div>
