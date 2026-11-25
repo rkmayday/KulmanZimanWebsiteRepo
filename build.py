@@ -284,14 +284,14 @@ SIDE_LOCK = ("<style>html{overflow-x:hidden}"
 
 
 PHOTOS = [   # (page and file name, description, width, height): files in static/images/ryder-ziman/
-    ("ryder-ziman-speaking", "Ryder Ziman speaking at a podium", 840, 468),
-    ("ryder-ziman-portrait", "Ryder Ziman in a navy suit", 296, 470),
-    ("ryder-ziman-smiling", "Ryder Ziman smiling", 318, 390),
-    ("ryder-ziman-graduation", "Ryder Ziman at his eighth-grade graduation", 778, 1008),
-    ("ryder-ziman-candid", "Ryder Ziman", 886, 886),
-    ("ryder-ziman-car", "Ryder Ziman sitting in a car", 1600, 1200),
-    ("ryder-ziman-celebration", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066),
-    ("ryder-ziman-beach", "Ryder Ziman at the beach with his dog", 1072, 1600),
+    ("ryder-ziman-1", "Ryder Ziman speaking at a podium", 840, 468),
+    ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470),
+    ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390),
+    ("ryder-ziman-4", "Ryder Ziman at his eighth-grade graduation", 778, 1008),
+    ("ryder-ziman-5", "Ryder Ziman", 886, 886),
+    ("ryder-ziman-6", "Ryder Ziman sitting in a car", 1600, 1200),
+    ("ryder-ziman-7", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066),
+    ("ryder-ziman-8", "Ryder Ziman at the beach with his dog", 1072, 1600),
 ]
 
 
