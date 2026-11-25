@@ -276,7 +276,19 @@ VH_LOCK = ("<script>/* lock the screen height once: in-app browsers and phone to
            "addEventListener('resize',function(){if(innerWidth!==w)s()});document.addEventListener('DOMContentLoaded',s)})();</script>")
 
 
+# iPhone home-screen apps (Add to Home Screen) let the page be dragged sideways even when nothing is wider than the
+# screen. Lock the sides on every page and demo: last in <head>, so it comes after each page's own styles.
+# The extra locks only apply in the home-screen app, so desktop swipe-back and zooming in a browser stay as they are.
+SIDE_LOCK = ("<style>html{overflow-x:hidden}"
+             "@media (display-mode:standalone){html,body{overscroll-behavior-x:none}body{touch-action:pan-y pinch-zoom}}</style>\n")
+
+
+def lock_sides(html):
+    return html.replace("</head>", SIDE_LOCK + "</head>", 1) if "</head>" in html else html + SIDE_LOCK   # the preview's main page has no <head> of its own
+
+
 def lock_vh(html):
+    html = lock_sides(html)
     if "--vh'" in html:
         return html
     m = re.search(r'<meta name="viewport"[^>]*>', html)
