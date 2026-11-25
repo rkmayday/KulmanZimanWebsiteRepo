@@ -4,6 +4,7 @@
 // The hands keep time, the balance wheel swings and the gears turn while the watch is on screen.
 (() => {
   const T = window.THREE; if (!T) return;
+  const ASSETS = ((document.currentScript && document.currentScript.src) || '').replace(/[?#].*$/, '').replace(/[^/]*$/, '');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const touch = !matchMedia('(hover: hover) and (pointer: fine)').matches;
   const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), sm = v => { v = cl(v); return v * v * (3 - 2 * v); }, mix = (a, b, t) => a + (b - a) * t;
@@ -13,7 +14,7 @@
     const t = new T.CanvasTexture(c); if (srgb) t.encoding = T.sRGBEncoding; t.anisotropy = 4; t.redraw = () => { draw(c.getContext('2d'), w, h); t.needsUpdate = true; }; return t; };
 
   // ---------- options (the "Make it yours" section uses the same names) ----------
-  const DIALS = { oxblood: ['#5c1522', '#f2e6d8'], midnight: ['#11213f', '#edf1f7'], forest: ['#183427', '#ecf0e6'], ivory: ['#ebe3d3', '#1d1813'] };
+  const DIALS = { charcoal: ['#2d2e31', '#ecebe6'], midnight: ['#11213f', '#edf1f7'], forest: ['#183427', '#ecf0e6'], oxblood: ['#5c1522', '#f2e6d8'] };
   const CASES = { steel: ['#d3d7db', .16], rose: ['#e2ab8f', .2], noir: ['#2b2b2f', .34] };
   const STRAPS = { bracelet: null, leather: ['#4a2819', .72], rubber: ['#17171a', .88] };
 
@@ -40,13 +41,24 @@
       const ws = [...txt].map(ch => g.measureText(ch).width), tw = ws.reduce((s, x) => s + x, 0) + gap * (txt.length - 1); let x = -tw / 2;
       [...txt].forEach((ch, i) => { g.fillText(ch, x, y); x += ws[i] + gap; }); g.globalAlpha = 1; };
     spaced('VAELOR', -r * .36, `500 ${r * .118}px "Bodoni Moda", "Didot", Georgia, serif`, r * .018);
-    spaced('INDÉPENDANT', -r * .25, `500 ${r * .034}px "IBM Plex Mono", monospace`, r * .016, .7);
     spaced('AUTOMATIC', r * .4, `500 ${r * .04}px "IBM Plex Mono", monospace`, r * .02, .85);
-    spaced('CALIBRE V-1 · 72H', r * .47, `500 ${r * .03}px "IBM Plex Mono", monospace`, r * .012, .6);
+    spaced("DIVER'S 200m", r * .48, `600 ${r * .042}px "Hanken Grotesk", Arial, sans-serif`, r * .012, .9);
     // date window at 3 o'clock
     g.fillStyle = light ? '#1d1813' : '#0d0b0a'; g.fillRect(r * .575, -r * .072, r * .17, r * .144);
     g.fillStyle = '#f6f1e8'; g.fillRect(r * .59, -r * .058, r * .14, r * .116);
     g.fillStyle = '#16120f'; g.font = `600 ${r * .085}px "Hanken Grotesk", Arial, sans-serif`; g.textAlign = 'center'; g.fillText('24', r * .66, r * .006); g.textAlign = 'left';
+  });
+  const insertTex = () => tex(1024, 1024, (g, w) => {
+    const r = w / 2, ri = r * .848 / .952, mid = (r + ri) / 2; g.setTransform(1, 0, 0, 1, 0, 0); g.translate(r, r);
+    g.fillStyle = '#141416'; g.beginPath(); g.arc(0, 0, r, 0, TAU); g.arc(0, 0, ri - 6, 0, TAU, true); g.fill('evenodd');
+    g.fillStyle = g.strokeStyle = '#dcd9d2'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    for (let k = 1; k < 60; k++) { const a = k / 60 * TAU; g.save(); g.rotate(a);
+      if (k % 10 === 0) { g.font = `600 ${r * .085}px "Hanken Grotesk", Arial, sans-serif`; g.fillText(String(k), 0, -mid); }
+      else if (k % 5 === 0) g.fillRect(-r * .012, -r + r * .035, r * .024, r * .075);
+      else if (k < 15) { g.beginPath(); g.arc(0, -mid, r * .012, 0, TAU); g.fill(); }
+      g.restore(); }
+    g.beginPath(); g.moveTo(0, -r + r * .03); g.lineTo(r * .05, -ri - r * .0); g.lineTo(-r * .05, -ri); g.closePath(); g.fill();
+    g.fillStyle = '#141416'; g.beginPath(); g.arc(0, -mid + r * .012, r * .018, 0, TAU); g.fill();
   });
   const perlage = () => tex(512, 512, (g, w) => {
     g.fillStyle = '#b4b9bd'; g.fillRect(0, 0, w, w);
@@ -65,7 +77,7 @@
     for (let k = 0; k < 220; k++) { g.strokeStyle = `rgba(${k % 2 ? '255,236,190' : '120,82,30'},${.05 + (k % 7) * .012})`; g.lineWidth = 2; g.beginPath(); g.arc(0, 0, k * 2.3, 0, TAU); g.stroke(); }
     // the shape spans -0.74..0.74, so the engraving sits on an arc in the top half
     g.fillStyle = 'rgba(70,42,12,.85)'; g.font = `600 ${r * .07}px "IBM Plex Mono", monospace`; g.textAlign = 'center'; g.textBaseline = 'middle';
-    const txt = 'VAELOR · CALIBRE V-1 · 31 JEWELS'; const R = r * .62, span = 2.2;
+    const txt = 'VAELOR · AUTOMATIC · 24 JEWELS'; const R = r * .62, span = 2.2;
     [...txt].forEach((ch, i) => { const a = -Math.PI / 2 - span / 2 + span * (i + .5) / txt.length; g.save(); g.rotate(a + Math.PI / 2); g.fillText(ch, 0, -R); g.restore(); });
   }); t.repeat.set(1 / 1.48, 1 / 1.48); t.offset.set(.5, .5); return t; };
 
@@ -88,7 +100,7 @@
 
   // ---------- the watch ----------
   const makeWatch = (opt = {}) => {
-    const st = { dial: opt.dial || 'oxblood', case: opt.case || 'steel', strap: opt.strap || 'bracelet' };
+    const st = { dial: opt.dial || 'charcoal', case: opt.case || 'steel', strap: opt.strap || 'bracelet' };
     const root = new T.Group(), M = (o) => new T.MeshStandardMaterial(o);
     const caseM = M({ metalness: 1, roughness: .16, side: T.DoubleSide }), brushM = M({ metalness: 1, roughness: .32 });
     const strapM = M({ metalness: 0, roughness: .7 });
@@ -110,6 +122,7 @@
     mesh(disc(.835, .022, .215), glassM, crystal);
     mesh(new T.CylinderGeometry(.836, .836, .024, 96, 1, true).rotateX(Math.PI / 2).translate(0, 0, .215), edgeM, crystal);
     mesh(lathe([[.82, .15], [.985, .15], [1.005, .165], [.995, .19], [.94, .216], [.85, .218], [.82, .205], [.82, .15]]), caseM, bezel);
+    mesh(new T.RingGeometry(.848, .952, 160).translate(0, 0, .2195), M({ map: insertTex(), metalness: .35, roughness: .35 }), bezel);
     // case middle, lugs, crown
     mesh(lathe([[.86, -.15], [.975, -.15], [1.012, -.12], [1.03, -.06], [1.03, .06], [1.012, .12], [.985, .15], [.86, .15], [.86, -.15]]), caseM, body);
     for (const sx of [-1, 1]) for (const sy of [-1, 1]) { const l = mesh(new T.BoxGeometry(.15, .4, .19), caseM, body); l.position.set(sx * .41, sy * 1.03, -.03); l.rotation.x = sy * .14; }
@@ -117,9 +130,12 @@
     mesh(new T.CylinderGeometry(.035, .035, .12, 16).rotateZ(Math.PI / 2).translate(1.04, 0, 0), caseM, body);
     // dial: the face, applied hour markers, and a thin ring around it
     mesh(new T.CircleGeometry(.84, 128).translate(0, 0, .075), dialM, dial);
-    for (let h = 0; h < 12; h++) { if (h === 3) continue; const a = h / 12 * TAU;
-      for (const dx of (h === 0 ? [-.028, .028] : [0])) { const b = mesh(new T.BoxGeometry(h % 3 ? .03 : .042, h % 3 ? .12 : .16, .02), caseM, dial);
-        const rr = .665; b.position.set(Math.sin(a) * rr + Math.cos(a) * dx, Math.cos(a) * rr - Math.sin(a) * dx, .086); b.rotation.z = -a; } }
+    const lumeM = M({ color: C('#e8e5da'), metalness: 0, roughness: .55 });
+    for (let h = 0; h < 12; h++) { if (h === 3) continue; const a = h / 12 * TAU, big = h % 3 === 0;
+      for (const dx of (h === 0 ? [-.042, .042] : [0])) { const wv = h === 0 ? .056 : big ? .086 : .07, hv = big ? .17 : .13, rr = .645;
+        const px = Math.sin(a) * rr + Math.cos(a) * dx, py = Math.cos(a) * rr - Math.sin(a) * dx;
+        const f = mesh(new T.BoxGeometry(wv, hv, .02), caseM, dial); f.position.set(px, py, .086); f.rotation.z = -a;
+        const l = mesh(new T.BoxGeometry(wv - .024, hv - .024, .02), lumeM, dial); l.position.set(px, py, .0875); l.rotation.z = -a; } }
     mesh(lathe([[.79, .075], [.845, .075], [.845, .095], [.79, .08]]), darkM, dial);
     // hands
     const hourH = new T.Group(), minH = new T.Group(), secH = new T.Group(); hands.add(hourH, minH, secH);
@@ -216,15 +232,40 @@
   const clock = performance.now();
   const now = () => (performance.now() - clock) / 1000;
 
-  // ---------- 1. the opening ----------
+  // ---------- 1. the opening: the real photo of the watch, cut into its layers (assets/vaelor/, made by
+  //      src/samples/vaelor-src/make-layers.py), coming apart along the watch's axis as you scroll ----------
   (() => {
     const stage = document.querySelector('.vl-stage'), mark = stage && stage.querySelector('.mark'); if (!mark) return;
     const canvas = document.createElement('canvas'); canvas.className = 'vl-3d';
-    const R = renderer(canvas); if (!R) return;
-    mark.prepend(canvas); mark.classList.add('has-3d');
+    const R = renderer(canvas); if (!R) { mark.classList.add('no-3d'); return; }
+    mark.prepend(canvas);
     const scene = new T.Scene(); scene.environment = studio(R);
     const cam = new T.PerspectiveCamera(28, 1, .1, 60); cam.position.set(0, 0, 9);
-    const watch = makeWatch(); scene.add(watch.group);
+    // where each layer sits in the photo, in pixels; 1 unit = the bezel's radius
+    const PX = 398, CX = 1295.8, CY = 959.4, HEAD = [886, 549, 1706, 1369], BODY = [880, 0, 1770, 1848];
+    const group = new T.Group(); group.visible = false; scene.add(group);
+    const steelM = new T.MeshStandardMaterial({ color: C('#8f9398'), metalness: 1, roughness: .34 });
+    const darkM = new T.MeshStandardMaterial({ color: C('#4d5054'), metalness: 1, roughness: .38 });
+    const blackM = new T.MeshStandardMaterial({ color: C('#161618'), metalness: .4, roughness: .5 });
+    const glassM = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .35, depthWrite: false, side: T.DoubleSide });
+    const loader = new T.TextureLoader(), layers = []; let waiting = 0;
+    // z: where it sits when the watch is closed; out: how far it travels when it opens up; rim: its edge [radius, depth, material]
+    const add = (name, box, z, out, order, rim) => {
+      const g = new T.Group(); g.userData = { z, out }; group.add(g); waiting++;
+      const map = loader.load(ASSETS + 'vaelor/' + name + '.webp?v=1', () => { if (--waiting === 0) { group.visible = true; mark.classList.add('has-3d'); } });
+      map.encoding = T.sRGBEncoding; map.anisotropy = R.capabilities.getMaxAnisotropy();
+      const mat = new T.MeshBasicMaterial({ map, transparent: true, depthWrite: false, toneMapped: false });
+      const pl = new T.Mesh(new T.PlaneGeometry((box[2] - box[0]) / PX, (box[3] - box[1]) / PX), mat);
+      pl.position.set(((box[0] + box[2]) / 2 - CX) / PX, -((box[1] + box[3]) / 2 - CY) / PX, 0); pl.renderOrder = order; g.add(pl);
+      if (rim) { const [r, d, m] = rim; const c = new T.Mesh(new T.CylinderGeometry(r, r, d, 160, 1, true).rotateX(Math.PI / 2).translate(0, 0, -d / 2 - .003), m); c.renderOrder = order; g.add(c); }
+      layers.push({ g, mat }); return mat;
+    };
+    add('caseback', HEAD, -.22, -1.15, 1, [.975, .06, steelM]);
+    add('case', BODY, 0, 0, 2, [.985, .24, steelM]);
+    add('movement', HEAD, -.06, .7, 3, [.724, .07, darkM]);
+    add('dial', HEAD, .015, 1.55, 4, [.761, .03, blackM]);
+    add('bezel', HEAD, .045, 2.2, 5, [1.0, .075, darkM]);
+    const crystal = add('crystal', HEAD, .07, 2.85, 6, [.761, .03, glassM]);
     let W = 1, H = 1;
     const size = () => { const r = mark.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); R.setPixelRatio(dpr()); R.setSize(W, H, false); cam.aspect = W / H; cam.updateProjectionMatrix(); };
     const v = k => parseFloat(stage.style.getPropertyValue(k)) || 0;
@@ -232,17 +273,19 @@
       const t = now(); let i = v('--i'), p = v('--p'); const mx = v('--mx'), my = v('--my');
       if (reduce) { i = 1; p = 1; }
       const halfH = Math.tan(14 * Math.PI / 180) * 9, halfW = halfH * W / H, wide = W / H > 1.05;
-      // turn to a three-quarter view, open up, and make room for the headline
-      const turn = sm(p / .36), ex = sm((p - .12) / .5), mv = sm((p - .26) / .44);
-      let s0, s1, x0, y0, x1, y1, ry0, ry1, rx0, rx1;
-      if (wide) { s0 = Math.min(.94, halfH * .42, halfW * .4); s1 = Math.min(.86, halfW * .2, halfH * .4); x0 = 0; y0 = -.26; x1 = halfW * .3; y1 = -.02; ry0 = .2; ry1 = 1.0; rx0 = -.5; rx1 = -.16; }
-      else { s0 = Math.min(.8, halfW * .6); s1 = Math.min(.58, halfW * .5, halfH * .26); x0 = 0; y0 = -halfH * .05; x1 = -halfW * .12; y1 = halfH * .3; ry0 = .2; ry1 = .5; rx0 = -.34; rx1 = -.95; }
-      const sway = reduce ? 0 : Math.sin(t * .4) * .05 * (1 - turn);
-      const g = watch.group;
-      g.position.set(mix(x0, x1, mv), mix(y0, y1, mv) - (1 - i) * .35, 0);
-      g.scale.setScalar(mix(s0, s1, mv) * (.9 + .1 * i));
-      g.rotation.set(mix(rx0, rx1, turn) + my * .22, mix(ry0, ry1, turn) + mx * .3 + sway, 0);
-      watch.update(reduce ? 0 : t, ex);
+      // it starts as the photo, straight on; then it turns, opens up, and makes room for the headline
+      const turn = sm(p / .4), ex = sm((p - .1) / .52), mv = sm((p - .22) / .46);
+      let s0, s1, x0, y0, x1, y1, ry1, rx1;
+      if (wide) { s0 = Math.min(1, halfH * .44, halfW * .4); s1 = Math.min(.86, halfW * .21, halfH * .4); ry1 = .88; rx1 = -.1;
+        x0 = 0; y0 = -.05; x1 = halfW * .43 - .6 * s1; y1 = 0; }
+      else { s0 = Math.min(.78, halfW * .62); s1 = Math.min(.37, halfW * .31); ry1 = .62; rx1 = -.62;
+        x0 = 0; y0 = halfH * .02; x1 = -halfW * .13; y1 = halfH * .535; }
+      const sway = reduce ? 0 : Math.sin(t * .5) * .03 * (1 - turn);
+      group.position.set(mix(x0, x1, mv), mix(y0, y1, mv) - (1 - i) * .25, 0);
+      group.scale.setScalar(mix(s0, s1, mv) * (.94 + .06 * i));
+      group.rotation.set(mix(0, rx1, turn) + my * .12, mix(0, ry1, turn) + mx * .18 + sway, 0);
+      for (const L of layers) { L.g.position.z = L.g.userData.z + L.g.userData.out * ex; L.mat.opacity = i; }
+      crystal.opacity = i * mix(.3, 1, ex);
       R.render(scene, cam);
     };
     let on = true, raf = 0;
@@ -255,8 +298,8 @@
   // ---------- 2. "Make it yours" ----------
   const view = document.querySelector('.vl-view'); if (!view) return;
   const PRICE = { base: 5400, case: { steel: 0, rose: 7200, noir: 900 }, strap: { bracelet: 0, leather: -350, rubber: -450 } };
-  const NAMES = { oxblood: 'Oxblood', midnight: 'Midnight', forest: 'Forest', ivory: 'Ivory', steel: 'steel case', rose: 'rose gold case', noir: 'black case', bracelet: 'steel bracelet', leather: 'leather strap', rubber: 'rubber strap' };
-  const pick = { dial: 'oxblood', case: 'steel', strap: 'bracelet' };
+  const NAMES = { charcoal: 'Charcoal', oxblood: 'Oxblood', midnight: 'Midnight', forest: 'Forest', steel: 'steel case', rose: 'rose gold case', noir: 'black case', bracelet: 'steel bracelet', leather: 'leather strap', rubber: 'rubber strap' };
+  const pick = { dial: 'charcoal', case: 'steel', strap: 'bracelet' };
   const price = document.getElementById('vl-price'), sum = document.getElementById('vl-sum'), dialName = document.getElementById('vl-dial-n');
   const text = () => {
     const n = PRICE.base + PRICE.case[pick.case] + PRICE.strap[pick.strap];
