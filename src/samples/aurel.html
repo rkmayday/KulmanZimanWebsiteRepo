@@ -41,10 +41,10 @@ body{background:var(--bg)}
   --fs:clamp(72px,22vw,330px);color:var(--fg);
   background:linear-gradient(180deg,#fff 20%,#9aa1aa 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   opacity:var(--i);transform:translateY(calc((1 - var(--i)) * 30px)) scale(calc(1 - var(--u) * .04));letter-spacing:calc(-.045em + (1 - var(--i)) * .12em)}
-.ap-hp{position:absolute;left:50%;top:var(--hpTop);width:var(--hpW);aspect-ratio:2000/2142;margin-left:calc(var(--hpW) / -2);
+.ap-hp{position:absolute;left:50%;top:var(--hpTop);width:var(--hpW);aspect-ratio:1790/1923;margin-left:calc(var(--hpW) / -2);
   transform:translate(calc(var(--mx) * -18px),calc((1 - var(--u)) * 62 * var(--vh, 1vh) + var(--my) * -10px)) rotate(calc((1 - var(--u)) * -14deg)) scale(calc(.62 + var(--u) * .38));
   opacity:calc(.25 + var(--u) * .75)}
-.ap-hp img{position:absolute;inset:0;width:100%;height:100%}
+.ap-hp img{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 28px 36px rgba(0,0,0,.6))}   /* keeps the white headphones apart from the white letters */
 /* the headphones float in front of the name, like a product shot over a poster */
 /* the floor shadow under the cups */
 .ap-shadow{position:absolute;left:50%;top:calc(var(--hpTop) + var(--hpW) * 1.04);width:calc(var(--hpW) * .9);height:calc(var(--hpW) * .1);transform:translate(-50%,0) scale(calc(.4 + var(--u) * .6));
@@ -67,7 +67,7 @@ body{background:var(--bg)}
 .ap-dock.live{pointer-events:auto}
 .ap-dock.copy{position:absolute}
 .ap-dock .sw{display:flex;gap:7px}
-.ap-dock .sw span{width:16px;height:16px;border-radius:50%;background:linear-gradient(145deg,#4a4f56,#16181b);box-shadow:0 0 0 2px var(--bg),0 0 0 3px rgba(255,255,255,.55)}
+.ap-dock .sw span{width:16px;height:16px;border-radius:50%;background:linear-gradient(145deg,#ffffff,#b9bec5);box-shadow:0 0 0 2px var(--bg),0 0 0 3px rgba(255,255,255,.55)}
 .ap-dock .pr{font:600 15px/1 var(--display)}
 .ap-dock .pr small{display:block;margin-top:4px;font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
 .ap-dock .btn{height:42px;padding:0 20px;font-size:14px}
@@ -109,13 +109,13 @@ h2 em{font-style:normal;color:var(--mut)}
 
 /* the closer look: tap the dots */
 .look{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(30px,5vw,80px);align-items:center}
-.look-fig{position:relative;aspect-ratio:2000/2142;width:min(100%,560px);justify-self:center}
+.look-fig{position:relative;aspect-ratio:1790/1923;width:min(100%,560px);justify-self:center}
 .look-fig::before{content:"";position:absolute;inset:8% -6% -4%;background:radial-gradient(50% 50% at 50% 55%,rgba(207,230,255,.08),transparent 70%)}
 .look-fig img{position:relative;width:100%;height:100%;display:block;filter:drop-shadow(0 40px 40px rgba(0,0,0,.6))}
 .hot{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border:0;border-radius:50%;cursor:pointer;background:transparent;padding:0}
-.hot::before{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 5px rgba(238,240,242,.18)}
-.hot::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1px rgba(238,240,242,.5);animation:ping 2.4s cubic-bezier(.2,.8,.2,1) infinite}
-.hot[aria-pressed="true"]::before{background:var(--acc);box-shadow:0 0 0 6px rgba(207,230,255,.3)}
+.hot::before{content:"";position:absolute;inset:9px;border-radius:50%;background:#0a0b0d;box-shadow:0 0 0 3px #fff,0 4px 14px rgba(0,0,0,.45)}
+.hot::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 2px rgba(10,11,13,.55);animation:ping 2.4s cubic-bezier(.2,.8,.2,1) infinite}
+.hot[aria-pressed="true"]::before{background:#2b6cff;box-shadow:0 0 0 3px #fff,0 0 0 9px rgba(43,108,255,.3)}
 @keyframes ping{0%{transform:scale(.6);opacity:1}80%,100%{transform:scale(1.5);opacity:0}}
 .look-list{display:grid;gap:0;border-top:1px solid var(--line)}
 .look-list button{all:unset;cursor:pointer;display:grid;grid-template-columns:42px 1fr;gap:4px 10px;padding:18px 0;border-bottom:1px solid var(--line);color:var(--mut);transition:color .3s}
@@ -180,14 +180,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
       <p class="ap-eyebrow mono">New · Over-ear · Made to disappear</p>
       <div class="ap-name">AUREL</div>
       <div class="ap-shadow"></div>
-      <div class="ap-hp"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="2000" height="2142" fetchpriority="high"></div>
+      <div class="ap-hp"><img src="{{ASSETS}}aurel/aurel.webp" alt="" width="1790" height="1923" fetchpriority="high"></div>
       <div class="ap-spec tl"><span class="mono">Driver</span><b>40 mm, beryllium dome</b></div>
       <div class="ap-spec tr"><span class="mono">Noise cancelling</span><b>Adaptive, 8 mics</b></div>
       <div class="ap-spec bl"><span class="mono">Battery</span><b>Up to 38 hours</b></div>
       <div class="ap-spec br"><span class="mono">Weight</span><b>268 g</b></div>
     </div>
     <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Aurel over-ear headphones</h1>
-    <div class="copy ap-dock"><span class="sw" aria-label="Graphite"><span></span></span><span class="pr">$449<small>Ships in March</small></span><a class="btn" href="#order">Pre-order</a></div>
+    <div class="copy ap-dock"><span class="sw" aria-label="Silver"><span></span></span><span class="pr">$449<small>Ships in March</small></span><a class="btn" href="#order">Pre-order</a></div>
     <div class="cue"><i></i>Scroll</div>
   </div>
 </section>
@@ -208,11 +208,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
 <section class="sec" id="design">
   <div class="wrap look">
     <div class="look-fig rv">
-      <img src="{{ASSETS}}aurel/aurel-one.webp" alt="Aurel headphones in graphite" width="2000" height="2142" loading="lazy">
-      <button class="hot" style="left:50%;top:7%" data-k="0" aria-label="Mesh canopy"></button>
-      <button class="hot" style="left:9%;top:29%" data-k="1" aria-label="Stainless arms"></button>
-      <button class="hot" style="left:80%;top:47%" data-k="2" aria-label="Turn dial"></button>
-      <button class="hot" style="left:27%;top:72%" data-k="3" aria-label="Ear cushions"></button>
+      <img src="{{ASSETS}}aurel/aurel.webp" alt="Aurel headphones in silver" width="1790" height="1923" loading="lazy">
+      <button class="hot" style="left:50%;top:9%" data-k="0" aria-label="Mesh canopy"></button>
+      <button class="hot" style="left:10%;top:47%" data-k="1" aria-label="Stainless arms"></button>
+      <button class="hot" style="left:90%;top:70%" data-k="2" aria-label="Touch controls"></button>
+      <button class="hot" style="left:32%;top:66%" data-k="3" aria-label="Ear cushions"></button>
     </div>
     <div>
       <p class="kick mono rv">02 · Design</p>
@@ -220,7 +220,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
       <div class="look-list" style="margin-top:34px">
         <button data-k="0" aria-pressed="true"><span>01</span><b>Mesh canopy</b><p>A knit mesh spreads the weight across the top of your head, so nothing presses on one spot.</p></button>
         <button data-k="1" aria-pressed="false"><span>02</span><b>Stainless arms</b><p>Polished steel that slides out smoothly and stays where you set it.</p></button>
-        <button data-k="2" aria-pressed="false"><span>03</span><b>Turn dial</b><p>Turn for volume, press to pause, hold to switch modes. No touch panel to brush by accident.</p></button>
+        <button data-k="2" aria-pressed="false"><span>03</span><b>Touch controls</b><p>Swipe the right cup for volume, tap to pause, hold to switch modes. A light press, so it never moves the fit.</p></button>
         <button data-k="3" aria-pressed="false"><span>04</span><b>Ear cushions</b><p>Memory foam in a soft knit, held on by magnets. Swap a worn pair in seconds.</p></button>
       </div>
     </div>
@@ -265,12 +265,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
 
 <section class="sec" id="order">
   <div class="wrap order">
-    <div class="order-fig rv"><img src="{{ASSETS}}aurel/aurel-one.webp" alt="" width="2000" height="2142" loading="lazy"></div>
+    <div class="order-fig rv"><img src="{{ASSETS}}aurel/aurel.webp" alt="" width="1790" height="1923" loading="lazy"></div>
     <div>
       <p class="kick mono rv">05 · Pre-order</p>
-      <h2>Aurel. <em>Graphite.</em></h2>
+      <h2>Aurel. <em>Silver.</em></h2>
       <div class="buy rv" style="margin-top:30px">
-        <div class="row"><span>Aurel, graphite</span><span>$449</span></div>
+        <div class="row"><span>Aurel, silver</span><span>$449</span></div>
         <div class="row"><span>Shipping</span><span>Free</span></div>
         <div class="row"><span>Warranty</span><span>2 years</span></div>
         <div class="row total"><span>Today</span><b>$449</b></div>
