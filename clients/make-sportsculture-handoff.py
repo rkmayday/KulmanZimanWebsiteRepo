@@ -23,11 +23,61 @@ html = html.replace(hook, "<script>\nwindow.SC_IMG = " + json.dumps(pics) + ";\n
 left = [m.start() for m in re.finditer(r"img/", html)]
 assert len(left) == 1, "pictures still loaded from the img folder"            # only the fallback inside scImg remains
 
+# for a Lovable project (React, TanStack Start): its homepage is src/routes/index.tsx, so this file replaces that one and
+# shows the whole site, full screen. The site is kept as one string, so nothing in it has to be rewritten as React.
+# Inside a frame, a link to a place on the page ("#shows") would load the frame's own page instead of scrolling,
+# and an email link should open from the main page: the framed copy handles both.
+FRAME_FIX = """<script>
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || e.defaultPrevented) return;
+  e.preventDefault(); const id = decodeURIComponent(a.getAttribute('href').slice(1)), el = id && document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' }); else scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>"""
+framed = html.replace("location.href = 'mailto:", "(window.top || window).location.href = 'mailto:")
+assert framed.count("(window.top || window).location.href = 'mailto:") == 1 and framed.count("</body>") == 1
+framed = framed.replace("</body>", FRAME_FIX)
+LOVABLE = """import { createFileRoute } from "@tanstack/react-router";
+
+// The whole Sports Culture website (built by Ziman Sites), shown full screen.
+// Its content is edited in the Google Sheet, not here. Don't ask Lovable's AI to change this file.
+const SITE = %s;
+
+const title = "Sports Culture | Sports Media, Athlete-Led Shows";
+const description =
+  "Sports Culture is a sports media company with 2M+ followers and 200M+ monthly views, launching shows with athletes and building basketballnews.com.";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+    ],
+  }),
+  component: Index,
+});
+
+function Index() {
+  return (
+    <iframe
+      title="Sports Culture"
+      srcDoc={SITE}
+      style={{ position: "fixed", inset: 0, width: "100%%", height: "100%%", border: 0, display: "block" }}
+    />
+  );
+}
+""" % json.dumps(framed)
+
 README = """Sports Culture website
 
 This is the whole website in one file: index.html. Every picture is built into it, so there is nothing else to upload.
 
 PUTTING IT ONLINE
+- In Lovable: open the project's Code view, open src/routes/index.tsx, select everything in it and replace it with
+  everything in lovable-index.tsx (from this folder). Then click Publish and Update.
 - With web hosting (for example GoDaddy Web Hosting with cPanel): open the File Manager, go into the public_html
   folder, and upload index.html there, replacing any index.html that is already there. That's it.
 - With GoDaddy's Website Builder: add a section, choose HTML (custom code), and paste in everything from index.html.
@@ -52,5 +102,6 @@ with tempfile.TemporaryDirectory() as t:
     out.mkdir()
     (out / "index.html").write_text(html)
     (out / "READ ME.txt").write_text(README)
+    (out / "lovable-index.tsx").write_text(LOVABLE)
     zp = shutil.make_archive(str(R.parent / "sportsculture-site"), "zip", t, "sportsculture-site")
 print(zp, pathlib.Path(zp).stat().st_size // 1024, "KB;", "index.html", len(html) // 1024, "KB")
