@@ -456,6 +456,8 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
 </footer>
 
 <script>
+// where the pictures are: the img folder next to this page (a one-file copy of the site carries them inside the page instead)
+window.scImg = n => (window.SC_IMG && window.SC_IMG[n]) || 'img/' + n;
 /* ===================== SITE DATA =====================
    The numbers, clips and links below can be edited in a Google Sheet, without touching the code.
    1. Make a Google Sheet with two columns: A = the label (exactly as in sheet-template.csv), B = the value.
@@ -465,7 +467,8 @@ button.clip{border:0;padding:0;cursor:pointer;color:#fff;font:inherit;text-align
    Brands: rows "Brand 1" ... "Brand 12" are the logos shown now. Add "Brand 13" + "Brand 13 website" for a new one,
    type a new name to replace one, or leave a "Brand N" value empty to remove that brand.
    Instagram accounts (the roster): "Account 1" ... "Account 8" are the accounts shown now. Add "Account 9" (the @handle),
-   "Account 9 label", "Account 9 followers" and "Account 9 logo link" for a new one; an empty "Account N" removes it. */
+   "Account 9 label", "Account 9 followers" and "Account 9 logo link" for a new one; an empty "Account N" removes it.
+   A logo link can be a Google Drive share link ("Anyone with the link") or a Dropbox link to the picture. */
 window.SC_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4UxbQPujhLf3EYlcCr5uLSswX94-vvUJr7qgAwOI-Y5gFPFLjWzC2GTqWGiUJqELbE0D80kIfESb5/pub?gid=1861097211&single=true&output=csv';
 window.SC = {
   'Monthly views': '200M+', 'Followers (owned brands)': '2M+', 'Extra reach (partner network)': '6M+', 'Audience aged 18-34': '65%',
@@ -518,12 +521,17 @@ window.SC_READY.then(() => {
   document.querySelectorAll('a[href*="playlist?list="]').forEach(a => a.href = 'https://youtube.com/playlist?list=' + PLAYLIST);
   // the roster: built-in accounts, which the Sheet can change, add to or remove by number:
   //   "Account 9" = @handle, "Account 9 label" = what it covers, "Account 9 followers" = e.g. 250K,
-  //   "Account 9 logo link" = a direct link to its profile picture. An empty "Account 3" removes account 3.
+  //   "Account 9 logo link" = a link to its profile picture (a Google Drive or Dropbox share link works). An empty "Account 3" removes account 3.
   const BUILT = [['sportsculture', '@sportsculture', 'Flagship'], ['basketballnews', '@basketballnews', 'Hoops'], ['footballnews', '@footballnews', 'Football'],
     ['tacotuesday', '@tacotuuesday', 'Hoops'], ['logo-jokesofnfl', '@jokesofnfl', 'Football'], ['quarterbacksonly', '@quarterbacksonly', 'Football'], ['dingerculture', '@dingerculture', 'Baseball'],
     ['', '@collegehoops', 'College hoops']];
-  const picFor = h => { const b = BUILT.find(x => x[0] && x[1].toLowerCase() === String(h).toLowerCase()); return b ? 'img/' + b[0] + '.webp' : ''; };
-  const acc = {}; BUILT.forEach((b, i) => { acc[i + 1] = { slug: b[0], handle: b[1], label: b[2], pic: b[0] ? 'img/' + b[0] + '.webp' : '', fol: D[b[1] + ' followers'] || '' }; });
+  // a Google Drive or Dropbox share link becomes a link to the picture itself
+  const directPic = u => { const g = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{20,})/);
+    if (g) return 'https://drive.google.com/thumbnail?id=' + g[1] + '&sz=w400';
+    if (/dropbox\.com/.test(u)) { try { const x = new URL(u); x.searchParams.delete('dl'); x.searchParams.set('raw', '1'); return x.toString(); } catch (e) { return u; } }
+    return u; };
+  const picFor = h => { const b = BUILT.find(x => x[0] && x[1].toLowerCase() === String(h).toLowerCase()); return b ? scImg(b[0] + '.webp') : ''; };
+  const acc = {}; BUILT.forEach((b, i) => { acc[i + 1] = { slug: b[0], handle: b[1], label: b[2], pic: b[0] ? scImg(b[0] + '.webp') : '', fol: D[b[1] + ' followers'] || '' }; });
   for (const [n, e] of Object.entries(window.SC_ACCOUNTS || {})) {
     if ('handle' in e) {
       const h = e.handle.trim(); if (!h) { delete acc[n]; continue; }
@@ -533,7 +541,7 @@ window.SC_READY.then(() => {
     if (!acc[n]) continue;
     if (e.label) acc[n].label = e.label;
     if (e.followers) acc[n].fol = e.followers;
-    if (/^https:\/\/\S+$/i.test(e['logo link'] || '')) acc[n].pic = e['logo link'].trim();
+    if (/^https:\/\/\S+$/i.test((e['logo link'] || '').trim())) acc[n].pic = directPic(e['logo link'].trim());
   }
   const NET = Object.keys(acc).map(Number).sort((x, y) => x - y).map(n => acc[n]);
   NET.forEach(a => { [a.n, a.suf] = num(a.fol); });
@@ -563,7 +571,7 @@ window.SC_READY.then(() => {
   const CLIPS = clipNos.map(n => { const link = D['Clip ' + n + ' YouTube link'], tall = /shorts\//.test(link);
     return [ytId(link), D['Clip ' + n + ' title'], tall ? 'Short' : 'Video', tall ? 1 : 0]; }).filter(c => c[0]);
   const vcard = (c, i) => `<button class="clip vid" type="button" data-play="${c[0]}" data-tall="${c[3]}" aria-label="Play: ${c[1]}">
-    <div class="bg" style="background-image:url(img/bg-${BG[i % BG.length]}.webp)"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
+    <div class="bg" style="background-image:url(${scImg('bg-' + BG[i % BG.length] + '.webp')})"></div><img class="th" src="https://i.ytimg.com/vi/${c[0]}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><div class="sh"></div>
     <div class="hd"><img src="img/trophy.webp" alt="">Sports Culture</div><div class="ft"><b>${c[1]}</b><span>${c[2]}</span></div><div class="pl">${ARROW}</div></button>`;
   const seq = []; for (let i = 0; i < Math.max(8, CLIPS.length); i++) seq.push(vcard(CLIPS[i % CLIPS.length], i));
   const one = seq.join('');
@@ -623,12 +631,12 @@ window.SC_READY.then(() => {
   // taken from it), "Brand 13 logo link" = a direct image link instead. An empty "Brand 3" removes brand 3.
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const known = {};
-  B.forEach(x => { if (!x[0]) return; const nm = x[1].toLowerCase(); known[nm] = 'img/' + x[0] + '.webp'; known[nm.split(' ')[0]] = known[nm.split(' ')[0]] || known[nm]; });
+  B.forEach(x => { if (!x[0]) return; const nm = x[1].toLowerCase(); known[nm] = scImg(x[0] + '.webp'); known[nm.split(' ')[0]] = known[nm.split(' ')[0]] || known[nm]; });
   const logoFor = (name, e) => { const link = (e['logo link'] || '').trim(), site = (e.website || '').trim().replace(/^https?:\/\//i, '').split(/[/?#]/)[0];
     if (/^https:\/\/\S+$/i.test(link)) return link;
     if (/^[\w-]+(\.[\w-]+)+$/.test(site)) return 'https://www.google.com/s2/favicons?domain=' + site + '&sz=128';
     const nm = name.toLowerCase(); return known[nm] || known[nm.split(' ')[0]] || ''; };
-  const slots = {}; B.forEach((x, i) => { slots[i + 1] = { name: x[1], src: x[0] ? 'img/' + x[0] + '.webp' : '' }; });
+  const slots = {}; B.forEach((x, i) => { slots[i + 1] = { name: x[1], src: x[0] ? scImg(x[0] + '.webp') : '' }; });
   for (const [n, e] of Object.entries(window.SC_BRANDS || {})) {
     if ('name' in e) { if (!e.name) delete slots[n]; else slots[n] = { name: e.name, src: logoFor(e.name, e) }; }
     else if (slots[n] && (e.website || e['logo link'])) slots[n].src = logoFor(slots[n].name, e) || slots[n].src;
@@ -642,7 +650,7 @@ window.SC_READY.then(() => {
   ro.innerHTML = NET.map((a, i) => {
     const h = escH(a.handle), first = escH((a.handle.replace(/^@/, '')[0] || '?').toUpperCase());
     const pic = a.pic ? `<img class="pic" src="${escH(a.pic)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=&quot;pic mono&quot;>${first}</div>'">` : `<div class="pic mono">${first}</div>`;
-    const fl = a.n ? `<div class="fl"><span>Followers</span><b><span class="cu" data-to="${a.n}" data-suf="${escH(a.suf)}">${a.n}${escH(a.suf)}</span></b></div>` : `<div class="fl"><span>New to the roster</span></div>`;
+    const fl = a.n ? `<div class="fl"><span>Followers</span><b><span class="cu" data-to="${a.n}" data-suf="${escH(a.suf)}">${a.n}${escH(a.suf)}</span></b></div>` : '';
     return `<a class="card${i === 1 ? ' hot' : ''}" href="https://www.instagram.com/${encodeURIComponent(a.handle.slice(1))}" target="_blank" rel="noopener">
       <div class="no">No. ${String(i + 1).padStart(2, '0')}</div>${pic}<h3>${h}</h3><div class="cat">${escH(a.label)}</div>${fl}</a>`; }).join('')
     + `<div class="card more"><b>+3M on X.<br><span class="y">+3M more</span> on Instagram.</b><p>Our extended partner network, plus @basketballnews on X, Facebook and YouTube.</p></div>`;
