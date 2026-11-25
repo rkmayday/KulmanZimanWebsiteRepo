@@ -1,4 +1,5 @@
-# Rebuilds the Sports Culture draft preview from the main version: python3 clients/make-preview.py
+# Rebuilds the Sports Culture draft preview (clients/sports-culture-preview) from the main version: python3 clients/make-preview.py
+# The live site is on Moshe's own domain now, so the preview is no longer copied onto zimansites.com (static/preview).
 import pathlib
 R = pathlib.Path(__file__).resolve().parent
 s = (R / "sports-culture/index.html").read_text(); v = s
@@ -6,11 +7,10 @@ R_ = [('<title>Sports Culture: homepage concept</title>', '<title>Draft preview 
 for a, b in R_:
     assert v.count(a) == 1, a[:40]; v = v.replace(a, b)
 (R / "sports-culture-preview/index.html").write_text(v)
-(R.parent / "static/preview/sportsculture.html").write_text(v)
 print("preview rebuilt")
 # keep the previews' images in step with the main version (new logos, photos)
 import shutil
-for d in (R / "sports-culture-preview/img", R.parent / "static/preview/img"):
+for d in (R / "sports-culture-preview/img",):
     d.mkdir(parents=True, exist_ok=True)
     for f in (R / "sports-culture/img").glob("*.webp"):
         shutil.copy(f, d / f.name)
