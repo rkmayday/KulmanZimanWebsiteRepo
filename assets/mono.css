@@ -916,7 +916,7 @@ html.intro-hold #kz-load,html.intro-hold #kz-load *{animation-play-state:running
 .order-form .brief-done .btn{justify-self:start;margin-top:8px}
 
 /* phones: the commitment boxes under the home opening don't rise in; they simply scroll in after the stop */
-@media (max-width:720px){.js .strip .reveal{opacity:1;transform:none;transition:none}}
+.js .strip .reveal{opacity:1;transform:none;transition:none}
 
 /* "How it works" reel on the home page (computers): the section holds and the steps slide sideways (site.js) */
 #selling-points.reel-on .reel-pin{position:sticky;top:72px;height:calc(calc(100 * var(--vh, 1vh)) - 72px);width:100vw;margin-left:calc(50% - 50vw);
