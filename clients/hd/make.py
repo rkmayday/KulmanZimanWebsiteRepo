@@ -12,6 +12,8 @@ LETTERS = "".join(o["d"] for o in C[:14])   # D E V E L O P M E N T (holes inclu
 # one path per letter, each with its holes (O, P, D), left to right for the letter-by-letter reveal
 GLYPHS = [o["d"] + "".join(h["d"] for h in C[:14] if h["parent"] == o["i"]) for o in sorted((o for o in C[:14] if o["parent"] == -1), key=lambda o: o["bbox"][0])]
 EMAIL, PHONE, TEL = "Derek@DevelopHD.com", "732-740-1059", "+17327401059"
+# Web3Forms access key (made at web3forms.com with Derek's email). Empty = the form opens the visitor's email app instead.
+FORM_KEY = ""
 BLURB = ("HD is an honest, efficient and detail oriented Developer. From entitlements to site work, "
          "our Partners can rely on us to deliver on-time and up to spec.")
 
@@ -398,7 +400,7 @@ def contact():
         {fields}
         <label class="full">Message<textarea name="message"></textarea></label>
         <button class="btn" type="submit">Submit {ARROW}</button>
-        <p class="sent">Your email app has opened with the message. Press send there.</p>
+        <p class="sent" role="status" aria-live="polite"></p>
       </form>
       <div class="details rv">
         <h2>Contact Details</h2>
@@ -417,8 +419,14 @@ document.getElementById('form').addEventListener('submit',function(e){{e.prevent
   for(var i=0;i<f.elements.length;i++){{var el=f.elements[i];if(el.required&&!el.value.trim()){{el.focus();el.reportValidity&&el.reportValidity();return}}if(el.type==='email'&&el.value&&!el.checkValidity()){{el.reportValidity();return}}}}
   var g=function(n){{return (f.elements[n].value||'').trim()}};
   var body=['Name: '+g('first')+' '+g('last'),'Email: '+g('email'),'Phone: '+(g('phone')||'-'),'Company: '+(g('company')||'-'),'Project: '+(g('project')||'-'),'',g('message')].join('\\n');
-  location.href='mailto:{EMAIL}?subject='+encodeURIComponent('New inquiry from '+g('first')+' '+g('last'))+'&body='+encodeURIComponent(body);
-  f.classList.add('done')}});
+  var subject='New inquiry from '+g('first')+' '+g('last'),msg=f.querySelector('.sent'),btn=f.querySelector('button');
+  function viaEmailApp(){{location.href='mailto:{EMAIL}?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);msg.textContent='Your email app has opened with the message. Press send there.';f.classList.add('done')}}
+  var key='{FORM_KEY}';if(!key){{viaEmailApp();return}}
+  btn.disabled=true;btn.style.opacity=.6;
+  fetch('https://api.web3forms.com/submit',{{method:'POST',headers:{{'Content-Type':'application/json',Accept:'application/json'}},
+    body:JSON.stringify({{access_key:key,subject:subject,from_name:'HD Development website',replyto:g('email'),name:g('first')+' '+g('last'),email:g('email'),phone:g('phone'),company:g('company'),project:g('project'),message:g('message')}})}})
+  .then(function(r){{return r.json()}}).then(function(j){{if(!j.success)throw 0;msg.textContent='Thanks, your message was sent. We\u2019ll be in touch soon.';f.classList.add('done');f.reset()}})
+  .catch(function(){{viaEmailApp()}}).finally(function(){{btn.disabled=false;btn.style.opacity=''}})}});
 </script>'''
     return (HEAD.replace("{title}", "Contact | HD Development") + CONTACT_CSS + "</style>\n</head>\n<body>\n" + body + COMMON_JS + "\n</body>\n</html>\n")
 

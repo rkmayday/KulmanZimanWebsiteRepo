@@ -124,7 +124,7 @@ form.done .sent{display:block}
         <label>First name*<input name="first" type="text" required autocomplete="given-name"></label><label>Last name*<input name="last" type="text" required autocomplete="family-name"></label><label>Email*<input name="email" type="email" required autocomplete="email"></label><label>Phone<input name="phone" type="tel" autocomplete="tel"></label><label>Company name<input name="company" type="text" autocomplete="organization"></label><label>Project Name &amp; Location<input name="project" type="text" autocomplete="off"></label>
         <label class="full">Message<textarea name="message"></textarea></label>
         <button class="btn" type="submit">Submit <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
-        <p class="sent">Your email app has opened with the message. Press send there.</p>
+        <p class="sent" role="status" aria-live="polite"></p>
       </form>
       <div class="details rv">
         <h2>Contact Details</h2>
@@ -157,8 +157,14 @@ document.getElementById('form').addEventListener('submit',function(e){e.preventD
   for(var i=0;i<f.elements.length;i++){var el=f.elements[i];if(el.required&&!el.value.trim()){el.focus();el.reportValidity&&el.reportValidity();return}if(el.type==='email'&&el.value&&!el.checkValidity()){el.reportValidity();return}}
   var g=function(n){return (f.elements[n].value||'').trim()};
   var body=['Name: '+g('first')+' '+g('last'),'Email: '+g('email'),'Phone: '+(g('phone')||'-'),'Company: '+(g('company')||'-'),'Project: '+(g('project')||'-'),'',g('message')].join('\n');
-  location.href='mailto:Derek@DevelopHD.com?subject='+encodeURIComponent('New inquiry from '+g('first')+' '+g('last'))+'&body='+encodeURIComponent(body);
-  f.classList.add('done')});
+  var subject='New inquiry from '+g('first')+' '+g('last'),msg=f.querySelector('.sent'),btn=f.querySelector('button');
+  function viaEmailApp(){location.href='mailto:Derek@DevelopHD.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);msg.textContent='Your email app has opened with the message. Press send there.';f.classList.add('done')}
+  var key='';if(!key){viaEmailApp();return}
+  btn.disabled=true;btn.style.opacity=.6;
+  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({access_key:key,subject:subject,from_name:'HD Development website',replyto:g('email'),name:g('first')+' '+g('last'),email:g('email'),phone:g('phone'),company:g('company'),project:g('project'),message:g('message')})})
+  .then(function(r){return r.json()}).then(function(j){if(!j.success)throw 0;msg.textContent='Thanks, your message was sent. We’ll be in touch soon.';f.classList.add('done');f.reset()})
+  .catch(function(){viaEmailApp()}).finally(function(){btn.disabled=false;btn.style.opacity=''})});
 </script>
 <script>
 (function(){
