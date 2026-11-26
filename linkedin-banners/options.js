@@ -39,6 +39,14 @@ const opts = {
   // D: a laptop-style window for Aurel and a phone for Synthra, the other four named underneath
   'D-desktop-phone': win('aurel', 1000, 44, 420, 262) + `<div class="phone" style="left:1388px;top:92px;width:146px;height:280px"><img src="data:image/jpeg;base64,${fs.readFileSync(path.join(D, 'synthra-phone.jpg')).toString('base64')}" style="object-position:center top"></div>` +
     `<span class="lbl" style="left:1000px;top:334px">+ Afterglow · Ember Roast · Facet · Ironpath</span>`,
+  // Final single banner: brand on the left, D's desktop + phone on the right
+  'final': [`<div class="grid"></div>
+  <div style="position:absolute;left:420px;top:100px;display:grid;gap:24px;width:580px">
+    <img src="data:image/png;base64,${fs.readFileSync('/home/user/kulmanzimanwebsiterepo/assets/wordmark.png').toString('base64')}" style="height:34px;width:auto;filter:brightness(0) invert(1)">
+    <h1 style="font-size:56px">Custom websites,<br><em>built to order.</em></h1>
+    <div style="display:flex;gap:22px;align-items:center"><span class="url">zimansites.com</span><span class="mono" style="opacity:.5">No templates · From $284</span></div>
+  </div>`, win('aurel', 1000, 44, 420, 262) + `<div class="phone" style="left:1388px;top:92px;width:146px;height:280px"><img src="data:image/jpeg;base64,${fs.readFileSync(path.join(D, 'synthra-phone.jpg')).toString('base64')}" style="object-position:center top"></div>` +
+    `<span class="lbl" style="left:1000px;top:334px">Live samples at zimansites.com/portfolio</span>`],
   // E: a diagonal cascade, back to front, ending with Synthra then Aurel in front
   'E-cascade': ['ironpath', 'deduction', 'ember-roast', 'afterglow', 'synthra', 'aurel'].map((n, i) => {
     const front = i >= 4;
@@ -48,7 +56,8 @@ const opts = {
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1584, height: 396 }, deviceScaleFactor: 2 });
   for (const [name, body] of Object.entries(opts)) {
-    await p.setContent(base + extra + `<body class="dark">${head}${body}</body>`, { waitUntil: 'networkidle' });
+    const [h, bd] = Array.isArray(body) ? body : [head, body];
+    await p.setContent(base + extra + `<body class="dark">${h}${bd}</body>`, { waitUntil: 'networkidle' });
     await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(250);
     await p.screenshot({ path: path.join(D, `option-${name}.png`) }); console.log(name);
   }
