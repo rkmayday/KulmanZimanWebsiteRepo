@@ -7,3 +7,8 @@
 - Sample (demo) openings: one scroll to play, then the scroll glides to a stop right after the animation,
   when the headline is fully in: set `data-stop` on the `.stage` to that point on the timeline (smooth.js stops there).
 - Don't add testimonials, client logos or stats that aren't real.
+- Client copies on the Portfolio "Our clients" section (static/work/<client>.html, made by a clients/make-*.py script):
+  before adding one, compress it as much as possible without a visible change: every photo resized to the size it
+  shows at (about 900 px wide) and compressed, only the best few photos per project, the Google Sheet switched off
+  (frozen as built), kept out of search (noindex). Target: under 0.5 MB per client site. Only list a client once the
+  deal is complete (paid and handed over); their logos wait in clients/portfolio-logos/ until then.
