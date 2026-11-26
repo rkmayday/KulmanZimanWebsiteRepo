@@ -159,11 +159,10 @@ document.getElementById('form').addEventListener('submit',function(e){e.preventD
   var body=['Name: '+g('first')+' '+g('last'),'Email: '+g('email'),'Phone: '+(g('phone')||'-'),'Company: '+(g('company')||'-'),'Project: '+(g('project')||'-'),'',g('message')].join('\n');
   var subject='New inquiry from '+g('first')+' '+g('last'),msg=f.querySelector('.sent'),btn=f.querySelector('button');
   function viaEmailApp(){location.href='mailto:Derek@DevelopHD.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);msg.textContent='Your email app has opened with the message. Press send there.';f.classList.add('done')}
-  var key='';if(!key){viaEmailApp();return}
   btn.disabled=true;btn.style.opacity=.6;
-  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
-    body:JSON.stringify({access_key:key,subject:subject,from_name:'HD Development website',replyto:g('email'),name:g('first')+' '+g('last'),email:g('email'),phone:g('phone'),company:g('company'),project:g('project'),message:g('message')})})
-  .then(function(r){return r.json()}).then(function(j){if(!j.success)throw 0;msg.textContent='Thanks, your message was sent. We’ll be in touch soon.';f.classList.add('done');f.reset()})
+  fetch('https://formsubmit.co/ajax/Derek@DevelopHD.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({name:g('first')+' '+g('last'),email:g('email'),phone:g('phone')||'-',company:g('company')||'-',project:g('project')||'-',message:g('message')||'-',_subject:subject,_replyto:g('email'),_template:'table',_captcha:'false'})})
+  .then(function(r){return r.json()}).then(function(j){if(String(j.success)!=='true')throw 0;msg.textContent='Thanks, your message was sent. We’ll be in touch soon.';f.classList.add('done');f.reset()})
   .catch(function(){viaEmailApp()}).finally(function(){btn.disabled=false;btn.style.opacity=''})});
 </script>
 <script>
