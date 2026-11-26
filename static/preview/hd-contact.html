@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="theme-color" content="#f3f5f4">
+<title>Contact | HD Development</title>
+<link rel="icon" href="/preview/hd-img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hd-wipe')==='1'){document.documentElement.classList.add('wipe-in');sessionStorage.removeItem('hd-wipe')}}catch(e){}</script>
+<style>
+:root{--paper:#f3f5f4;--paper2:#e9eeec;--navy:#0f293e;--green:#0c3536;--deep:#071a24;--ink:#0f293e;--mut:#5a6b70;--line:rgba(15,41,62,.09);--line2:rgba(15,41,62,.18);--mint:#9fd5c4;
+  --display:"Archivo",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip;max-width:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+.wrap{width:min(1240px,100%);margin-inline:auto;padding-inline:max(22px,env(safe-area-inset-left)) max(22px,env(safe-area-inset-right))}
+.mono{font:500 11.5px/1.3 var(--mono);letter-spacing:.18em;text-transform:uppercase}
+.grid-bg{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px}
+.btn{display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:4px;background:var(--green);color:#fff;text-decoration:none;font:600 15px var(--body);border:0;cursor:pointer;
+  transition:transform .3s,box-shadow .3s,background .3s}
+.btn svg{width:18px;transition:transform .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px -16px rgba(12,53,54,.7)}
+.btn:hover svg{transform:translateX(4px)}
+.btn.light{background:#fff;color:var(--green)}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top);transition:color .4s,background .4s,backdrop-filter .4s}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+.nav .brand{display:flex;align-items:center;text-decoration:none}
+.nav .brand .mark{width:58px;height:auto;transition:filter .4s}
+.nav ul{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.nav ul a{display:block;padding:9px 14px;border-radius:999px;text-decoration:none;font:500 14.5px var(--body);transition:background .25s}
+.nav ul a:hover{background:rgba(15,41,62,.07)}
+.nav ul a[aria-current]{background:rgba(15,41,62,.09)}
+.nav.dark{color:#fff}
+.nav.dark .brand .mark{filter:brightness(0) invert(1)}
+.nav.dark ul a:hover,.nav.dark ul a[aria-current]{background:rgba(255,255,255,.12)}
+.nav.solid{background:rgba(243,245,244,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav.dark.solid{background:rgba(7,26,36,.7)}
+@media (max-width:520px){.nav ul a{padding:8px 10px;font-size:13.5px}.nav .brand .mark{width:48px}}
+
+/* contact band + footer */
+.band{position:relative;background:var(--deep);color:#fff;overflow:hidden;padding:120px 0 0}
+.band .plan-bg{position:absolute;inset:0;opacity:.5;pointer-events:none}
+.band .wrap{position:relative}
+.band h2{font:800 clamp(2.6rem,7vw,6.2rem)/.95 var(--display);font-stretch:112%;letter-spacing:-.035em;margin:18px 0 48px;text-wrap:balance}
+.band .k{color:var(--mint)}
+.band .rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid rgba(255,255,255,.16)}
+.band .rows a{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:30px 0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.16);min-width:0}
+.band .rows a:first-child{padding-right:28px;border-right:1px solid rgba(255,255,255,.16)}
+.band .rows a:last-child{padding-left:28px}
+.band .rows span{display:block}
+.band .rows .v{font:600 clamp(1.15rem,2.4vw,1.9rem) var(--display);letter-spacing:-.01em;overflow-wrap:anywhere}
+.band .rows .mono{color:rgba(255,255,255,.55);margin-bottom:8px}
+.band .rows svg{width:26px;flex:none;transition:transform .35s}
+.band .rows a:hover svg{transform:translate(5px,-5px)}
+@media (max-width:760px){.band .rows{grid-template-columns:1fr}.band .rows a:first-child{border-right:0;padding-right:0}.band .rows a:last-child{padding-left:0}}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:34px 0 calc(34px + env(safe-area-inset-bottom));color:rgba(255,255,255,.5)}
+.foot .mark{width:64px;filter:brightness(0) invert(1);opacity:.85}
+
+/* reveal */
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+
+/* page wipe: a blueprint sheet slides over between pages */
+.wipe{position:fixed;inset:0;z-index:100;background:var(--green);pointer-events:none;clip-path:inset(100% 0 0 0);display:grid;place-items:center}
+.wipe::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:44px 44px}
+.wipe .mark{width:min(30vw,170px);filter:brightness(0) invert(1);opacity:0;transform:scale(.9);transition:opacity .3s,transform .5s}
+.wipe.go{animation:wipeIn .55s cubic-bezier(.7,0,.25,1) forwards}
+.wipe.go .mark{opacity:1;transform:none;transition-delay:.25s}
+.wipe-in .wipe{clip-path:inset(0 0 0 0)}
+.wipe-in .wipe .mark{opacity:1;transform:none}
+.wipe.out{animation:wipeOut .7s .15s cubic-bezier(.7,0,.25,1) forwards}
+.wipe.out .mark{opacity:0;transition-delay:0s}
+@keyframes wipeIn{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes wipeOut{from{clip-path:inset(0 0 0 0)}to{clip-path:inset(0 0 100% 0)}}
+@media (prefers-reduced-motion:reduce){.wipe{display:none}.js .rv{opacity:1;transform:none;transition:none}}
+
+.ct{min-height:100svh;padding:calc(130px + env(safe-area-inset-top)) 0 110px}
+.ct h1{font:850 clamp(3.2rem,9vw,8.4rem)/.86 var(--display);font-stretch:118%;letter-spacing:-.045em;margin:18px 0 56px}
+.ct h1 em{font-style:normal;color:var(--green)}
+.ct .k{color:var(--green)}
+.ct .cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px;background:#fff;border:1px solid var(--line2);border-radius:6px;padding:clamp(20px,3.4vw,40px);position:relative}
+form .full{grid-column:1/-1}
+label{display:grid;gap:8px;font:500 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+input,textarea{width:100%;font:16px var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line2);border-radius:4px;padding:13px 14px;transition:border-color .2s,background .2s,box-shadow .2s}
+textarea{min-height:140px;resize:vertical}
+input:focus,textarea:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px rgba(12,53,54,.1)}
+form .btn{justify-self:start}
+form .note{font-size:13px;color:var(--mut);align-self:center}
+form .sent{grid-column:1/-1;display:none;color:var(--green);font-weight:600}
+form.done .sent{display:block}
+.details{border-top:1px solid var(--line2)}
+.details h2{font:700 1.5rem var(--display);margin:22px 0 18px;letter-spacing:-.01em}
+.details a{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 0;border-bottom:1px solid var(--line2);text-decoration:none;min-width:0}
+.details a span{display:grid;gap:6px;min-width:0}
+.details .v{font:600 clamp(1.05rem,1.8vw,1.35rem) var(--display);overflow-wrap:anywhere}
+.details .mono{color:var(--mut)}
+.details svg{width:22px;flex:none;transition:transform .3s}
+.details a:hover svg{transform:translate(4px,-4px)}
+.details .mark{width:150px;margin-top:40px;opacity:.9}
+@media (max-width:860px){.ct .cols{grid-template-columns:1fr}}
+@media (max-width:520px){form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="nav" id="nav"><div class="wrap"><a class="brand" href="/preview/hd" aria-label="HD Development home"><svg class="mark" viewBox="236 228 582 526" aria-hidden="true"><defs><linearGradient id="gn" x1="241" x2="813" gradientUnits="userSpaceOnUse"><stop offset=".36" stop-color="#0f293e"/><stop offset=".56" stop-color="#0c3536"/></linearGradient></defs>
+<path fill="url(#gn)" fill-rule="evenodd" d="M242.2 235.8L242.8 626.5L319.8 625.5L321.2 461.8L456.8 462.8L458.2 626.8L605.5 626.8L636.5 623.8L669.2 616.2L702.2 602.2L721.2 590.0L751.0 562.2L768.2 537.2L785.2 498.2L794.8 453.5L795.8 414.2L790.8 378.2L779.2 341.5L758.0 304.5L737.2 281.8L706.2 259.5L674.2 245.5L629.5 236.0L458.2 235.0L456.8 385.0L321.2 386.0L319.5 235.8ZM538.8 309.8L602.5 309.8L605.2 310.8L614.5 310.8L626.5 312.8L641.2 316.2L655.2 321.2L665.2 326.2L676.2 333.5L688.2 344.5L699.5 360.5L704.5 370.5L708.5 381.5L714.0 406.2L714.0 413.5L715.0 416.2L715.0 440.5L714.0 443.2L714.0 449.5L712.0 462.5L708.5 476.2L704.5 487.2L698.5 499.2L693.2 507.2L677.2 524.2L660.2 535.5L649.2 540.5L637.2 544.5L617.5 549.0L611.2 549.0L608.5 550.0L577.5 550.2L575.8 551.0L570.2 551.0L567.5 550.0L538.5 550.5L537.5 549.8L537.5 310.8Z"/><path fill="#0c3536" fill-rule="evenodd" d="M772.0 694.0L771.0 694.5L770.5 695.5L771.0 697.2L771.0 700.5L770.5 702.2L771.0 703.2L772.0 703.8L785.0 703.5L786.0 704.8L786.0 745.5L787.2 746.8L794.5 746.8L795.8 745.5L795.8 705.2L797.2 703.8L809.8 703.8L810.8 703.2L811.2 702.2L810.8 700.5L810.8 695.2L809.5 694.0ZM718.0 694.5L717.0 696.0L717.2 746.0L718.2 746.8L724.5 746.8L725.8 745.5L725.8 712.8L726.2 711.8L727.2 711.2L739.2 728.5L741.8 733.2L749.5 744.5L749.5 745.2L751.2 746.8L759.0 746.5L759.8 745.5L759.5 694.8L758.5 694.0L752.2 694.0L751.0 695.2L751.0 726.0L750.5 727.0L749.5 727.5L737.0 708.5L735.5 707.2L734.0 704.5L731.5 702.2L727.0 695.5L724.8 694.0L719.0 694.0ZM670.8 694.2L670.0 695.2L670.2 746.0L671.2 746.8L703.0 746.5L703.8 745.5L703.8 740.2L702.5 739.0L681.2 739.0L680.0 738.0L680.0 724.8L681.2 723.8L699.5 723.8L700.8 722.5L700.8 717.2L699.5 716.2L697.5 717.0L680.8 716.8L679.8 715.5L679.8 704.2L681.2 702.8L702.5 702.8L703.8 701.5L703.5 694.8L702.5 694.0ZM602.8 694.2L602.0 695.2L602.2 746.0L603.2 746.8L609.5 746.8L610.8 745.5L610.8 713.5L612.0 712.2L613.2 714.5L614.5 719.2L616.5 722.5L617.5 726.2L618.5 727.5L618.5 728.2L619.5 729.5L619.5 730.2L620.5 731.5L620.5 732.2L621.5 733.5L623.5 738.2L625.2 739.8L628.8 739.8L630.2 738.8L631.2 737.2L631.2 736.5L633.0 734.2L634.2 730.5L639.2 721.2L640.2 717.5L641.2 716.2L641.5 715.0L642.8 713.2L644.0 714.5L644.0 745.5L645.2 746.8L653.0 746.5L653.8 745.5L653.5 694.8L652.5 694.0L643.2 694.0L641.5 695.5L639.5 701.2L638.5 702.5L637.5 706.2L634.5 711.5L633.5 715.2L629.2 723.2L628.0 724.8L626.8 725.0L625.5 723.8L625.2 722.5L623.2 719.2L622.2 715.5L619.2 710.2L617.2 703.5L616.2 702.2L615.2 698.5L614.2 697.2L613.2 694.5L612.5 694.0ZM581.2 696.5L572.5 694.0L556.2 694.0L554.5 694.5L553.0 696.2L553.0 745.5L553.8 746.5L561.5 746.8L562.5 746.0L562.8 731.2L563.8 730.0L573.5 729.8L579.2 728.2L583.2 726.0L587.0 722.2L589.8 714.5L589.8 709.2L588.2 704.5L586.0 700.5L583.2 697.8ZM563.0 702.5L572.5 702.8L576.2 704.5L578.2 706.5L580.0 710.2L580.0 714.5L579.5 716.2L577.2 719.2L573.5 721.0L564.2 721.0L563.0 720.0L562.8 705.2L562.2 704.2ZM508.2 694.0L503.5 695.5L497.5 698.8L493.8 702.5L490.5 707.5L488.0 714.2L488.0 727.5L489.5 732.2L492.8 738.2L498.5 744.0L502.5 746.2L508.2 747.8L518.5 747.8L526.2 745.0L529.2 743.0L535.0 737.2L537.2 733.2L539.8 724.5L539.8 717.2L537.2 707.5L534.0 702.5L529.2 697.8L525.2 695.5L520.5 694.0ZM515.5 701.8L520.2 703.2L523.8 705.2L527.5 710.5L529.0 716.2L529.0 725.5L527.5 730.2L524.2 735.2L520.2 737.5L515.5 739.0L510.2 739.0L505.5 737.2L503.0 735.5L500.5 732.2L497.8 724.5L497.8 716.2L500.2 709.5L503.5 705.5L507.5 703.2L513.2 701.8ZM450.8 694.2L450.0 695.2L450.2 746.0L451.2 746.8L481.0 746.5L481.8 745.5L481.8 739.2L480.5 738.0L461.2 738.0L460.0 737.0L459.8 695.2L458.5 694.0ZM402.8 694.2L402.0 695.2L402.2 746.0L403.2 746.8L436.0 746.5L436.8 745.5L436.8 739.2L435.5 738.0L413.2 738.0L411.8 736.5L411.8 726.2L412.8 725.0L431.5 724.8L432.8 723.5L432.8 718.2L431.5 717.0L412.8 716.8L411.8 715.5L412.0 703.8L413.2 702.8L434.5 702.8L435.8 701.5L435.5 694.8L434.5 694.0ZM342.8 694.2L342.0 695.2L342.5 697.2L343.5 698.5L344.5 702.2L345.5 703.5L346.5 707.2L347.5 708.5L350.5 717.2L352.5 720.5L353.5 724.2L354.5 725.5L355.5 729.2L356.5 730.5L357.5 734.2L358.5 735.5L361.5 744.2L362.5 745.8L364.0 746.8L370.5 746.8L372.2 745.2L373.2 741.5L374.2 740.2L376.2 733.5L377.2 732.2L379.2 725.5L380.2 724.2L382.2 717.5L383.2 716.2L385.2 709.5L386.2 708.2L388.2 701.5L389.2 700.2L390.8 695.8L390.5 694.8L389.5 694.0L382.0 694.0L380.5 695.0L373.5 716.2L372.5 717.5L368.2 731.0L366.8 732.5L365.5 730.2L365.2 728.5L362.2 719.5L361.2 718.2L359.2 711.5L358.2 710.2L356.2 703.5L355.2 702.2L353.2 695.5L351.5 694.0ZM299.8 694.2L299.0 695.2L299.2 746.0L300.2 746.8L333.0 746.5L333.8 745.5L333.8 739.2L332.5 738.0L311.2 738.0L310.0 737.0L309.8 726.2L310.8 725.0L328.5 724.8L329.8 723.5L329.8 718.2L328.5 717.0L310.8 716.8L309.8 715.5L309.8 704.2L311.2 702.8L332.5 702.8L333.8 701.5L333.5 694.8L332.5 694.0ZM242.5 694.5L241.0 696.2L241.2 746.0L242.2 746.8L265.5 746.8L271.2 745.2L278.2 741.0L283.0 734.2L285.8 726.5L285.8 715.2L284.2 709.5L281.0 703.5L276.2 698.8L272.2 696.5L267.5 695.0L264.2 695.0L261.5 694.0L244.2 694.0ZM252.2 702.8L253.5 702.8L256.2 701.8L261.5 701.8L267.2 703.2L271.2 706.5L274.5 712.5L275.0 716.5L276.0 719.2L276.0 723.5L274.5 729.2L271.2 734.2L265.2 737.5L263.5 738.0L252.2 738.0L250.8 736.5L250.8 704.2Z"/></svg></a><nav aria-label="Main"><ul><li><a href="/preview/hd">Home</a></li><li><a href="/preview/hd-company">Company</a></li><li><a href="/preview/hd-contact" aria-current="page">Contact</a></li></ul></nav></div></header>
+<main>
+<section class="ct grid-bg">
+  <div class="wrap">
+    <span class="mono k rv">Contact</span>
+    <h1 class="rv">Connect <em>With</em> Us</h1>
+    <div class="cols">
+      <form class="rv" id="form" novalidate>
+        <label>First name*<input name="first" type="text" required autocomplete="given-name"></label><label>Last name*<input name="last" type="text" required autocomplete="family-name"></label><label>Email*<input name="email" type="email" required autocomplete="email"></label><label>Phone<input name="phone" type="tel" autocomplete="tel"></label><label>Company name<input name="company" type="text" autocomplete="organization"></label><label>Project Name &amp; Location<input name="project" type="text" autocomplete="off"></label>
+        <label class="full">Message<textarea name="message"></textarea></label>
+        <button class="btn" type="submit">Submit <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
+        <p class="sent">Your email app has opened with the message. Press send there.</p>
+      </form>
+      <div class="details rv">
+        <h2>Contact Details</h2>
+        <a href="mailto:Derek@DevelopHD.com"><span><span class="mono">Email</span><span class="v">Derek@DevelopHD.com</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+        <a href="tel:+17327401059"><span><span class="mono">Phone</span><span class="v">732-740-1059</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+        <svg class="mark" viewBox="236 228 582 526" aria-hidden="true"><defs><linearGradient id="gd" x1="241" x2="813" gradientUnits="userSpaceOnUse"><stop offset=".36" stop-color="#0f293e"/><stop offset=".56" stop-color="#0c3536"/></linearGradient></defs>
+<path fill="url(#gd)" fill-rule="evenodd" d="M242.2 235.8L242.8 626.5L319.8 625.5L321.2 461.8L456.8 462.8L458.2 626.8L605.5 626.8L636.5 623.8L669.2 616.2L702.2 602.2L721.2 590.0L751.0 562.2L768.2 537.2L785.2 498.2L794.8 453.5L795.8 414.2L790.8 378.2L779.2 341.5L758.0 304.5L737.2 281.8L706.2 259.5L674.2 245.5L629.5 236.0L458.2 235.0L456.8 385.0L321.2 386.0L319.5 235.8ZM538.8 309.8L602.5 309.8L605.2 310.8L614.5 310.8L626.5 312.8L641.2 316.2L655.2 321.2L665.2 326.2L676.2 333.5L688.2 344.5L699.5 360.5L704.5 370.5L708.5 381.5L714.0 406.2L714.0 413.5L715.0 416.2L715.0 440.5L714.0 443.2L714.0 449.5L712.0 462.5L708.5 476.2L704.5 487.2L698.5 499.2L693.2 507.2L677.2 524.2L660.2 535.5L649.2 540.5L637.2 544.5L617.5 549.0L611.2 549.0L608.5 550.0L577.5 550.2L575.8 551.0L570.2 551.0L567.5 550.0L538.5 550.5L537.5 549.8L537.5 310.8Z"/><path fill="#0c3536" fill-rule="evenodd" d="M772.0 694.0L771.0 694.5L770.5 695.5L771.0 697.2L771.0 700.5L770.5 702.2L771.0 703.2L772.0 703.8L785.0 703.5L786.0 704.8L786.0 745.5L787.2 746.8L794.5 746.8L795.8 745.5L795.8 705.2L797.2 703.8L809.8 703.8L810.8 703.2L811.2 702.2L810.8 700.5L810.8 695.2L809.5 694.0ZM718.0 694.5L717.0 696.0L717.2 746.0L718.2 746.8L724.5 746.8L725.8 745.5L725.8 712.8L726.2 711.8L727.2 711.2L739.2 728.5L741.8 733.2L749.5 744.5L749.5 745.2L751.2 746.8L759.0 746.5L759.8 745.5L759.5 694.8L758.5 694.0L752.2 694.0L751.0 695.2L751.0 726.0L750.5 727.0L749.5 727.5L737.0 708.5L735.5 707.2L734.0 704.5L731.5 702.2L727.0 695.5L724.8 694.0L719.0 694.0ZM670.8 694.2L670.0 695.2L670.2 746.0L671.2 746.8L703.0 746.5L703.8 745.5L703.8 740.2L702.5 739.0L681.2 739.0L680.0 738.0L680.0 724.8L681.2 723.8L699.5 723.8L700.8 722.5L700.8 717.2L699.5 716.2L697.5 717.0L680.8 716.8L679.8 715.5L679.8 704.2L681.2 702.8L702.5 702.8L703.8 701.5L703.5 694.8L702.5 694.0ZM602.8 694.2L602.0 695.2L602.2 746.0L603.2 746.8L609.5 746.8L610.8 745.5L610.8 713.5L612.0 712.2L613.2 714.5L614.5 719.2L616.5 722.5L617.5 726.2L618.5 727.5L618.5 728.2L619.5 729.5L619.5 730.2L620.5 731.5L620.5 732.2L621.5 733.5L623.5 738.2L625.2 739.8L628.8 739.8L630.2 738.8L631.2 737.2L631.2 736.5L633.0 734.2L634.2 730.5L639.2 721.2L640.2 717.5L641.2 716.2L641.5 715.0L642.8 713.2L644.0 714.5L644.0 745.5L645.2 746.8L653.0 746.5L653.8 745.5L653.5 694.8L652.5 694.0L643.2 694.0L641.5 695.5L639.5 701.2L638.5 702.5L637.5 706.2L634.5 711.5L633.5 715.2L629.2 723.2L628.0 724.8L626.8 725.0L625.5 723.8L625.2 722.5L623.2 719.2L622.2 715.5L619.2 710.2L617.2 703.5L616.2 702.2L615.2 698.5L614.2 697.2L613.2 694.5L612.5 694.0ZM581.2 696.5L572.5 694.0L556.2 694.0L554.5 694.5L553.0 696.2L553.0 745.5L553.8 746.5L561.5 746.8L562.5 746.0L562.8 731.2L563.8 730.0L573.5 729.8L579.2 728.2L583.2 726.0L587.0 722.2L589.8 714.5L589.8 709.2L588.2 704.5L586.0 700.5L583.2 697.8ZM563.0 702.5L572.5 702.8L576.2 704.5L578.2 706.5L580.0 710.2L580.0 714.5L579.5 716.2L577.2 719.2L573.5 721.0L564.2 721.0L563.0 720.0L562.8 705.2L562.2 704.2ZM508.2 694.0L503.5 695.5L497.5 698.8L493.8 702.5L490.5 707.5L488.0 714.2L488.0 727.5L489.5 732.2L492.8 738.2L498.5 744.0L502.5 746.2L508.2 747.8L518.5 747.8L526.2 745.0L529.2 743.0L535.0 737.2L537.2 733.2L539.8 724.5L539.8 717.2L537.2 707.5L534.0 702.5L529.2 697.8L525.2 695.5L520.5 694.0ZM515.5 701.8L520.2 703.2L523.8 705.2L527.5 710.5L529.0 716.2L529.0 725.5L527.5 730.2L524.2 735.2L520.2 737.5L515.5 739.0L510.2 739.0L505.5 737.2L503.0 735.5L500.5 732.2L497.8 724.5L497.8 716.2L500.2 709.5L503.5 705.5L507.5 703.2L513.2 701.8ZM450.8 694.2L450.0 695.2L450.2 746.0L451.2 746.8L481.0 746.5L481.8 745.5L481.8 739.2L480.5 738.0L461.2 738.0L460.0 737.0L459.8 695.2L458.5 694.0ZM402.8 694.2L402.0 695.2L402.2 746.0L403.2 746.8L436.0 746.5L436.8 745.5L436.8 739.2L435.5 738.0L413.2 738.0L411.8 736.5L411.8 726.2L412.8 725.0L431.5 724.8L432.8 723.5L432.8 718.2L431.5 717.0L412.8 716.8L411.8 715.5L412.0 703.8L413.2 702.8L434.5 702.8L435.8 701.5L435.5 694.8L434.5 694.0ZM342.8 694.2L342.0 695.2L342.5 697.2L343.5 698.5L344.5 702.2L345.5 703.5L346.5 707.2L347.5 708.5L350.5 717.2L352.5 720.5L353.5 724.2L354.5 725.5L355.5 729.2L356.5 730.5L357.5 734.2L358.5 735.5L361.5 744.2L362.5 745.8L364.0 746.8L370.5 746.8L372.2 745.2L373.2 741.5L374.2 740.2L376.2 733.5L377.2 732.2L379.2 725.5L380.2 724.2L382.2 717.5L383.2 716.2L385.2 709.5L386.2 708.2L388.2 701.5L389.2 700.2L390.8 695.8L390.5 694.8L389.5 694.0L382.0 694.0L380.5 695.0L373.5 716.2L372.5 717.5L368.2 731.0L366.8 732.5L365.5 730.2L365.2 728.5L362.2 719.5L361.2 718.2L359.2 711.5L358.2 710.2L356.2 703.5L355.2 702.2L353.2 695.5L351.5 694.0ZM299.8 694.2L299.0 695.2L299.2 746.0L300.2 746.8L333.0 746.5L333.8 745.5L333.8 739.2L332.5 738.0L311.2 738.0L310.0 737.0L309.8 726.2L310.8 725.0L328.5 724.8L329.8 723.5L329.8 718.2L328.5 717.0L310.8 716.8L309.8 715.5L309.8 704.2L311.2 702.8L332.5 702.8L333.8 701.5L333.5 694.8L332.5 694.0ZM242.5 694.5L241.0 696.2L241.2 746.0L242.2 746.8L265.5 746.8L271.2 745.2L278.2 741.0L283.0 734.2L285.8 726.5L285.8 715.2L284.2 709.5L281.0 703.5L276.2 698.8L272.2 696.5L267.5 695.0L264.2 695.0L261.5 694.0L244.2 694.0ZM252.2 702.8L253.5 702.8L256.2 701.8L261.5 701.8L267.2 703.2L271.2 706.5L274.5 712.5L275.0 716.5L276.0 719.2L276.0 723.5L274.5 729.2L271.2 734.2L265.2 737.5L263.5 738.0L252.2 738.0L250.8 736.5L250.8 704.2Z"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="band" id="contact-band">
+  <svg class="plan-bg" data-plan="band" aria-hidden="true"></svg>
+  <div class="wrap">
+    <span class="mono k rv">HD Development</span>
+    <h2 class="rv">Let’s build it.</h2>
+    <div class="rows rv">
+      <a href="mailto:Derek@DevelopHD.com"><span><span class="mono">Email</span><span class="v">Derek@DevelopHD.com</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+      <a href="tel:+17327401059"><span><span class="mono">Phone</span><span class="v">732-740-1059</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+    </div>
+    <div class="foot"><svg class="mark" viewBox="236 228 582 526" aria-hidden="true"><defs><linearGradient id="gf" x1="241" x2="813" gradientUnits="userSpaceOnUse"><stop offset=".36" stop-color="#0f293e"/><stop offset=".56" stop-color="#0c3536"/></linearGradient></defs>
+<path fill="url(#gf)" fill-rule="evenodd" d="M242.2 235.8L242.8 626.5L319.8 625.5L321.2 461.8L456.8 462.8L458.2 626.8L605.5 626.8L636.5 623.8L669.2 616.2L702.2 602.2L721.2 590.0L751.0 562.2L768.2 537.2L785.2 498.2L794.8 453.5L795.8 414.2L790.8 378.2L779.2 341.5L758.0 304.5L737.2 281.8L706.2 259.5L674.2 245.5L629.5 236.0L458.2 235.0L456.8 385.0L321.2 386.0L319.5 235.8ZM538.8 309.8L602.5 309.8L605.2 310.8L614.5 310.8L626.5 312.8L641.2 316.2L655.2 321.2L665.2 326.2L676.2 333.5L688.2 344.5L699.5 360.5L704.5 370.5L708.5 381.5L714.0 406.2L714.0 413.5L715.0 416.2L715.0 440.5L714.0 443.2L714.0 449.5L712.0 462.5L708.5 476.2L704.5 487.2L698.5 499.2L693.2 507.2L677.2 524.2L660.2 535.5L649.2 540.5L637.2 544.5L617.5 549.0L611.2 549.0L608.5 550.0L577.5 550.2L575.8 551.0L570.2 551.0L567.5 550.0L538.5 550.5L537.5 549.8L537.5 310.8Z"/><path fill="#0c3536" fill-rule="evenodd" d="M772.0 694.0L771.0 694.5L770.5 695.5L771.0 697.2L771.0 700.5L770.5 702.2L771.0 703.2L772.0 703.8L785.0 703.5L786.0 704.8L786.0 745.5L787.2 746.8L794.5 746.8L795.8 745.5L795.8 705.2L797.2 703.8L809.8 703.8L810.8 703.2L811.2 702.2L810.8 700.5L810.8 695.2L809.5 694.0ZM718.0 694.5L717.0 696.0L717.2 746.0L718.2 746.8L724.5 746.8L725.8 745.5L725.8 712.8L726.2 711.8L727.2 711.2L739.2 728.5L741.8 733.2L749.5 744.5L749.5 745.2L751.2 746.8L759.0 746.5L759.8 745.5L759.5 694.8L758.5 694.0L752.2 694.0L751.0 695.2L751.0 726.0L750.5 727.0L749.5 727.5L737.0 708.5L735.5 707.2L734.0 704.5L731.5 702.2L727.0 695.5L724.8 694.0L719.0 694.0ZM670.8 694.2L670.0 695.2L670.2 746.0L671.2 746.8L703.0 746.5L703.8 745.5L703.8 740.2L702.5 739.0L681.2 739.0L680.0 738.0L680.0 724.8L681.2 723.8L699.5 723.8L700.8 722.5L700.8 717.2L699.5 716.2L697.5 717.0L680.8 716.8L679.8 715.5L679.8 704.2L681.2 702.8L702.5 702.8L703.8 701.5L703.5 694.8L702.5 694.0ZM602.8 694.2L602.0 695.2L602.2 746.0L603.2 746.8L609.5 746.8L610.8 745.5L610.8 713.5L612.0 712.2L613.2 714.5L614.5 719.2L616.5 722.5L617.5 726.2L618.5 727.5L618.5 728.2L619.5 729.5L619.5 730.2L620.5 731.5L620.5 732.2L621.5 733.5L623.5 738.2L625.2 739.8L628.8 739.8L630.2 738.8L631.2 737.2L631.2 736.5L633.0 734.2L634.2 730.5L639.2 721.2L640.2 717.5L641.2 716.2L641.5 715.0L642.8 713.2L644.0 714.5L644.0 745.5L645.2 746.8L653.0 746.5L653.8 745.5L653.5 694.8L652.5 694.0L643.2 694.0L641.5 695.5L639.5 701.2L638.5 702.5L637.5 706.2L634.5 711.5L633.5 715.2L629.2 723.2L628.0 724.8L626.8 725.0L625.5 723.8L625.2 722.5L623.2 719.2L622.2 715.5L619.2 710.2L617.2 703.5L616.2 702.2L615.2 698.5L614.2 697.2L613.2 694.5L612.5 694.0ZM581.2 696.5L572.5 694.0L556.2 694.0L554.5 694.5L553.0 696.2L553.0 745.5L553.8 746.5L561.5 746.8L562.5 746.0L562.8 731.2L563.8 730.0L573.5 729.8L579.2 728.2L583.2 726.0L587.0 722.2L589.8 714.5L589.8 709.2L588.2 704.5L586.0 700.5L583.2 697.8ZM563.0 702.5L572.5 702.8L576.2 704.5L578.2 706.5L580.0 710.2L580.0 714.5L579.5 716.2L577.2 719.2L573.5 721.0L564.2 721.0L563.0 720.0L562.8 705.2L562.2 704.2ZM508.2 694.0L503.5 695.5L497.5 698.8L493.8 702.5L490.5 707.5L488.0 714.2L488.0 727.5L489.5 732.2L492.8 738.2L498.5 744.0L502.5 746.2L508.2 747.8L518.5 747.8L526.2 745.0L529.2 743.0L535.0 737.2L537.2 733.2L539.8 724.5L539.8 717.2L537.2 707.5L534.0 702.5L529.2 697.8L525.2 695.5L520.5 694.0ZM515.5 701.8L520.2 703.2L523.8 705.2L527.5 710.5L529.0 716.2L529.0 725.5L527.5 730.2L524.2 735.2L520.2 737.5L515.5 739.0L510.2 739.0L505.5 737.2L503.0 735.5L500.5 732.2L497.8 724.5L497.8 716.2L500.2 709.5L503.5 705.5L507.5 703.2L513.2 701.8ZM450.8 694.2L450.0 695.2L450.2 746.0L451.2 746.8L481.0 746.5L481.8 745.5L481.8 739.2L480.5 738.0L461.2 738.0L460.0 737.0L459.8 695.2L458.5 694.0ZM402.8 694.2L402.0 695.2L402.2 746.0L403.2 746.8L436.0 746.5L436.8 745.5L436.8 739.2L435.5 738.0L413.2 738.0L411.8 736.5L411.8 726.2L412.8 725.0L431.5 724.8L432.8 723.5L432.8 718.2L431.5 717.0L412.8 716.8L411.8 715.5L412.0 703.8L413.2 702.8L434.5 702.8L435.8 701.5L435.5 694.8L434.5 694.0ZM342.8 694.2L342.0 695.2L342.5 697.2L343.5 698.5L344.5 702.2L345.5 703.5L346.5 707.2L347.5 708.5L350.5 717.2L352.5 720.5L353.5 724.2L354.5 725.5L355.5 729.2L356.5 730.5L357.5 734.2L358.5 735.5L361.5 744.2L362.5 745.8L364.0 746.8L370.5 746.8L372.2 745.2L373.2 741.5L374.2 740.2L376.2 733.5L377.2 732.2L379.2 725.5L380.2 724.2L382.2 717.5L383.2 716.2L385.2 709.5L386.2 708.2L388.2 701.5L389.2 700.2L390.8 695.8L390.5 694.8L389.5 694.0L382.0 694.0L380.5 695.0L373.5 716.2L372.5 717.5L368.2 731.0L366.8 732.5L365.5 730.2L365.2 728.5L362.2 719.5L361.2 718.2L359.2 711.5L358.2 710.2L356.2 703.5L355.2 702.2L353.2 695.5L351.5 694.0ZM299.8 694.2L299.0 695.2L299.2 746.0L300.2 746.8L333.0 746.5L333.8 745.5L333.8 739.2L332.5 738.0L311.2 738.0L310.0 737.0L309.8 726.2L310.8 725.0L328.5 724.8L329.8 723.5L329.8 718.2L328.5 717.0L310.8 716.8L309.8 715.5L309.8 704.2L311.2 702.8L332.5 702.8L333.8 701.5L333.5 694.8L332.5 694.0ZM242.5 694.5L241.0 696.2L241.2 746.0L242.2 746.8L265.5 746.8L271.2 745.2L278.2 741.0L283.0 734.2L285.8 726.5L285.8 715.2L284.2 709.5L281.0 703.5L276.2 698.8L272.2 696.5L267.5 695.0L264.2 695.0L261.5 694.0L244.2 694.0ZM252.2 702.8L253.5 702.8L256.2 701.8L261.5 701.8L267.2 703.2L271.2 706.5L274.5 712.5L275.0 716.5L276.0 719.2L276.0 723.5L274.5 729.2L271.2 734.2L265.2 737.5L263.5 738.0L252.2 738.0L250.8 736.5L250.8 704.2Z"/></svg><span class="mono">&copy; 2025 by HD Development</span></div>
+  </div>
+</section>
+</main>
+<div class="wipe" aria-hidden="true"><svg class="mark" viewBox="236 228 582 526" aria-hidden="true"><defs><linearGradient id="gw" x1="241" x2="813" gradientUnits="userSpaceOnUse"><stop offset=".36" stop-color="#0f293e"/><stop offset=".56" stop-color="#0c3536"/></linearGradient></defs>
+<path fill="url(#gw)" fill-rule="evenodd" d="M242.2 235.8L242.8 626.5L319.8 625.5L321.2 461.8L456.8 462.8L458.2 626.8L605.5 626.8L636.5 623.8L669.2 616.2L702.2 602.2L721.2 590.0L751.0 562.2L768.2 537.2L785.2 498.2L794.8 453.5L795.8 414.2L790.8 378.2L779.2 341.5L758.0 304.5L737.2 281.8L706.2 259.5L674.2 245.5L629.5 236.0L458.2 235.0L456.8 385.0L321.2 386.0L319.5 235.8ZM538.8 309.8L602.5 309.8L605.2 310.8L614.5 310.8L626.5 312.8L641.2 316.2L655.2 321.2L665.2 326.2L676.2 333.5L688.2 344.5L699.5 360.5L704.5 370.5L708.5 381.5L714.0 406.2L714.0 413.5L715.0 416.2L715.0 440.5L714.0 443.2L714.0 449.5L712.0 462.5L708.5 476.2L704.5 487.2L698.5 499.2L693.2 507.2L677.2 524.2L660.2 535.5L649.2 540.5L637.2 544.5L617.5 549.0L611.2 549.0L608.5 550.0L577.5 550.2L575.8 551.0L570.2 551.0L567.5 550.0L538.5 550.5L537.5 549.8L537.5 310.8Z"/><path fill="#0c3536" fill-rule="evenodd" d="M772.0 694.0L771.0 694.5L770.5 695.5L771.0 697.2L771.0 700.5L770.5 702.2L771.0 703.2L772.0 703.8L785.0 703.5L786.0 704.8L786.0 745.5L787.2 746.8L794.5 746.8L795.8 745.5L795.8 705.2L797.2 703.8L809.8 703.8L810.8 703.2L811.2 702.2L810.8 700.5L810.8 695.2L809.5 694.0ZM718.0 694.5L717.0 696.0L717.2 746.0L718.2 746.8L724.5 746.8L725.8 745.5L725.8 712.8L726.2 711.8L727.2 711.2L739.2 728.5L741.8 733.2L749.5 744.5L749.5 745.2L751.2 746.8L759.0 746.5L759.8 745.5L759.5 694.8L758.5 694.0L752.2 694.0L751.0 695.2L751.0 726.0L750.5 727.0L749.5 727.5L737.0 708.5L735.5 707.2L734.0 704.5L731.5 702.2L727.0 695.5L724.8 694.0L719.0 694.0ZM670.8 694.2L670.0 695.2L670.2 746.0L671.2 746.8L703.0 746.5L703.8 745.5L703.8 740.2L702.5 739.0L681.2 739.0L680.0 738.0L680.0 724.8L681.2 723.8L699.5 723.8L700.8 722.5L700.8 717.2L699.5 716.2L697.5 717.0L680.8 716.8L679.8 715.5L679.8 704.2L681.2 702.8L702.5 702.8L703.8 701.5L703.5 694.8L702.5 694.0ZM602.8 694.2L602.0 695.2L602.2 746.0L603.2 746.8L609.5 746.8L610.8 745.5L610.8 713.5L612.0 712.2L613.2 714.5L614.5 719.2L616.5 722.5L617.5 726.2L618.5 727.5L618.5 728.2L619.5 729.5L619.5 730.2L620.5 731.5L620.5 732.2L621.5 733.5L623.5 738.2L625.2 739.8L628.8 739.8L630.2 738.8L631.2 737.2L631.2 736.5L633.0 734.2L634.2 730.5L639.2 721.2L640.2 717.5L641.2 716.2L641.5 715.0L642.8 713.2L644.0 714.5L644.0 745.5L645.2 746.8L653.0 746.5L653.8 745.5L653.5 694.8L652.5 694.0L643.2 694.0L641.5 695.5L639.5 701.2L638.5 702.5L637.5 706.2L634.5 711.5L633.5 715.2L629.2 723.2L628.0 724.8L626.8 725.0L625.5 723.8L625.2 722.5L623.2 719.2L622.2 715.5L619.2 710.2L617.2 703.5L616.2 702.2L615.2 698.5L614.2 697.2L613.2 694.5L612.5 694.0ZM581.2 696.5L572.5 694.0L556.2 694.0L554.5 694.5L553.0 696.2L553.0 745.5L553.8 746.5L561.5 746.8L562.5 746.0L562.8 731.2L563.8 730.0L573.5 729.8L579.2 728.2L583.2 726.0L587.0 722.2L589.8 714.5L589.8 709.2L588.2 704.5L586.0 700.5L583.2 697.8ZM563.0 702.5L572.5 702.8L576.2 704.5L578.2 706.5L580.0 710.2L580.0 714.5L579.5 716.2L577.2 719.2L573.5 721.0L564.2 721.0L563.0 720.0L562.8 705.2L562.2 704.2ZM508.2 694.0L503.5 695.5L497.5 698.8L493.8 702.5L490.5 707.5L488.0 714.2L488.0 727.5L489.5 732.2L492.8 738.2L498.5 744.0L502.5 746.2L508.2 747.8L518.5 747.8L526.2 745.0L529.2 743.0L535.0 737.2L537.2 733.2L539.8 724.5L539.8 717.2L537.2 707.5L534.0 702.5L529.2 697.8L525.2 695.5L520.5 694.0ZM515.5 701.8L520.2 703.2L523.8 705.2L527.5 710.5L529.0 716.2L529.0 725.5L527.5 730.2L524.2 735.2L520.2 737.5L515.5 739.0L510.2 739.0L505.5 737.2L503.0 735.5L500.5 732.2L497.8 724.5L497.8 716.2L500.2 709.5L503.5 705.5L507.5 703.2L513.2 701.8ZM450.8 694.2L450.0 695.2L450.2 746.0L451.2 746.8L481.0 746.5L481.8 745.5L481.8 739.2L480.5 738.0L461.2 738.0L460.0 737.0L459.8 695.2L458.5 694.0ZM402.8 694.2L402.0 695.2L402.2 746.0L403.2 746.8L436.0 746.5L436.8 745.5L436.8 739.2L435.5 738.0L413.2 738.0L411.8 736.5L411.8 726.2L412.8 725.0L431.5 724.8L432.8 723.5L432.8 718.2L431.5 717.0L412.8 716.8L411.8 715.5L412.0 703.8L413.2 702.8L434.5 702.8L435.8 701.5L435.5 694.8L434.5 694.0ZM342.8 694.2L342.0 695.2L342.5 697.2L343.5 698.5L344.5 702.2L345.5 703.5L346.5 707.2L347.5 708.5L350.5 717.2L352.5 720.5L353.5 724.2L354.5 725.5L355.5 729.2L356.5 730.5L357.5 734.2L358.5 735.5L361.5 744.2L362.5 745.8L364.0 746.8L370.5 746.8L372.2 745.2L373.2 741.5L374.2 740.2L376.2 733.5L377.2 732.2L379.2 725.5L380.2 724.2L382.2 717.5L383.2 716.2L385.2 709.5L386.2 708.2L388.2 701.5L389.2 700.2L390.8 695.8L390.5 694.8L389.5 694.0L382.0 694.0L380.5 695.0L373.5 716.2L372.5 717.5L368.2 731.0L366.8 732.5L365.5 730.2L365.2 728.5L362.2 719.5L361.2 718.2L359.2 711.5L358.2 710.2L356.2 703.5L355.2 702.2L353.2 695.5L351.5 694.0ZM299.8 694.2L299.0 695.2L299.2 746.0L300.2 746.8L333.0 746.5L333.8 745.5L333.8 739.2L332.5 738.0L311.2 738.0L310.0 737.0L309.8 726.2L310.8 725.0L328.5 724.8L329.8 723.5L329.8 718.2L328.5 717.0L310.8 716.8L309.8 715.5L309.8 704.2L311.2 702.8L332.5 702.8L333.8 701.5L333.5 694.8L332.5 694.0ZM242.5 694.5L241.0 696.2L241.2 746.0L242.2 746.8L265.5 746.8L271.2 745.2L278.2 741.0L283.0 734.2L285.8 726.5L285.8 715.2L284.2 709.5L281.0 703.5L276.2 698.8L272.2 696.5L267.5 695.0L264.2 695.0L261.5 694.0L244.2 694.0ZM252.2 702.8L253.5 702.8L256.2 701.8L261.5 701.8L267.2 703.2L271.2 706.5L274.5 712.5L275.0 716.5L276.0 719.2L276.0 723.5L274.5 729.2L271.2 734.2L265.2 737.5L263.5 738.0L252.2 738.0L250.8 736.5L250.8 704.2Z"/></svg></div>
+<script>
+document.getElementById('form').addEventListener('submit',function(e){e.preventDefault();var f=e.target;
+  for(var i=0;i<f.elements.length;i++){var el=f.elements[i];if(el.required&&!el.value.trim()){el.focus();el.reportValidity&&el.reportValidity();return}if(el.type==='email'&&el.value&&!el.checkValidity()){el.reportValidity();return}}
+  var g=function(n){return (f.elements[n].value||'').trim()};
+  var body=['Name: '+g('first')+' '+g('last'),'Email: '+g('email'),'Phone: '+(g('phone')||'-'),'Company: '+(g('company')||'-'),'Project: '+(g('project')||'-'),'',g('message')].join('\n');
+  location.href='mailto:Derek@DevelopHD.com?subject='+encodeURIComponent('New inquiry from '+g('first')+' '+g('last'))+'&body='+encodeURIComponent(body);
+  f.classList.add('done')});
+</script>
+<script>
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, root=document.documentElement;
+/* page wipe between the three pages */
+var wipe=document.querySelector('.wipe');
+if(root.classList.contains('wipe-in')&&wipe){requestAnimationFrame(function(){requestAnimationFrame(function(){wipe.classList.add('out');setTimeout(function(){root.classList.remove('wipe-in');wipe.classList.remove('out')},1000)})})}
+document.addEventListener('click',function(e){var a=e.target.closest('a');if(!a||reduce||e.metaKey||e.ctrlKey||e.shiftKey||a.target)return;
+  var u=new URL(a.href,location.href);if(u.origin!==location.origin||!/^\/preview\/hd/.test(u.pathname)||u.pathname===location.pathname)return;
+  e.preventDefault();try{sessionStorage.setItem('hd-wipe','1')}catch(_){}wipe.classList.add('go');setTimeout(function(){location.href=a.href},560)});
+addEventListener('pageshow',function(e){if(e.persisted&&wipe){wipe.classList.remove('go');root.classList.remove('wipe-in')}});
+/* reveal on scroll */
+var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+/* site plan: two curving roads with a cul-de-sac and lots on both sides, drawn as thin white lines */
+var NS='http://www.w3.org/2000/svg';
+window.hdPlan=function(svg,opt){opt=opt||{};svg.setAttribute('viewBox','0 0 1600 1000');svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+  var g=document.createElementNS(NS,'g');svg.appendChild(g);
+  var roads=['M-80 640 C 320 560 620 800 980 660 S 1460 380 1700 450','M760 735 C 780 820 800 880 840 930','M1180 560 C 1240 470 1270 360 1260 200 S 1300 40 1360 -60'];
+  var lots=[];
+  roads.forEach(function(d,ri){
+    var p=document.createElementNS(NS,'path');p.setAttribute('d',d);p.setAttribute('class','road');g.appendChild(p);
+    var L=p.getTotalLength(),step=ri?54:62,depth=ri?95:120,half=19;
+    for(var s=40;s<L-30;s+=step){var a=p.getPointAtLength(s),b=p.getPointAtLength(Math.min(L,s+1)),dx=b.x-a.x,dy=b.y-a.y,m=Math.hypot(dx,dy)||1;dx/=m;dy/=m;var nx=-dy,ny=dx;
+      [1,-1].forEach(function(side){if(ri===1&&side===-1&&s<60)return;var w=step*.5-3,o=half+6,pts=[[-w,o],[w,o],[w,o+depth],[-w,o+depth]].map(function(q){return [a.x+dx*q[0]+nx*q[1]*side,a.y+dy*q[0]+ny*q[1]*side]});
+        var poly=document.createElementNS(NS,'polygon');poly.setAttribute('points',pts.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1)}).join(' '));poly.setAttribute('class','lot');g.appendChild(poly);lots.push(poly)})}
+  });
+  var end=document.createElementNS(NS,'circle');end.setAttribute('cx',840);end.setAttribute('cy',950);end.setAttribute('r',46);end.setAttribute('class','road');g.appendChild(end);
+  g.querySelectorAll('.road').forEach(function(r){var L=r.getTotalLength?r.getTotalLength():300;r.style.strokeDasharray=L;r.style.strokeDashoffset=reduce?0:L});
+  lots.forEach(function(l,i){l.style.transitionDelay=(reduce?0:(.6+i*.012))+'s'});
+  return {draw:function(){g.classList.add('drawn');g.querySelectorAll('.road').forEach(function(r){r.style.strokeDashoffset=0})}};
+};
+var css=document.createElement('style');css.textContent='.road{fill:none;stroke:rgba(255,255,255,.34);stroke-width:2;transition:stroke-dashoffset 2.4s cubic-bezier(.3,.6,.2,1)}.lot{fill:none;stroke:rgba(255,255,255,.16);stroke-width:1.2;opacity:0;transition:opacity .6s}.drawn .lot{opacity:1}';document.head.appendChild(css);
+var bandSvg=document.querySelector('[data-plan="band"]');
+if(bandSvg){var bp=hdPlan(bandSvg);var bo=new IntersectionObserver(function(es){if(es[0].isIntersecting){bp.draw();bo.disconnect()}},{threshold:.15});bo.observe(bandSvg)}
+/* nav gets a background once the page scrolls */
+var nav=document.getElementById('nav');function ns(){nav.classList.toggle('solid',scrollY>30)}ns();addEventListener('scroll',ns,{passive:true});
+})();
+</script>
+</body>
+</html>
