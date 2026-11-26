@@ -459,7 +459,7 @@ window.kzGmail = (to, subject = '', body = '') => {
       const st = getComputedStyle(a), vid = a.querySelector('video');
       return { name: a.querySelector('b').textContent.trim(), ind: (a.querySelector('.s-ind') || {}).textContent || '', desc: (a.querySelector('b + span') || {}).textContent || '',
         href: a.getAttribute('href'), ac: st.getPropertyValue('--s1').trim() || '#888', bg: st.getPropertyValue('--s2').trim() || '#111',
-        video: vid ? vid.getAttribute('src') : '', poster: vid ? vid.getAttribute('poster') : '' };
+        video: vid ? vid.getAttribute('src') : '', poster: vid ? vid.getAttribute('poster') : (a.querySelector('img.s-shot') ? a.querySelector('img.s-shot').getAttribute('src') : '') };   // a still photo when there is no clip
     });
     if (demos.length) {
       ss.hidden = false;
