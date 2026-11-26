@@ -29,6 +29,13 @@ h1 em{font-style:normal;opacity:.45}
 .bar i{width:8px;height:8px;border-radius:50%;background:#3a3a3a}
 </style>`;
 const slides = {
+  '0-zs': `<body class="dark" style="background:radial-gradient(60% 140% at 72% 50%,#1c1c1c,#050505 70%)"><div class="grid" style="-webkit-mask-image:radial-gradient(45% 110% at 72% 50%,#000 20%,transparent);mask-image:radial-gradient(45% 110% at 72% 50%,#000 20%,transparent)"></div>
+    <img src="${img(D + '/zs3d.png')}" style="position:absolute;left:790px;top:116px;height:168px;width:auto">
+    <div style="position:absolute;left:1086px;top:130px;display:grid;gap:22px">
+      <img class="wm" src="${img(R + 'wordmark.png')}" style="height:34px;width:auto">
+      <span style="font:600 27px/1 Manrope,sans-serif;letter-spacing:-.01em">Custom websites, <span style="opacity:.55;font-weight:500">built to order.</span></span>
+      <span style="font:600 20px/1 Manrope,sans-serif">Ryder Ziman <span style="opacity:.55;font-weight:500">· Founder</span> &nbsp;·&nbsp; zimansites.com</span>
+    </div></body>`,
   '1-brand': `<body class="dark"><div class="grid"></div>
     <div style="position:absolute;left:420px;top:92px;display:grid;gap:26px">
       <img class="wm" src="${img(R + "wordmark.png")}" style="height:40px;width:auto">
