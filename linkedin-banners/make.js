@@ -29,7 +29,7 @@ h1 em{font-style:normal;opacity:.45}
 .bar i{width:8px;height:8px;border-radius:50%;background:#3a3a3a}
 </style>`;
 const slides = {
-  '0-zs': `<body class="dark" style="background:radial-gradient(60% 140% at 72% 50%,#1c1c1c,#050505 70%)"><div class="grid" style="-webkit-mask-image:radial-gradient(45% 110% at 72% 50%,#000 20%,transparent);mask-image:radial-gradient(45% 110% at 72% 50%,#000 20%,transparent)"></div>
+  '0-zs': `<body class="dark"><div class="grid"></div>
     <img src="${img(D + '/zs3d.png')}" style="position:absolute;left:790px;top:116px;height:168px;width:auto">
     <div style="position:absolute;left:1086px;top:130px;display:grid;gap:22px">
       <img class="wm" src="${img(R + 'wordmark.png')}" style="height:34px;width:auto">
