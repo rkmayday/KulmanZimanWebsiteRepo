@@ -1,4 +1,4 @@
-// Whop profile banner: same design as the single LinkedIn banner, 3:1 (1500x500), rendered at 2x.
+// Whop profile banner: same design as the single LinkedIn banner, 3:1 (1500x500), rendered at 3x.
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const D = __dirname, R = '/home/user/kulmanzimanwebsiterepo/assets/';
@@ -25,7 +25,7 @@ const html = base + `<style>
   <span class="lbl" style="left:760px;top:424px">Live samples at zimansites.com/portfolio</span>
 </body>`;
 (async () => {
-  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1500, height: 500 }, deviceScaleFactor: 2 });
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1500, height: 500 }, deviceScaleFactor: 3 });
   await p.setContent(html, { waitUntil: 'networkidle' }); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(300);
   await p.screenshot({ path: path.join(D, 'ziman-sites-whop-banner.png') }); await b.close();
 })();
