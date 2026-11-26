@@ -55,10 +55,12 @@ const slides = {
       <h1 style="font-size:54px">See the work<br><em>before you pay for it.</em></h1>
       <span class="url" style="opacity:.75">zimansites.com/portfolio</span>
     </div>
-    <div class="shot" style="left:1070px;top:62px;width:280px;height:175px;transform:rotate(-6deg);opacity:.85"><img src="${img(R + 'shots/ember-roast.jpg')}"></div>
-    <div class="shot" style="left:1270px;top:58px;width:280px;height:175px;transform:rotate(6deg);opacity:.85"><img src="${img(R + 'shots/deduction.jpg')}"></div>
-    <div class="shot" style="left:1090px;top:142px;width:300px;height:188px;transform:rotate(-2deg)"><img src="${img(R + 'shots/afterglow.jpg')}"></div>
-    <div class="shot" style="left:1240px;top:134px;width:300px;height:188px;transform:rotate(3deg)"><img src="${img(R + 'shots/synthra.jpg')}"></div>
+    <div class="shot" style="left:985px;top:42px;width:200px;height:125px;transform:rotate(-6deg);opacity:.7"><img src="${img(R + 'shots/afterglow.jpg')}"></div>
+    <div class="shot" style="left:1135px;top:26px;width:200px;height:125px;transform:rotate(-2deg);opacity:.7"><img src="${img(R + 'shots/ember-roast.jpg')}"></div>
+    <div class="shot" style="left:1225px;top:28px;width:200px;height:125px;transform:rotate(2deg);opacity:.7"><img src="${img(R + 'shots/deduction.jpg')}"></div>
+    <div class="shot" style="left:1365px;top:42px;width:200px;height:125px;transform:rotate(6deg);opacity:.7"><img src="${img(R + 'shots/ironpath.jpg')}"></div>
+    <div class="shot" style="left:1020px;top:150px;width:285px;height:178px;transform:rotate(-3deg)"><img src="${img(R + 'shots/aurel.jpg')}"></div>
+    <div class="shot" style="left:1280px;top:156px;width:285px;height:178px;transform:rotate(3deg)"><img src="${img(R + 'shots/synthra.jpg')}"></div>
     </body>`,
   '4-offer': `<body class="dark"><div class="grid"></div>
     <div style="position:absolute;left:420px;top:86px;display:grid;gap:28px">
