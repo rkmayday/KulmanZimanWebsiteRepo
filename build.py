@@ -295,6 +295,9 @@ PHOTOS = [   # (page and file name, description, width, height): files in static
 
 
 def photo_page(slug, alt, w, h):
+    n = slug.split("-")[2]   # the page number
+    # plain titles ("Photo 1"): the name lives in the photo itself (file name, description, caption), so the photo shows
+    # in Google Images for the name without the page competing with the main pages in the All results
     img = f"/images/ryder-ziman/{slug}.jpg"
     ld = json.dumps({"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": SITE + img, "name": alt,
                      "description": alt + ", founder of Ziman Sites.",
@@ -306,8 +309,8 @@ def photo_page(slug, alt, w, h):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ryder Ziman | Founder of Ziman Sites</title>
-<meta name="description" content="{alt}. Ryder Ziman is the founder of Ziman Sites, which builds custom, interactive websites.">
+<title>Photo {n}</title>
+<meta name="description" content="Photo {n} from Ziman Sites.">
 <link rel="canonical" href="{SITE}/{slug}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
