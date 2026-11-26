@@ -13,7 +13,7 @@ s = (R / "sports-culture/index.html").read_text()
 
 BAR = ('<div id="wsb" style="position:sticky;top:0;z-index:200;background:#0a0a0a;color:#fff;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;'
        'font:500 13px/1.4 system-ui,sans-serif;padding:9px 14px;border-bottom:1px solid #222">'
-       '<span><b>Built by Ziman Sites</b> · Sports Culture, as launched</span>'
+       '<span><b>Preview by Ziman Sites</b> · Not the real Sports Culture site · A copy of what we built, as launched</span>'
        '<a href="https://sportsculturehq.com" target="_blank" rel="noopener" style="color:#fff">Visit the live site ↗</a>'
        '<a href="/portfolio" style="color:#bbb">← Portfolio</a></div>\n'
        "<script>(() => { const b = document.getElementById('wsb'), f = () => document.documentElement.style.setProperty('--bh', b.offsetHeight + 'px'); f(); addEventListener('resize', f); addEventListener('load', f); })();</script>\n")
