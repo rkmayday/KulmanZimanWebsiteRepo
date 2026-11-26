@@ -49,13 +49,17 @@ const slides = {
       <span class="url" style="opacity:.75">Scroll-driven animation, built from scratch.</span>
     </div>
     <div class="shot" style="left:1040px;top:34px;width:500px;height:334px"><div class="bar"><i></i><i></i><i></i></div><img src="${img(R + "shots/aurel.jpg")}" style="height:312px"></div></body>`,
-  '3-client': `<body class="dark"><div class="grid"></div>
-    <div style="position:absolute;left:420px;top:104px;display:grid;gap:20px;width:560px">
-      <span class="mono">Client work</span>
-      <h1>Built for <em>Sports Culture.</em></h1>
-      <span class="url" style="opacity:.75">sportsculturehq.com</span>
+  '3-work': `<body class="dark"><div class="grid"></div>
+    <div style="position:absolute;left:420px;top:108px;display:grid;gap:20px;width:640px">
+      <span class="mono">Ziman Sites · Portfolio</span>
+      <h1 style="font-size:54px">See the work<br><em>before you pay for it.</em></h1>
+      <span class="url" style="opacity:.75">zimansites.com/portfolio</span>
     </div>
-    <div class="shot" style="left:1040px;top:34px;width:500px;height:334px"><div class="bar"><i></i><i></i><i></i></div><img src="${img(D + "/sc.png")}" style="height:312px"></div></body>`,
+    <div class="shot" style="left:1070px;top:62px;width:280px;height:175px;transform:rotate(-6deg);opacity:.85"><img src="${img(R + 'shots/ember-roast.jpg')}"></div>
+    <div class="shot" style="left:1270px;top:58px;width:280px;height:175px;transform:rotate(6deg);opacity:.85"><img src="${img(R + 'shots/deduction.jpg')}"></div>
+    <div class="shot" style="left:1090px;top:142px;width:300px;height:188px;transform:rotate(-2deg)"><img src="${img(R + 'shots/afterglow.jpg')}"></div>
+    <div class="shot" style="left:1240px;top:134px;width:300px;height:188px;transform:rotate(3deg)"><img src="${img(R + 'shots/synthra.jpg')}"></div>
+    </body>`,
   '4-offer': `<body class="dark"><div class="grid"></div>
     <div style="position:absolute;left:420px;top:86px;display:grid;gap:28px">
       <span class="mono" style="opacity:.55">How it works</span>
