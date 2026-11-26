@@ -37,7 +37,7 @@ const opts = {
     return tile(n, 1160, 96, 210, 131, `transform-origin:50% 260%;transform:rotate(${a}deg);z-index:${n === 'aurel' ? 11 : front ? 10 : 5 - Math.abs(i - 2.5)};${front ? '' : 'filter:brightness(.7)'}`);
   }).join(''),
   // D: a laptop-style window for Aurel and a phone for Synthra, the other four named underneath
-  'D-desktop-phone': win('aurel', 1000, 44, 420, 262) + `<div class="phone" style="left:1374px;top:60px;width:182px;height:308px"><img src="data:image/jpeg;base64,${fs.readFileSync(path.join(D, 'synthra-phone.jpg')).toString('base64')}" style="object-position:center top"></div>` +
+  'D-desktop-phone': win('aurel', 1000, 44, 420, 262) + `<div class="phone" style="left:1388px;top:92px;width:146px;height:280px"><img src="data:image/jpeg;base64,${fs.readFileSync(path.join(D, 'synthra-phone.jpg')).toString('base64')}" style="object-position:center top"></div>` +
     `<span class="lbl" style="left:1000px;top:334px">+ Afterglow · Ember Roast · Facet · Ironpath</span>`,
   // E: a diagonal cascade, back to front, ending with Synthra then Aurel in front
   'E-cascade': ['ironpath', 'deduction', 'ember-roast', 'afterglow', 'synthra', 'aurel'].map((n, i) => {
