@@ -79,12 +79,13 @@ const slides = {
       <h1>Ryder Ziman</h1>
       <span class="url" style="opacity:.75">Founder of Ziman Sites · zimansites.com</span>
     </div>
-    <div class="shot" style="left:1250px;top:34px;width:270px;height:328px;border-radius:18px"><img src="${img(R + "ryder-ziman.jpg")}"></div></body>`,
+    <div class="shot" style="left:1250px;top:34px;width:270px;height:328px;border-radius:18px"><img src="${img(D + "/ryder-founder.jpg")}" style="object-position:center"></div></body>`,
 };
 (async () => {
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1584, height: 396 }, deviceScaleFactor: 2 });
   for (const [name, html] of Object.entries(slides)) {
+    if (process.env.ONLY && name !== process.env.ONLY) continue;
     await p.setContent(base + html, { waitUntil: 'networkidle' });
     await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(300);
     await p.screenshot({ path: path.join(D, name + '@2x.png') });
