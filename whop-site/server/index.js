@@ -31,6 +31,13 @@ export default {
       const page = await env.ASSETS.fetch(new Request(new URL(path + '.html', url), request));
       if (page.status === 200) return page;
     }
-    return env.ASSETS.fetch(request);
+    const res = await env.ASSETS.fetch(request);
+    // files under /assets/ linked with ?v=<hash> change their address whenever they change, so browsers can keep them for a year
+    if (res.status === 200 && path.startsWith('/assets/') && url.searchParams.has('v')) {
+      const r = new Response(res.body, res);
+      r.headers.set('cache-control', 'public, max-age=31536000, immutable');
+      return r;
+    }
+    return res;
   }
 };

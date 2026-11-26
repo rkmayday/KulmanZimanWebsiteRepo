@@ -163,6 +163,9 @@ EMAIL = "ryder@zimansites.com"
 THREE = "/assets/three.min.js"  # self-hosted Three.js r128, no third-party CDN to fail
 FONTS = ("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800"
          "&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap")
+# The same fonts, served from our own site (latin + latin-ext files in assets/fonts, other alphabets still from Google):
+# no extra connection to Google before the text can show. Made from the Google CSS for FONTS above.
+FONTFACE = (pathlib.Path(__file__).parent / "assets/fonts/fonts.css").read_text()
 # Pages that live on the current site but are not part of this rebuild
 EXTERNAL = {}
 
@@ -379,9 +382,7 @@ def head_tags(meta):
 <meta name="twitter:image" content="{SITE}/og-kz.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{ICON}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="{FONTS}" rel="stylesheet">
+<style>{FONTFACE}</style>
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add('js')</script>
 <script>/* page transition: arriving from another page of the site, this one fades in */
@@ -488,6 +489,8 @@ def gmail_links(html):
 
 def relativize(html):
     """Preview mode: flat files and relative links (index.html, products.html, assets/...)."""
+    # the preview keeps loading the fonts from Google (our own font files are addressed from the site root)
+    html = html.replace(f"<style>{FONTFACE}</style>", f'<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="{FONTS}" rel="stylesheet">')
     def fix(m):
         attr, url = m.group(1), m.group(2)
         path, _, frag = url.partition("#")
