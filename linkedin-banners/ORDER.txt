@@ -1,0 +1,8 @@
+LinkedIn banner slideshow, in order (each 1584 x 396):
+1-zs.png        your current banner (3D ZS, Ziman Sites, Ryder Ziman · Founder)
+2-aurel.png     "Websites that move" with the Aurel sample
+3-client.png    "Built for Sports Culture"
+4-offer.png     $284 · 3 rounds · 0 templates · 100% refund if we miss it
+5-founder.png   Ryder Ziman with photo
+extra-brand-text.png   a text-only brand banner, if you want to swap one out
+Re-make them with: node make.js (needs Playwright)
