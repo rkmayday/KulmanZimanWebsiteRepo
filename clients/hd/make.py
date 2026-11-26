@@ -1,4 +1,5 @@
 # HD Development redesign concept (for Derek / develophd.com): 3 pages with the same content as the current Wix site.
+# Home intro: the HD is staked out on a tilted site plan, built floor by floor, then the camera swings round to face it.
 # Writes static/preview/hd.html, hd-company.html, hd-contact.html (noindex). The HD logo is traced from the
 # original PNG (src/contours.json, made with OpenCV) so it can draw itself and zoom without blurring.
 import json, pathlib
@@ -31,7 +32,7 @@ HEAD = '''<!doctype html>
 <link rel="icon" href="/preview/hd-img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hd-wipe')==='1'){document.documentElement.classList.add('wipe-in');sessionStorage.removeItem('hd-wipe')}}catch(e){}</script>
+<script>document.documentElement.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro-run');setTimeout(function(){if(!window.hdIntro)document.documentElement.classList.remove('intro-run')},2500)}try{if(sessionStorage.getItem('hd-wipe')==='1'){document.documentElement.classList.add('wipe-in');sessionStorage.removeItem('hd-wipe')}}catch(e){}</script>
 <style>
 :root{--paper:#f3f5f4;--paper2:#e9eeec;--navy:#0f293e;--green:#0c3536;--deep:#071a24;--ink:#0f293e;--mut:#5a6b70;--line:rgba(15,41,62,.09);--line2:rgba(15,41,62,.18);--mint:#9fd5c4;
   --display:"Archivo",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
@@ -204,11 +205,37 @@ HOME_CSS = '''
 .shine{fill:url(#shine);opacity:0}
 .drawn .shine{animation:shine 1.4s .5s cubic-bezier(.4,0,.2,1)}
 @keyframes shine{0%{opacity:1;transform:translateX(-700px)}100%{opacity:1;transform:translateX(700px)}}
+/* intro: the HD is staked out on a tilted site plan, built floor by floor, then the camera swings round to face it */
+.build{position:absolute;inset:0;perspective:1700px;perspective-origin:50% 42%;pointer-events:none;z-index:2}
+.rig{position:absolute;left:50%;top:50%;transform-style:preserve-3d;will-change:transform}
+.rig>*{position:absolute;inset:0}
+.rig svg{width:100%;height:100%;overflow:visible}
+.ground{inset:auto;background-image:linear-gradient(rgba(15,41,62,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(15,41,62,.13) 1px,transparent 1px);
+  -webkit-mask-image:radial-gradient(closest-side,#000 40%,transparent);mask-image:radial-gradient(closest-side,#000 40%,transparent)}
+.plot{fill:none;stroke:var(--navy);stroke-width:1.4;stroke-linejoin:round}
+.plotfill{fill:rgba(15,41,62,.05)}
+.stake circle{fill:var(--paper);stroke:var(--navy);stroke-width:1.2}
+.stake path{stroke:var(--navy);stroke-width:1}
+.stake text{font:500 9px var(--mono);letter-spacing:.14em;fill:var(--navy);opacity:.75}
+.stake{opacity:0;transform-box:fill-box;transform-origin:center}
+.shadow{filter:blur(14px);opacity:0}
+.shadow path{fill:#071a24}
+.floors{transform-style:preserve-3d}.floor{position:absolute;inset:0;opacity:0;will-change:transform,opacity}
+.floor use{fill:#0b2232}
+.floor.slab use{fill:#2c5a63}
+.floor.top use{fill:url(#gface)}
+.floor.top .edge{fill:none;stroke:rgba(159,213,196,.9);stroke-width:1.3;opacity:0}
+.built .fill{opacity:1;transition:none}
+.js .front .lines{transition:opacity 1s}
+.intro-run #cam{opacity:0}
+.intro-run .front{background-color:var(--paper)}
+.built .lines{animation:fin 1s}@keyframes fin{from{opacity:0}}
+.front .dims{transition:opacity .6s}
 .hint{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translateX(-50%);display:grid;justify-items:center;gap:10px;color:var(--navy);opacity:0;transition:opacity .8s}
 .hint i{width:1px;height:38px;background:linear-gradient(var(--navy),transparent);animation:drip 1.8s infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 .ready .hint{opacity:.7}
-@media (prefers-reduced-motion:reduce){.intro{height:auto}.stage{position:relative;height:auto;min-height:100svh}.front{display:none}.scene{position:relative;min-height:100svh;padding-top:120px}.scene h1 .ln span,.scene .k,.scene p,.scene .btn{transform:none;opacity:1}.hint{display:none}}
+@media (prefers-reduced-motion:reduce){.build{display:none}.intro{height:auto}.stage{position:relative;height:auto;min-height:100svh}.front{display:none}.scene{position:relative;min-height:100svh;padding-top:120px}.scene h1 .ln span,.scene .k,.scene p,.scene .btn{transform:none;opacity:1}.hint{display:none}}
 '''
 
 def home():
@@ -233,7 +260,7 @@ def home():
     <g id="cover"><path class="paper" d="{COUNTER}"/><path class="lines" d="{COUNTER}"/></g>
     {dims}
     <path class="fill" fill="url(#gh)" fill-rule="evenodd" d="{HD}"/>
-    <rect class="shine" x="241" y="234" width="572" height="393" clip-path="url(#hdclip)"/>
+    <g clip-path="url(#hdclip)"><rect class="shine" x="241" y="234" width="572" height="393"/></g>
     <path class="outline" id="outline" fill-rule="evenodd" d="{HD}"/>
     <g class="letters" fill="#0c3536">{"".join(f'<path fill-rule="evenodd" d="{d}" style="transition-delay:{n*45}ms"/>' for n, d in enumerate(GLYPHS))}</g>
   </g>
@@ -252,6 +279,18 @@ def home():
       </div>
     </div>
     {front}
+    <div class="build" id="build" aria-hidden="true">
+      <svg width="0" height="0" style="position:absolute"><defs>
+        <path id="hdP" fill-rule="evenodd" d="{HD}"/>
+        <linearGradient id="gface" x1="241" x2="813" gradientUnits="userSpaceOnUse"><stop offset=".36" stop-color="#0f293e"/><stop offset=".56" stop-color="#0c3536"/></linearGradient>
+      </defs></svg>
+      <div class="rig" id="rig">
+        <div class="ground" id="ground"><svg id="gsvg"><path class="plotfill" fill-rule="evenodd" d="{HD}"/><path class="plot" id="plot" fill-rule="evenodd" d="{HD}"/>
+          <g class="stake"><path d="M233 236h18M242 227v18"/><circle cx="242" cy="236" r="3.2"/><text x="249" y="229">P01</text></g><g class="stake"><path d="M234 626h18M243 617v18"/><circle cx="243" cy="626" r="3.2"/><text x="250" y="619">P02</text></g><g class="stake"><path d="M311 626h18M320 617v18"/><circle cx="320" cy="626" r="3.2"/><text x="327" y="619">P03</text></g><g class="stake"><path d="M312 462h18M321 453v18"/><circle cx="321" cy="462" r="3.2"/><text x="328" y="455">P04</text></g><g class="stake"><path d="M448 463h18M457 454v18"/><circle cx="457" cy="463" r="3.2"/><text x="464" y="456">P05</text></g><g class="stake"><path d="M449 627h18M458 618v18"/><circle cx="458" cy="627" r="3.2"/><text x="465" y="620">P06</text></g><g class="stake"><path d="M596 627h18M605 618v18"/><circle cx="605" cy="627" r="3.2"/><text x="612" y="620">P07</text></g><g class="stake"><path d="M786 414h18M795 405v18"/><circle cx="795" cy="414" r="3.2"/><text x="802" y="407">P08</text></g><g class="stake"><path d="M620 236h18M629 227v18"/><circle cx="629" cy="236" r="3.2"/><text x="636" y="229">P09</text></g><g class="stake"><path d="M449 235h18M458 226v18"/><circle cx="458" cy="235" r="3.2"/><text x="465" y="228">P10</text></g><g class="stake"><path d="M312 386h18M321 377v18"/><circle cx="321" cy="386" r="3.2"/><text x="328" y="379">P11</text></g><g class="stake"><path d="M529 310h18M538 301v18"/><circle cx="538" cy="310" r="3.2"/><text x="545" y="303">P12</text></g><g class="stake"><path d="M529 550h18M538 541v18"/><circle cx="538" cy="550" r="3.2"/><text x="545" y="543">P13</text></g></svg></div>
+        <div class="shadow" id="shadow"><svg viewBox="241 234.5 572 393"><path fill-rule="evenodd" d="{HD}"/></svg></div>
+        <div class="floors" id="floors"></div>
+      </div>
+    </div>
     <div class="hint"><span class="mono">Scroll</span><i></i></div>
   </div>
 </section>
@@ -267,17 +306,51 @@ var LC=[527,431],CC=[626,431],LW=572,LH=393,CW=178,CH=242;  /* logo (H+D) centre
 var vw,vh,k,smax;
 function size(){vw=innerWidth;vh=innerHeight;k=Math.min(.74*vw/LW,.42*vh/LH);front.setAttribute('viewBox',(-vw/2/k)+' '+(-vh/2/k)+' '+(vw/k)+' '+(vh/k));smax=2.4*Math.max(vw/(CW*k),vh/(CH*k))}
 size();addEventListener('resize',function(){size();frame()});
-/* 1. the logo draws itself */
+/* 1. intro: stake out the plot on a tilted site plan, build the HD floor by floor, swing the camera round to face it */
 var ol=document.getElementById('outline'),L=ol.getTotalLength();
-var dims=front.querySelectorAll('.dim');
-if(reduce){scene.classList.add('on');plan.draw();return}
-ol.style.strokeDasharray=L;ol.style.strokeDashoffset=L;
-dims.forEach(function(d){var l=d.getTotalLength();d.style.strokeDasharray=d.classList.contains('d4')?'':l;if(!d.classList.contains('d4'))d.style.strokeDashoffset=l;d.style.transition='stroke-dashoffset 1.4s cubic-bezier(.3,.6,.2,1)'});
-ol.getBoundingClientRect();
-ol.style.transition='stroke-dashoffset 2s cubic-bezier(.45,.1,.2,1)';
-requestAnimationFrame(function(){ol.style.strokeDashoffset=0;dims.forEach(function(d){d.style.strokeDashoffset=0})});
-setTimeout(function(){front.classList.add('drawn')},1700);
-setTimeout(function(){root.classList.add('ready')},2600);
+var dims=front.querySelectorAll('.dim'),build=document.getElementById('build');
+if(reduce){build.remove();root.classList.remove('intro-run');nav.classList.add('dark');scene.classList.add('on');plan.draw();return}
+dims.forEach(function(d){var l=d.getTotalLength();if(!d.classList.contains('d4')){d.style.strokeDasharray=l;d.style.strokeDashoffset=l}d.style.transition='stroke-dashoffset 1.4s cubic-bezier(.3,.6,.2,1)'});
+var rig=document.getElementById('rig'),ground=document.getElementById('ground'),gsvg=document.getElementById('gsvg'),shadow=document.getElementById('shadow'),fl=document.getElementById('floors');
+var plot=document.getElementById('plot'),PL=plot.getTotalLength(),stakes=[].slice.call(build.querySelectorAll('.stake'));
+var N=matchMedia('(max-width:700px)').matches?18:26,floors=[];
+for(var i=0;i<N;i++){var f=document.createElement('div');f.className='floor'+(i===N-1?' top':i%4===3?' slab':'');
+  f.innerHTML='<svg viewBox="241 234.5 572 393"><use href="#hdP"/>'+(i===N-1?'<use class="edge" href="#hdP"/>':'')+'</svg>';fl.appendChild(f);floors.push(f)}
+var edge=floors[N-1].querySelector('.edge');
+plot.style.strokeDasharray=PL;plot.style.strokeDashoffset=PL;
+root.classList.add('intro-run');window.hdIntro=1;
+var GM=1.6; /* the ground reaches this far past the logo on each side */
+function place(){var w=LW*k,h=LH*k;rig.style.width=w+'px';rig.style.height=h+'px';rig.style.marginLeft=-w/2+'px';rig.style.marginTop=-h/2+'px';
+  var gw=w*(1+2*GM),gh=h*(1+2*GM);ground.style.width=gw+'px';ground.style.height=gh+'px';ground.style.left=-w*GM+'px';ground.style.top=-h*GM+'px';
+  gsvg.setAttribute('viewBox',(241-LW*GM)+' '+(234.5-LH*GM)+' '+(LW*(1+2*GM))+' '+(LH*(1+2*GM)));
+  var g=44*k;ground.style.backgroundSize=g+'px '+g+'px';ground.style.backgroundPosition=(-((241-LW*GM)*k)%g)+'px '+(-((234.5-LH*GM)*k)%g)+'px'}
+place();addEventListener('resize',place);
+function E(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}function O(t){return 1-Math.pow(1-t,3)}function B(t){var c=1.6;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)}
+var seen=false;try{seen=sessionStorage.getItem('hd-intro')==='1';sessionStorage.setItem('hd-intro','1')}catch(e){}
+var T_DRAW=200,T_RISE=1450,T_TURN=2750,T_END=4000,t0=null,skip=seen?T_RISE+N*38:0,done=false;
+function render(t){
+  var depth=LH*k*.2,gap=depth/(N-1);
+  /* camera: high and to the side, drifting, then swinging round to face the logo */
+  var turn=E(cl((t-T_TURN)/(T_END-T_TURN))),drift=cl(t/T_TURN);
+  var ax=64*(1-turn),az=(-32+9*drift)*(1-turn),sc=.8+.2*turn,ty=k*40*(1-turn);
+  rig.style.transform='translateY('+ty+'px) rotateX('+ax+'deg) rotateZ('+az+'deg) scale('+sc+')';
+  build.style.opacity=cl(t/350);
+  /* stake out: points pop in, the boundary is surveyed between them */
+  plot.style.strokeDashoffset=PL*(1-O(cl((t-T_DRAW-250)/1100)));
+  stakes.forEach(function(st,i){var a=cl((t-T_DRAW-i*70)/260);st.style.opacity=a*(1-cl((t-T_TURN)/500));st.style.transform='scale('+(.4+.6*B(a))+')'});
+  ground.style.opacity=1-cl((t-T_TURN-300)/800);
+  /* build: each floor is set down on the one below; the walls flatten as the camera comes round */
+  var flat=1-E(cl((t-T_TURN-450)/(T_END-T_TURN-450)));
+  floors.forEach(function(f,i){var a=cl((t-T_RISE-i*38)/220),drop=(1-O(a))*gap*6;f.style.opacity=a>0?1:0;f.style.transform='translateZ('+((i*gap+drop)*flat)+'px)'});
+  var h=cl((t-T_RISE)/(N*38+200))*flat;shadow.style.opacity=.32*h*(1-turn*.9);shadow.style.transform='translate('+(h*depth*.5)+'px,'+(h*depth*.35)+'px)';
+  edge.style.opacity=cl((t-T_RISE-N*38)/250)*(1-cl((t-T_TURN-200)/600));
+  if(t>=T_END&&!done){done=true;root.classList.remove('intro-run');front.classList.add('built');build.style.display='none';ol.style.strokeDasharray='';front.classList.add('drawn');dims.forEach(function(d){d.style.strokeDashoffset=0});setTimeout(function(){root.classList.add('ready')},600)}
+}
+function loop(now){if(t0===null)t0=now-skip;var t=now-t0;render(Math.min(t,T_END));if(t<T_END)requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+/* any attempt to move on finishes the intro at once */
+function hurry(){if(!done&&t0!==null)t0=-1e9}
+['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){addEventListener(ev,hurry,{passive:true,once:true})});
 /* 2. scrolling flies through the hole of the D into the next scene */
 function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
 function cl(x){return x<0?0:x>1?1:x}

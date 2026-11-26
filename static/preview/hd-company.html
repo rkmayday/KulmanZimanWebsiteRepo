@@ -9,7 +9,7 @@
 <link rel="icon" href="/preview/hd-img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add('js');try{if(sessionStorage.getItem('hd-wipe')==='1'){document.documentElement.classList.add('wipe-in');sessionStorage.removeItem('hd-wipe')}}catch(e){}</script>
+<script>document.documentElement.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro-run');setTimeout(function(){if(!window.hdIntro)document.documentElement.classList.remove('intro-run')},2500)}try{if(sessionStorage.getItem('hd-wipe')==='1'){document.documentElement.classList.add('wipe-in');sessionStorage.removeItem('hd-wipe')}}catch(e){}</script>
 <style>
 :root{--paper:#f3f5f4;--paper2:#e9eeec;--navy:#0f293e;--green:#0c3536;--deep:#071a24;--ink:#0f293e;--mut:#5a6b70;--line:rgba(15,41,62,.09);--line2:rgba(15,41,62,.18);--mint:#9fd5c4;
   --display:"Archivo",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
