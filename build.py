@@ -294,6 +294,17 @@ PHOTOS = [   # (page and file name, description, width, height): files in static
 ]
 
 
+SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi feel)
+    "Caught on camera. Exclusive shot.",
+    "Spotted. No comment from the subject.",
+    "Snapped mid-smile. Unreleased photo.",
+    "Off duty and caught on film.",
+    "Caught in the moment. Exclusive.",
+    "Spotted together. Sources confirm.",
+    "Rare photo surfaces.",
+]
+
+
 def photo_page(slug, alt, w, h):
     n = slug.split("-")[2]   # the page number
     # plain titles ("Photo 1"): the name lives in the photo itself (file name, description, caption), so the photo shows
@@ -310,7 +321,7 @@ def photo_page(slug, alt, w, h):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Photo {n}</title>
-<meta name="description" content="Photo {n} from Ziman Sites.">
+<meta name="description" content="{SNAP[int(n) - 1] if int(n) <= len(SNAP) else SNAP[-1]}">
 <link rel="canonical" href="{SITE}/{slug}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
