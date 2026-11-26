@@ -66,9 +66,9 @@
       uInk: { value: new T.Color(light ? 0xffffff : 0x0a0a0a) }, uAlpha: { value: shape === 'fireflies' ? .5 : shape === 'helix' ? 1 : .95 } };
     const mat = new T.ShaderMaterial({ uniforms: U, vertexShader: VS, fragmentShader: FS, transparent: true, depthWrite: false, blending: T.NormalBlending });
     const pts = new T.Points(geo, mat), group = new T.Group(); group.add(pts);
-    // the helix also gets its strands' rungs: a hair-thin line through the points in order
-    if (shape === 'helix') { const lm = new T.ShaderMaterial({ uniforms: U, vertexShader: VS, transparent: true, depthWrite: false,
-      fragmentShader: 'uniform vec3 uInk; uniform float uAlpha; varying float vA; void main(){ gl_FragColor = vec4(uInk, vA * uAlpha * .12); }' }); group.add(new T.Line(geo, lm)); }
+    // the helix gets its strands' rungs, and the sphere its spiral (like the Home sphere): a hair-thin line through the points in order
+    if (shape === 'helix' || shape === 'sphere') { const lm = new T.ShaderMaterial({ uniforms: U, vertexShader: VS, transparent: true, depthWrite: false,
+      fragmentShader: 'uniform vec3 uInk; uniform float uAlpha; varying float vA; void main(){ gl_FragColor = vec4(uInk, vA * uAlpha * ' + (shape === 'sphere' ? '.16' : '.12') + '); }' }); group.add(new T.Line(geo, lm)); }
     const scene = new T.Scene(); scene.add(group);
     const cam = new T.PerspectiveCamera(36, 1, 1, 1000); cam.position.set(0, 0, 130);
     const canvas = document.createElement('canvas'); el.append(canvas);
