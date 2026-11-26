@@ -49,7 +49,7 @@ const slides = {
       <span class="url" style="opacity:.75">sportsculturehq.com</span>
     </div>
     <div class="shot" style="left:1040px;top:34px;width:500px;height:334px"><div class="bar"><i></i><i></i><i></i></div><img src="${img(D + "/sc.png")}" style="height:312px"></div></body>`,
-  '4-offer': `<body class="light"><div class="grid"></div>
+  '4-offer': `<body class="dark"><div class="grid"></div>
     <div style="position:absolute;left:420px;top:86px;display:grid;gap:28px">
       <span class="mono" style="opacity:.55">How it works</span>
       <div style="display:flex;gap:54px;align-items:flex-end">
