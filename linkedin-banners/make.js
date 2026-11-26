@@ -12,7 +12,7 @@ const base = `
 *{box-sizing:border-box;margin:0}
 html,body{width:1584px;height:396px;overflow:hidden}
 body{font-family:Manrope,sans-serif;-webkit-font-smoothing:antialiased;position:relative}
-.dark{background:#0b0b0b;color:#fff}
+.dark{background:radial-gradient(ellipse 56% 110% at 72% 50%,#282828 0%,#171717 40%,#0e0e0e 66%,#060606 92%);color:#fff}   /* the dark-grey glow of the original Nov 13 banner */
 .light{background:#fff;color:#0b0b0b}
 .grid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/44px 44px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/44px 44px;
   -webkit-mask-image:radial-gradient(70% 120% at 70% 50%,#000 30%,transparent);mask-image:radial-gradient(70% 120% at 70% 50%,#000 30%,transparent)}
