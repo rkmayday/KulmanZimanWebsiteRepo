@@ -37,6 +37,7 @@ def logo_svg(inner, w, h, cls, label, uid):
 
 def texture(dst):
     (dst / 'img').mkdir(parents=True, exist_ok=True)
+    shutil.copy(HERE / 'bg.webp', dst / 'img' / 'bg.webp')
     shutil.copy(CL / 'made-construction' / 'img' / 'texture.webp', dst / 'img' / 'texture.webp')
 
 # ---- Nov 27: all three are one screen, laid out like Jason's own mockups (card-page.html) ----
@@ -47,10 +48,13 @@ LI = ('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="
 LINKEDIN = 'https://www.linkedin.com/in/madecon/'
 
 def neg_filter(uid, w, h, pad=40):
-    return (f'<filter id="neg{uid}" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="{-pad}" y="{-pad}" width="{w + 2 * pad:.0f}" height="{h + 2 * pad:.0f}">'
-            '<feMorphology in="SourceAlpha" operator="erode" radius="4.5" result="e"/>'
-            '<feComposite in="SourceAlpha" in2="e" operator="out" result="o"/>'
-            '<feFlood flood-color="#e2e2e8"/><feComposite in2="o" operator="in"/></filter>')
+    """two outline filters in Jason's gray: 'neg' for the big word, 'neg2' (thinner) for the small word under it"""
+    def one(fid, r):
+        return (f'<filter id="{fid}" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="{-pad}" y="{-pad}" width="{w + 2 * pad:.0f}" height="{h + 2 * pad:.0f}">'
+                f'<feMorphology in="SourceAlpha" operator="erode" radius="{r}" result="e"/>'
+                '<feComposite in="SourceAlpha" in2="e" operator="out" result="o"/>'
+                '<feFlood flood-color="#9c9ca3"/><feComposite in2="o" operator="in"/></filter>')
+    return one(f'neg{uid}', 4.5) + one(f'negs{uid}', 1.6)
 
 def lockup(uid, label, rows):
     """rows: [(text, 'neg'|'solid', scale_to_first_width)] stacked, left-aligned"""
@@ -58,10 +62,13 @@ def lockup(uid, label, rows):
     for i, (text, kind, fit) in enumerate(rows):
         letters, w = L.line(text)
         if W is None: W = w
-        k = (W / w) if fit else 1.0
+        target = L.line(fit)[1] if isinstance(fit, str) else (W if fit else None)   # fit='mad': as wide as "MAD"
+        k = (target / w) if target else 1.0
         g = L.group(letters, kind, f' transform="translate(0 {y:.2f}) scale({k:.5f})"')
         g = stagger(g, start=i * .35)
-        parts.append(f'<g filter="url(#neg{uid})">{g}</g>' if kind == 'neg' else g)
+        if kind == 'neg': g = f'<g filter="url(#neg{uid})">{g}</g>'
+        elif kind == 'neg2': g = f'<g filter="url(#negs{uid})">{g}</g>'
+        parts.append(g)
         W = max(W, w * k)
         y += L.H * k + (70 if i == 0 and fit is False and len(rows) > 1 and rows[1][2] is False else 46)
     h = y - 46
@@ -75,10 +82,10 @@ def lines(items, cls=''):
 card = (HERE / 'card-page.html').read_text()
 PAGES = {
     'made-construction': dict(title='Made Construction', desc='Made Construction: real estate development, led by Jason Cutaiar.', w=440,
-        lock=[('made', 'neg', False), ('construction', 'solid', True)],
+        lock=[('made', 'neg', False), ('construction', 'neg2', 'mad')],
         lines=lines([('Real Estate Development', 'big')]), foot=''),
     'made-properties': dict(title='Made Properties', desc='Made Properties, led by Jason Cutaiar: real estate investments, transformation and activation.', w=440,
-        lock=[('made', 'neg', False), ('properties', 'solid', True)],
+        lock=[('made', 'neg', False), ('properties', 'neg2', 'mad')],
         lines=lines([('Real Estate Investments', 'big'), ('Transformation', 'in'), ('Activation', 'in')]),
         foot=f'<div class="foot fade f2"><span>Jason Cutaiar &middot; CEO</span><a href="{LINKEDIN}" target="_blank" rel="noopener" aria-label="Jason Cutaiar on LinkedIn">{LI}</a></div>'),
     'jason-cutaiar': dict(title='Jason Cutaiar', desc='Jason Cutaiar: entrepreneur, real estate and investments.', w=500,
@@ -92,12 +99,15 @@ mc_inner, mc_w, mc_h = L.stacked('made', 'construction')
 # Made Construction keeps the whole site (Methods, every project, the bio): only its first screen and the background
 # change to match Jason's card. The new first screen: "made" in negative + construction, the tagline, then Methods.
 NEW_HOME_CSS = '''
-.cosmic{background:radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%)}
+.cosmic{background:#0b0b0d url(img/bg.webp) center/cover no-repeat}
+.cosmic::before{display:none}
+.cosmic-old{background:radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%)}
 .cosmic::before{background-image:url(img/texture.webp),radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 1px,transparent 1.4px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.25) 1px,transparent 1.4px);background-size:cover,330px 290px,240px 260px;opacity:.28}
 .card-home{position:relative;z-index:1;width:min(calc(100% - 56px),440px);opacity:0;transform:translateY(10px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .ready .card-home{opacity:1;transform:none}
 .card-home svg{display:block;width:100%;height:auto;overflow:visible}
 .card-home .neg path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.card-home .neg2 path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
 .card-home .solid path{fill:none;stroke:#d9d9df;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
 .card-home svg path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.3s + var(--d,0) * 1s)}
 .card-home .tag{margin:clamp(28px,5.5vh,44px) 0 0;font:600 clamp(11px,1.3vw,14px)/1.4 Montserrat,Inter,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#d9d9df}
@@ -118,6 +128,7 @@ home_new = ('<section class="frame cosmic home" id="f-home" aria-label="Home">'
 mc_page = full_page.replace(home_old, home_new).replace('</style>', NEW_HOME_CSS + '</style>', 1)
 mc_page = mc_page.replace('family=Jost', 'family=Montserrat:wght@500;600&family=Jost', 1)
 PAGES.pop('made-construction')
+shutil.copy(HERE / 'bg.webp', CL / 'made-construction' / 'img' / 'bg.webp')
 (CL / 'made-construction' / 'index.html').write_text(mc_page)
 for folder, d in PAGES.items():
     page = (card.replace('{{LOCKUP}}', lockup(folder[:2], d['title'], d['lock'])).replace('{{LINES}}', d['lines']).replace('{{FOOT}}', d['foot'])

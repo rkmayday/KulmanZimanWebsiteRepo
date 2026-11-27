@@ -7,25 +7,18 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
 <style>
 /* {{TITLE}}: one screen, laid out like Jason's own mockups (Nov 27): the lockup in his lettering with the first word
-   in negative (outlined), a few lines of small caps under it, and LinkedIn. A soft light gradient on the background. */
+   in negative (outlined), a few lines of small caps under it, and LinkedIn. A soft background is Jason's own image (img/bg.webp). */
 :root{--bg:#141417;--silver:#d9d9df;--mut:rgba(226,226,232,.78);color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--silver);font:500 16px/1.6 Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
-.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;
-  background:
-    radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),
-    radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),
-    linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%);
+.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;background:#0b0b0d url(img/bg.webp) center/cover no-repeat;
   padding:40px max(28px,env(safe-area-inset-right,0px)) 40px max(28px,env(safe-area-inset-left,0px))}
-/* fine grain and a few specks, like the print */
-.page::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:url(img/texture.webp),radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 1px,transparent 1.4px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.25) 1px,transparent 1.4px);
-  background-size:cover,330px 290px,240px 260px;background-blend-mode:overlay,normal,normal;opacity:.28}
 .inner{position:relative;z-index:1;width:min(100%,{{BLOCK_W}}px)}
 h1{margin:0}
 h1 svg{display:block;width:100%;height:auto;overflow:visible}
 .neg path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.neg2 path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
 .solid path{fill:none;stroke:var(--silver);stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
 h1 path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.3s + var(--d,0) * 1s)}
 @keyframes draw{to{stroke-dashoffset:0}}
