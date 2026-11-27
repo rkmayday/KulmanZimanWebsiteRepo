@@ -5,324 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Made Construction</title>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="description" content="Made Construction: residential methods that deliver gravity, presence, and timelessness.">
+<meta name="description" content="Made Construction: real estate development, led by Jason Cutaiar.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Inter:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
 <style>
-/* Made Construction: the madecon.com site, rebuilt one for one (same screens, colours, type, timings and photos).
-   Changes asked for: the logo reads "made" over "construction" in the same lettering, in dark grey, with a new
-   effect (the letters draw themselves in, then a soft light passes over them now and then) instead of the glow.
-   The projects come from a Google Sheet, so new ones can be added without touching this file (see SITE DATA below). */
-:root{
-  --background:#131316; --foreground:#f8fafc; --accent:#c9c1b6; --muted:#94a3b8; --card:#1d1d21; --border:#27272a;
-  --ink:#3d3e43; --ease:cubic-bezier(.25,.46,.45,.94); color-scheme:dark;
-}
+/* Made Construction: one screen, laid out like Jason's own mockups (Nov 27): the lockup in his lettering with the first word
+   in negative (outlined), a few lines of small caps under it, and LinkedIn. A soft light gradient on the background. */
+:root{--bg:#141417;--silver:#d9d9df;--mut:rgba(226,226,232,.78);color-scheme:dark}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;overflow:hidden;background:var(--background)}
-body{color:var(--foreground);font:400 16px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-button{font:inherit;color:inherit}
-img{display:block;max-width:100%}
-
-/* the sideways scroller: one screen per frame */
-.scroller{display:flex;overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;width:100vw;height:100vh;height:100dvh;cursor:grab;position:relative;outline:none}
-.scroller:active{cursor:grabbing}
-.scroller::-webkit-scrollbar{display:none}
-.frame{min-width:100vw;max-width:100vw;height:100vh;height:100dvh;scroll-snap-align:start;position:relative;flex-shrink:0;overflow:hidden}
-
-/* the stone background of his site: dark gradient, the texture at 30%, two faint dot grids, a slow drift */
-.cosmic{background:linear-gradient(135deg,#131316 0%,#0d0d11 40%,#0a090c 100%)}
-.cosmic::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:url(madeconstruction-img/texture.webp),radial-gradient(circle at 20% 30%,rgba(224,215,201,.1) 1px,transparent 1px),radial-gradient(circle at 80% 70%,rgba(201,193,182,.1) 1px,transparent 1px);
-  background-size:cover,300px 300px,200px 200px;background-blend-mode:overlay,normal,normal;opacity:.3}
-
-/* home */
-.home{display:flex;align-items:center;justify-content:center}
-.logo-in{position:absolute;padding:0 1rem;transition:all 1s var(--ease);transform:translate(2rem,1rem);opacity:0}
-.ready .logo-in{transform:none;opacity:1}
-.logo-at{position:relative}
-.logo{display:block;width:240px;height:auto;overflow:visible;filter:drop-shadow(0 25px 25px rgba(0,0,0,.15))}
-.logo .ink,.logo .edge{fill:none;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
-.logo .ink{stroke:var(--ink)}
-.logo .edge{stroke:rgba(255,255,255,.075)}
-.logo .ink path,.logo .edge path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.45s + var(--d,0) * 1s)}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--silver);font:500 16px/1.6 Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;
+  background:
+    radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),
+    radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),
+    linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%);
+  padding:40px max(28px,env(safe-area-inset-right,0px)) 40px max(28px,env(safe-area-inset-left,0px))}
+/* fine grain and a few specks, like the print */
+.page::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:url(madeconstruction-img/texture.webp),radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 1px,transparent 1.4px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.25) 1px,transparent 1.4px);
+  background-size:cover,330px 290px,240px 260px;background-blend-mode:overlay,normal,normal;opacity:.28}
+.inner{position:relative;z-index:1;width:min(100%,440px)}
+h1{margin:0}
+h1 svg{display:block;width:100%;height:auto;overflow:visible}
+.neg path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.solid path{fill:none;stroke:var(--silver);stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+h1 path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.3s + var(--d,0) * 1s)}
 @keyframes draw{to{stroke-dashoffset:0}}
-.logo .shine{opacity:0;animation:fadeIn .1s 2.9s forwards}
-@keyframes fadeIn{to{opacity:1}}
-@media (min-width:640px){.logo-in{padding:0}.logo-at{left:-10vw}.logo{width:344px}}
-@media (min-width:768px){.logo{width:515px}}
-@media (min-width:1024px){.logo{width:687px}}
-@media (min-width:1280px){.logo{width:825px}}
-@media (min-width:1536px){.logo{width:1031px}}
-
-.methods-btn{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;height:40px;min-width:120px;padding:0 16px;border-radius:10px;
-  border:1px solid rgba(255,255,255,.4);background:var(--background);color:#fff;font:500 14px/1 Inter,system-ui,sans-serif;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  box-shadow:0 25px 50px -12px rgba(0,0,0,.25);opacity:0;transition:opacity 1s 1s,background .2s,border-color .2s}
-.methods-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.6)}
-.btn-on .methods-btn{opacity:1}
-@media (min-width:640px){.methods-btn{bottom:auto;left:auto;right:25%;top:50%;transform:translate(105px,-50%);min-width:140px}}
-.explore{position:absolute;bottom:1.5rem;right:1.5rem;display:none;color:rgba(201,193,182,.6);font-size:12px;letter-spacing:.05em;opacity:0;transition:opacity 1s 1s}
-.ready .explore{opacity:1}
-@media (min-width:640px){.explore{display:block;bottom:3rem;right:3rem;font-size:14px}}
-
-/* methods */
-.methods{overflow-y:auto;scrollbar-width:none}
-.methods::-webkit-scrollbar{display:none}
-.wrap{position:relative;width:100%;margin:0 auto;padding:6rem 1rem}
-@media (min-width:640px){.wrap{padding:6rem 1.5rem}}
-@media (min-width:1400px){.wrap{max-width:1400px}}
-.mhead{margin-bottom:6rem}
-.methods h2{margin:0 0 1.5rem;font:300 3.75rem/1 Jost,system-ui,sans-serif;color:var(--foreground);text-shadow:0 2px 4px rgba(9,9,11,.5)}
-@media (min-width:1024px){.methods h2{font-size:6rem}}
-.rule{width:6rem;height:1px;background:rgba(201,193,182,.4);margin-bottom:2rem}
-.mlede{margin:0;max-width:42rem;color:rgba(248,250,252,.8);font:300 1.25rem/1.625 Inter,system-ui,sans-serif}
-@media (min-width:1024px){.mlede{font-size:1.5rem}}
-.grid{display:grid;grid-template-columns:1fr;gap:.75rem}
-@media (min-width:640px){.grid{gap:1rem}}
-@media (min-width:768px){.grid{grid-template-columns:1fr 1fr;gap:1.5rem}}
-@media (min-width:1024px){.grid{grid-template-columns:repeat(3,1fr);gap:2rem}}
-.card{display:block;width:100%;text-align:left;padding:0;border:1px solid var(--border);border-radius:12px;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.05);overflow:hidden;cursor:pointer;transition:transform .5s var(--ease),background .3s}
-.card:hover{transform:scale(1.02);background:rgba(29,29,33,.7)}
-.card .ph{aspect-ratio:3/4;overflow:hidden}
-.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
-.card:hover .ph img{transform:scale(1.1)}
-.card .cc{padding:1.5rem}
-.card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:12px}
-.card .id{font:300 1.875rem/2.25rem Jost,system-ui,sans-serif;color:var(--accent)}
-.card .cat{font-size:.75rem;line-height:1rem;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
-.card p{margin:0;color:rgba(248,250,252,.6);font-size:.875rem;line-height:1.625}
-
-/* reveal like his site */
-.from-top{opacity:0;transform:translateY(-60px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.from-right{opacity:0;transform:translateX(60px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.rise{opacity:0;transform:translateY(2rem);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.seen .from-top,.seen .from-right,.seen .rise{opacity:1;transform:none}
-
-/* project screens */
-.project{background:var(--background)}
-.project .shot{position:absolute;inset:0}
-.project .shot img{width:100%;height:100%;object-fit:cover;transition:opacity .5s}
-.project .dim{position:absolute;inset:0;background:rgba(0,0,0,.4)}
-.project .next{position:absolute;inset:0;z-index:30;cursor:pointer;border:0;background:none;padding:0}
-.back{position:absolute;top:1.5rem;left:1.5rem;z-index:50;display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:999px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .3s;font-size:.875rem}
-.back:hover{background:rgba(0,0,0,.4)}
-.back svg{width:16px;height:16px}
-.info{position:absolute;left:0;right:0;bottom:0;z-index:40;padding:2rem;background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.4),transparent);pointer-events:none}
-@media (min-width:768px){.info{padding:3rem}}
-.info .max{max-width:42rem}
-.info .row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
-.info .pid{font:300 2.25rem/2.5rem Jost,system-ui,sans-serif;color:var(--accent)}
-@media (min-width:768px){.info .pid{font-size:3.75rem;line-height:1}}
-.info .line{height:1px;flex:1;background:rgba(201,193,182,.4)}
-.info .cat{font-size:.75rem;letter-spacing:.05em;color:rgba(255,255,255,.6);text-transform:uppercase}
-.info h3{margin:0 0 1.5rem;font:300 1.875rem/2.25rem Jost,system-ui,sans-serif;color:#fff}
-@media (min-width:768px){.info h3{font-size:3rem;line-height:1}}
-.info p{margin:0 0 2rem;color:rgba(255,255,255,.8);font-size:1.125rem;line-height:1.625}
-@media (min-width:768px){.info p{font-size:1.25rem}}
-.count{display:flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.6);font-size:.875rem}
-.count i{width:2rem;height:1px;background:rgba(255,255,255,.4)}
-.pick{position:absolute;top:50%;right:2rem;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:.5rem}
-.pick button{width:8px;height:32px;border:0;padding:0;background:rgba(255,255,255,.2);cursor:pointer;transition:background .3s}
-.pick button:hover{background:rgba(255,255,255,.4)}
-.pick button.on{background:var(--accent)}
-
-/* the dots along the bottom, and the keys hint */
-.dots{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.75rem;z-index:50}
-.dots button{height:8px;width:32px;border:0;padding:0;background:rgba(255,255,255,.2);cursor:pointer;transition:background .3s}
-.dots button:hover{background:rgba(255,255,255,.4)}
-.dots button.on{background:var(--accent)}
-.keys{position:fixed;bottom:2rem;right:2rem;z-index:40;display:none;color:rgba(201,193,182,.6);font-size:14px;letter-spacing:.05em}
-@media (min-width:1024px){.keys{display:block}}
-
-/* preview label (not on the live site) */
-.draft-tag{position:fixed;left:14px;bottom:12px;z-index:60;font:500 10px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;color:rgba(201,193,182,.45);pointer-events:none}
-
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.scroller{scroll-behavior:auto}
-  .logo .ink path,.logo .edge path{stroke-dashoffset:0}.logo .shine{opacity:0}.from-top,.from-right,.rise,.logo-in{opacity:1;transform:none}.methods-btn,.explore{opacity:1}}
+.lines{margin:clamp(30px,6vh,48px) 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.lines li{font:600 clamp(10px,1.1vw,12px)/1.4 Montserrat,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:var(--mut)}
+.lines li.big{font-size:clamp(11px,1.3vw,14px);color:var(--silver)}
+.lines li.in{padding-left:1.1em;font-size:clamp(9px,.95vw,10.5px)}
+.lines.tc li{text-transform:none;letter-spacing:.14em;font-weight:500;font-size:clamp(11px,1.2vw,13px)}
+.foot{display:flex;align-items:center;gap:22px;margin-top:clamp(30px,6vh,46px);font:600 clamp(9px,1vw,11px)/1 Montserrat,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:var(--mut)}
+.foot a{display:inline-flex;color:#fff;transition:opacity .2s}
+.foot a:hover{opacity:.7}
+.foot svg{width:18px;height:18px}
+.fade{opacity:0;transform:translateY(10px);transition:opacity 1s ease,transform 1s ease}
+.ready .fade{opacity:1;transform:none}
+.ready .f1{transition-delay:1.4s}.ready .f2{transition-delay:1.7s}
+.draft-tag{position:fixed;left:14px;bottom:12px;z-index:60;font:500 10px/1 Montserrat,sans-serif;letter-spacing:.08em;color:rgba(220,220,226,.4);pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}h1 path{stroke-dashoffset:0}.fade{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-<div class="scroller" id="scroller" tabindex="0" aria-label="Made Construction">
-  <section class="frame cosmic home" id="f-home" aria-label="Home">
-    <div class="logo-in"><div class="logo-at"><svg class="logo" viewBox="-20 -20 1600.00 415.08" role="img" aria-label="Made Construction"><defs><linearGradient id="shmc" gradientUnits="userSpaceOnUse" x1="-700" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/><animateTransform attributeName="gradientTransform" type="translate" values="0 0;2960 0;2960 0" keyTimes="0;.32;1" dur="9s" begin="3s" repeatCount="indefinite"/></linearGradient><mask id="mkmc" maskUnits="userSpaceOnUse" x="-20" y="-20" width="1600.00" height="415.08"><g fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="miter"><g class="w1"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g><g class="w2" transform="translate(0 290) scale(0.34868)"><g transform="translate(0 0)" style="--d:0.48"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(420 0)" style="--d:0.60"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(840 0)" style="--d:0.72"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g><g transform="translate(1260 0)" style="--d:0.84"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g><g transform="translate(1680 0)" style="--d:0.96"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2040 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.20"><path pathLength="1" d="M17 0V164A63 63 0 0 0 80 227H283"/><path pathLength="1" d="M283 0V244"/></g><g transform="translate(2820 0)" style="--d:1.32"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(3240 0)" style="--d:1.44"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(3600 0)" style="--d:1.56"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(3754 0)" style="--d:1.68"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(4174 0)" style="--d:1.80"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g></g></g></mask></defs><g class="edge" transform="translate(0 4)"><g class="w1"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g><g class="w2" transform="translate(0 290) scale(0.34868)"><g transform="translate(0 0)" style="--d:0.48"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(420 0)" style="--d:0.60"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(840 0)" style="--d:0.72"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g><g transform="translate(1260 0)" style="--d:0.84"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g><g transform="translate(1680 0)" style="--d:0.96"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2040 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.20"><path pathLength="1" d="M17 0V164A63 63 0 0 0 80 227H283"/><path pathLength="1" d="M283 0V244"/></g><g transform="translate(2820 0)" style="--d:1.32"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(3240 0)" style="--d:1.44"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(3600 0)" style="--d:1.56"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(3754 0)" style="--d:1.68"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(4174 0)" style="--d:1.80"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g></g></g><g class="ink"><g class="w1"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g><g class="w2" transform="translate(0 290) scale(0.34868)"><g transform="translate(0 0)" style="--d:0.48"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(420 0)" style="--d:0.60"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(840 0)" style="--d:0.72"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g><g transform="translate(1260 0)" style="--d:0.84"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g><g transform="translate(1680 0)" style="--d:0.96"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2040 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.20"><path pathLength="1" d="M17 0V164A63 63 0 0 0 80 227H283"/><path pathLength="1" d="M283 0V244"/></g><g transform="translate(2820 0)" style="--d:1.32"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(3240 0)" style="--d:1.44"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(3600 0)" style="--d:1.56"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(3754 0)" style="--d:1.68"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(4174 0)" style="--d:1.80"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g></g></g><rect class="shine" x="-20" y="-20" width="1600.00" height="415.08" fill="url(#shmc)" mask="url(#mkmc)"/></svg></div></div>
-    <button class="methods-btn" type="button" data-go="1">Methods</button>
-    <div class="explore">Scroll to explore →</div>
-  </section>
-  <section class="frame cosmic methods" id="f-methods" aria-label="Methods">
-    <div class="wrap">
-      <div class="mhead">
-        <div class="from-top"><h2>Methods</h2><div class="rule"></div></div>
-        <p class="mlede from-right" id="mlede" style="transition-delay:200ms">A selection of residential methods that deliver gravity, presence, and timelessness.</p>
-      </div>
-      <div class="grid" id="grid"></div>
-    </div>
-  </section>
-</div>
-<nav class="dots" id="dots" aria-label="Screens"></nav>
-<div class="keys">Use ← → keys or scroll horizontally</div>
+<main class="page" id="page">
+  <div class="inner">
+    <h1 aria-label="Made Construction"><svg viewBox="-20 -20 1600.00 415.08" role="img" aria-label="Made Construction"><defs><filter id="negma" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="-40" y="-40" width="1640" height="455"><feMorphology in="SourceAlpha" operator="erode" radius="4.5" result="e"/><feComposite in="SourceAlpha" in2="e" operator="out" result="o"/><feFlood flood-color="#e2e2e8"/><feComposite in2="o" operator="in"/></filter></defs><g filter="url(#negma)"><g class="neg" transform="translate(0 0.00) scale(1.00000)"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g></g><g class="solid" transform="translate(0 290.00) scale(0.34868)"><g transform="translate(0 0)" style="--d:0.35"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(420 0)" style="--d:0.47"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(840 0)" style="--d:0.59"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g><g transform="translate(1260 0)" style="--d:0.71"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g><g transform="translate(1680 0)" style="--d:0.83"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2040 0)" style="--d:0.95"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.07"><path pathLength="1" d="M17 0V164A63 63 0 0 0 80 227H283"/><path pathLength="1" d="M283 0V244"/></g><g transform="translate(2820 0)" style="--d:1.19"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/></g><g transform="translate(3240 0)" style="--d:1.31"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(3600 0)" style="--d:1.43"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(3754 0)" style="--d:1.55"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(4174 0)" style="--d:1.67"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/></g></g></svg></h1>
+    <ul class="lines fade f1"><li class="big">Real Estate Development</li></ul>
+    
+  </div>
+</main>
 <div class="draft-tag">Draft by Ziman Sites</div>
-
-<script>
-/* ===================== SITE DATA =====================
-   The projects can be added and edited in a Google Sheet, without touching this file.
-   1. Make a Google Sheet with two columns: A = the label (exactly as in projects-sheet-template.csv), B = the value.
-   2. In Google Sheets: File -> Share -> Publish to web -> choose the sheet -> "Comma-separated values (.csv)" -> Publish.
-   3. Paste that link between the quotes on the next line (once). Leave it empty to use the projects written below.
-   Rows, for any project number N (1, 2, 3 are the projects below; 4, 5, ... add new ones):
-     Project N code         e.g. M13            Project N type         e.g. SOLID/SLAT
-     Project N title        big title on its screen (optional)
-     Project N summary      the short line on the Methods card
-     Project N description  the text on the project's own screen
-     Project N cover        link to the cover photo
-     Project N photos       links to the photos, in one cell, separated by commas or new lines
-   Photo links can be Google Drive share links ("Anyone with the link" can view). Leave "Project N code" empty to hide project N. */
-window.MC_SHEET = '';
-const IMG = 'madeconstruction-img/';
-const PROJECTS = [
-  { code: 'M13', page: 'M1355', title: '', type: 'SOLID/SLAT',
-    summary: 'Systematic approach to residential design emphasizing geometric precision and material integrity',
-    description: 'Systematic approach to residential design emphasizing geometric precision and material integrity. This methodology represents a synthesis of classical proportions with contemporary execution, creating spaces that honor both tradition and innovation.',
-    cover: IMG + 'cover-m1355.webp', photos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => IMG + 'm13-' + String(n).padStart(2, '0') + '.webp') },
-  { code: 'M17', page: 'M1712', title: 'Residential Method M17', type: 'FIGURE/VOID',
-    summary: 'Contemporary brick facade combining traditional techniques with modern aesthetics',
-    description: 'Contemporary brick facade combining traditional techniques with modern aesthetics. This methodology explores the interplay between solid and void, creating dynamic compositions that respond to light and shadow throughout the day.',
-    cover: IMG + 'cover-m1712.webp', photos: [1, 2, 3, 4, 5].map(n => IMG + 'm17-0' + n + '.webp') },
-  { code: 'M20', page: 'M2018', title: '', type: 'PUNCHED/MASS',
-    summary: 'Transforming brick into a bold 4-story mass. Punched openings with precision',
-    description: 'Transforming brick into a bold 4-story mass. Punched openings with precision create a dialogue between solid and void, establishing a strong urban presence while maintaining residential intimacy.',
-    cover: IMG + 'cover-m2018.webp', photos: [1, 2, 3, 4, 5, 6, 7].map(n => IMG + 'm20-0' + n + '.webp') },
-  { code: 'M14', page: 'M14', title: '', type: 'PROJECTED/FRAME',
-    summary: 'Dark brick townhomes composed of projecting frames and deep-set black windows',
-    description: 'Dark brick townhomes composed as a sequence of projecting frames and recessed planes. Deep-set black windows and oversized entry doors carry the facade, while smoked oak, honed stone and matte black fixtures continue the same restraint through every room.',
-    cover: IMG + 'cover-m14.webp', photos: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => IMG + 'm14-0' + n + '.webp') }
-];
-
-(() => {
-  const scroller = document.getElementById('scroller'), dotsEl = document.getElementById('dots'), grid = document.getElementById('grid');
-  const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  // photo links from the Sheet: Google Drive and Dropbox share links become direct image links
-  const photo = u => {
-    u = String(u || '').trim(); if (!u) return '';
-    const g = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{20,})/) || (/drive\.google\.com/.test(u) && u.match(/[?&]id=([\w-]{20,})/));
-    if (g) return 'https://drive.google.com/thumbnail?id=' + g[1] + '&sz=w2400';
-    if (/dropbox\.com/.test(u)) return u.replace(/\?.*$/, '') + '?raw=1';
-    return /^https?:\/\//i.test(u) || u.startsWith(IMG) ? u : '';
-  };
-
-  // ---------- the Sheet (if there is one) ----------
-  const readSheet = async () => {
-    if (!window.MC_SHEET) return null;
-    try {
-      const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 3000);
-      const text = await (await fetch(window.MC_SHEET, { signal: ctl.signal, cache: 'no-store' })).text(); clearTimeout(timer);
-      const rows = [], cells = []; let cur = '', q = false;
-      for (let i = 0; i < text.length; i++) {          // CSV, with quoted cells that may hold commas and new lines
-        const c = text[i];
-        if (q) { if (c === '"' && text[i + 1] === '"') { cur += '"'; i++; } else if (c === '"') q = false; else cur += c; }
-        else if (c === '"') q = true; else if (c === ',') { cells.push(cur); cur = ''; }
-        else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; cells.push(cur); rows.push(cells.splice(0)); cur = ''; }
-        else cur += c;
-      }
-      if (cur || cells.length) { cells.push(cur); rows.push(cells.splice(0)); }
-      return rows;
-    } catch (e) { return null; }
-  };
-  const applySheet = rows => {
-    const list = {}; PROJECTS.forEach((p, i) => list[i + 1] = { ...p });
-    const map = { code: 'code', title: 'title', type: 'type', summary: 'summary', description: 'description', cover: 'cover', photos: 'photos' };
-    for (const r of rows || []) {
-      const m = String(r[0] || '').trim().match(/^Project (\d+) (code|title|type|summary|description|cover|photos)$/i); if (!m) continue;
-      const n = +m[1], k = map[m[2].toLowerCase()], v = String(r[1] || '').trim();
-      const p = list[n] = list[n] || { code: '', page: '', title: '', type: '', summary: '', description: '', cover: '', photos: [] };
-      if (k === 'code') { p.code = v; p.removed = !v; }
-      else if (k === 'photos') { const ph = v.split(/[\s,]+/).map(photo).filter(Boolean); if (ph.length) p.photos = ph; }
-      else if (k === 'cover') { const c = photo(v); if (c) p.cover = c; }
-      else if (v) p[k] = v;
-    }
-    return Object.keys(list).map(Number).sort((a, b) => a - b).map(n => list[n])
-      .filter(p => !p.removed && p.code && (p.photos.length || p.cover))
-      .map(p => ({ ...p, cover: p.cover || p.photos[0], photos: p.photos.length ? p.photos : [p.cover], page: p.page || p.code.replace(/[^\w-]/g, '') }));
-  };
-
-  // ---------- screens ----------
-  let projects = [], frames = [], cur = 0;
-  const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
-  const render = () => {
-    grid.innerHTML = projects.map((p, i) => `<button class="card rise" type="button" data-go="${i + 2}" style="transition-delay:${i * 120}ms">
-        <div class="ph"><img src="${esc(p.cover)}" alt="${esc(p.code)}" loading="lazy"></div>
-        <div class="cc"><div class="top"><span class="id">${esc(p.code)}</span><span class="cat">${esc(p.type)}</span></div><p>${esc(p.summary)}</p></div></button>`).join('');
-    scroller.querySelectorAll('.project').forEach(f => f.remove());
-    projects.forEach((p, i) => {
-      const f = document.createElement('section');
-      f.className = 'frame project'; f.setAttribute('aria-label', p.code); f.dataset.n = 0;
-      f.innerHTML = `<div class="shot"><img src="${esc(p.photos[0])}" alt="${esc(p.code)}, photo 1" loading="lazy"></div><div class="dim"></div>
-        <button class="next" type="button" aria-label="Next photo"></button>
-        <button class="back" type="button" data-go="1" aria-label="Back to methods">${arrow}<span>Back</span></button>
-        <div class="info"><div class="max"><div class="from-top"><div class="row"><span class="pid">${esc(p.code)}</span><div class="line"></div><span class="cat">${esc(p.type)}</span></div>${p.title ? `<h3>${esc(p.title)}</h3>` : ''}</div>
-          <p class="from-right" style="transition-delay:200ms">${esc(p.description)}</p>
-          <div class="count"><span class="c1">01</span><i></i><span>${String(p.photos.length).padStart(2, '0')}</span></div></div></div>
-        <div class="pick">${p.photos.map((_, k) => `<button type="button" class="${k ? '' : 'on'}" data-k="${k}" aria-label="Photo ${k + 1}"></button>`).join('')}</div>`;
-      f._p = p; scroller.appendChild(f);
-    });
-    frames = [...scroller.querySelectorAll('.frame')];
-    dotsEl.innerHTML = frames.map((f, i) => `<button type="button" data-go="${i}" aria-label="Go to ${esc(f.getAttribute('aria-label'))}"></button>`).join('');
-    frames.forEach(f => seen.observe(f));
-    onScroll();
-  };
-  const show = (f, k) => {
-    const p = f._p, n = (k + p.photos.length) % p.photos.length; f.dataset.n = n;
-    const img = f.querySelector('.shot img'); img.src = p.photos[n]; img.alt = p.code + ', photo ' + (n + 1);
-    f.querySelector('.c1').textContent = String(n + 1).padStart(2, '0');
-    f.querySelectorAll('.pick button').forEach((b, i) => b.classList.toggle('on', i === n));
-  };
-
-  // ---------- moving between screens ----------
-  const names = () => ['', 'methods', ...projects.map(p => p.page)];
-  const go = i => { i = Math.max(0, Math.min(frames.length - 1, i)); scroller.scrollTo({ left: i * scroller.clientWidth, behavior: 'smooth' }); };
-  const onScroll = () => {
-    const i = Math.round(scroller.scrollLeft / Math.max(1, scroller.clientWidth));
-    if (i !== cur || !dotsEl.querySelector('.on')) {
-      cur = i; dotsEl.querySelectorAll('button').forEach((b, k) => b.classList.toggle('on', k === i));
-      const h = names()[i]; try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch (e) {}
-    }
-  };
-  scroller.addEventListener('scroll', onScroll, { passive: true });
-  let lock = 0;
-  scroller.addEventListener('wheel', e => {
-    const vertical = Math.abs(e.deltaY) > Math.abs(e.deltaX), f = e.target.closest('.frame');
-    // a screen taller than the window (Methods on a phone) scrolls up and down first
-    if (vertical && f && f.scrollHeight > f.clientHeight + 2 && ((e.deltaY < 0 && f.scrollTop > 0) || (e.deltaY > 0 && f.scrollTop + f.clientHeight < f.scrollHeight - 2))) return;
-    e.preventDefault();
-    const d = vertical ? e.deltaY : e.deltaX, now = performance.now();
-    if (Math.abs(d) < 4 || now < lock) return;
-    lock = now + 700; go(cur + (d > 0 ? 1 : -1));
-  }, { passive: false });
-  addEventListener('keydown', e => {
-    if (e.target.closest('input,textarea,select')) return;
-    const f = frames[cur];
-    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
-    else if (f && f._p && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); show(f, +f.dataset.n + (e.key === 'ArrowDown' ? 1 : -1)); }
-    else if (e.key === 'Escape' && f && f._p) go(1);
-  });
-  document.addEventListener('click', e => {
-    const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); go(+g.dataset.go); return; }
-    const f = e.target.closest('.project'); if (!f) return;
-    const k = e.target.closest('.pick button'); if (k) { show(f, +k.dataset.k); return; }
-    if (e.target.closest('.next')) show(f, +f.dataset.n + 1);
-  });
-  // each screen's text slides in the first time it is seen
-  const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); seen.unobserve(e.target); } }), { threshold: .2 });
-  addEventListener('resize', () => { scroller.style.scrollBehavior = 'auto'; scroller.scrollLeft = cur * scroller.clientWidth; scroller.style.scrollBehavior = ''; });
-
-  // ---------- start ----------
-  const home = document.getElementById('f-home');
-  setTimeout(() => home.classList.add('ready'), 300);
-  setTimeout(() => home.classList.add('btn-on'), 1300);
-  projects = applySheet(null); render();
-  const start = names().indexOf(location.hash.slice(1)); if (start > 0) { scroller.style.scrollBehavior = 'auto'; scroller.scrollLeft = start * scroller.clientWidth; scroller.style.scrollBehavior = ''; }
-  readSheet().then(rows => { if (rows) { projects = applySheet(rows); render(); } });
-})();
-</script>
+<script>setTimeout(() => document.getElementById('page').classList.add('ready'), 200);</script>
 </body>
 </html>

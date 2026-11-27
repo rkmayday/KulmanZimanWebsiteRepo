@@ -1,140 +1,56 @@
 <title>Made Properties</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="robots" content="noindex">
-<meta name="description" content="Made Properties, led by Jason Cutaiar: real estate, investments and business.">
+<meta name="description" content="Made Properties, led by Jason Cutaiar: real estate investments, transformation and activation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Inter:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
 <style>
-/* Made Properties: one screen, nothing else. The madecon.com first-screen background, the name in Jason's header lettering,
-   a subtitle, three points, Contact (a brief in a pop-up, page blurred behind) and Connect on LinkedIn. */
-:root{--background:#131316;--foreground:#f8fafc;--accent:#c9c1b6;--ink:#3d3e43;--line:#2a2a2f;--ease:cubic-bezier(.25,.46,.45,.94);color-scheme:dark}
+/* Made Properties: one screen, laid out like Jason's own mockups (Nov 27): the lockup in his lettering with the first word
+   in negative (outlined), a few lines of small caps under it, and LinkedIn. A soft light gradient on the background. */
+:root{--bg:#141417;--silver:#d9d9df;--mut:rgba(226,226,232,.78);color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{background:var(--background);color:var(--foreground);font:400 16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
-button{font:inherit}
-
-/* the stone background of madecon.com's first screen */
-.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,#131316 0%,#0d0d11 40%,#0a090c 100%);
-  padding:40px max(20px,env(safe-area-inset-right,0px)) 40px max(20px,env(safe-area-inset-left,0px))}
+body{background:var(--bg);color:var(--silver);font:500 16px/1.6 Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;
+  background:
+    radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),
+    radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),
+    linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%);
+  padding:40px max(28px,env(safe-area-inset-right,0px)) 40px max(28px,env(safe-area-inset-left,0px))}
+/* fine grain and a few specks, like the print */
 .page::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:url(img/texture.webp),radial-gradient(circle at 20% 30%,rgba(224,215,201,.1) 1px,transparent 1px),radial-gradient(circle at 80% 70%,rgba(201,193,182,.1) 1px,transparent 1px);
-  background-size:cover,300px 300px,200px 200px;background-blend-mode:overlay,normal,normal;opacity:.3}
-
-.inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;width:min(100%,1100px)}
-h1{margin:0;width:100%;display:flex;justify-content:center}
-h1 svg{display:block;height:auto;overflow:visible}
-h1 .wide{width:min(88vw,980px)}
-h1 .stack{display:none;width:min(80vw,420px)}
-@media (max-width:640px){h1 .wide{display:none}h1 .stack{display:block}}
-h1 .ink,h1 .edge{fill:none;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
-h1 .ink{stroke:var(--ink)}
-h1 .edge{stroke:rgba(255,255,255,.08)}
-h1 .ink path,h1 .edge path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.35s + var(--d,0) * 1s)}
+  background-image:url(img/texture.webp),radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 1px,transparent 1.4px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.25) 1px,transparent 1.4px);
+  background-size:cover,330px 290px,240px 260px;background-blend-mode:overlay,normal,normal;opacity:.28}
+.inner{position:relative;z-index:1;width:min(100%,440px)}
+h1{margin:0}
+h1 svg{display:block;width:100%;height:auto;overflow:visible}
+.neg path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.solid path{fill:none;stroke:var(--silver);stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+h1 path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.3s + var(--d,0) * 1s)}
 @keyframes draw{to{stroke-dashoffset:0}}
-h1 .shine{opacity:0;animation:fadeIn .1s 2.9s forwards}
-@keyframes fadeIn{to{opacity:1}}
-
-.sub{margin:clamp(22px,4vh,34px) 0 0;font:400 clamp(.8rem,1.5vw,.95rem)/1.2 Inter,system-ui,sans-serif;letter-spacing:.34em;margin-right:-.34em;text-transform:uppercase;color:var(--accent)}
-.points{list-style:none;margin:clamp(20px,3.6vh,30px) 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px clamp(22px,3.4vw,40px)}
-.points li{display:flex;align-items:center;gap:12px;font:300 clamp(1.05rem,1.9vw,1.3rem)/1.3 Jost,system-ui,sans-serif;color:rgba(248,250,252,.82);letter-spacing:.02em}
-.points li::before{content:"";width:6px;height:6px;background:var(--accent);transform:rotate(45deg);flex:none}
-@media (max-width:640px){.points{flex-direction:column;align-items:center;gap:12px}}
-.ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:clamp(30px,5.5vh,46px)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:44px;min-width:150px;padding:0 20px;border-radius:10px;border:1px solid rgba(255,255,255,.4);background:rgba(19,19,22,.6);
-  color:#fff;font:500 14px/1 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .25s,border-color .25s,color .25s}
-.btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.65)}
-.btn.solid{background:var(--accent);border-color:var(--accent);color:#131316}
-.btn.solid:hover{background:#ddd6cc;border-color:#ddd6cc}
-.btn svg{width:16px;height:16px;flex:none}
-
-/* everything after the name fades in, like madecon.com's first screen */
-.in{opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
-.ready .in{opacity:1;transform:none}
-.ready .in.d1{transition-delay:1.5s}.ready .in.d2{transition-delay:1.75s}.ready .in.d3{transition-delay:2.1s}
-
-/* the brief: a pop-up in the middle, the page blurred behind it */
-dialog{width:min(560px,calc(100% - 28px));max-height:calc(100dvh - 32px);margin:auto;padding:0;border:0;background:transparent;color:var(--foreground);overflow:visible}
-dialog::backdrop{background:rgba(8,8,10,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .25s}
-dialog.open::backdrop{opacity:1}
-.box{position:relative;max-height:calc(100dvh - 32px);overflow:auto;padding:clamp(22px,4vw,34px);border-radius:14px;background:#17171b;border:1px solid var(--line);box-shadow:0 40px 100px -30px rgba(0,0,0,.8);
-  opacity:0;transform:translateY(14px) scale(.97);transition:opacity .25s,transform .3s var(--ease)}
-dialog.open .box{opacity:1;transform:none}
-.box h2{margin:0;font:300 2rem/1.1 Jost,system-ui,sans-serif}
-.box .lede{margin:8px 0 22px;color:rgba(248,250,252,.6);font-size:.95rem}
-.x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:transparent;color:#fff;font-size:1.4rem;line-height:1;cursor:pointer}
-.x:hover{border-color:rgba(255,255,255,.4)}
-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-form .full{grid-column:1/-1}
-label{display:grid;gap:7px;font:500 11px/1 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(201,193,182,.85)}
-input,textarea{font:400 15px/1.4 Inter,system-ui,sans-serif;color:#fff;background:#111114;border:1px solid var(--line);border-radius:10px;padding:12px 13px;min-width:0;transition:border-color .2s}
-input:focus,textarea:focus{outline:none;border-color:rgba(201,193,182,.7)}
-textarea{min-height:110px;resize:vertical}
-form .btn{margin-top:4px;justify-self:start}
-.done{grid-column:1/-1;margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:10px;color:rgba(248,250,252,.85);font-size:.95rem}
-html:has(dialog[open]){overflow:hidden}
-@media (max-width:520px){form{grid-template-columns:1fr}}
-
-/* preview label (not on the live site) */
-.draft-tag{position:fixed;left:14px;bottom:12px;z-index:60;font:500 10px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;color:rgba(201,193,182,.45);pointer-events:none}
-
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}h1 .ink path,h1 .edge path{stroke-dashoffset:0}h1 .shine{opacity:0}.in{opacity:1;transform:none}}
+.lines{margin:clamp(30px,6vh,48px) 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.lines li{font:600 clamp(10px,1.1vw,12px)/1.4 Montserrat,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:var(--mut)}
+.lines li.big{font-size:clamp(11px,1.3vw,14px);color:var(--silver)}
+.lines li.in{padding-left:1.1em;font-size:clamp(9px,.95vw,10.5px)}
+.lines.tc li{text-transform:none;letter-spacing:.14em;font-weight:500;font-size:clamp(11px,1.2vw,13px)}
+.foot{display:flex;align-items:center;gap:22px;margin-top:clamp(30px,6vh,46px);font:600 clamp(9px,1vw,11px)/1 Montserrat,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:var(--mut)}
+.foot a{display:inline-flex;color:#fff;transition:opacity .2s}
+.foot a:hover{opacity:.7}
+.foot svg{width:18px;height:18px}
+.fade{opacity:0;transform:translateY(10px);transition:opacity 1s ease,transform 1s ease}
+.ready .fade{opacity:1;transform:none}
+.ready .f1{transition-delay:1.4s}.ready .f2{transition-delay:1.7s}
+.draft-tag{position:fixed;left:14px;bottom:12px;z-index:60;font:500 10px/1 Montserrat,sans-serif;letter-spacing:.08em;color:rgba(220,220,226,.4);pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}h1 path{stroke-dashoffset:0}.fade{opacity:1;transform:none}}
 </style>
 
 <main class="page" id="page">
   <div class="inner">
-    <h1 aria-label="Made Properties"><svg class="wide" viewBox="-20 -20 5464.00 284.00" role="img" aria-label="Made Properties"><defs><linearGradient id="shmaw" gradientUnits="userSpaceOnUse" x1="-700" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/><animateTransform attributeName="gradientTransform" type="translate" values="0 0;6824 0;6824 0" keyTimes="0;.32;1" dur="9s" begin="3s" repeatCount="indefinite"/></linearGradient><mask id="mkmaw" maskUnits="userSpaceOnUse" x="-20" y="-20" width="5464.00" height="284.00"><g fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="miter"><g class="w1"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(1790 0)" style="--d:0.48"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(2210 0)" style="--d:0.60"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2570 0)" style="--d:0.72"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(2990 0)" style="--d:0.84"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(3410 0)" style="--d:0.96"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3830 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(4190 0)" style="--d:1.20"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(4550 0)" style="--d:1.32"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(4704 0)" style="--d:1.44"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(5124 0)" style="--d:1.56"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></g></mask></defs><g class="edge" transform="translate(0 4)"><g class="w1"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(1790 0)" style="--d:0.48"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(2210 0)" style="--d:0.60"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2570 0)" style="--d:0.72"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(2990 0)" style="--d:0.84"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(3410 0)" style="--d:0.96"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3830 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(4190 0)" style="--d:1.20"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(4550 0)" style="--d:1.32"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(4704 0)" style="--d:1.44"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(5124 0)" style="--d:1.56"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></g><g class="ink"><g class="w1"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(1790 0)" style="--d:0.48"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(2210 0)" style="--d:0.60"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2570 0)" style="--d:0.72"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(2990 0)" style="--d:0.84"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(3410 0)" style="--d:0.96"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3830 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(4190 0)" style="--d:1.20"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(4550 0)" style="--d:1.32"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(4704 0)" style="--d:1.44"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(5124 0)" style="--d:1.56"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></g><rect class="shine" x="-20" y="-20" width="5464.00" height="284.00" fill="url(#shmaw)" mask="url(#mkmaw)"/></svg><svg class="stack" viewBox="-20 -20 3674.00 618.00" role="img" aria-label="Made Properties"><defs><linearGradient id="shmas" gradientUnits="userSpaceOnUse" x1="-700" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/><animateTransform attributeName="gradientTransform" type="translate" values="0 0;5034 0;5034 0" keyTimes="0;.32;1" dur="9s" begin="3s" repeatCount="indefinite"/></linearGradient><mask id="mkmas" maskUnits="userSpaceOnUse" x="-20" y="-20" width="3674.00" height="618.00"><g fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="miter"><g class="w1" transform="translate(1037.00 0)"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g><g class="w1" transform="translate(0.00 334)"><g transform="translate(0 0)" style="--d:0.48"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(420 0)" style="--d:0.60"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(780 0)" style="--d:0.72"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(1200 0)" style="--d:0.84"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(1620 0)" style="--d:0.96"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(2040 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.20"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2760 0)" style="--d:1.32"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(2914 0)" style="--d:1.44"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3334 0)" style="--d:1.56"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></g></mask></defs><g class="edge" transform="translate(0 4)"><g class="w1" transform="translate(1037.00 0)"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g><g class="w1" transform="translate(0.00 334)"><g transform="translate(0 0)" style="--d:0.48"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(420 0)" style="--d:0.60"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(780 0)" style="--d:0.72"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(1200 0)" style="--d:0.84"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(1620 0)" style="--d:0.96"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(2040 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.20"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2760 0)" style="--d:1.32"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(2914 0)" style="--d:1.44"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3334 0)" style="--d:1.56"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></g><g class="ink"><g class="w1" transform="translate(1037.00 0)"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g><g class="w1" transform="translate(0.00 334)"><g transform="translate(0 0)" style="--d:0.48"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(420 0)" style="--d:0.60"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(780 0)" style="--d:0.72"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(1200 0)" style="--d:0.84"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(1620 0)" style="--d:0.96"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(2040 0)" style="--d:1.08"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.20"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2760 0)" style="--d:1.32"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(2914 0)" style="--d:1.44"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3334 0)" style="--d:1.56"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></g><rect class="shine" x="-20" y="-20" width="3674.00" height="618.00" fill="url(#shmas)" mask="url(#mkmas)"/></svg></h1>
-    <p class="sub in d1">Jason Cutaiar</p>
-    <ul class="points in d2"><li>Real Estate</li><li>Investments</li><li>Business</li></ul>
-    <div class="ctas in d3">
-      <button class="btn solid" type="button" id="open">Contact</button>
-      <a class="btn" href="https://www.linkedin.com/in/madecon/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.6 4.77 6v5.56h-4v-4.93c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62v5.01h-4z"/></svg>Connect on LinkedIn</a>
-    </div>
+    <h1 aria-label="Made Properties"><svg viewBox="-20 -20 1600.00 434.74" role="img" aria-label="Made Properties"><defs><filter id="negma" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="-40" y="-40" width="1640" height="475"><feMorphology in="SourceAlpha" operator="erode" radius="4.5" result="e"/><feComposite in="SourceAlpha" in2="e" operator="out" result="o"/><feFlood flood-color="#e2e2e8"/><feComposite in2="o" operator="in"/></filter></defs><g filter="url(#negma)"><g class="neg" transform="translate(0 0.00) scale(1.00000)"><g transform="translate(0 0)" style="--d:0.00"><path pathLength="1" d="M17 244V17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M150 17V244"/></g><g transform="translate(420 0)" style="--d:0.12"><path pathLength="1" d="M0 17H220A63 63 0 0 1 283 80V244"/><path pathLength="1" d="M283 120.5H67A50 50 0 0 0 17 170.5V177A50 50 0 0 0 67 227H283"/></g><g transform="translate(840 0)" style="--d:0.24"><path pathLength="1" d="M17 0V244"/><path pathLength="1" d="M17 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H17"/></g><g transform="translate(1260 0)" style="--d:0.36"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g></g></g><g class="solid" transform="translate(0 290.00) scale(0.42928)"><g transform="translate(0 0)" style="--d:0.35"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(420 0)" style="--d:0.47"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(780 0)" style="--d:0.59"><path pathLength="1" d="M80 17H220A63 63 0 0 1 283 80V164A63 63 0 0 1 220 227H80A63 63 0 0 1 17 164V80A63 63 0 0 1 80 17Z"/></g><g transform="translate(1200 0)" style="--d:0.71"><path pathLength="1" d="M17 244V0"/><path pathLength="1" d="M17 17H231.25A51.75 51.75 0 0 1 283 68.75V68.75A51.75 51.75 0 0 1 231.25 120.5H17"/></g><g transform="translate(1620 0)" style="--d:0.83"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(2040 0)" style="--d:0.95"><path pathLength="1" d="M17 244V17H160A63 63 0 0 1 223 80V96"/></g><g transform="translate(2400 0)" style="--d:1.07"><path pathLength="1" d="M96 0V164A63 63 0 0 0 159 227H240"/><path pathLength="1" d="M0 17H192"/></g><g transform="translate(2760 0)" style="--d:1.19"><path pathLength="1" d="M17 0V244"/></g><g transform="translate(2914 0)" style="--d:1.31"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V164A63 63 0 0 0 80 227H300"/><path pathLength="1" d="M17 120.5H300"/></g><g transform="translate(3334 0)" style="--d:1.43"><path pathLength="1" d="M300 17H80A63 63 0 0 0 17 80V120.5H229.75A53.25 53.25 0 0 1 283 173.75V173.75A53.25 53.25 0 0 1 229.75 227H0"/></g></g></svg></h1>
+    <ul class="lines fade f1"><li class="big">Real Estate Investments</li><li class="in">Transformation</li><li class="in">Activation</li></ul>
+    <div class="foot fade f2"><span>Jason Cutaiar &middot; CEO</span><a href="https://www.linkedin.com/in/madecon/" target="_blank" rel="noopener" aria-label="Jason Cutaiar on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.6 4.77 6v5.56h-4v-4.93c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62v5.01h-4z"/></svg></a></div>
   </div>
 </main>
-
-<dialog id="brief" aria-labelledby="brief-t">
-  <div class="box">
-    <button class="x" type="button" id="close" aria-label="Close">&times;</button>
-    <h2 id="brief-t">Get in touch</h2>
-    <p class="lede">Tell Made Properties what you have in mind and you'll get a reply soon.</p>
-    <form id="form" novalidate>
-      <label>Name<input name="name" autocomplete="name" required></label>
-      <label>Email<input name="email" type="email" autocomplete="email" required></label>
-      <label class="full">Phone (optional)<input name="phone" type="tel" autocomplete="tel"></label>
-      <label class="full">Message<textarea name="message" placeholder="A project, an investment, a question" required></textarea></label>
-      <button class="btn solid" type="submit">Send</button>
-      <p class="done" id="done" hidden></p>
-    </form>
-  </div>
-</dialog>
 <div class="draft-tag">Draft by Ziman Sites</div>
-
-<script>
-/* Where the brief goes: put the email address between the quotes (once). The first message sent asks that inbox to
-   confirm it (a one-time email from FormSubmit), then every brief arrives there. Empty = preview mode, nothing is sent. */
-window.CONTACT_EMAIL = '';
-(() => {
-  setTimeout(() => document.getElementById('page').classList.add('ready'), 300);
-  const dlg = document.getElementById('brief'), form = document.getElementById('form'), done = document.getElementById('done');
-  const open = () => { done.hidden = true; dlg.showModal(); requestAnimationFrame(() => dlg.classList.add('open')); setTimeout(() => form.name.focus({ preventScroll: true }), 60); };
-  const close = () => { dlg.classList.remove('open'); setTimeout(() => dlg.open && dlg.close(), 220); };
-  document.getElementById('open').addEventListener('click', open);
-  document.getElementById('close').addEventListener('click', close);
-  dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
-  dlg.addEventListener('cancel', e => { e.preventDefault(); close(); });
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    for (const el of form.querySelectorAll('[required]')) { if (!el.value.trim() || (el.type === 'email' && !/^\S+@\S+\.\S+$/.test(el.value))) { el.focus(); return; } }
-    const btn = form.querySelector('[type=submit]'); btn.disabled = true;
-    if (!window.CONTACT_EMAIL) { done.textContent = 'Thank you. This is a preview, so nothing was sent.'; done.hidden = false; btn.disabled = false; return; }
-    try {
-      const r = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(window.CONTACT_EMAIL), { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ _subject: 'New message from Made Properties', name: form.name.value, email: form.email.value, phone: form.phone.value, message: form.message.value, _template: 'table' }) });
-      done.textContent = r.ok ? 'Thank you, your message was sent.' : 'Sorry, that did not go through. Please try again.';
-      if (r.ok) form.reset();
-    } catch (err) { done.textContent = 'Sorry, that did not go through. Please try again.'; }
-    done.hidden = false; btn.disabled = false;
-  });
-})();
-</script>
+<script>setTimeout(() => document.getElementById('page').classList.add('ready'), 200);</script>

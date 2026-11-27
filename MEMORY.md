@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v301.**
+- **Latest version: v302.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -78,7 +78,9 @@ Last updated: Nov 27, 2026 (after v298).
 - **Sports Culture** (Moshe): a done, paid client. Their copy is at /work/sports-culture.
 - **Jason Cutaiar** (Made Construction, Made Properties):
   - previews at /preview/jasoncutaiar, /preview/madeconstruction, /preview/madeproperties;
-  - waiting on his feedback, his Sheet CSV link and contact email.
+  - Nov 27 feedback (his own mockup cards): simplify layouts, light gradient background, "made" in negative (outlined).
+    Done: all three are now one screen (clients/jason-sites/card-page.html); the old full Made Construction site is saved as clients/made-construction/full.html.
+  - Still need his contact email (for forms, if wanted).
   - When the deal completes: re-add the logos, build compressed (<0.5 MB) work copies, remove the big previews.
 - **HD Development** (uncle Derek; develophd.com is currently on Wix):
   - redesign built at **zimansites.com/preview/hd** (+ /preview/hd-company, /preview/hd-contact), made by `clients/hd/make.py`;
