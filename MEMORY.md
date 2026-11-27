@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v299.**
+- **Latest version: v300.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -65,7 +65,8 @@ Last updated: Nov 27, 2026 (after v298).
 - **"Our clients" section:** Sports Culture links to our frozen, compressed copy at /work/sports-culture.
   - Made Construction and Made Properties logos wait in clients/portfolio-logos/ until Jason's deal is done.
 - **Photo pages for Google Images:** /ryder-ziman-1 … -5, /ryder-ziman-6-feat-maxim-zhukovski, /ryder-ziman-7.
-  - Each is a full-screen photo; listed in `PHOTOS` in build.py and in the image sitemap.
+  - Each looks like a fake "404" page with the photo faint behind it (Ryder asked, Nov 27); no link to the site.
+  - Titles: "Ziman, Ryder" (1, 2 and 7: "Ziman, Ryder: son of Michael Ziman"). Listed in `PHOTOS` in build.py and the image sitemap.
 - **PageSpeed (Nov 26):**
   - mobile performance went 74 → 89 after self-hosting the fonts (assets/fonts, inlined @font-face; the preview still uses Google Fonts);
   - SEO 100 after the email buttons got real hrefs;
