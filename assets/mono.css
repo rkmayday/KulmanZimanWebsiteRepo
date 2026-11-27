@@ -1418,16 +1418,13 @@ main.rz .flip-btn:hover{background:rgba(255,255,255,.16)}
 main.rz .flip-btn svg{width:14px;height:14px}
 @media (max-width:860px){main.rz .flip,main.rz .flip-row{max-width:260px}}
 
-main.rz .rz-sign{position:relative;width:min(240px,60%);margin:6px 0 22px;aspect-ratio:1195/438}
-main.rz .rz-sign img{width:100%;height:auto;filter:brightness(0) invert(1);opacity:.92;
-  -webkit-mask-image:linear-gradient(90deg,#000 45%,transparent 55%);mask-image:linear-gradient(90deg,#000 45%,transparent 55%);-webkit-mask-size:240% 100%;mask-size:240% 100%;-webkit-mask-position:100% 0;mask-position:100% 0}
-main.rz .rz-sign .pen{position:absolute;left:0;top:46%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff;box-shadow:0 0 14px 4px rgba(255,255,255,.55);opacity:0}
-main.rz .rz-sign.go img{animation:sign 2.4s cubic-bezier(.45,.05,.35,1) forwards}
-main.rz .rz-sign.go .pen{animation:pen 2.4s cubic-bezier(.45,.05,.35,1) forwards}
-main.rz .rz-sign.done img{-webkit-mask:none;mask:none}
-@keyframes sign{to{-webkit-mask-position:0 0;mask-position:0 0}}
-@keyframes pen{0%{left:0;top:60%;opacity:0}8%{opacity:1}30%{top:30%}55%{top:62%}80%{top:40%}96%{opacity:1}100%{left:100%;top:50%;opacity:0}}
-
+main.rz .rz-sign{position:relative;width:min(260px,62%);margin:6px 0 22px}
+/* the signature draws itself: each pen stroke is traced in the order it was written (clients/../scratchpad trace), revealing the real ink */
+main.rz .rz-sig{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 0 6px rgba(255,255,255,.25))}
+main.rz .rz-sig mask path{stroke-dasharray:1 1;stroke-dashoffset:1}
+main.rz .rz-sign.go .rz-sig mask path{animation:sigdraw var(--u) cubic-bezier(.45,.05,.55,.95) var(--t) forwards}
+main.rz .rz-sign.done .rz-sig mask path{stroke-dashoffset:0}
+@keyframes sigdraw{to{stroke-dashoffset:0}}
 main.rz .rz-story h2,main.rz .rz-work h2{font-size:clamp(2rem,4.4vw,3.4rem);margin:12px 0 40px;color:#fff;text-wrap:balance}
 main.rz .rz-story h2 em,main.rz .rz-work h2 em{color:#8f8f8f;font-style:normal}
 main.rz .rz-tl{--tl:0;position:relative;list-style:none;margin:0;padding:0 0 0 46px;display:grid;gap:clamp(30px,5vh,48px);max-width:760px}
@@ -1462,4 +1459,4 @@ main.rz .rz-go{position:absolute;left:24px;top:24px;padding:7px 12px;border-radi
 @media (hover:none){main.rz .rz-go{opacity:1;transform:none}}
 main.rz .rz-cta{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
 main.rz .rz-cta h3{margin:0;max-width:36ch}
-@media (prefers-reduced-motion:reduce){main.rz .flip{transition:none}main.rz .rz-sign img{-webkit-mask:none;mask:none}main.rz .tl-item{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){main.rz .flip{transition:none}main.rz .rz-sig mask path{stroke-dashoffset:0!important;animation:none!important}main.rz .tl-item{opacity:1;transform:none}}
