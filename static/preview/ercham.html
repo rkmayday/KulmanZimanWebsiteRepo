@@ -57,6 +57,7 @@ section.s{padding:clamp(80px,11vw,140px) 0;border-top:1px solid var(--line2);pos
 .nav ul a{display:block;padding:8px 11px;border-radius:6px;text-decoration:none;font:500 13.5px "Inter Tight";color:var(--mut);transition:color .2s,background .2s}
 .nav ul a:hover{color:var(--fg);background:rgba(255,255,255,.05)}
 .nav .btn{height:40px;padding:0 16px;font-size:13.5px}
+.nav{opacity:0;transform:translateY(-10px);transition:opacity .6s,transform .6s,background .35s,border-color .35s}.nav.show{opacity:1;transform:none}
 @media (max-width:1080px){.nav ul{display:none}}
 @media (max-width:420px){.nav .btn{padding:0 12px}}
 
@@ -218,10 +219,89 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 .draft{position:fixed;right:12px;bottom:10px;z-index:50;font:500 10px "IBM Plex Mono";letter-spacing:.1em;color:rgba(243,239,230,.35);pointer-events:none}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.js .rv,.rv0{opacity:1;transform:none}}
+
+/* ===== the show: living background, glow cursor, the 360 spin ===== */
+body{background:#050308}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none}
+.aura{position:fixed;inset:0;z-index:-4;pointer-events:none;overflow:hidden;background:radial-gradient(120% 80% at 50% 0%,#120a1c 0%,#07040b 55%,#030205 100%)}
+.aura i{position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(60px);opacity:.55;will-change:transform}
+.aura .a1{background:radial-gradient(circle,rgba(217,178,95,.28),transparent 62%);left:-20vmax;top:-20vmax}
+.aura .a2{background:radial-gradient(circle,rgba(120,60,200,.22),transparent 62%);right:-25vmax;bottom:-30vmax}
+.grain{position:fixed;inset:-50%;z-index:-2;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,1%)}}
+.cur,.cur-glow{position:fixed;left:0;top:0;pointer-events:none;z-index:9999;border-radius:50%;opacity:0;transition:opacity .3s,width .3s,height .3s,margin .3s,background .3s,border-color .3s}
+.cur{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--gold2);box-shadow:0 0 12px 2px rgba(243,217,152,.9)}
+.cur-glow{width:420px;height:420px;margin:-210px 0 0 -210px;background:radial-gradient(circle,rgba(217,178,95,.16),rgba(255,69,0,.05) 40%,transparent 68%);mix-blend-mode:screen}
+.has-cur .cur,.has-cur .cur-glow{opacity:1}
+.cur.hot{width:46px;height:46px;margin:-23px 0 0 -23px;background:transparent;border:1px solid var(--gold2);box-shadow:0 0 24px rgba(243,217,152,.5)}
+@media (hover:none),(pointer:coarse){.cur,.cur-glow{display:none}}
+section.s{border-top-color:rgba(217,178,95,.12);background:transparent}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);position:relative;overflow:hidden;transform-style:preserve-3d;transition:transform .25s ease,border-color .3s}
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(217,178,95,.16),transparent 45%)}
+.card:hover{border-color:rgba(217,178,95,.4)}.card:hover::before{opacity:1}
+.ph{transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s,border-color .5s}
+.ph:hover{transform:translateY(-4px);border-color:rgba(217,178,95,.35);box-shadow:0 30px 70px -30px rgba(217,178,95,.35)}
+h2 .gold,.gold{background-size:200% 100%;background-image:linear-gradient(100deg,#a8823b 0%,#f3d998 25%,#d9b25f 45%,#fff3cf 50%,#d9b25f 55%,#f3d998 75%,#a8823b 100%);animation:sheen 6s linear infinite}
+@keyframes sheen{to{background-position:-200% 0}}
+.rune-flip{font-feature-settings:normal}
+
+/* the spin */
+.spin{position:relative;height:520vh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center}
+#mk{position:absolute;left:50%;top:52%;width:min(92vw,1150px);aspect-ratio:1000/562;transform:translate(-50%,-50%);filter:drop-shadow(0 40px 60px rgba(0,0,0,.8)) drop-shadow(0 0 40px rgba(217,178,95,.18))}
+.halo{position:absolute;left:50%;top:52%;width:min(80vw,820px);aspect-ratio:1;transform:translate(-50%,-50%)}
+.halo i{position:absolute;inset:0;border-radius:50%}
+.halo i:first-child{background:radial-gradient(circle,rgba(217,178,95,.38) 0%,rgba(217,178,95,.12) 35%,transparent 66%);filter:blur(10px);animation:breathe 5s ease-in-out infinite}
+.halo i:last-child{inset:8%;background:conic-gradient(from 0deg,transparent 0 20%,rgba(243,217,152,.55) 25%,transparent 30% 70%,rgba(255,69,0,.4) 75%,transparent 80%);-webkit-mask:radial-gradient(circle,transparent 64%,#000 65%,#000 66%,transparent 67%);mask:radial-gradient(circle,transparent 64%,#000 65%,#000 66%,transparent 67%);animation:turn 9s linear infinite}
+@keyframes breathe{50%{transform:scale(1.08);opacity:.8}}
+@keyframes turn{to{transform:rotate(360deg)}}
+.ring{position:absolute;left:50%;top:52%;width:min(96vw,980px);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--rot,0deg));pointer-events:none;opacity:.55}
+.ring text{font:500 10.5px serif;letter-spacing:3.2px;fill:rgba(217,178,95,.55)}
+.t0{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:calc(92px + env(safe-area-inset-top)) 22px calc(30px + env(safe-area-inset-bottom));text-align:center;pointer-events:none}
+.t0 .pill{margin:0}
+.mega{margin:0;font:700 clamp(4rem,17vw,15rem)/.8 "Cinzel",serif;letter-spacing:.06em;background:linear-gradient(180deg,#fff6dc 0%,#f3d998 35%,#b68c3f 75%,#6e5222 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 30px rgba(217,178,95,.35));mix-blend-mode:screen;position:absolute;top:50%;left:50%;transform:translate(-50%,-62%);white-space:nowrap;z-index:-1}
+.sub{position:absolute;left:0;right:0;bottom:118px;margin:0;font:500 13px "IBM Plex Mono",monospace;letter-spacing:.28em;text-transform:uppercase;color:var(--mut)}
+.sub span{color:var(--gold)}
+.scrollcue{display:grid;justify-items:center;gap:10px;font:500 11px "IBM Plex Mono";letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.scrollcue i{width:1px;height:44px;background:linear-gradient(var(--gold),transparent);animation:drip 1.8s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.beat{position:absolute;left:max(26px,6vw);top:50%;transform:translateY(-50%);max-width:min(440px,40vw);opacity:0;pointer-events:none;transition:opacity .5s,transform .7s cubic-bezier(.2,.75,.15,1)}
+.beat.right{left:auto;right:max(26px,6vw);text-align:right}
+.beat h2{font-size:clamp(1.9rem,3.6vw,3.2rem);margin:12px 0}
+.beat p{color:var(--mut)}
+.beat.on{opacity:1;pointer-events:auto}
+.beat.cta{left:50%;top:auto;bottom:calc(44px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:640px;width:calc(100% - 44px);text-align:center}
+.beat.cta .join{justify-content:center;margin:0 auto}
+.beat.cta .price{justify-content:center}
+.beat .big{font-size:clamp(2.4rem,6vw,4.8rem)}
+.deg{position:absolute;right:max(22px,3vw);bottom:calc(26px + env(safe-area-inset-bottom));font:500 12px "IBM Plex Mono";letter-spacing:.14em;color:var(--gold)}
+.deg b{font-weight:500;color:var(--gold2)}
+.bar{position:absolute;left:max(22px,3vw);bottom:calc(32px + env(safe-area-inset-bottom));width:120px;height:1px;background:rgba(217,178,95,.2)}
+.bar i{display:block;height:100%;width:0;background:var(--gold2);box-shadow:0 0 8px var(--gold2)}
+@media (max-width:760px){
+  #mk{top:50%;width:118vw}.halo,.ring{top:50%}
+  .beat,.beat.right{left:22px;right:22px;top:auto;bottom:calc(120px + env(safe-area-inset-bottom));transform:none;max-width:none;text-align:left}
+  .beat.cta{bottom:calc(30px + env(safe-area-inset-bottom));left:22px;transform:none;width:auto;right:22px}
+  .beat.cta .btn{width:100%;justify-content:center}
+  .deg,.bar{display:none}
+  .sub{bottom:104px;font-size:10.5px;letter-spacing:.2em;padding:0 22px}
+  .sub .long{display:none}
+}
+@media (prefers-reduced-motion:reduce){.spin{height:auto}.stage{position:relative}.beat.cta{opacity:1;pointer-events:auto;position:relative;bottom:auto;transform:none;left:auto;margin:0 auto 40px}.b1,.b2,.b3,.scrollcue,.deg,.bar{display:none}}
+
+/* press marquee */
+.marq{overflow:hidden;border-block:1px solid rgba(217,178,95,.15);padding:22px 0;margin-top:40px;-webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marq div{display:flex;gap:56px;width:max-content;animation:slide 40s linear infinite}
+.marq span{font:700 1.4rem "Cinzel",serif;letter-spacing:.08em;color:rgba(243,217,152,.55);white-space:nowrap}
+.marq:hover div{animation-play-state:paused}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="aura" aria-hidden="true"><i class="a1"></i><i class="a2"></i></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cur" aria-hidden="true"></div><div class="cur-glow" aria-hidden="true"></div>
 
 <header class="nav" id="nav"><div class="wrap">
   <a class="brand gold" href="#top">ERCHAM</a>
@@ -229,26 +309,37 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
     <li><a href="#intro">Intro</a></li><li><a href="#views">360 Views</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#why">Why ERCHAM</a></li>
     <li><a href="#story">Founder Story</a></li><li><a href="#development">Development</a></li><li><a href="#partners">Partners</a></li><li><a href="#community">Community</a></li>
   </ul></nav>
-  <a class="btn" href="#top" data-join>Join the waitlist</a>
+  <a class="btn mag" href="#top" data-join>Join the waitlist</a>
 </div></header>
 
 <main id="top">
-<section class="hero">
-  <div class="shot" role="img" aria-label="ERCHAM MK1 one-handed gaming keypad with built-in mouse"></div><div class="shade"></div>
-  <div class="spacer"></div>
-  <div class="copy">
-    <span class="pill rv0" style="animation-delay:.05s"><i></i>Kickstarter pre-launch</span>
-    <div class="k rv0" style="animation-delay:.1s">ERCHAM MK1 &middot; (AIR-kam)</div>
-    <h1 class="rv0" style="animation-delay:.2s">One hand. <span class="gold">Full control.</span></h1>
-    <p class="what rv0" style="animation-delay:.35s"><b>A gaming keypad and optical mouse in one ambidextrous device.</b> Move, aim, click and type with a single hand.</p>
-    <form class="join rv0" id="join" style="animation-delay:.5s" novalidate>
-      <input class="field" type="email" name="email" placeholder="Your email" autocomplete="email" aria-label="Email address">
-      <button class="btn" type="submit">Join the waitlist <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
-      <p class="done" role="status">You're on the list. Check your inbox (and spam) to confirm.</p>
-    </form>
-    <div class="price rv0" style="animation-delay:.6s"><span><b>$169</b> early bird</span><span><s>$200</s> retail</span></div>
+<section class="spin" id="spin" aria-label="ERCHAM MK1">
+  <div class="stage">
+    <div class="halo" aria-hidden="true"><i></i><i></i></div>
+    <canvas id="mk" aria-label="ERCHAM MK1 rotating 360 degrees as you scroll" role="img"></canvas>
+    <div class="ring" aria-hidden="true"><svg viewBox="0 0 400 400"><defs><path id="rp" d="M200 200m-182 0a182 182 0 1 1 364 0a182 182 0 1 1 -364 0"/></defs><text><textPath href="#rp">ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ONE HAND ᛫ FULL CONTROL ᛫ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ERCHAM MK1 ᛫</textPath></text></svg></div>
+    <div class="t0">
+      <span class="pill"><i></i>Kickstarter pre-launch</span>
+      <h1 class="mega" data-rune>ERCHAM</h1>
+      <p class="sub">MK1 &middot; <span>(AIR-kam)</span><span class="long" style="color:inherit"> &middot; One hand. Full control.</span></p>
+      <div class="scrollcue"><span>Scroll to turn it</span><i></i></div>
+    </div>
+    <div class="beat b1"><span class="k">01 / One hand</span><h2>Move, aim, click and type <span class="gold">with a single hand.</span></h2></div>
+    <div class="beat b2 right"><span class="k">02 / Built-in mouse</span><h2>An optical mouse <span class="gold">built right in.</span></h2><p>PixArt PMW3389 sensor. No second device.</p></div>
+    <div class="beat b3"><span class="k">03 / Either hand</span><h2>Thumb clusters slide on <span class="gold">left or right.</span></h2></div>
+    <div class="beat b4 cta">
+      <h2 class="big">One hand. <span class="gold">Full control.</span></h2>
+      <p class="what"><b>A gaming keypad and optical mouse in one ambidextrous device.</b></p>
+      <form class="join" id="join" novalidate>
+        <input class="field" type="email" name="email" placeholder="Your email" autocomplete="email" aria-label="Email address">
+        <button class="btn mag" type="submit">Join the waitlist <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
+        <p class="done" role="status">You're on the list. Check your inbox (and spam) to confirm.</p>
+      </form>
+      <div class="price"><span><b>$169</b> early bird</span><span><s>$200</s> retail</span></div>
+    </div>
+    <div class="deg" aria-hidden="true"><b id="deg">0</b>°</div>
+    <div class="bar" aria-hidden="true"><i id="bar"></i></div>
   </div>
-  <div class="feats"><span>Built-in optical mouse</span><span>Fully ambidextrous</span><span>Modular thumb clusters</span><span>Patent pending</span></div>
 </section>
 
 <div class="rune-bar" aria-hidden="true"><span>ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ </span></div>
@@ -257,7 +348,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 <section class="s" id="intro"><div class="wrap">
   <div class="grid2">
     <div>
-      <span class="k rv">Introduction</span>
+      <span class="k rv" data-rune>Introduction</span>
       <h2 class="rv">What is <span class="gold">ERCHAM?</span></h2>
       <div class="name rv"><b>Erchamion</b><span>"air KAH-m i-on"</span><span>Elvish for "one-handed"</span></div>
       <p class="lede rv">The name comes from Erchamion, an Elvish word meaning "one-handed." It felt right: a name rooted in resilience, with a modern, tech-forward edge.</p>
@@ -275,8 +366,8 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
     <div class="card rv"><h3>Patent Pending</h3><p>An accessibility-driven, ambidextrous design with a built-in mouse, protected and heading to Kickstarter.</p></div>
   </div>
   <div class="stats">
-    <div class="stat rv"><b class="gold">30+</b><span>Planned programmable inputs</span></div>
-    <div class="stat rv"><b class="gold">1000Hz</b><span>Planned polling rate</span></div>
+    <div class="stat rv"><b class="gold" data-count="30" data-suf="+">30+</b><span>Planned programmable inputs</span></div>
+    <div class="stat rv"><b class="gold" data-count="1000" data-suf="Hz">1000Hz</b><span>Planned polling rate</span></div>
     <div class="stat rv"><b class="gold">360°</b><span>Mouse control</span></div>
   </div>
 </div></section>
@@ -284,7 +375,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 <!-- AMBIDEXTROUS -->
 <section class="s"><div class="wrap grid2">
   <div>
-    <span class="k rv">Modular by Design</span>
+    <span class="k rv" data-rune>Modular by Design</span>
     <h2 class="rv">Fully ambidextrous <span class="gold">by design.</span></h2>
     <p class="lede rv">Unlike traditional gaming keypads that lock users into a left-handed or right-handed layout, ERCHAM features removable modular thumb clusters designed specifically for each side of the device.</p>
     <p class="lede rv">The left-hand and right-hand thumb clusters attach or remove independently, so you configure ERCHAM for the hand you use. Each cluster puts an analog stick, dedicated space bar, and primary left-click button within easy reach of your thumb while your fingers control the keys.</p>
@@ -303,7 +394,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- 360 VIEWS -->
 <section class="s" id="views"><div class="wrap">
-  <span class="k rv">360° Views</span>
+  <span class="k rv" data-rune>360° Views</span>
   <h2 class="rv">Explore every <span class="gold">angle.</span></h2>
   <p class="lede rv">Get an intimate look at the ERCHAM MK1 from every perspective. See the precision engineering and thoughtful design that makes true one-handed control possible.</p>
   <div class="vids" style="margin-top:36px">
@@ -315,7 +406,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- GALLERY -->
 <section class="s" id="gallery"><div class="wrap">
-  <span class="k rv">Gallery</span>
+  <span class="k rv" data-rune>Gallery</span>
   <h2 class="rv">ERCHAM MK1 <span class="gold">· Stealth</span></h2>
   <div class="gal rv">
     <div class="track" id="track" tabindex="0" aria-label="Stealth gallery">
@@ -348,7 +439,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- WHY ERCHAM -->
 <section class="s" id="why"><div class="wrap">
-  <span class="k rv">The Difference</span>
+  <span class="k rv" data-rune>The Difference</span>
   <h2 class="rv">Why ERCHAM <span class="gold">stands apart.</span></h2>
   <p class="lede rv">ERCHAM combines a gaming keypad, a built-in optical mouse, a strap-stabilized grip, and modular thumb clusters for either hand in a single device.</p>
   <blockquote class="rv" style="margin-top:34px">"I set out to build a device that lets people with limb differences work and play with either hand. Ambidexterity matters to me because if someone in my situation only had use of their other arm, most existing devices would be useless. The Razer Tartarus, for example, is left-hand only, has no mouse, and no way to stabilize your hand. The Azeron Cyro points in the right direction, but each unit is built for one specific hand."<cite>Joe Tomasulo, Founder</cite></blockquote>
@@ -379,7 +470,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- FOUNDER STORY -->
 <section class="s" id="story"><div class="wrap">
-  <span class="k rv">Origin Story</span>
+  <span class="k rv" data-rune>Origin Story</span>
   <h2 class="rv">From loss <span class="gold">to legend.</span></h2>
   <div class="story" style="margin-top:30px">
     <div>
@@ -402,7 +493,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- DEVELOPMENT -->
 <section class="s" id="development"><div class="wrap">
-  <span class="k rv">Development</span>
+  <span class="k rv" data-rune>Development</span>
   <h2 class="rv">From concept <span class="gold">to reality.</span></h2>
   <p class="lede rv">ERCHAM isn't vaporware. It's a proven concept with real prototypes and real results. We're currently building the official prototype and targeting late November 2026, pending testing of our refined, slimmer prototype. Launch date to be confirmed. Product delivery follows funding and production.</p>
   <p class="lede rv">I worked alongside friends and talented 3D artists to refine the model to where it is today, building and iterating across professional industry tools.</p>
@@ -427,7 +518,7 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- PARTNERS -->
 <section class="s" id="partners"><div class="wrap">
-  <span class="k rv">Our Partners</span>
+  <span class="k rv" data-rune>Our Partners</span>
   <h2 class="rv">Built with <span class="gold">great people.</span></h2>
   <div class="partners">
     <a class="card rv" href="https://prototyperlab.com/" target="_blank" rel="noopener"><span class="role">Prototyping Partner</span><h3>PrototyperLab</h3><p>Manufacturing and prototyping specialists helping bring the official ERCHAM prototype to life.</p></a>
@@ -438,24 +529,25 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
     <a class="card rv" href="https://www.reddit.com/user/Perfect_pixels_/" target="_blank" rel="noopener"><span class="role">Graphic Artist</span><h3>Perfect Pixels</h3><p>Graphic artist who designed the promotional graphics and visuals used across the ERCHAM website.</p></a>
     <a class="card rv" href="https://graphiccookinglab.com" target="_blank" rel="noopener"><span class="role">Graphic Artist</span><h3>BuildWith321</h3><p>Graphic artist behind Graphic Cooking Lab, contributing promotional design work for ERCHAM.</p></a>
   </div>
-  <div class="row rv" style="margin-top:30px"><span style="color:var(--mut)">More partners joining as we head toward launch.</span><a class="btn ghost" href="https://www.instagram.com/erchamadaptivesystems/" target="_blank" rel="noopener">Partner with us</a></div>
+  <div class="row rv" style="margin-top:30px"><span style="color:var(--mut)">More partners joining as we head toward launch.</span><a class="btn ghost mag" href="https://www.instagram.com/erchamadaptivesystems/" target="_blank" rel="noopener">Partner with us</a></div>
 </div></section>
 
 <!-- COMMUNITY -->
 <section class="s" id="community"><div class="wrap">
-  <span class="k rv">Community Feedback</span>
+  <span class="k rv" data-rune>Community Feedback</span>
   <h2 class="rv">Making waves <span class="gold">worldwide.</span></h2>
   <p class="lede rv">From viral Reddit posts to international media coverage, ERCHAM is capturing attention and changing the conversation around accessible gaming.</p>
   <div class="bigstats">
-    <div class="stat rv"><b class="gold">5.2M+</b><span>Total views</span></div>
-    <div class="stat rv"><b class="gold">12+</b><span>Media features</span></div>
-    <div class="stat rv"><b class="gold">300+</b><span>Pre-launch followers</span></div>
+    <div class="stat rv"><b class="gold" data-count="5.2" data-suf="M+">5.2M+</b><span>Total views</span></div>
+    <div class="stat rv"><b class="gold" data-count="12" data-suf="+">12+</b><span>Media features</span></div>
+    <div class="stat rv"><b class="gold" data-count="300" data-suf="+">300+</b><span>Pre-launch followers</span></div>
   </div>
   <div class="row rv" style="margin-top:26px">
-    <a class="btn ghost" href="https://www.youtube.com/@onearmedgamer" target="_blank" rel="noopener">Watch Joe play Halo with one hand</a>
-    <a class="btn ghost" href="https://www.reddit.com/r/disabledgamers/comments/1osxw6p/im_a_onearmed_gamer_and_built_my_own_adaptive/" target="_blank" rel="noopener">The original r/disabledgamers post</a>
-    <a class="btn ghost" href="https://www.reddit.com/r/pcmasterrace/comments/1ru41ge/comment/obt5le2/" target="_blank" rel="noopener">The viral r/pcmasterrace post</a>
+    <a class="btn ghost mag" href="https://www.youtube.com/@onearmedgamer" target="_blank" rel="noopener">Watch Joe play Halo with one hand</a>
+    <a class="btn ghost mag" href="https://www.reddit.com/r/disabledgamers/comments/1osxw6p/im_a_onearmed_gamer_and_built_my_own_adaptive/" target="_blank" rel="noopener">The original r/disabledgamers post</a>
+    <a class="btn ghost mag" href="https://www.reddit.com/r/pcmasterrace/comments/1ru41ge/comment/obt5le2/" target="_blank" rel="noopener">The viral r/pcmasterrace post</a>
   </div>
+  <div class="marq" aria-hidden="true"><div><span>Tom's Hardware</span><span>&#5855;</span><span>Yanko Design</span><span>&#5855;</span><span>Dexerto</span><span>&#5855;</span><span>TechSpot</span><span>&#5855;</span><span>3DJuegos</span><span>&#5855;</span><span>Trend Hunter</span><span>&#5855;</span><span>PcDeMaNo</span><span>&#5855;</span><span>Spectrum News</span><span>&#5855;</span><span>BigGo Finance</span><span>&#5855;</span><span>Reddit · PCMR</span><span>&#5855;</span><span>6AM City (LOUtoday)</span><span>&#5855;</span><span>La Crème du Gaming</span><span>&#5855;</span><span>Tom's Hardware</span><span>&#5855;</span><span>Yanko Design</span><span>&#5855;</span><span>Dexerto</span><span>&#5855;</span><span>TechSpot</span><span>&#5855;</span><span>3DJuegos</span><span>&#5855;</span><span>Trend Hunter</span><span>&#5855;</span><span>PcDeMaNo</span><span>&#5855;</span><span>Spectrum News</span><span>&#5855;</span><span>BigGo Finance</span><span>&#5855;</span><span>Reddit · PCMR</span><span>&#5855;</span><span>6AM City (LOUtoday)</span><span>&#5855;</span><span>La Crème du Gaming</span><span>&#5855;</span></div></div>
   <h3 class="rv" style="margin-top:50px">Featured in</h3>
   <div class="press">
     <a class="rv" href="https://www.tomshardware.com/peripherals/controllers-gamepads/disabled-gamer-prototypes-true-one-handed-keyboard-and-mouse-controller-maker-inspired-to-build-device-after-losing-right-arm-in-an-accident" target="_blank" rel="noopener"><b>Tom's Hardware</b><span>Disabled gamer prototypes true one-handed keyboard-and-mouse controller</span></a>
@@ -475,20 +567,20 @@ footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);
 
 <!-- LAUNCH -->
 <section class="s launch" id="launch"><div class="wrap">
-  <span class="k rv">Coming to Kickstarter</span>
+  <span class="k rv" data-rune>Coming to Kickstarter</span>
   <h2 class="rv">Be there <span class="gold">at launch.</span></h2>
   <p class="lede rv">Follow the campaign on Kickstarter to be notified the moment it opens. Early backers will be able to claim rewards and early-bird pricing.</p>
   <div class="perks rv"><span>Early-bird pricing</span><span>Backer rewards</span><span>Launch notification</span><span>Prototype updates</span></div>
   <div class="row rv">
-    <a class="btn" href="https://www.kickstarter.com/projects/erchamadaptivesystem/ercham-mk1-one-handed-gaming-and-productivity-controller" target="_blank" rel="noopener">Follow on Kickstarter</a>
-    <a class="btn ghost" href="#top" data-join>Get launch updates</a>
+    <a class="btn mag" href="https://www.kickstarter.com/projects/erchamadaptivesystem/ercham-mk1-one-handed-gaming-and-productivity-controller" target="_blank" rel="noopener">Follow on Kickstarter</a>
+    <a class="btn ghost mag" href="#top" data-join>Get launch updates</a>
   </div>
   <p class="note rv">Targeting late November 2026, pending testing of our refined, slimmer prototype. Launch date to be confirmed. Product delivery follows funding and production.</p>
   <div class="card donate rv">
     <span class="k">Support Development</span>
     <h3 style="font-size:1.6rem;margin-top:10px">Help us keep building.</h3>
     <p>Every contribution helps fund continued development, testing, and manufacturing. Want to support the mission before the Kickstarter campaign opens? 100% of donations go directly toward product development and accessibility innovation.</p>
-    <div class="row" style="margin-top:20px"><a class="btn ghost" href="https://www.givesendgo.com/help-me-bring-ercham-mk1-to-life" target="_blank" rel="noopener">Donate via GiveSendGo</a></div>
+    <div class="row" style="margin-top:20px"><a class="btn ghost mag" href="https://www.givesendgo.com/help-me-bring-ercham-mk1-to-life" target="_blank" rel="noopener">Donate via GiveSendGo</a></div>
   </div>
 </div></section>
 </main>
@@ -521,7 +613,7 @@ f.addEventListener('submit',function(ev){ev.preventDefault();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value.trim())){e.focus();e.setCustomValidity('Enter your email');e.reportValidity();return}
   f.classList.add('sent')});
 e.addEventListener('input',function(){e.setCustomValidity('')});
-document.querySelectorAll('[data-join]').forEach(function(a){a.addEventListener('click',function(ev){ev.preventDefault();scrollTo({top:0,behavior:reduce?'auto':'smooth'});setTimeout(function(){if(!f.classList.contains('sent')){f.classList.add('open');e.focus({preventScroll:true})}},reduce?0:450)})});
+document.querySelectorAll('[data-join]').forEach(function(a){a.addEventListener('click',function(ev){ev.preventDefault();var sp=document.getElementById('spin');scrollTo({top:sp.offsetTop+sp.offsetHeight-innerHeight,behavior:reduce?'auto':'smooth'});setTimeout(function(){if(!f.classList.contains('sent')){f.classList.add('open');e.focus({preventScroll:true})}},reduce?0:900)})});
 /* nav background */
 var nav=document.getElementById('nav');function ns(){nav.classList.toggle('solid',scrollY>40)}ns();addEventListener('scroll',ns,{passive:true});
 /* reveal */
@@ -543,6 +635,71 @@ t.addEventListener('scroll',function(){c.textContent=(idx()+1)+' / '+n},{passive
 document.getElementById('prev').addEventListener('click',function(){go(idx()-1)});
 document.getElementById('next').addEventListener('click',function(){go(idx()+1)});
 t.addEventListener('keydown',function(ev){if(ev.key==='ArrowRight'){ev.preventDefault();go(idx()+1)}if(ev.key==='ArrowLeft'){ev.preventDefault();go(idx()-1)}});
+})();
+</script>
+
+<script>
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+var mx=innerWidth/2,my=innerHeight/2,tx=mx,ty=my;
+/* ---- glow cursor ---- */
+if(fine&&!reduce){var cur=document.querySelector('.cur'),glow=document.querySelector('.cur-glow');document.documentElement.classList.add('has-cur');
+  addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.transform='translate('+mx+'px,'+my+'px)'},{passive:true});
+  document.addEventListener('mouseover',function(e){cur.classList.toggle('hot',!!e.target.closest('a,button,input,.ph,[data-hand]'))});
+  (function loop(){tx+=(mx-tx)*.12;ty+=(my-ty)*.12;glow.style.transform='translate('+tx+'px,'+ty+'px)';requestAnimationFrame(loop)})();}
+/* ---- living background: rising embers, drifting runes, aura that follows the cursor ---- */
+var fx=document.getElementById('fx'),c=fx.getContext('2d'),dpr=Math.min(devicePixelRatio||1,2),W,H,parts=[],RUNES='ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';
+function size(){W=innerWidth;H=innerHeight;fx.width=W*dpr;fx.height=H*dpr;c.setTransform(dpr,0,0,dpr,0,0)}size();addEventListener('resize',size);
+function spawn(init){var rune=Math.random()<.12;return{x:Math.random()*W,y:init?Math.random()*H:H+20,r:rune?0:Math.random()*1.8+.4,s:rune?.15+Math.random()*.25:.3+Math.random()*.9,
+  w:Math.random()*Math.PI*2,a:rune?.08+Math.random()*.12:.25+Math.random()*.6,rune:rune?RUNES[Math.random()*RUNES.length|0]:null,sz:12+Math.random()*16,hue:Math.random()<.18?'255,90,30':'243,210,140'}}
+var N=Math.round(Math.min(110,W*H/14000));for(var i=0;i<N;i++)parts.push(spawn(true));
+var a1=document.querySelector('.aura .a1'),a2=document.querySelector('.aura .a2'),ax=0,ay=0,sy=0;
+function draw(t){c.clearRect(0,0,W,H);
+  for(var i=0;i<parts.length;i++){var p=parts[i];p.y-=p.s+sy*.02;p.x+=Math.sin(t/1600+p.w)*.3;
+    var dx=p.x-mx,dy=p.y-my,d=dx*dx+dy*dy;if(d<22000&&!p.rune){p.x+=dx/90;p.y+=dy/90}
+    if(p.y<-30)parts[i]=spawn(false);
+    if(p.rune){c.font=p.sz+'px serif';c.fillStyle='rgba(217,178,95,'+p.a+')';c.fillText(p.rune,p.x,p.y)}
+    else{var tw=.6+.4*Math.sin(t/300+p.w);c.beginPath();c.arc(p.x,p.y,p.r,0,7);c.fillStyle='rgba('+p.hue+','+(p.a*tw)+')';c.shadowColor='rgba('+p.hue+',.9)';c.shadowBlur=8;c.fill();c.shadowBlur=0}}
+  ax+=(mx/W-.5-ax)*.03;ay+=(my/H-.5-ay)*.03;
+  a1.style.transform='translate('+(ax*14)+'vw,'+(ay*14+scrollY/innerHeight*3)+'vh)';a2.style.transform='translate('+(-ax*12)+'vw,'+(-ay*10)+'vh)';
+  sy*=.9;if(!reduce)requestAnimationFrame(draw)}
+addEventListener('scroll',function(){sy=Math.min(40,sy+4)},{passive:true});
+requestAnimationFrame(draw);
+/* ---- rune decode: text starts as Elder Futhark and resolves into English ---- */
+function decode(el){if(el.dataset.done)return;el.dataset.done=1;var fin=el.textContent,L=fin.length,f=0;if(reduce)return;
+  (function step(){var out='';for(var i=0;i<L;i++){var ch=fin[i];out+=(ch===' '||i<f/2.2)?ch:RUNES[Math.random()*RUNES.length|0]}el.textContent=out;f++;if(f/2.2<L)requestAnimationFrame(step);else el.textContent=fin})()}
+var ro=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){decode(x.target);ro.unobserve(x.target)}})},{threshold:.6});
+document.querySelectorAll('[data-rune]').forEach(function(el){if(el.classList.contains('mega'))setTimeout(function(){decode(el)},250);else ro.observe(el)});
+/* ---- counters ---- */
+var co=new IntersectionObserver(function(es){es.forEach(function(x){if(!x.isIntersecting)return;co.unobserve(x.target);var el=x.target,n=+el.dataset.count,suf=el.dataset.suf,dec=n%1?1:0,t0=performance.now();
+  if(reduce)return;(function tick(t){var k=Math.min(1,(t-t0)/1600),e=1-Math.pow(1-k,3);el.textContent=(n*e).toFixed(dec)+suf;if(k<1)requestAnimationFrame(tick)})(t0)})},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(function(el){co.observe(el)});
+/* ---- card spotlight + tilt, magnetic buttons ---- */
+if(fine&&!reduce){document.querySelectorAll('.card').forEach(function(cd){cd.addEventListener('mousemove',function(e){var r=cd.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    cd.style.setProperty('--mx',x+'px');cd.style.setProperty('--my',y+'px');cd.style.transform='perspective(900px) rotateX('+((y/r.height-.5)*-6)+'deg) rotateY('+((x/r.width-.5)*6)+'deg)'});
+    cd.addEventListener('mouseleave',function(){cd.style.transform=''})});
+  document.querySelectorAll('.mag').forEach(function(b){b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.25)+'px,'+((e.clientY-r.top-r.height/2)*.35)+'px)'});
+    b.addEventListener('mouseleave',function(){b.style.transform=''})})}
+/* ---- the 360 spin: 101 frames, scrubbed by scroll ---- */
+var cv=document.getElementById('mk'),g=cv.getContext('2d'),FR=101,imgs=[],loaded=0,curF=-1,sec=document.getElementById('spin'),beats=[...document.querySelectorAll('.beat')],ring=document.querySelector('.ring'),degEl=document.getElementById('deg'),bar=document.getElementById('bar'),t0el=document.querySelector('.t0'),nav=document.getElementById('nav');
+cv.width=1000;cv.height=562;
+function src(i){return '/preview/ercham-img/spin/'+String(i).padStart(3,'0')+'.webp'}
+function load(i){if(imgs[i])return;var im=new Image();im.decoding='async';im.onload=function(){loaded++;if(i===want())paint(i,true)};im.src=src(i);imgs[i]=im}
+load(0);[25,50,75].forEach(load);for(var k=1;k<FR;k++)(function(k){setTimeout(function(){load(k)},40*k)})(k);
+var idle=0,prog=0;
+function want(){return Math.round(((prog*1.0)+idle)*(FR-1))%FR}
+function paint(i,force){if(i===curF&&!force)return;var im=imgs[i];if(!im||!im.complete||!im.naturalWidth){for(var d=1;d<FR;d++){var j=(i-d+FR)%FR;if(imgs[j]&&imgs[j].complete&&imgs[j].naturalWidth){im=imgs[j];break}}}if(!im||!im.naturalWidth)return;g.clearRect(0,0,1000,562);g.drawImage(im,0,0,1000,562);curF=i}
+function frame(){var r=sec.getBoundingClientRect(),run=sec.offsetHeight-innerHeight;prog=Math.min(1,Math.max(0,-r.top/run));
+  paint(want());
+  var deg=Math.round(want()/(FR-1)*360)%360;degEl.textContent=deg;bar.style.width=(prog*100)+'%';ring.style.setProperty('--rot',(prog*-120)+'deg');
+  t0el.style.opacity=Math.max(0,1-prog*7);t0el.style.transform='translateY('+(-prog*120)+'px)';
+  var stops=[[.16,.36],[.4,.6],[.63,.8],[.84,1.01]];beats.forEach(function(b,i){var on=prog>=stops[i][0]&&prog<stops[i][1];b.classList.toggle('on',on)});
+  nav.classList.toggle('show',prog>.9||r.bottom<innerHeight*.5||-r.top<10);
+  cv.style.transform='translate(-50%,-50%) scale('+(1+prog*.08)+')';
+}
+/* before the first scroll it turns slowly on its own, a quarter turn, then waits */
+if(!reduce){var st=performance.now();(function intro(t){if(prog>0.002){idle=Math.round(idle*(FR-1))/(FR-1);return}idle=Math.min(.12,(t-st)/9000);frame();requestAnimationFrame(intro)})(st)}
+addEventListener('scroll',function(){requestAnimationFrame(frame)},{passive:true});addEventListener('resize',frame);frame();
 })();
 </script>
 </body>

@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v307.**
+- **Latest version: v308.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -98,6 +98,7 @@ Last updated: Nov 27, 2026 (after v298).
   - He has no in-hand clip yet, so the mockup uses his product render.
   - Nov 27: Joe said "take everything from ercham.com". Price agreed by Ryder: $284 one-time, paid only if Joe is happy.
     Full page built at /preview/ercham (every section from his site; all media 2.8 MB instead of 25 MB; no 3D model).
+    v308: Ryder said it was a downgrade, so it got the big upgrade: scroll-driven 360 spin of the MK1 (101 cut-out frames in ercham-img/spin), live ember/rune background, glow cursor, rune-decode headings, card spotlight + tilt, magnetic buttons, counters, press marquee.
 - **Walters Homes** (LBI, NJ builder, Ed Walters Jr., Ship Bottom HQ): just research; Ryder is NOT pitching them (a competitor of his dad's company).
 
 ## Brand files
