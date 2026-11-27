@@ -37,7 +37,7 @@ def logo_svg(inner, w, h, cls, label, uid):
 
 def texture(dst):
     (dst / 'img').mkdir(parents=True, exist_ok=True)
-    shutil.copy(HERE / 'bg.webp', dst / 'img' / 'bg.webp')
+    for f in ('stars.svg', 'grain.svg'): shutil.copy(HERE / f, dst / 'img' / f)
     shutil.copy(CL / 'made-construction' / 'img' / 'texture.webp', dst / 'img' / 'texture.webp')
 
 # ---- Nov 27: all three are one screen, laid out like Jason's own mockups (card-page.html) ----
@@ -100,7 +100,7 @@ mc_inner, mc_w, mc_h = L.stacked('made', 'construction')
 TRIM_JS = ('<script>document.querySelectorAll("[data-trim]").forEach(g=>{const t=+g.dataset.trim;g.querySelectorAll("path").forEach(p=>{'
            'const L=p.getTotalLength(),f=Math.min(.45,t/L);p.style.strokeDasharray=`0 ${f} ${1-2*f} ${f}`;p.style.strokeDashoffset=0})})</script>')
 NEW_HOME_CSS = '''
-.cosmic{background:#0b0b0d url(img/bg.webp) center/cover no-repeat}
+.cosmic{background:url(img/stars.svg) center/cover no-repeat,url(img/grain.svg) 0 0/240px 240px,radial-gradient(50% 44% at 30% 30%,rgba(255,255,255,.04),transparent 72%),radial-gradient(42% 38% at 62% 52%,rgba(255,255,255,.018),transparent 72%),radial-gradient(120% 90% at 45% 38%,#0b0b0c 0%,#070708 55%,#030304 100%)}
 .cosmic::before{display:none}
 .cosmic-old{background:radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%)}
 .cosmic::before{background-image:url(img/texture.webp),radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 1px,transparent 1.4px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.25) 1px,transparent 1.4px);background-size:cover,330px 290px,240px 260px;opacity:.28}
@@ -129,7 +129,7 @@ home_new = ('<section class="frame cosmic home" id="f-home" aria-label="Home">'
 mc_page = full_page.replace(home_old, home_new).replace('</style>', NEW_HOME_CSS + '</style>', 1)
 mc_page = mc_page.replace('family=Jost', 'family=Montserrat:wght@500;600&family=Jost', 1)
 PAGES.pop('made-construction')
-shutil.copy(HERE / 'bg.webp', CL / 'made-construction' / 'img' / 'bg.webp')
+for f in ('stars.svg', 'grain.svg'): shutil.copy(HERE / f, CL / 'made-construction' / 'img' / f)
 (CL / 'made-construction' / 'index.html').write_text(mc_page)
 for folder, d in PAGES.items():
     page = (card.replace('{{LOCKUP}}', lockup(folder[:2], d['title'], d['lock']) + TRIM_JS).replace('{{LINES}}', d['lines']).replace('{{FOOT}}', d['foot'])

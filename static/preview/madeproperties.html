@@ -11,12 +11,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
 <style>
 /* Made Properties: one screen, laid out like Jason's own mockups (Nov 27): the lockup in his lettering with the first word
-   in negative (outlined), a few lines of small caps under it, and LinkedIn. A soft background is Jason's own image (img/bg.webp). */
+   in negative (outlined), a few lines of small caps under it, and LinkedIn. Background: Jason's dark haze, drawn in CSS with vector specks (img/stars.svg) and a fine grain (img/grain.svg), so it is never blocky. */
 :root{--bg:#141417;--silver:#d9d9df;--mut:rgba(226,226,232,.78);color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--silver);font:500 16px/1.6 Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
-.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;background:#0b0b0d url(madeproperties-img/bg.webp) center/cover no-repeat;
+.page{position:relative;height:100vh;height:100dvh;display:grid;place-items:center;overflow:hidden;background:url(madeproperties-img/stars.svg) center/cover no-repeat,url(madeproperties-img/grain.svg) 0 0/240px 240px,radial-gradient(50% 44% at 30% 30%,rgba(255,255,255,.04),transparent 72%),radial-gradient(42% 38% at 62% 52%,rgba(255,255,255,.018),transparent 72%),radial-gradient(120% 90% at 45% 38%,#0b0b0c 0%,#070708 55%,#030304 100%);
   padding:40px max(28px,env(safe-area-inset-right,0px)) 40px max(28px,env(safe-area-inset-left,0px))}
 .inner{position:relative;z-index:1;width:min(100%,440px)}
 h1{margin:0}
