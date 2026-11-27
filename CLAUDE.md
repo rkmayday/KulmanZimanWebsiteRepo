@@ -1,5 +1,9 @@
 # Working on this repo
 
+- **Read MEMORY.md first.** It holds everything about Ziman Sites, Ryder, the clients, the ship process and how he
+  wants to work, so a new session can pick up where the last one left off. Update it (and push) whenever something
+  important changes.
+
 - **Always back up to GitHub.** After every meaningful change, commit and push to the
   KulmanZimanWebsiteRepo GitHub repository. Never leave work only in a local or cloud checkout.
 - Build with `python3 build.py`; output goes to `dist/` (not committed).
