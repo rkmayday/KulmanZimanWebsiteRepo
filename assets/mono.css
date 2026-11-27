@@ -1418,7 +1418,7 @@ main.rz .flip-btn:hover{background:rgba(255,255,255,.16)}
 main.rz .flip-btn svg{width:14px;height:14px}
 @media (max-width:860px){main.rz .flip,main.rz .flip-row{max-width:260px}}
 
-main.rz .rz-sign{position:relative;width:min(260px,62%);margin:6px 0 22px}
+main.rz .rz-sign{position:relative;width:min(130px,31%);margin:6px 0 22px}
 /* the signature draws itself: each pen stroke is traced in the order it was written (clients/../scratchpad trace), revealing the real ink */
 main.rz .rz-sig{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 0 6px rgba(255,255,255,.25))}
 main.rz .rz-sig mask path{stroke-dasharray:1 1;stroke-dashoffset:1}

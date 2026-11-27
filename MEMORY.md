@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v313.**
+- **Latest version: v314.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -65,7 +65,7 @@ Last updated: Nov 27, 2026 (after v298).
 - **"Our clients" section:** Sports Culture links to our frozen, compressed copy at /work/sports-culture.
   - Made Construction and Made Properties logos wait in clients/portfolio-logos/ until Jason's deal is done.
 - **Profile page (/ryderziman), Nov 27:** flip business card (photo front; back has email, LinkedIn, "Save contact" = /ryder-ziman.vcf),
-  signature that writes itself, "The story so far" timeline (dates from git history: Nov 5 Kulman Ziman live, Nov 6 first samples,
+  signature that writes itself, "The story so far" timeline (dates from git history: Aug 24 Kulman Ziman live, Nov 5 first samples (the redo with Claude),
   Nov 12 rebrand, Nov 20 Sports Culture, six demos, now, next), and the six demos as live cards. Timeline class is .rz-tl (.timeline is taken).
 - **Photo pages for Google Images:** /ryder-ziman-1 … -5, /ryder-ziman-6-feat-maxim-zhukovski, /ryder-ziman-7.
   - Each looks like a fake "404" page with the photo faint behind it (Ryder asked, Nov 27); no link to the site.
