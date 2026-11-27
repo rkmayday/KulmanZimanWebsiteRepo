@@ -310,8 +310,7 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 
 def photo_page(slug, alt, w, h):
     n = slug.split("-")[2]   # the page number
-    # plain titles ("Photo 1"): the name lives in the photo itself (file name, description, caption), so the photo shows
-    # in Google Images for the name without the page competing with the main pages in the All results
+    # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 7
     img = f"/images/ryder-ziman/{slug}.jpg"
     ld = json.dumps({"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": SITE + img, "name": alt,
                      "description": alt + ", founder of Ziman Sites.",
@@ -323,7 +322,7 @@ def photo_page(slug, alt, w, h):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Photo {n}</title>
+<title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "7") else "Ziman, Ryder"}</title>
 <meta name="description" content="{SNAP[int(n) - 1] if int(n) <= len(SNAP) else SNAP[-1]}">
 <link rel="canonical" href="{SITE}/{slug}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">
