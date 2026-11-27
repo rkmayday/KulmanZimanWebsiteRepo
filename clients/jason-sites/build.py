@@ -47,33 +47,32 @@ LI = ('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="
       '1.83-2.06 3.77-2.06 4.03 0 4.77 2.6 4.77 6v5.56h-4v-4.93c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62v5.01h-4z"/></svg>')
 LINKEDIN = 'https://www.linkedin.com/in/madecon/'
 
-def neg_filter(uid, w, h, pad=40):
-    """two outline filters in Jason's gray: 'neg' for the big word, 'neg2' (thinner) for the small word under it"""
-    def one(fid, r):
-        return (f'<filter id="{fid}" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="{-pad}" y="{-pad}" width="{w + 2 * pad:.0f}" height="{h + 2 * pad:.0f}">'
-                f'<feMorphology in="SourceAlpha" operator="erode" radius="{r}" result="e"/>'
-                '<feComposite in="SourceAlpha" in2="e" operator="out" result="o"/>'
-                '<feFlood flood-color="#9c9ca3"/><feComposite in2="o" operator="in"/></filter>')
-    return one(f'neg{uid}', 4.5) + one(f'negs{uid}', 1.6)
-
 def lockup(uid, label, rows):
-    """rows: [(text, 'neg'|'solid', scale_to_first_width)] stacked, left-aligned"""
-    y, parts, W = 0.0, [], None
+    """rows: [(text, 'neg'|'neg2'|'solid', fit)] stacked, left-aligned. fit: False, True (first line's width) or a text ('mad').
+    'neg' letters are hollow, drawn as real vector shapes so they stay sharp at any size: the 34-unit strokes in gray,
+    with a slightly thinner copy cut out of their middle through a mask (its ends trimmed on the page, so every end is
+    closed). 'neg2' is the same with a thinner cut, the light negative on the small word."""
+    y, parts, masks, W = 0.0, [], [], None
     for i, (text, kind, fit) in enumerate(rows):
         letters, w = L.line(text)
         if W is None: W = w
-        target = L.line(fit)[1] if isinstance(fit, str) else (W if fit else None)   # fit='mad': as wide as "MAD"
+        target = L.line(fit)[1] if isinstance(fit, str) else (W if fit else None)
         k = (target / w) if target else 1.0
-        g = L.group(letters, kind, f' transform="translate(0 {y:.2f}) scale({k:.5f})"')
-        g = stagger(g, start=i * .35)
-        if kind == 'neg': g = f'<g filter="url(#neg{uid})">{g}</g>'
-        elif kind == 'neg2': g = f'<g filter="url(#negs{uid})">{g}</g>'
-        parts.append(g)
+        tf = f' transform="translate(0 {y:.2f}) scale({k:.5f})"'
+        g = stagger(L.group(letters, 'neg' if kind != 'solid' else 'solid', tf), start=i * .35)
+        if kind == 'solid':
+            parts.append(g)
+        else:
+            t = 6.0 if kind == 'neg' else 9.0           # outline thickness in the letters' own units (each side)
+            inner = L.group(letters, 'cut', tf).replace('<g class="cut"', f'<g class="cut" data-trim="{t}" stroke-width="{34 - 2 * t}"')
+            masks.append(f'<mask id="m{uid}{i}" maskUnits="userSpaceOnUse" x="-60" y="-60" width="99999" height="99999">'
+                         f'<rect x="-60" y="-60" width="99999" height="99999" fill="#fff"/>{inner}</mask>')
+            parts.append(f'<g mask="url(#m{uid}{i})">{g}</g>')
         W = max(W, w * k)
         y += L.H * k + (70 if i == 0 and fit is False and len(rows) > 1 and rows[1][2] is False else 46)
     h = y - 46
     pad = 20
-    return (f'<svg viewBox="{-pad} {-pad} {W + 2 * pad:.2f} {h + 2 * pad:.2f}" role="img" aria-label="{label}"><defs>{neg_filter(uid, W, h)}</defs>'
+    return (f'<svg viewBox="{-pad} {-pad} {W + 2 * pad:.2f} {h + 2 * pad:.2f}" role="img" aria-label="{label}"><defs>{"".join(masks)}</defs>'
             + ''.join(parts) + '</svg>')
 
 def lines(items, cls=''):
@@ -98,6 +97,8 @@ mc_inner, mc_w, mc_h = L.stacked('made', 'construction')
 (CL / 'made-construction' / 'full.html').write_text(full.replace('{{LOGO}}', logo_svg(mc_inner, mc_w, mc_h, 'logo', 'Made Construction', 'mc')))
 # Made Construction keeps the whole site (Methods, every project, the bio): only its first screen and the background
 # change to match Jason's card. The new first screen: "made" in negative + construction, the tagline, then Methods.
+TRIM_JS = ('<script>document.querySelectorAll("[data-trim]").forEach(g=>{const t=+g.dataset.trim;g.querySelectorAll("path").forEach(p=>{'
+           'const L=p.getTotalLength(),f=Math.min(.45,t/L);p.style.strokeDasharray=`0 ${f} ${1-2*f} ${f}`;p.style.strokeDashoffset=0})})</script>')
 NEW_HOME_CSS = '''
 .cosmic{background:#0b0b0d url(img/bg.webp) center/cover no-repeat}
 .cosmic::before{display:none}
@@ -106,8 +107,8 @@ NEW_HOME_CSS = '''
 .card-home{position:relative;z-index:1;width:min(calc(100% - 56px),440px);opacity:0;transform:translateY(10px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .ready .card-home{opacity:1;transform:none}
 .card-home svg{display:block;width:100%;height:auto;overflow:visible}
-.card-home .neg path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
-.card-home .neg2 path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.card-home .neg path{fill:none;stroke:#a3a3aa;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.card-home .cut path{fill:none;stroke:#000;stroke-linejoin:miter;stroke-linecap:butt;animation:none!important}
 .card-home .solid path{fill:none;stroke:#d9d9df;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
 .card-home svg path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.3s + var(--d,0) * 1s)}
 .card-home .tag{margin:clamp(28px,5.5vh,44px) 0 0;font:600 clamp(11px,1.3vw,14px)/1.4 Montserrat,Inter,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#d9d9df}
@@ -119,7 +120,7 @@ home_old = full_page[full_page.index('<section class="frame cosmic home"'):full_
 home_new = ('<section class="frame cosmic home" id="f-home" aria-label="Home">'
             f'<div class="card-home"><h1 style="margin:0" aria-label="Made Construction">{lockup("mh", "Made Construction", PAGES["made-construction"]["lock"])}</h1>'
             '<p class="tag">Real Estate Development</p>'
-            '<button class="methods-btn" type="button" data-go="1">Methods</button></div>'
+            '<button class="methods-btn" type="button" data-go="1">Methods</button></div>' + TRIM_JS
             + home_old[home_old.index('<div class="explore"'):] if '<div class="explore"' in home_old else
             '<section class="frame cosmic home" id="f-home" aria-label="Home">'
             f'<div class="card-home"><h1 style="margin:0" aria-label="Made Construction">{lockup("mh", "Made Construction", PAGES["made-construction"]["lock"])}</h1>'
@@ -131,7 +132,7 @@ PAGES.pop('made-construction')
 shutil.copy(HERE / 'bg.webp', CL / 'made-construction' / 'img' / 'bg.webp')
 (CL / 'made-construction' / 'index.html').write_text(mc_page)
 for folder, d in PAGES.items():
-    page = (card.replace('{{LOCKUP}}', lockup(folder[:2], d['title'], d['lock'])).replace('{{LINES}}', d['lines']).replace('{{FOOT}}', d['foot'])
+    page = (card.replace('{{LOCKUP}}', lockup(folder[:2], d['title'], d['lock']) + TRIM_JS).replace('{{LINES}}', d['lines']).replace('{{FOOT}}', d['foot'])
                 .replace('{{BLOCK_W}}', str(d['w'])).replace('{{TITLE}}', d['title']).replace('{{DESC}}', d['desc']))
     dst = CL / folder; dst.mkdir(exist_ok=True)
     (dst / 'index.html').write_text(page)
