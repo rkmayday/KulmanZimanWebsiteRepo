@@ -13,7 +13,9 @@ Last updated: Nov 27, 2026 (after v298).
   - Ryder runs it alone now with the black-and-white "mono" theme. He misses building it with Rex.
   - Rex shares this Claude account, so not every request on it is Ryder's.
 - **Family:**
-  - Ryder's dad runs **Ziman Development** (custom homes on LBI, NJ, since 1998).
+  - Ryder's dad is **Michael Ziman** (Ziman Development, custom homes on LBI, NJ, since 1998).
+  - His cousins are the **Leebow** family (Todd, Matt and Jon Leebow; Majestic Steel USA).
+  - "Ken Ziman" (Paul Weiss) is NOT family; Ryder just came across the name.
   - Ryder's uncle **Derek** runs **HD Development**.
   - Ryder once mused about founding "Ziman Tech" later in life.
 - **Hosting:** the site is on **Whop** (app `app_JdRDs81kkoj3CZ`), run as a Cloudflare Worker (`whop-site/server/index.js`).
