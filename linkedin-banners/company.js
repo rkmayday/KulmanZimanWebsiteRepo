@@ -1,5 +1,5 @@
 // LinkedIn company page cover: same design as the single LinkedIn banner, at the company page size (1128x191), rendered at 3x.
-// The bottom-left corner stays clear: LinkedIn puts the company logo over it.
+// The left ~300px stays clear: LinkedIn puts the company logo over it (about 265px wide, from a third of the way down).
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const D = __dirname, R = path.join(D, '../assets/');
@@ -17,13 +17,13 @@ const html = base + `<style>
 .url{font-size:13px!important}.mono{font-size:9.5px!important}
 </style>
 <body class="dark"><div class="grid"></div>
-  <div style="position:absolute;left:250px;top:0;height:${H}px;display:grid;align-content:center;gap:11px;width:400px">
+  <div style="position:absolute;left:330px;top:0;height:${H}px;display:grid;align-content:center;gap:11px;width:400px">
     <img src="data:image/png;base64,${b64(R + 'wordmark.png')}" style="height:15px;width:auto;justify-self:start;filter:brightness(0) invert(1)">
     <h1 style="font-size:31px;margin:0">Custom websites,<br><em>built to order.</em></h1>
     <div style="display:flex;gap:14px;align-items:center"><span class="url">zimansites.com</span><span class="mono" style="opacity:.5">No templates · From $284</span></div>
   </div>
-  <div class="win" style="left:690px;top:24px;width:250px;height:156px"><div class="bar"><i></i><i></i><i></i></div><img src="data:image/jpeg;base64,${b64(R + 'shots/aurel.jpg')}"></div>
-  <div class="phone" style="left:912px;top:34px;width:76px;height:140px"><img src="data:image/jpeg;base64,${b64(path.join(D, 'synthra-phone.jpg'))}"></div>
+  <div class="win" style="left:780px;top:24px;width:250px;height:156px"><div class="bar"><i></i><i></i><i></i></div><img src="data:image/jpeg;base64,${b64(R + 'shots/aurel.jpg')}"></div>
+  <div class="phone" style="left:1002px;top:34px;width:76px;height:140px"><img src="data:image/jpeg;base64,${b64(path.join(D, 'synthra-phone.jpg'))}"></div>
 </body>`;
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 3 });
