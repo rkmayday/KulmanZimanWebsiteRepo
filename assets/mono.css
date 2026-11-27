@@ -1394,14 +1394,16 @@ section:has(> .pfield.af-sphere){padding-bottom:calc(min(460px,60vh) * .82)}
 @media (max-width:480px){.client-builds{width:auto}.cb-logos li{width:100%}}
 
 /* ===== Ryder's profile: flip business card, signature that writes itself, story timeline, live work ===== */
-main.rz .flip{position:relative;width:100%;max-width:360px;aspect-ratio:4/5;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.75,.15,1)}
-main.rz .flip.on{transform:rotateY(180deg)}
-main.rz .flip-front{position:absolute;inset:0;cursor:pointer;-webkit-backface-visibility:hidden;backface-visibility:hidden}
-main.rz .flip-back{position:absolute;inset:0;transform:rotateY(180deg);-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:26px;padding:clamp(18px,3vw,30px);
+main.rz .rzf{position:relative;width:100%;max-width:360px;aspect-ratio:4/5;perspective:1400px}
+/* each face turns on its own, so the face that is showing is flat and its links can be clicked */
+main.rz .rzf-front{position:absolute;inset:0;cursor:pointer;-webkit-backface-visibility:hidden;backface-visibility:hidden;transition:transform .9s cubic-bezier(.2,.75,.15,1)}
+main.rz .rzf.on .rzf-front{transform:rotateY(180deg);pointer-events:none}
+main.rz .rzf-back{position:absolute;inset:0;transform:rotateY(-180deg);pointer-events:none;transition:transform .9s cubic-bezier(.2,.75,.15,1);-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:26px;padding:clamp(18px,3vw,30px);
   display:flex;flex-direction:column;justify-content:space-between;gap:14px;color:#fff;overflow:hidden;
   background:radial-gradient(120% 80% at 20% 0%,#2a2a2a,#121212 60%,#0b0b0b);box-shadow:0 0 0 1px rgba(255,255,255,.16),0 40px 90px -30px rgba(0,0,0,.95)}
-main.rz .flip-back::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px;
+main.rz .rzf-back::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/22px 22px;
   -webkit-mask:radial-gradient(90% 70% at 70% 30%,#000,transparent);mask:radial-gradient(90% 70% at 70% 30%,#000,transparent)}
+main.rz .rzf.on .rzf-back{transform:none;pointer-events:auto}
 main.rz .fb-logo{position:relative;width:62%;height:auto;filter:brightness(0) invert(1)}
 main.rz .fb-name{position:relative;display:grid;gap:2px}
 main.rz .fb-name b{font:700 clamp(1.4rem,3vw,2rem)/1.05 var(--font-display);letter-spacing:-.03em}
@@ -1411,12 +1413,12 @@ main.rz .fb-lines a{color:#e6e6e6;text-decoration:none;display:flex;align-items:
 main.rz .fb-lines a:hover{color:#fff;text-decoration:underline}
 main.rz .fb-lines svg{width:14px;height:14px;flex:none}
 main.rz .fb-save{position:relative;justify-self:start;align-self:flex-start;background:#fff;color:#0b0b0b}
-main.rz .flip-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:360px}
-main.rz .flip-row .profile-tag{min-width:0}
-main.rz .flip-btn{white-space:nowrap;flex:none;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:0;cursor:pointer;background:rgba(255,255,255,.08);color:#e6e6e6;font:600 .78rem var(--font-sans);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:background .2s}
-main.rz .flip-btn:hover{background:rgba(255,255,255,.16)}
-main.rz .flip-btn svg{width:14px;height:14px}
-@media (max-width:860px){main.rz .flip,main.rz .flip-row{max-width:260px}}
+main.rz .rzf-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:360px}
+main.rz .rzf-row .profile-tag{min-width:0}
+main.rz .rzf-btn{white-space:nowrap;flex:none;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;border:0;cursor:pointer;background:rgba(255,255,255,.08);color:#e6e6e6;font:600 .78rem var(--font-sans);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:background .2s}
+main.rz .rzf-btn:hover{background:rgba(255,255,255,.16)}
+main.rz .rzf-btn svg{width:14px;height:14px}
+@media (max-width:860px){main.rz .rzf,main.rz .rzf-row{max-width:260px}}
 
 main.rz .rz-sign{position:relative;width:min(130px,31%);margin:6px 0 22px}
 /* the signature draws itself: each pen stroke is traced in the order it was written (clients/../scratchpad trace), revealing the real ink */
@@ -1459,4 +1461,4 @@ main.rz .rz-go{position:absolute;left:24px;top:24px;padding:7px 12px;border-radi
 @media (hover:none){main.rz .rz-go{opacity:1;transform:none}}
 main.rz .rz-cta{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
 main.rz .rz-cta h3{margin:0;max-width:36ch}
-@media (prefers-reduced-motion:reduce){main.rz .flip{transition:none}main.rz .rz-sig mask path{stroke-dashoffset:0!important;animation:none!important}main.rz .tl-item{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){main.rz .rzf-front,main.rz .rzf-back{transition:none}main.rz .rz-sig mask path{stroke-dashoffset:0!important;animation:none!important}main.rz .tl-item{opacity:1;transform:none}}

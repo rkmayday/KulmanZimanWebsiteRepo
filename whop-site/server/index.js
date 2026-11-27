@@ -32,6 +32,13 @@ export default {
       if (page.status === 200) return page;
     }
     const res = await env.ASSETS.fetch(request);
+    // the contact card: send it as a vCard so phones open it straight in Contacts
+    if (res.status === 200 && path.endsWith('.vcf')) {
+      const r = new Response(res.body, res);
+      r.headers.set('content-type', 'text/vcard; charset=utf-8');
+      r.headers.set('content-disposition', 'attachment; filename="Ryder Ziman.vcf"');
+      return r;
+    }
     // files under /assets/ linked with ?v=<hash> change their address whenever they change, so browsers can keep them for a year
     if (res.status === 200 && path.startsWith('/assets/') && url.searchParams.has('v')) {
       const r = new Response(res.body, res);
