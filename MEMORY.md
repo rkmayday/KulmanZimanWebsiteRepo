@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v302.**
+- **Latest version: v303.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -79,7 +79,7 @@ Last updated: Nov 27, 2026 (after v298).
 - **Jason Cutaiar** (Made Construction, Made Properties):
   - previews at /preview/jasoncutaiar, /preview/madeconstruction, /preview/madeproperties;
   - Nov 27 feedback (his own mockup cards): simplify layouts, light gradient background, "made" in negative (outlined).
-    Done: all three are now one screen (clients/jason-sites/card-page.html); the old full Made Construction site is saved as clients/made-construction/full.html.
+    Done: Made Properties and Jason Cutaiar are one screen (clients/jason-sites/card-page.html). Made Construction KEEPS all projects (M13, M17, M20, M14), Methods and bio; only its first screen and background match his card. Never remove the projects.
   - Still need his contact email (for forms, if wanted).
   - When the deal completes: re-add the logos, build compressed (<0.5 MB) work copies, remove the big previews.
 - **HD Development** (uncle Derek; develophd.com is currently on Wix):

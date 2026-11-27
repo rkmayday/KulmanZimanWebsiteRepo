@@ -89,6 +89,36 @@ PAGES = {
 full = (HERE / 'made-construction.html').read_text()
 mc_inner, mc_w, mc_h = L.stacked('made', 'construction')
 (CL / 'made-construction' / 'full.html').write_text(full.replace('{{LOGO}}', logo_svg(mc_inner, mc_w, mc_h, 'logo', 'Made Construction', 'mc')))
+# Made Construction keeps the whole site (Methods, every project, the bio): only its first screen and the background
+# change to match Jason's card. The new first screen: "made" in negative + construction, the tagline, then Methods.
+NEW_HOME_CSS = '''
+.cosmic{background:radial-gradient(70% 55% at 38% 22%,rgba(150,150,170,.26),transparent 70%),radial-gradient(60% 50% at 75% 60%,rgba(120,120,140,.12),transparent 70%),linear-gradient(180deg,#2c2c33 0%,#1d1d22 45%,#121215 100%)}
+.cosmic::before{background-image:url(img/texture.webp),radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 1px,transparent 1.4px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.25) 1px,transparent 1.4px);background-size:cover,330px 290px,240px 260px;opacity:.28}
+.card-home{position:relative;z-index:1;width:min(calc(100% - 56px),440px);opacity:0;transform:translateY(10px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.ready .card-home{opacity:1;transform:none}
+.card-home svg{display:block;width:100%;height:auto;overflow:visible}
+.card-home .neg path{fill:none;stroke:#fff;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.card-home .solid path{fill:none;stroke:#d9d9df;stroke-width:34;stroke-linejoin:miter;stroke-linecap:butt}
+.card-home svg path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.6,0,.2,1) forwards;animation-delay:calc(.3s + var(--d,0) * 1s)}
+.card-home .tag{margin:clamp(28px,5.5vh,44px) 0 0;font:600 clamp(11px,1.3vw,14px)/1.4 Montserrat,Inter,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#d9d9df}
+.card-home .methods-btn{position:static;transform:none;margin-top:clamp(26px,5vh,40px);background:rgba(20,20,23,.5)}
+@media (min-width:640px){.card-home .methods-btn{position:static;transform:none}}
+'''
+full_page = full.replace('{{LOGO}}', '')
+home_old = full_page[full_page.index('<section class="frame cosmic home"'):full_page.index('</section>', full_page.index('<section class="frame cosmic home"')) + len('</section>')]
+home_new = ('<section class="frame cosmic home" id="f-home" aria-label="Home">'
+            f'<div class="card-home"><h1 style="margin:0" aria-label="Made Construction">{lockup("mh", "Made Construction", PAGES["made-construction"]["lock"])}</h1>'
+            '<p class="tag">Real Estate Development</p>'
+            '<button class="methods-btn" type="button" data-go="1">Methods</button></div>'
+            + home_old[home_old.index('<div class="explore"'):] if '<div class="explore"' in home_old else
+            '<section class="frame cosmic home" id="f-home" aria-label="Home">'
+            f'<div class="card-home"><h1 style="margin:0" aria-label="Made Construction">{lockup("mh", "Made Construction", PAGES["made-construction"]["lock"])}</h1>'
+            '<p class="tag">Real Estate Development</p>'
+            '<button class="methods-btn" type="button" data-go="1">Methods</button></div></section>')
+mc_page = full_page.replace(home_old, home_new).replace('</style>', NEW_HOME_CSS + '</style>', 1)
+mc_page = mc_page.replace('family=Jost', 'family=Montserrat:wght@500;600&family=Jost', 1)
+PAGES.pop('made-construction')
+(CL / 'made-construction' / 'index.html').write_text(mc_page)
 for folder, d in PAGES.items():
     page = (card.replace('{{LOCKUP}}', lockup(folder[:2], d['title'], d['lock'])).replace('{{LINES}}', d['lines']).replace('{{FOOT}}', d['foot'])
                 .replace('{{BLOCK_W}}', str(d['w'])).replace('{{TITLE}}', d['title']).replace('{{DESC}}', d['desc']))
