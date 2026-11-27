@@ -5,98 +5,545 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="theme-color" content="#07050a">
-<title>ERCHAM MK1: first screen concept</title>
+<title>ERCHAM MK1 | One-Handed Gaming Keypad with Built-In Mouse</title>
+<meta name="description" content="ERCHAM MK1 combines a gaming keypad and built-in optical mouse in one ambidextrous device, so you can move, aim, click and press keys with one hand.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter+Tight:wght@500;600;800;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter+Tight:wght@400;500;600;800;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/preview/ercham-img/mk1-hero.webp" media="(min-width:761px)">
 <link rel="preload" as="image" href="/preview/ercham-img/mk1-hero-m.webp" media="(max-width:760px)">
 <style>
-:root{--bg:#07050a;--fg:#f3efe6;--mut:rgba(243,239,230,.66);--gold:#d9b25f;--gold2:#f3d998;--ember:#ff4500;--line:rgba(217,178,95,.22)}
+/* ERCHAM MK1 redesign by Ziman Sites (preview). Same content as ercham.com, one fast page: every image is a compressed
+   WebP sized to how it shows, the videos are small MP4s that only load when they scroll into view, and there is no 3D
+   model to fail. The dark gold rune style is Joe's own. */
+:root{--bg:#07050a;--bg2:#0d0a12;--card:#120e18;--fg:#f3efe6;--mut:rgba(243,239,230,.66);--dim:rgba(243,239,230,.45);--gold:#d9b25f;--gold2:#f3d998;--ember:#ff4500;--line:rgba(217,178,95,.2);--line2:rgba(243,239,230,.1)}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px;-webkit-text-size-adjust:100%}
 html,body{margin:0;background:var(--bg);color:var(--fg);overflow-x:clip}
-body{font:16px/1.6 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{font:16px/1.65 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,video{display:block;max-width:100%}
+.wrap{width:min(1200px,100%);margin:0 auto;padding-inline:max(22px,env(safe-area-inset-left)) max(22px,env(safe-area-inset-right))}
+.k{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.gold{background:linear-gradient(180deg,var(--gold2),var(--gold) 60%,#a8823b);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:900 clamp(2.3rem,5.6vw,4.6rem)/.95 "Inter Tight",sans-serif;letter-spacing:-.04em;margin:14px 0 22px;text-wrap:balance}
+h3{font:800 1.2rem/1.25 "Inter Tight",sans-serif;letter-spacing:-.01em;margin:0 0 8px}
+p{margin:0 0 16px}
+.lede{max-width:62ch;color:var(--mut);font-size:clamp(1.02rem,1.4vw,1.15rem)}
+section.s{padding:clamp(80px,11vw,140px) 0;border-top:1px solid var(--line2);position:relative}
+.btn{height:54px;padding:0 26px;border:0;border-radius:6px;cursor:pointer;font:700 15.5px "Inter Tight",sans-serif;color:#120c05;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 18px 44px -18px rgba(217,178,95,.8),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .25s,box-shadow .25s;display:inline-flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{width:18px}
+.btn.ghost{background:transparent;color:var(--gold2);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--gold)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid var(--line2);border-radius:12px;padding:24px;min-width:0}
+.card p{color:var(--mut);margin:0;font-size:.97rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,56px);align-items:center}
+@media (max-width:900px){.grid3{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.grid3,.grid2{grid-template-columns:1fr}}
+.ph{border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:#000}
+.ph img,.ph video{width:100%;height:auto}
+.rune-bar{color:rgba(217,178,95,.5);font:500 13px/1 serif;letter-spacing:.5em;white-space:nowrap;overflow:hidden;padding:10px 0;border-block:1px solid var(--line)}
+.rune-bar span{display:inline-block;animation:slide 60s linear infinite}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto;z-index:40;padding-top:env(safe-area-inset-top);transition:background .35s,border-color .35s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(7,5,10,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.brand{font:700 22px "Cinzel",serif;letter-spacing:.16em;text-decoration:none}
+.nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.nav ul a{display:block;padding:8px 11px;border-radius:6px;text-decoration:none;font:500 13.5px "Inter Tight";color:var(--mut);transition:color .2s,background .2s}
+.nav ul a:hover{color:var(--fg);background:rgba(255,255,255,.05)}
+.nav .btn{height:40px;padding:0 16px;font-size:13.5px}
+@media (max-width:1080px){.nav ul{display:none}}
+@media (max-width:420px){.nav .btn{padding:0 12px}}
+
+/* hero */
 .hero{position:relative;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:minmax(0,1fr);overflow:hidden;isolation:isolate}
 .hero>*{min-width:0}
-/* product render: slow push-in, glow behind it */
 .shot{position:absolute;inset:0;z-index:-2;background:url(/preview/ercham-img/mk1-hero.webp) 68% 60%/cover no-repeat;transform:scale(1.08);animation:push 14s ease-out forwards}
 @keyframes push{to{transform:scale(1)}}
-.shade{position:absolute;inset:0;z-index:-1;background:
-  linear-gradient(90deg,rgba(7,5,10,.96) 0%,rgba(7,5,10,.82) 30%,rgba(7,5,10,.2) 62%,rgba(7,5,10,.05) 100%),
-  linear-gradient(0deg,rgba(7,5,10,.95) 0%,transparent 34%),
-  radial-gradient(60% 50% at 70% 62%,rgba(255,69,0,.10),transparent 70%)}
-/* rune line along the top, his signature detail */
-.runes{border-bottom:1px solid var(--line);color:rgba(217,178,95,.55);font:500 13px/1 serif;letter-spacing:.5em;white-space:nowrap;overflow:hidden;padding:9px 0;padding-top:calc(9px + env(safe-area-inset-top))}
-.runes span{display:inline-block;animation:slide 60s linear infinite}
-@keyframes slide{to{transform:translateX(-50%)}}
-.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left))}
-.brand{font:700 24px "Cinzel",serif;letter-spacing:.16em;background:linear-gradient(180deg,var(--gold2),var(--gold) 55%,#9c7a35);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pill{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:8px 14px;display:flex;align-items:center;gap:8px}
+.shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,5,10,.96) 0%,rgba(7,5,10,.82) 30%,rgba(7,5,10,.2) 62%,rgba(7,5,10,.05) 100%),linear-gradient(0deg,rgba(7,5,10,.95) 0%,transparent 34%),radial-gradient(60% 50% at 70% 62%,rgba(255,69,0,.10),transparent 70%)}
+.hero .spacer{height:calc(64px + env(safe-area-inset-top))}
+.pill{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:7px 13px;display:inline-flex;align-items:center;gap:8px;margin-bottom:22px}
 .pill i{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 10px var(--ember);animation:blink 1.6s infinite}
 @keyframes blink{50%{opacity:.35}}
-.copy{align-self:center;width:min(1240px,100%);margin:0 auto;padding:40px max(22px,env(safe-area-inset-left))}
-.k{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-h1{font:900 clamp(3rem,8.4vw,7.6rem)/.9 "Inter Tight",sans-serif;letter-spacing:-.045em;margin:18px 0 22px;max-width:11ch}
-h1 em{font-style:normal;background:linear-gradient(180deg,var(--gold2),var(--gold) 60%,#a8823b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .copy{align-self:center;width:min(1200px,100%);margin:0 auto;padding:30px max(22px,env(safe-area-inset-left))}
+.hero h1{font:900 clamp(3rem,8.4vw,7.6rem)/.9 "Inter Tight",sans-serif;letter-spacing:-.045em;margin:16px 0 22px;max-width:11ch}
 .what{max-width:44ch;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--mut);margin:0 0 30px}
 .what b{color:var(--fg);font-weight:600}
-/* one button; the email field only opens when it's clicked, the confirmation only shows after signing up */
 .join{display:flex;flex-wrap:wrap;align-items:center;gap:12px;max-width:560px}
-.btn{height:58px;padding:0 28px;border:0;border-radius:6px;cursor:pointer;font:700 16px "Inter Tight",sans-serif;color:#120c05;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 18px 44px -18px rgba(217,178,95,.8),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .25s,box-shadow .25s;display:inline-flex;align-items:center;gap:10px}
-.btn:hover{transform:translateY(-2px);box-shadow:0 22px 50px -16px rgba(217,178,95,.95),inset 0 1px 0 rgba(255,255,255,.5)}
-.btn svg{width:18px}
-.field{display:none;flex:1 1 240px;height:58px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg);font:16px "Inter Tight",sans-serif;padding:0 18px;min-width:0}
+.field{display:none;flex:1 1 240px;height:54px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg);font:16px "Inter Tight",sans-serif;padding:0 18px;min-width:0}
 .field:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(217,178,95,.15)}
 .join.open .field{display:block;animation:in .35s ease-out}
 @keyframes in{from{opacity:0;transform:translateX(-8px)}}
-.done{display:none;font-weight:600;color:var(--gold2)}
+.done{display:none;font-weight:600;color:var(--gold2);margin:0}
 .join.sent .btn,.join.sent .field{display:none}.join.sent .done{display:block}
 .price{display:flex;gap:18px;margin-top:18px;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.1em;color:var(--mut);text-transform:uppercase}
-.price b{color:var(--gold2);font-weight:500}
-.price s{opacity:.6}
+.price b{color:var(--gold2);font-weight:500}.price s{opacity:.6}
 .feats{display:flex;flex-wrap:wrap;gap:10px 28px;border-top:1px solid var(--line);padding:20px max(22px,env(safe-area-inset-left)) calc(22px + env(safe-area-inset-bottom));font:500 11.5px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
 .feats span::before{content:"\16DF";color:var(--gold);margin-right:10px}
-.tag{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:84px;font:500 10.5px "IBM Plex Mono",monospace;letter-spacing:.14em;color:rgba(243,239,230,.45);text-transform:uppercase}
-.rv{opacity:0;transform:translateY(22px);animation:up .9s cubic-bezier(.2,.75,.15,1) forwards}
+.rv0{opacity:0;transform:translateY(22px);animation:up .9s cubic-bezier(.2,.75,.15,1) forwards}
 @keyframes up{to{opacity:1;transform:none}}
 @media (max-width:760px){
   .shot{background-image:url(/preview/ercham-img/mk1-hero-m.webp);background-position:50% 100%;background-size:150% auto;top:auto;height:52%}
   .shade{background:linear-gradient(180deg,rgba(7,5,10,1) 0%,rgba(7,5,10,.85) 45%,rgba(7,5,10,.1) 75%,rgba(7,5,10,.6) 100%)}
-  .copy{align-self:start;padding-top:28px}
-  .pill{display:none}.tag{display:none}
-  .btn{width:100%;justify-content:center}
+  .hero .copy{align-self:start;padding-top:24px}
+  .join .btn{width:100%;justify-content:center}
 }
-@media (prefers-reduced-motion:reduce){.shot,.runes span,.rv,.pill i{animation:none;opacity:1;transform:none}}
+
+/* intro */
+.name{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin:8px 0 22px;font:500 13px "IBM Plex Mono",monospace;color:var(--dim);letter-spacing:.08em}
+.name b{font:700 1.4rem "Cinzel",serif;color:var(--gold2);letter-spacing:.1em}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.stat{border-top:1px solid var(--line);padding-top:18px}
+.stat b{display:block;font:900 clamp(2.2rem,5vw,3.6rem)/1 "Inter Tight";letter-spacing:-.04em}
+.stat span{font:500 11.5px "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+@media (max-width:520px){.stats{grid-template-columns:1fr}}
+
+/* ambidextrous toggle */
+.hands{display:flex;gap:6px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:999px;padding:5px;width:max-content;max-width:100%;margin:6px 0 16px}
+.hands button{border:0;background:none;color:var(--mut);font:600 13.5px "Inter Tight";padding:9px 16px;border-radius:999px;cursor:pointer;transition:background .25s,color .25s}
+.hands button.on{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#120c05}
+.handimg{position:relative}
+.handimg img{transition:opacity .45s}
+.handimg img+img{position:absolute;inset:0;opacity:0}
+.handimg.right img:first-child{opacity:0}.handimg.right img+img{opacity:1}
+.checks{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.checks li{display:flex;gap:12px;color:var(--fg)}
+.checks li::before{content:"\16DF";color:var(--gold);flex:none}
+
+/* 360 views */
+.vids{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.vids .ph:first-child{grid-row:span 2}
+.vids figure{margin:0}
+.vids figcaption{padding:14px 2px 0}
+.vids figcaption b{display:block;font-weight:700}.vids figcaption span{color:var(--mut);font-size:.93rem}
+.vids .ph{position:relative}
+@media (max-width:760px){.vids{grid-template-columns:1fr}.vids .ph:first-child{grid-row:auto}}
+
+/* gallery */
+.gal{position:relative}
+.gal .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;scrollbar-width:none;border-radius:12px}
+.gal .track::-webkit-scrollbar{display:none}
+.gal .track img{flex:0 0 100%;scroll-snap-align:start;border-radius:12px;border:1px solid var(--line2);aspect-ratio:1400/605;object-fit:cover;width:100%;height:auto}
+.gal .ctl{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:12px}
+.gal .ctl button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--gold2);cursor:pointer;font-size:18px}
+.gal .ctl button:hover{border-color:var(--gold)}
+.gal .count{font:500 12px "IBM Plex Mono";letter-spacing:.14em;color:var(--mut)}
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:40px}
+.swatches figure{margin:0}.swatches figcaption{font:500 11px "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:10px}
+.closeups{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+@media (max-width:760px){.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}.closeups{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* comparison */
+blockquote{margin:0 0 40px;padding:28px clamp(22px,4vw,40px);border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(217,178,95,.07),transparent);font-size:clamp(1.05rem,1.6vw,1.25rem);line-height:1.6;color:var(--fg);border-radius:0 12px 12px 0}
+blockquote cite{display:block;margin-top:14px;font:500 12px "IBM Plex Mono";letter-spacing:.14em;color:var(--gold);font-style:normal;text-transform:uppercase}
+.tablewrap{overflow-x:auto;border:1px solid var(--line2);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.95rem}
+th,td{padding:16px 18px;border-bottom:1px solid var(--line2);text-align:center;vertical-align:middle}
+th:first-child,td:first-child{text-align:left}
+td:first-child b{display:block}td:first-child span{color:var(--dim);font-size:.86rem}
+thead th{font:600 12px "IBM Plex Mono";letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+thead th.us,td.us{background:rgba(217,178,95,.07)}
+thead th.us{color:var(--gold2)}
+.y{color:var(--gold2);font-weight:800}.n{color:rgba(243,239,230,.28)}
+tbody tr:last-child td{border-bottom:0}
+.diffs{margin-top:40px}
+.diffs .card .k{display:block;margin-bottom:10px;font-size:10.5px}
+
+/* founder */
+.story{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,5vw,64px);align-items:start}
+.story .imgs{display:grid;gap:14px;position:sticky;top:90px}
+.story p{color:var(--mut);font-size:1.05rem}
+.story p.big{color:var(--fg);font-size:1.25rem;font-weight:600}
+.elvish{margin:28px 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.elvish b{font:700 1.5rem "Cinzel",serif;color:var(--gold2);letter-spacing:.08em}
+.elvish p{margin:10px 0 0}
+.values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:28px}
+.values div{border-top:1px solid var(--line);padding-top:14px}
+.values b{display:block;color:var(--gold2)}.values span{color:var(--mut);font-size:.92rem}
+@media (max-width:860px){.story{grid-template-columns:1fr}.story .imgs{position:static;grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.values{grid-template-columns:1fr}}
+
+/* development */
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.tools span{border:1px solid var(--line2);border-radius:999px;padding:6px 14px;font:500 12px "IBM Plex Mono";letter-spacing:.08em;color:var(--mut)}
+.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:44px;counter-reset:p}
+.road .card{position:relative}
+.road .card.now{border-color:var(--gold);box-shadow:0 0 0 1px rgba(217,178,95,.25),0 20px 50px -30px rgba(217,178,95,.5)}
+.road .tag{display:inline-block;font:500 10.5px "IBM Plex Mono";letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.road .now .tag::after{content:" \00b7  Current";color:var(--ember)}
+@media (max-width:900px){.road{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.road{grid-template-columns:1fr}}
+.protos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
+@media (max-width:760px){.protos{grid-template-columns:1fr 1fr}}
+.note{font-size:.88rem;color:var(--dim);margin-top:14px}
+
+/* partners + press */
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:36px}
+.partners .card{text-decoration:none;transition:border-color .25s,transform .25s;display:block}
+.partners a.card:hover{border-color:var(--line);transform:translateY(-3px)}
+.partners .role{font:500 10.5px "IBM Plex Mono";letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px}
+.press{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:30px}
+.press a{display:block;padding:18px 20px;border:1px solid var(--line2);border-radius:10px;text-decoration:none;transition:border-color .25s,background .25s}
+.press a:hover{border-color:var(--line);background:rgba(217,178,95,.04)}
+.press b{display:block;color:var(--gold2);margin-bottom:4px}.press span{color:var(--mut);font-size:.92rem}
+.bigstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:40px 0 10px}
+@media (max-width:520px){.bigstats{grid-template-columns:1fr}}
+
+/* launch */
+.launch{text-align:center}
+.launch .lede{margin-inline:auto}
+.launch .row{justify-content:center;margin-top:28px}
+.perks{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;margin-top:22px;font:500 11.5px "IBM Plex Mono";letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.perks span::before{content:"\16DF";color:var(--gold);margin-right:8px}
+.donate{margin-top:70px;text-align:left}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:56px 0 calc(40px + env(safe-area-inset-bottom))}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+footer p{color:var(--mut);font-size:.93rem;max-width:44ch}
+footer h4{font:500 11px "IBM Plex Mono";letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 14px}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+footer ul a{text-decoration:none;color:var(--mut)}footer ul a:hover{color:var(--fg)}
+footer .base{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--dim)}
+@media (max-width:760px){footer .cols{grid-template-columns:1fr 1fr}footer .cols>div:first-child{grid-column:1/-1}}
+
+/* reveal on scroll */
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+.draft{position:fixed;right:12px;bottom:10px;z-index:50;font:500 10px "IBM Plex Mono";letter-spacing:.1em;color:rgba(243,239,230,.35);pointer-events:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.js .rv,.rv0{opacity:1;transform:none}}
 </style>
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+
+<header class="nav" id="nav"><div class="wrap">
+  <a class="brand gold" href="#top">ERCHAM</a>
+  <nav aria-label="Main"><ul>
+    <li><a href="#intro">Intro</a></li><li><a href="#views">360 Views</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#why">Why ERCHAM</a></li>
+    <li><a href="#story">Founder Story</a></li><li><a href="#development">Development</a></li><li><a href="#partners">Partners</a></li><li><a href="#community">Community</a></li>
+  </ul></nav>
+  <a class="btn" href="#top" data-join>Join the waitlist</a>
+</div></header>
+
+<main id="top">
 <section class="hero">
   <div class="shot" role="img" aria-label="ERCHAM MK1 one-handed gaming keypad with built-in mouse"></div><div class="shade"></div>
-  <div>
-    <div class="runes" aria-hidden="true"><span>ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫</span></div>
-    <div class="top"><span class="brand">ERCHAM</span><span class="pill"><i></i>Kickstarter pre-launch</span></div>
-  </div>
+  <div class="spacer"></div>
   <div class="copy">
-    <span class="k rv" style="animation-delay:.1s">ERCHAM MK1</span>
-    <h1 class="rv" style="animation-delay:.2s">One hand. <em>Full control.</em></h1>
-    <p class="what rv" style="animation-delay:.35s"><b>A gaming keypad and optical mouse in one ambidextrous device.</b> Move, aim, click and type with a single hand.</p>
-    <form class="join rv" id="join" style="animation-delay:.5s" novalidate>
+    <span class="pill rv0" style="animation-delay:.05s"><i></i>Kickstarter pre-launch</span>
+    <div class="k rv0" style="animation-delay:.1s">ERCHAM MK1 &middot; (AIR-kam)</div>
+    <h1 class="rv0" style="animation-delay:.2s">One hand. <span class="gold">Full control.</span></h1>
+    <p class="what rv0" style="animation-delay:.35s"><b>A gaming keypad and optical mouse in one ambidextrous device.</b> Move, aim, click and type with a single hand.</p>
+    <form class="join rv0" id="join" style="animation-delay:.5s" novalidate>
       <input class="field" type="email" name="email" placeholder="Your email" autocomplete="email" aria-label="Email address">
       <button class="btn" type="submit">Join the waitlist <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
       <p class="done" role="status">You're on the list. Check your inbox (and spam) to confirm.</p>
     </form>
-    <div class="price rv" style="animation-delay:.6s"><span><b>$169</b> early bird</span><span><s>$200</s> retail</span></div>
+    <div class="price rv0" style="animation-delay:.6s"><span><b>$169</b> early bird</span><span><s>$200</s> retail</span></div>
   </div>
   <div class="feats"><span>Built-in optical mouse</span><span>Fully ambidextrous</span><span>Modular thumb clusters</span><span>Patent pending</span></div>
-  <div class="tag">Product render · in-hand clip goes here</div>
 </section>
+
+<div class="rune-bar" aria-hidden="true"><span>ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ ✧ ONE HAND ✧ FULL CONTROL ✧ </span></div>
+
+<!-- INTRO -->
+<section class="s" id="intro"><div class="wrap">
+  <div class="grid2">
+    <div>
+      <span class="k rv">Introduction</span>
+      <h2 class="rv">What is <span class="gold">ERCHAM?</span></h2>
+      <div class="name rv"><b>Erchamion</b><span>"air KAH-m i-on"</span><span>Elvish for "one-handed"</span></div>
+      <p class="lede rv">The name comes from Erchamion, an Elvish word meaning "one-handed." It felt right: a name rooted in resilience, with a modern, tech-forward edge.</p>
+      <p class="lede rv">ERCHAM MK1 is a one-handed gaming and productivity controller that combines a gaming keypad with a built-in optical mouse, so you can move, aim, click, and press keys without a second input device.</p>
+      <p class="lede rv">Whether you're a gamer adapting to a new reality, someone born with a limb difference, or simply seeking the ultimate in ergonomic efficiency, ERCHAM was designed with you in mind.</p>
+    </div>
+    <div class="ph rv"><img src="/preview/ercham-img/promo.webp" alt="ERCHAM MK1: One Hand. Full Control." width="1400" height="788" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="grid3" style="margin-top:56px">
+    <div class="card rv"><h3>True One-Handed Gaming</h3><p>Reach the keys, analog stick, and built-in mouse with a single hand. No second device required.</p></div>
+    <div class="card rv"><h3>Accessibility First</h3><p>Built for gamers with limb differences, injuries, or conditions that affect hand mobility. Dignity through design.</p></div>
+    <div class="card rv"><h3>Beyond Gaming</h3><p>Seamlessly transition from intense gaming sessions to productive work. One device, endless possibilities.</p></div>
+    <div class="card rv"><h3>Performance Driven</h3><p>Built around an optical mouse sensor, programmable keys, and a strap-stabilized grip. Performance specifications are planned and will be confirmed through prototype testing.</p></div>
+    <div class="card rv"><h3>Modular Thumb Cluster System</h3><p>Dedicated left- and right-hand thumb modules slide onto their respective sides, so one device works for either hand. One device. One SKU.</p></div>
+    <div class="card rv"><h3>Patent Pending</h3><p>An accessibility-driven, ambidextrous design with a built-in mouse, protected and heading to Kickstarter.</p></div>
+  </div>
+  <div class="stats">
+    <div class="stat rv"><b class="gold">30+</b><span>Planned programmable inputs</span></div>
+    <div class="stat rv"><b class="gold">1000Hz</b><span>Planned polling rate</span></div>
+    <div class="stat rv"><b class="gold">360°</b><span>Mouse control</span></div>
+  </div>
+</div></section>
+
+<!-- AMBIDEXTROUS -->
+<section class="s"><div class="wrap grid2">
+  <div>
+    <span class="k rv">Modular by Design</span>
+    <h2 class="rv">Fully ambidextrous <span class="gold">by design.</span></h2>
+    <p class="lede rv">Unlike traditional gaming keypads that lock users into a left-handed or right-handed layout, ERCHAM features removable modular thumb clusters designed specifically for each side of the device.</p>
+    <p class="lede rv">The left-hand and right-hand thumb clusters attach or remove independently, so you configure ERCHAM for the hand you use. Each cluster puts an analog stick, dedicated space bar, and primary left-click button within easy reach of your thumb while your fingers control the keys.</p>
+    <h3 class="rv" style="margin-top:26px">Why it matters</h3>
+    <ul class="checks rv"><li>One device for either hand</li><li>No separate left-hand and right-hand models</li><li>Easier manufacturing and lower cost</li><li>Better accessibility for amputees and mobility-limited users</li><li>Future-proof modular design</li></ul>
+  </div>
+  <div class="rv">
+    <div class="hands" role="group" aria-label="Configuration"><button type="button" class="on" data-hand="left">Left-handed</button><button type="button" data-hand="right">Right-handed</button></div>
+    <div class="ph handimg" id="handimg">
+      <img src="/preview/ercham-img/left.webp" alt="ERCHAM MK1 configured for left-handed use, thumb module on the left" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/right.webp" alt="ERCHAM MK1 configured for right-handed use, thumb module on the right" width="1400" height="605" loading="lazy" decoding="async">
+    </div>
+    <p class="note">The result: a truly ambidextrous gaming and productivity controller built around the user, instead of forcing the user to adapt to the hardware.</p>
+  </div>
+</div></section>
+
+<!-- 360 VIEWS -->
+<section class="s" id="views"><div class="wrap">
+  <span class="k rv">360° Views</span>
+  <h2 class="rv">Explore every <span class="gold">angle.</span></h2>
+  <p class="lede rv">Get an intimate look at the ERCHAM MK1 from every perspective. See the precision engineering and thoughtful design that makes true one-handed control possible.</p>
+  <div class="vids" style="margin-top:36px">
+    <figure class="rv"><div class="ph"><video data-src="/preview/ercham-img/360.mp4" poster="/preview/ercham-img/poster-360.webp" muted loop playsinline preload="none" width="1280" height="720" aria-label="ERCHAM MK1 full 360 rotation"></video></div><figcaption><b>360 View: Full Rotation</b><span>The complete rotation showcase</span></figcaption></figure>
+    <figure class="rv"><div class="ph"><video data-src="/preview/ercham-img/bottom.mp4" poster="/preview/ercham-img/poster-bottom.webp" muted loop playsinline preload="none" width="1280" height="720" aria-label="ERCHAM MK1 underside detail"></video></div><figcaption><b>Underside Detail</b><span>The precision engineering up close</span></figcaption></figure>
+    <figure class="rv"><div class="ph"><video data-src="/preview/ercham-img/horizontal.mp4" poster="/preview/ercham-img/poster-horizontal.webp" muted loop playsinline preload="none" width="1280" height="480" aria-label="ERCHAM MK1 horizontal profile"></video></div><figcaption><b>Horizontal Profile</b><span>The ERCHAM MK1 from every angle</span></figcaption></figure>
+  </div>
+</div></section>
+
+<!-- GALLERY -->
+<section class="s" id="gallery"><div class="wrap">
+  <span class="k rv">Gallery</span>
+  <h2 class="rv">ERCHAM MK1 <span class="gold">· Stealth</span></h2>
+  <div class="gal rv">
+    <div class="track" id="track" tabindex="0" aria-label="Stealth gallery">
+      <img src="/preview/ercham-img/g-2-102.webp" alt="Stealth overhead view with RGB keys and ERCHAM logo" width="1400" height="605" decoding="async">
+      <img src="/preview/ercham-img/g-1-101.webp" alt="ERCHAM MK1 Stealth side view" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/g-3-103.webp" alt="ERCHAM MK1 Stealth angled view" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/g-4-105.webp" alt="ERCHAM MK1 Stealth detail" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/g-5-106.webp" alt="ERCHAM MK1 Stealth from the side" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/g-6-108.webp" alt="ERCHAM MK1 Stealth front view" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/g-7-109.webp" alt="ERCHAM MK1 Stealth close view" width="1400" height="605" loading="lazy" decoding="async">
+      <img src="/preview/ercham-img/g-8-110.webp" alt="ERCHAM MK1 Stealth back view" width="1400" height="605" loading="lazy" decoding="async">
+    </div>
+    <div class="ctl"><button type="button" id="prev" aria-label="Previous image">&larr;</button><span class="count" id="count">1 / 8</span><button type="button" id="next" aria-label="Next image">&rarr;</button></div>
+  </div>
+  <div class="closeups">
+    <div class="ph rv"><img src="/preview/ercham-img/c-close6.webp" alt="Joystick module macro with gold thumb button" width="1100" height="475" loading="lazy" decoding="async"></div>
+    <div class="ph rv"><img src="/preview/ercham-img/c-close5.webp" alt="Analog stick and gold accent button" width="1100" height="475" loading="lazy" decoding="async"></div>
+    <div class="ph rv"><img src="/preview/ercham-img/c-close3.webp" alt="Gold button, scroll roller and purple-lit keys" width="1100" height="475" loading="lazy" decoding="async"></div>
+    <div class="ph rv"><img src="/preview/ercham-img/c-close4.webp" alt="Wrist strap with gold ERCHAM logo" width="1100" height="475" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="swatches">
+    <figure class="rv"><div class="ph"><img src="/preview/ercham-img/v-stealth.webp" alt="ERCHAM MK1 in Stealth" width="900" height="389" loading="lazy" decoding="async"></div><figcaption>Stealth</figcaption></figure>
+    <figure class="rv"><div class="ph"><img src="/preview/ercham-img/v-white.webp" alt="ERCHAM MK1 in Arctic White" width="900" height="389" loading="lazy" decoding="async"></div><figcaption>Arctic White</figcaption></figure>
+    <figure class="rv"><div class="ph"><img src="/preview/ercham-img/v-red.webp" alt="ERCHAM MK1 in Crimson Red" width="900" height="389" loading="lazy" decoding="async"></div><figcaption>Crimson Red</figcaption></figure>
+    <figure class="rv"><div class="ph"><img src="/preview/ercham-img/v-purple.webp" alt="ERCHAM MK1 in Royal Purple" width="900" height="389" loading="lazy" decoding="async"></div><figcaption>Royal Purple</figcaption></figure>
+    <figure class="rv"><div class="ph"><img src="/preview/ercham-img/v-camo.webp" alt="ERCHAM MK1 in Digital Camo" width="900" height="389" loading="lazy" decoding="async"></div><figcaption>Digital Camo</figcaption></figure>
+  </div>
+  <p class="note rv">More colors and skins are planned for the future.</p>
+</div></section>
+
+<!-- WHY ERCHAM -->
+<section class="s" id="why"><div class="wrap">
+  <span class="k rv">The Difference</span>
+  <h2 class="rv">Why ERCHAM <span class="gold">stands apart.</span></h2>
+  <p class="lede rv">ERCHAM combines a gaming keypad, a built-in optical mouse, a strap-stabilized grip, and modular thumb clusters for either hand in a single device.</p>
+  <blockquote class="rv" style="margin-top:34px">"I set out to build a device that lets people with limb differences work and play with either hand. Ambidexterity matters to me because if someone in my situation only had use of their other arm, most existing devices would be useless. The Razer Tartarus, for example, is left-hand only, has no mouse, and no way to stabilize your hand. The Azeron Cyro points in the right direction, but each unit is built for one specific hand."<cite>Joe Tomasulo, Founder</cite></blockquote>
+  <div class="tablewrap rv"><table>
+    <thead><tr><th>Feature</th><th class="us">ERCHAM MK1</th><th>Razer Tartarus Pro</th><th>Azeron Cyro</th></tr></thead>
+    <tbody>
+      <tr><td><b>True One-Handed Control</b><span>Complete independence from any secondary input device</span></td><td class="us y">&#10003;</td><td class="n">&#10005;</td><td class="n">&#10005;</td></tr>
+      <tr><td><b>Built-In Mouse</b><span>Integrated precision mouse sensor for full cursor control</span></td><td class="us y">&#10003;</td><td class="n">&#10005;</td><td class="n">&#10005;</td></tr>
+      <tr><td><b>Ambidextrous Design</b><span>Works equally well for left and right-handed users</span></td><td class="us y">&#10003;</td><td class="n">&#10005;</td><td class="n">&#10005;</td></tr>
+      <tr><td><b>Strap-Stabilized Grip</b><span>Secure mounting for users with limited grip strength</span></td><td class="us y">&#10003;</td><td class="n">&#10005;</td><td class="n">&#10005;</td></tr>
+      <tr><td><b>Accessibility-First Design</b><span>Purpose-built for limb differences and mobility challenges</span></td><td class="us y">&#10003;</td><td class="n">&#10005;</td><td class="n">&#10005;</td></tr>
+      <tr><td><b>Gaming Performance</b><span>Planned for responsive, precise play; to be confirmed in prototype testing</span></td><td class="us y">&#10003;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td><b>Productivity Mode</b><span>Seamless switching between gaming and work tasks</span></td><td class="us y">&#10003;</td><td class="n">&#10005;</td><td class="n">&#10005;</td></tr>
+      <tr><td><b>Programmable Inputs</b><span>Fully customizable button mapping and macros</span></td><td class="us y">&#10003;</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+      <tr><td><b>Price</b><span>ERCHAM: planned retail price. Early-bird pricing will be announced before launch.</span></td><td class="us y">$199</td><td>$129.99</td><td>$300</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note rv">ERCHAM was designed to solve all of that: one device, either hand, real mouse control, and a strap-stabilized grip built for true one-handed use.</p>
+  <div class="grid3 diffs">
+    <div class="card rv"><span class="k">Key Differentiator</span><h3>Built-In Mouse</h3><p>No more reaching for a separate mouse. The integrated precision sensor gives you complete cursor control at your fingertips.</p></div>
+    <div class="card rv"><span class="k">Key Differentiator</span><h3>True One-Handed Control</h3><p>Unlike keypads that still require a mouse, ERCHAM delivers complete independence. Everything you need, in one hand.</p></div>
+    <div class="card rv"><span class="k">Key Differentiator</span><h3>Ambidextrous Design</h3><p>Whether you're left or right-handed, ERCHAM adapts to you. Truly universal design for everyone.</p></div>
+    <div class="card rv"><span class="k">Key Differentiator</span><h3>Strap-Stabilized Grip</h3><p>A strap holds your hand to the device, so control doesn't depend on grip strength alone.</p></div>
+    <div class="card rv"><span class="k">Key Differentiator</span><h3>Accessibility at Core</h3><p>Not an afterthought. Accessibility is the foundation. Designed from day one for limb differences and mobility challenges.</p></div>
+    <div class="card rv"><span class="k">Key Differentiator</span><h3>Gaming + Productivity</h3><p>From competitive gaming to daily workflow, ERCHAM transitions seamlessly. One device for your entire digital life.</p></div>
+  </div>
+</div></section>
+
+<!-- FOUNDER STORY -->
+<section class="s" id="story"><div class="wrap">
+  <span class="k rv">Origin Story</span>
+  <h2 class="rv">From loss <span class="gold">to legend.</span></h2>
+  <div class="story" style="margin-top:30px">
+    <div>
+      <p class="big rv">The moment everything changed.</p>
+      <p class="rv">In 2020, a motorcycle accident left Joe Tomasulo's right arm paralyzed, and he later underwent amputation. Gaming, something that had been part of his identity, suddenly felt like it belonged to a past life.</p>
+      <p class="rv">Recovery meant more than healing. It meant surviving on disability, living paycheck to paycheck, and rebuilding a sense of purpose from nothing.</p>
+      <p class="rv">Finding nothing on the market that didn't demand two hands, he took matters into his own. He glued a mouse sensor to a Razer Tartarus, strapped his arm to it, and reclaimed his control.</p>
+      <div class="elvish rv"><b>"Erchamion"</b><p>From Tolkien's Elvish, meaning "The One-Handed." Like Beren Erchamion, who lost his hand to a wolf but achieved the impossible.</p></div>
+      <p class="rv">That first prototype wasn't elegant. It was duct tape, desperation, and defiance. But it worked. And for the first time since the accident, the future felt possible again.</p>
+      <p class="rv">What started as a desperate hack for survival is evolving into the ERCHAM MK1: a purpose-built design now heading into official prototype testing.</p>
+      <p class="big rv">ERCHAM MK1 is coming to Kickstarter.</p>
+      <div class="values rv"><div><b>Empathy</b><span>Born from lived experience</span></div><div><b>Purpose</b><span>Built from necessity, not convenience</span></div><div><b>Resilience</b><span>Forged through adversity</span></div></div>
+    </div>
+    <div class="imgs">
+      <div class="ph rv"><img src="/preview/ercham-img/founder.webp" alt="Joe Tomasulo wearing the ERCHAM shirt, his prosthetic arm visible" width="900" height="1200" loading="lazy" decoding="async"></div>
+      <div class="ph rv"><img src="/preview/ercham-img/collage.webp" alt="Joe Tomasulo's recovery after his 2020 motorcycle accident" width="701" height="405" loading="lazy" decoding="async"></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- DEVELOPMENT -->
+<section class="s" id="development"><div class="wrap">
+  <span class="k rv">Development</span>
+  <h2 class="rv">From concept <span class="gold">to reality.</span></h2>
+  <p class="lede rv">ERCHAM isn't vaporware. It's a proven concept with real prototypes and real results. We're currently building the official prototype and targeting late November 2026, pending testing of our refined, slimmer prototype. Launch date to be confirmed. Product delivery follows funding and production.</p>
+  <p class="lede rv">I worked alongside friends and talented 3D artists to refine the model to where it is today, building and iterating across professional industry tools.</p>
+  <div class="tools rv"><span>Maya</span><span>SolidWorks</span><span>KeyShot</span><span>Blender</span><span>Photoshop</span></div>
+  <div class="road">
+    <div class="card rv"><span class="tag">Phase 1</span><h3>Concept &amp; Research</h3><p>Initial research into one-handed control ergonomics, user needs assessment, and competitive analysis.</p></div>
+    <div class="card now rv"><span class="tag">Phase 2</span><h3>Official Prototype</h3><p>Functional prototype built, with hands-on testing and design refinement next.</p></div>
+    <div class="card rv"><span class="tag">Phase 3</span><h3>Testing &amp; Refinement</h3><p>Extensive testing with gamers, accessibility advocates, and people with limb differences. Iterating based on feedback.</p></div>
+    <div class="card rv"><span class="tag">Phase 4</span><h3>Kickstarter Launch</h3><p>Targeting late November 2026, pending testing of our refined, slimmer prototype. Launch date to be confirmed.</p></div>
+  </div>
+  <div class="ph rv" style="margin-top:40px"><img src="/preview/ercham-img/journey.webp" alt="The journey of ERCHAM: six stages of product evolution" width="1600" height="1208" loading="lazy" decoding="async"></div>
+  <h3 class="rv" style="margin-top:56px">ERCHAM MK1: Initial Functional Prototype</h3>
+  <p class="lede rv">Our first functional prototype is built for hands-on testing of the controls, mouse tracking, and ergonomics. This early build focuses on functionality, with further testing and refinement ahead. The development team plans to provide a slimmer, more polished version later this year, moving closer to the design shown in our renders.</p>
+  <div class="protos">
+    <div class="ph rv"><img src="/preview/ercham-img/p-angled.webp" alt="Functional prototype, angled view" width="900" height="675" loading="lazy" decoding="async"></div>
+    <div class="ph rv"><img src="/preview/ercham-img/p-front.webp" alt="Functional prototype, front view with thumb clusters" width="900" height="675" loading="lazy" decoding="async"></div>
+    <div class="ph rv"><img src="/preview/ercham-img/p-top.webp" alt="Functional prototype, top-down view of the switches" width="900" height="675" loading="lazy" decoding="async"></div>
+    <div class="ph rv"><img src="/preview/ercham-img/p-underside.webp" alt="Functional prototype underside with the optical sensor" width="900" height="817" loading="lazy" decoding="async"></div>
+  </div>
+  <p class="note rv">Actual prototype photos. Design and finish remain subject to refinement. Optical mouse sensor: PixArt PMW3389DM-T3QU, confirmed by the development team.</p>
+</div></section>
+
+<!-- PARTNERS -->
+<section class="s" id="partners"><div class="wrap">
+  <span class="k rv">Our Partners</span>
+  <h2 class="rv">Built with <span class="gold">great people.</span></h2>
+  <div class="partners">
+    <a class="card rv" href="https://prototyperlab.com/" target="_blank" rel="noopener"><span class="role">Prototyping Partner</span><h3>PrototyperLab</h3><p>Manufacturing and prototyping specialists helping bring the official ERCHAM prototype to life.</p></a>
+    <a class="card rv" href="https://www.fiverr.com/toobaehsan20" target="_blank" rel="noopener"><span class="role">3D Artist</span><h3>Tooba Ehsan</h3><p>Talented 3D artist who helped refine and perfect the ERCHAM model design.</p></a>
+    <a class="card rv" href="https://www.youtube.com/@BenEsherick" target="_blank" rel="noopener"><span class="role">Content Creator</span><h3>Ben Esherick</h3><p>Featured ERCHAM in a YouTube Short that racked up over 1.6 million views, spreading the word about one-handed gaming.</p></a>
+    <a class="card rv" href="https://jus.kim/links/" target="_blank" rel="noopener"><span class="role">Developer / Content Creator</span><h3>JusKim</h3><p>Developer and content creator behind Moddo, lending technical expertise and reach to help push ERCHAM forward.</p></a>
+    <a class="card rv" href="https://6amcity.com/ky/louisville/business/louisville-ercham-controller" target="_blank" rel="noopener"><span class="role">Media Outlet / News Coverage</span><h3>Declan Lowthian</h3><p>City Editor at LOUtoday who covered ERCHAM in a feature article, bringing local news coverage to the project.</p></a>
+    <a class="card rv" href="https://www.reddit.com/user/Perfect_pixels_/" target="_blank" rel="noopener"><span class="role">Graphic Artist</span><h3>Perfect Pixels</h3><p>Graphic artist who designed the promotional graphics and visuals used across the ERCHAM website.</p></a>
+    <a class="card rv" href="https://graphiccookinglab.com" target="_blank" rel="noopener"><span class="role">Graphic Artist</span><h3>BuildWith321</h3><p>Graphic artist behind Graphic Cooking Lab, contributing promotional design work for ERCHAM.</p></a>
+  </div>
+  <div class="row rv" style="margin-top:30px"><span style="color:var(--mut)">More partners joining as we head toward launch.</span><a class="btn ghost" href="https://www.instagram.com/erchamadaptivesystems/" target="_blank" rel="noopener">Partner with us</a></div>
+</div></section>
+
+<!-- COMMUNITY -->
+<section class="s" id="community"><div class="wrap">
+  <span class="k rv">Community Feedback</span>
+  <h2 class="rv">Making waves <span class="gold">worldwide.</span></h2>
+  <p class="lede rv">From viral Reddit posts to international media coverage, ERCHAM is capturing attention and changing the conversation around accessible gaming.</p>
+  <div class="bigstats">
+    <div class="stat rv"><b class="gold">5.2M+</b><span>Total views</span></div>
+    <div class="stat rv"><b class="gold">12+</b><span>Media features</span></div>
+    <div class="stat rv"><b class="gold">300+</b><span>Pre-launch followers</span></div>
+  </div>
+  <div class="row rv" style="margin-top:26px">
+    <a class="btn ghost" href="https://www.youtube.com/@onearmedgamer" target="_blank" rel="noopener">Watch Joe play Halo with one hand</a>
+    <a class="btn ghost" href="https://www.reddit.com/r/disabledgamers/comments/1osxw6p/im_a_onearmed_gamer_and_built_my_own_adaptive/" target="_blank" rel="noopener">The original r/disabledgamers post</a>
+    <a class="btn ghost" href="https://www.reddit.com/r/pcmasterrace/comments/1ru41ge/comment/obt5le2/" target="_blank" rel="noopener">The viral r/pcmasterrace post</a>
+  </div>
+  <h3 class="rv" style="margin-top:50px">Featured in</h3>
+  <div class="press">
+    <a class="rv" href="https://www.tomshardware.com/peripherals/controllers-gamepads/disabled-gamer-prototypes-true-one-handed-keyboard-and-mouse-controller-maker-inspired-to-build-device-after-losing-right-arm-in-an-accident" target="_blank" rel="noopener"><b>Tom's Hardware</b><span>Disabled gamer prototypes true one-handed keyboard-and-mouse controller</span></a>
+    <a class="rv" href="https://www.yankodesign.com/2026/04/27/after-losing-his-arm-in-a-crash-he-built-the-controller-no-one-made/" target="_blank" rel="noopener"><b>Yanko Design</b><span>After Losing His Arm in a Crash, He Built the Controller No One Made</span></a>
+    <a class="rv" href="https://www.dexerto.com/gaming/amputee-builds-one-handed-gaming-controller-after-losing-right-arm-3358391/" target="_blank" rel="noopener"><b>Dexerto</b><span>Amputee builds one-handed gaming controller after losing right arm</span></a>
+    <a class="rv" href="https://www.techspot.com/news/112212-gamer-who-lost-arm-built-one-handed-controller.html" target="_blank" rel="noopener"><b>TechSpot</b><span>Gamer who lost arm built one-handed controller</span></a>
+    <a class="rv" href="https://www.3djuegos.com/hardware/perifericos/noticias/perdio-brazo-accidente-encontro-forma-seguir-jugando-trabajando-su-pc-invento-cosecha-propia" target="_blank" rel="noopener"><b>3DJuegos</b><span>Lo de este jugador es digno de elogio: perdió su brazo en un accidente</span></a>
+    <a class="rv" href="https://www.trendhunter.com/amp/trends/mk1-controller" target="_blank" rel="noopener"><b>Trend Hunter</b><span>MK1 Controller: One-Handed Gaming Innovation</span></a>
+    <a class="rv" href="https://www.pcdemano.com/sc/juegos/40789/" target="_blank" rel="noopener"><b>PcDeMaNo</b><span>ERCHAM: Gaming y productividad para una sola mano</span></a>
+    <a class="rv" href="https://spectrumnews1.com/ky/louisville/news/2026/04/30/disability-gamer-new-creation" target="_blank" rel="noopener"><b>Spectrum News</b><span>Local news coverage of disability gaming innovation</span></a>
+    <a class="rv" href="https://finance.biggo.com/news/202604280030_Amputee-Gamer-Builds-One-Handed-Controller" target="_blank" rel="noopener"><b>BigGo Finance</b><span>Amputee Gamer Builds ERCHAM MK1: A One-Handed Keyboard-and-Mouse Controller</span></a>
+    <a class="rv" href="https://www.reddit.com/r/pcmasterrace/comments/1ru41ge/comment/obt5le2/" target="_blank" rel="noopener"><b>Reddit · PCMR</b><span>Viral post on r/pcmasterrace with millions of views</span></a>
+    <a class="rv" href="https://6amcity.com/ky/louisville/business/louisville-ercham-controller" target="_blank" rel="noopener"><b>6AM City (LOUtoday)</b><span>Louisville creator builds the ERCHAM one-handed controller</span></a>
+    <a class="rv" href="https://www.lacremedugaming.fr/consoles/pc/apres-avoir-perdu-son-bras-dans-un-accident-ce-joueur-invente-une-manette-qui-fusionne-une-souris-et-44-touches-pour-jouer-dune-seule-main-233584.html" target="_blank" rel="noopener"><b>La Crème du Gaming</b><span>French gaming feature on ERCHAM's one-handed design and upcoming Kickstarter</span></a>
+  </div>
+</div></section>
+
+<!-- LAUNCH -->
+<section class="s launch" id="launch"><div class="wrap">
+  <span class="k rv">Coming to Kickstarter</span>
+  <h2 class="rv">Be there <span class="gold">at launch.</span></h2>
+  <p class="lede rv">Follow the campaign on Kickstarter to be notified the moment it opens. Early backers will be able to claim rewards and early-bird pricing.</p>
+  <div class="perks rv"><span>Early-bird pricing</span><span>Backer rewards</span><span>Launch notification</span><span>Prototype updates</span></div>
+  <div class="row rv">
+    <a class="btn" href="https://www.kickstarter.com/projects/erchamadaptivesystem/ercham-mk1-one-handed-gaming-and-productivity-controller" target="_blank" rel="noopener">Follow on Kickstarter</a>
+    <a class="btn ghost" href="#top" data-join>Get launch updates</a>
+  </div>
+  <p class="note rv">Targeting late November 2026, pending testing of our refined, slimmer prototype. Launch date to be confirmed. Product delivery follows funding and production.</p>
+  <div class="card donate rv">
+    <span class="k">Support Development</span>
+    <h3 style="font-size:1.6rem;margin-top:10px">Help us keep building.</h3>
+    <p>Every contribution helps fund continued development, testing, and manufacturing. Want to support the mission before the Kickstarter campaign opens? 100% of donations go directly toward product development and accessibility innovation.</p>
+    <div class="row" style="margin-top:20px"><a class="btn ghost" href="https://www.givesendgo.com/help-me-bring-ercham-mk1-to-life" target="_blank" rel="noopener">Donate via GiveSendGo</a></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="brand gold" href="#top">ERCHAM</a><p style="margin-top:14px">A one-handed gaming keypad with a built-in optical mouse and modular thumb clusters for either hand. Targeting late November 2026, pending testing of our refined, slimmer prototype. Launch date to be confirmed.</p></div>
+    <div><h4>Navigation</h4><ul><li><a href="#intro">Intro</a></li><li><a href="#views">360 Views</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#why">Why ERCHAM</a></li><li><a href="#story">Founder Story</a></li><li><a href="#development">Development</a></li><li><a href="#community">Community</a></li><li><a href="#launch">Support Development</a></li></ul></div>
+    <div><h4>Follow</h4><ul>
+      <li><a href="https://www.kickstarter.com/projects/erchamadaptivesystem/ercham-mk1-one-handed-gaming-and-productivity-controller" target="_blank" rel="noopener">Kickstarter</a></li>
+      <li><a href="https://www.instagram.com/erchamadaptivesystems/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.tiktok.com/@erchamadaptivesystems" target="_blank" rel="noopener">TikTok</a></li>
+      <li><a href="https://www.youtube.com/@onearmedgamer" target="_blank" rel="noopener">YouTube</a></li>
+      <li><a href="https://x.com/tomasulo85569" target="_blank" rel="noopener">X</a></li>
+      <li><a href="https://www.facebook.com/profile.php?id=61587236720712" target="_blank" rel="noopener">Facebook</a></li>
+      <li><a href="https://discord.gg/SaKWtm4fZ" target="_blank" rel="noopener">Discord</a></li>
+    </ul></div>
+  </div>
+  <div class="base"><span>&copy; 2026 ERCHAM Adaptive Systems. Patent pending.</span><span>One hand. Full control.</span></div>
+</div></footer>
+<div class="draft">Preview by Ziman Sites</div>
+
 <script>
-// concept only: first click opens the email field, second click "signs up" (no data is sent anywhere)
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* waitlist (preview: first click opens the email field, second "signs up"; nothing is sent) */
 var f=document.getElementById('join'),e=f.querySelector('.field');
 f.addEventListener('submit',function(ev){ev.preventDefault();
   if(!f.classList.contains('open')){f.classList.add('open');e.focus();return}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value.trim())){e.focus();e.setCustomValidity('Enter your email');e.reportValidity();return}
   f.classList.add('sent')});
 e.addEventListener('input',function(){e.setCustomValidity('')});
+document.querySelectorAll('[data-join]').forEach(function(a){a.addEventListener('click',function(ev){ev.preventDefault();scrollTo({top:0,behavior:reduce?'auto':'smooth'});setTimeout(function(){if(!f.classList.contains('sent')){f.classList.add('open');e.focus({preventScroll:true})}},reduce?0:450)})});
+/* nav background */
+var nav=document.getElementById('nav');function ns(){nav.classList.toggle('solid',scrollY>40)}ns();addEventListener('scroll',ns,{passive:true});
+/* reveal */
+var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+/* videos load and play only while on screen */
+var vo=new IntersectionObserver(function(es){es.forEach(function(x){var v=x.target;
+  if(x.isIntersecting){if(!v.src){v.src=v.dataset.src}if(!reduce)v.play().catch(function(){})}else{v.pause()}})},{rootMargin:'200px 0px'});
+document.querySelectorAll('video[data-src]').forEach(function(v){vo.observe(v)});
+/* left / right hand */
+var hi=document.getElementById('handimg');
+document.querySelectorAll('[data-hand]').forEach(function(b){b.addEventListener('click',function(){
+  document.querySelectorAll('[data-hand]').forEach(function(x){x.classList.toggle('on',x===b)});hi.classList.toggle('right',b.dataset.hand==='right')})});
+/* gallery */
+var t=document.getElementById('track'),c=document.getElementById('count'),n=t.children.length;
+function idx(){return Math.round(t.scrollLeft/t.clientWidth)}
+function go(i){i=(i+n)%n;t.scrollTo({left:i*t.clientWidth,behavior:reduce?'auto':'smooth'})}
+t.addEventListener('scroll',function(){c.textContent=(idx()+1)+' / '+n},{passive:true});
+document.getElementById('prev').addEventListener('click',function(){go(idx()-1)});
+document.getElementById('next').addEventListener('click',function(){go(idx()+1)});
+t.addEventListener('keydown',function(ev){if(ev.key==='ArrowRight'){ev.preventDefault();go(idx()+1)}if(ev.key==='ArrowLeft'){ev.preventDefault();go(idx()-1)}});
+})();
 </script>
 </body>
 </html>

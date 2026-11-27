@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v306.**
+- **Latest version: v307.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -96,6 +96,8 @@ Last updated: Nov 27, 2026 (after v298).
   - Ryder reviewed his site: 25 MB page, a 3D model that crashes the page if its lighting fails to load, and the "check your email" note showing before sign-up.
   - Joe asked "What would you have instead?" First-screen mockup at **zimansites.com/preview/ercham** (static/preview/ercham.html, noindex): his dark gold rune style, one line on what MK1 is, one "Join the waitlist" button.
   - He has no in-hand clip yet, so the mockup uses his product render.
+  - Nov 27: Joe said "take everything from ercham.com". Price agreed by Ryder: $284 one-time, paid only if Joe is happy.
+    Full page built at /preview/ercham (every section from his site; all media 2.8 MB instead of 25 MB; no 3D model).
 - **Walters Homes** (LBI, NJ builder, Ed Walters Jr., Ship Bottom HQ): just research; Ryder is NOT pitching them (a competitor of his dad's company).
 
 ## Brand files
