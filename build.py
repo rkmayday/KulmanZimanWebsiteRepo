@@ -329,17 +329,20 @@ def photo_page(slug, alt, w, h):
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">{ld}</script>
 <style>
-html,body{{margin:0;height:100%;background:#0b0b0c;color:#f2f2f2;font:14px/1.4 system-ui,-apple-system,sans-serif}}
+/* Ryder asked for these pages to look like a broken error page (style C): the photo is still in the page for Google
+   Images, shown faint and grey behind a fake "404", with no caption and no link to the site. */
+html,body{{margin:0;height:100%;background:#fff;color:#202124;font-family:Arial,Helvetica,sans-serif;overflow:hidden}}
 figure{{margin:0;position:fixed;inset:0}}
-figure img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}}   /* the whole photo, as big as the screen allows */
-figcaption{{position:fixed;left:max(16px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));padding:8px 12px;border-radius:8px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}}
-figcaption b{{font-weight:600}}
-a.home{{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));padding:8px 12px;border-radius:8px;background:rgba(0,0,0,.55);color:#f2f2f2;text-decoration:none;font-size:12px}}
+figure img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.13;filter:grayscale(1)}}
+.e{{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;padding:0 20px}}
+.e b{{font:700 clamp(80px,18vw,120px)/1 Arial,Helvetica,sans-serif;letter-spacing:-.04em}}
+.e p{{margin:0;font-size:18px;color:#5f6368;max-width:420px}}
+.e code{{font:13px ui-monospace,Menlo,monospace;color:#9aa0a6;margin-top:10px}}
 </style>
 </head>
 <body>
-<figure><img src="{img}" alt="{alt}" width="{w}" height="{h}"><figcaption><b>Ryder Ziman</b> · Founder of Ziman Sites</figcaption></figure>
-<a class="home" href="/ryderziman">zimansites.com</a>
+<figure><img src="{img}" alt="{alt}" width="{w}" height="{h}"></figure>
+<div class="e" aria-hidden="true"><b>404</b><p>The requested resource could not be displayed.</p><code>ERR_IMAGE_DECODE_FAILED</code></div>
 </body>
 </html>
 """
