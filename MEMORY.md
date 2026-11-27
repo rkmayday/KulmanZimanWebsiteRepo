@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v300.**
+- **Latest version: v301.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -90,7 +90,10 @@ Last updated: Nov 27, 2026 (after v298).
   - Awaiting his reply.
 - **William Murray** (Co-Founder/CTO, Murray Computing Group, Asheville NC; murraycomputing.com):
   - said "Tell me a little more". The pitch is a partnership: Ryder designs and builds front ends for William's clients (white-label or referral). Realistically a few projects a year.
-- **Joe Tomasulo:** said he can build sites himself. Replied politely; door left open.
+- **Joe Tomasulo** (ERCHAM, **ercham.com**: the MK1, a one-handed gaming keypad with a built-in optical mouse, Kickstarter pre-launch, $169 early bird):
+  - Ryder reviewed his site: 25 MB page, a 3D model that crashes the page if its lighting fails to load, and the "check your email" note showing before sign-up.
+  - Joe asked "What would you have instead?" First-screen mockup at **zimansites.com/preview/ercham** (static/preview/ercham.html, noindex): his dark gold rune style, one line on what MK1 is, one "Join the waitlist" button.
+  - He has no in-hand clip yet, so the mockup uses his product render.
 - **Walters Homes** (LBI, NJ builder, Ed Walters Jr., Ship Bottom HQ): just research; Ryder is NOT pitching them (a competitor of his dad's company).
 
 ## Brand files

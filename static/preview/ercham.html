@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="theme-color" content="#07050a">
+<title>ERCHAM MK1: first screen concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter+Tight:wght@500;600;800;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/preview/ercham-img/mk1-hero.webp" media="(min-width:761px)">
+<link rel="preload" as="image" href="/preview/ercham-img/mk1-hero-m.webp" media="(max-width:760px)">
+<style>
+:root{--bg:#07050a;--fg:#f3efe6;--mut:rgba(243,239,230,.66);--gold:#d9b25f;--gold2:#f3d998;--ember:#ff4500;--line:rgba(217,178,95,.22)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);overflow-x:clip}
+body{font:16px/1.6 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.hero{position:relative;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:minmax(0,1fr);overflow:hidden;isolation:isolate}
+.hero>*{min-width:0}
+/* product render: slow push-in, glow behind it */
+.shot{position:absolute;inset:0;z-index:-2;background:url(/preview/ercham-img/mk1-hero.webp) 68% 60%/cover no-repeat;transform:scale(1.08);animation:push 14s ease-out forwards}
+@keyframes push{to{transform:scale(1)}}
+.shade{position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(90deg,rgba(7,5,10,.96) 0%,rgba(7,5,10,.82) 30%,rgba(7,5,10,.2) 62%,rgba(7,5,10,.05) 100%),
+  linear-gradient(0deg,rgba(7,5,10,.95) 0%,transparent 34%),
+  radial-gradient(60% 50% at 70% 62%,rgba(255,69,0,.10),transparent 70%)}
+/* rune line along the top, his signature detail */
+.runes{border-bottom:1px solid var(--line);color:rgba(217,178,95,.55);font:500 13px/1 serif;letter-spacing:.5em;white-space:nowrap;overflow:hidden;padding:9px 0;padding-top:calc(9px + env(safe-area-inset-top))}
+.runes span{display:inline-block;animation:slide 60s linear infinite}
+@keyframes slide{to{transform:translateX(-50%)}}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left))}
+.brand{font:700 24px "Cinzel",serif;letter-spacing:.16em;background:linear-gradient(180deg,var(--gold2),var(--gold) 55%,#9c7a35);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:8px 14px;display:flex;align-items:center;gap:8px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 10px var(--ember);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.copy{align-self:center;width:min(1240px,100%);margin:0 auto;padding:40px max(22px,env(safe-area-inset-left))}
+.k{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+h1{font:900 clamp(3rem,8.4vw,7.6rem)/.9 "Inter Tight",sans-serif;letter-spacing:-.045em;margin:18px 0 22px;max-width:11ch}
+h1 em{font-style:normal;background:linear-gradient(180deg,var(--gold2),var(--gold) 60%,#a8823b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.what{max-width:44ch;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--mut);margin:0 0 30px}
+.what b{color:var(--fg);font-weight:600}
+/* one button; the email field only opens when it's clicked, the confirmation only shows after signing up */
+.join{display:flex;flex-wrap:wrap;align-items:center;gap:12px;max-width:560px}
+.btn{height:58px;padding:0 28px;border:0;border-radius:6px;cursor:pointer;font:700 16px "Inter Tight",sans-serif;color:#120c05;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 18px 44px -18px rgba(217,178,95,.8),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .25s,box-shadow .25s;display:inline-flex;align-items:center;gap:10px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 22px 50px -16px rgba(217,178,95,.95),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn svg{width:18px}
+.field{display:none;flex:1 1 240px;height:58px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg);font:16px "Inter Tight",sans-serif;padding:0 18px;min-width:0}
+.field:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(217,178,95,.15)}
+.join.open .field{display:block;animation:in .35s ease-out}
+@keyframes in{from{opacity:0;transform:translateX(-8px)}}
+.done{display:none;font-weight:600;color:var(--gold2)}
+.join.sent .btn,.join.sent .field{display:none}.join.sent .done{display:block}
+.price{display:flex;gap:18px;margin-top:18px;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.1em;color:var(--mut);text-transform:uppercase}
+.price b{color:var(--gold2);font-weight:500}
+.price s{opacity:.6}
+.feats{display:flex;flex-wrap:wrap;gap:10px 28px;border-top:1px solid var(--line);padding:20px max(22px,env(safe-area-inset-left)) calc(22px + env(safe-area-inset-bottom));font:500 11.5px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.feats span::before{content:"\16DF";color:var(--gold);margin-right:10px}
+.tag{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:84px;font:500 10.5px "IBM Plex Mono",monospace;letter-spacing:.14em;color:rgba(243,239,230,.45);text-transform:uppercase}
+.rv{opacity:0;transform:translateY(22px);animation:up .9s cubic-bezier(.2,.75,.15,1) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+@media (max-width:760px){
+  .shot{background-image:url(/preview/ercham-img/mk1-hero-m.webp);background-position:50% 100%;background-size:150% auto;top:auto;height:52%}
+  .shade{background:linear-gradient(180deg,rgba(7,5,10,1) 0%,rgba(7,5,10,.85) 45%,rgba(7,5,10,.1) 75%,rgba(7,5,10,.6) 100%)}
+  .copy{align-self:start;padding-top:28px}
+  .pill{display:none}.tag{display:none}
+  .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.shot,.runes span,.rv,.pill i{animation:none;opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="shot" role="img" aria-label="ERCHAM MK1 one-handed gaming keypad with built-in mouse"></div><div class="shade"></div>
+  <div>
+    <div class="runes" aria-hidden="true"><span>ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫ᚠᚢᚦᚨᚱᚲ᛫ᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊ᛫ᛏᛒᛖᛗᛚᛜᛞᛟ᛫</span></div>
+    <div class="top"><span class="brand">ERCHAM</span><span class="pill"><i></i>Kickstarter pre-launch</span></div>
+  </div>
+  <div class="copy">
+    <span class="k rv" style="animation-delay:.1s">ERCHAM MK1</span>
+    <h1 class="rv" style="animation-delay:.2s">One hand. <em>Full control.</em></h1>
+    <p class="what rv" style="animation-delay:.35s"><b>A gaming keypad and optical mouse in one ambidextrous device.</b> Move, aim, click and type with a single hand.</p>
+    <form class="join rv" id="join" style="animation-delay:.5s" novalidate>
+      <input class="field" type="email" name="email" placeholder="Your email" autocomplete="email" aria-label="Email address">
+      <button class="btn" type="submit">Join the waitlist <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
+      <p class="done" role="status">You're on the list. Check your inbox (and spam) to confirm.</p>
+    </form>
+    <div class="price rv" style="animation-delay:.6s"><span><b>$169</b> early bird</span><span><s>$200</s> retail</span></div>
+  </div>
+  <div class="feats"><span>Built-in optical mouse</span><span>Fully ambidextrous</span><span>Modular thumb clusters</span><span>Patent pending</span></div>
+  <div class="tag">Product render · in-hand clip goes here</div>
+</section>
+<script>
+// concept only: first click opens the email field, second click "signs up" (no data is sent anywhere)
+var f=document.getElementById('join'),e=f.querySelector('.field');
+f.addEventListener('submit',function(ev){ev.preventDefault();
+  if(!f.classList.contains('open')){f.classList.add('open');e.focus();return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value.trim())){e.focus();e.setCustomValidity('Enter your email');e.reportValidity();return}
+  f.classList.add('sent')});
+e.addEventListener('input',function(){e.setCustomValidity('')});
+</script>
+</body>
+</html>
