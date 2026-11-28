@@ -305,8 +305,8 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 ]
 
 
-PAGE_PREFIX = "gettyimage-"   # Ryder chose this page address prefix (Nov 28)
-PAGE_PATH = {"ryder-ziman-3": "bmedia-ryder-ziman"}   # photos with their own page address
+PAGE_PREFIX = "jlpress/"   # Ryder chose this page address prefix (Nov 28): /jlpress/ryder-ziman-N
+PAGE_PATH = {"ryder-ziman-3": "bmedia/ryder-ziman"}   # photos with their own page address
 
 def page_path(slug):
     return PAGE_PATH.get(slug, PAGE_PREFIX + slug)
@@ -582,6 +582,7 @@ def build(preview=False, theme="royal"):
     # when someone searches "Ryder Ziman". Not in any menu; they are in the sitemap (with their images).
     if not preview:
         for slug, alt, w, h, credit in PHOTOS:
+            (out_dir / f"{page_path(slug)}.html").parent.mkdir(parents=True, exist_ok=True)
             (out_dir / f"{page_path(slug)}.html").write_text(lock_vh(photo_page(slug, alt, w, h, credit)))
     if not preview:
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
