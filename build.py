@@ -304,7 +304,7 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 ]
 
 
-FILENAME = {"1": "DSC_4827.JPG", "2": "IMG_7139.JPG", "3": "P1040562.JPG", "4": "_MG_2915.JPG"}   # random-looking camera file names shown on each photo page
+FILENAME = {"1": "IMG_4627.JPG", "2": "IMG_7139.JPG", "3": "IMG_2841.JPG", "4": "IMG_5376.JPG"}   # random-looking camera file names shown on each photo page
 CHECK = ["7C21", "3F9A", "B84E", "E19D", "5A63"]   # the fake checksum shown on each photo page
 TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "R. Ziman (BPP)", "4": "Ziman, Ryder", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
 PAGE_PREFIX = "jlmedia/"   # Ryder chose this page address prefix (Nov 28): /jlmedia/ryder-ziman-N
