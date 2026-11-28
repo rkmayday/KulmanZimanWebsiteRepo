@@ -6,7 +6,9 @@
 //
 // Clean addresses ask for the exact .html file FIRST: the host may answer any unknown address with the
 // home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
-const REDIRECTS = { '/ryder-ziman-1': '/gettyimage-ryder-ziman-1', '/ryder-ziman-2': '/gettyimage-ryder-ziman-2', '/ryder-ziman-3': '/gettyimage-ryder-ziman-3', '/ryder-ziman-4': '/gettyimage-ryder-ziman-4', '/ryder-ziman-5': '/gettyimage-ryder-ziman-5', '/ryder-ziman-6-feat-maxim-zhukovski': '/gettyimage-ryder-ziman-6-feat-maxim-zhukovski', '/ryder-ziman-7': '/gettyimage-ryder-ziman-7', '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about', '/samples/ashgrove': '/portfolio' };
+const REDIRECTS = { '/ryder-ziman-1': '/gettyimage-ryder-ziman-1', '/ryder-ziman-2': '/gettyimage-ryder-ziman-2', '/ryder-ziman-3': '/gettyimage-ryder-ziman-3', '/ryder-ziman-5': '/gettyimage-ryder-ziman-4', '/ryder-ziman-6-feat-maxim-zhukovski': '/gettyimage-ryder-ziman-5-feat-maxim-zhukovski', '/ryder-ziman-7': '/gettyimage-ryder-ziman-6', '/images/ryder-ziman/ryder-ziman-5.jpg': '/images/ryder-ziman/ryder-ziman-4.jpg', '/images/ryder-ziman/ryder-ziman-6-feat-maxim-zhukovski.jpg': '/images/ryder-ziman/ryder-ziman-5-feat-maxim-zhukovski.jpg', '/images/ryder-ziman/ryder-ziman-7.jpg': '/images/ryder-ziman/ryder-ziman-6.jpg', '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about', '/samples/ashgrove': '/portfolio' };
+
+const GONE = new Set(['/ryder-ziman-4', '/ryder-ziman-4.html']);
 
 const FORWARD_OLD_DOMAIN = true;
 
@@ -18,6 +20,8 @@ export default {
     // (switch FORWARD_OLD_DOMAIN on only once zimansites.com is connected and loading, or the old address would lead nowhere)
     if (FORWARD_OLD_DOMAIN && /(^|\.)kulmanziman\.com$/.test(url.hostname)) return Response.redirect('https://zimansites.com' + path + url.search, 301);
     if (url.hostname === 'www.zimansites.com') return Response.redirect('https://zimansites.com' + path + url.search, 301);
+    // photo 4 was taken down (Nov 28): its old page and image answer 410 Gone so Google drops them
+    if (GONE.has(path)) return new Response('Gone', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8', 'x-robots-tag': 'noindex' } });
     if (REDIRECTS[path]) return Response.redirect(new URL(REDIRECTS[path] + url.search, url), 301);
     if (path.length > 1 && path.endsWith('/')) return Response.redirect(new URL(path.slice(0, -1) + url.search, url), 301);
     // Google Search Console ownership check (HTML-file method): answer /google<id>.html with the content Google expects

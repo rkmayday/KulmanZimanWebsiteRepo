@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v317.**
+- **Latest version: v318.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -67,9 +67,10 @@ Last updated: Nov 27, 2026 (after v298).
 - **Profile page (/ryderziman), Nov 27:** flip business card (photo front; back has email, LinkedIn, "Save contact" = /ryder-ziman.vcf),
   signature that writes itself, "The story so far" timeline (dates from git history: Aug 24 Kulman Ziman live, Nov 5 first samples (the redo with Claude),
   Nov 12 rebrand, Nov 20 Sports Culture, six demos, now, next), and the six demos as live cards. Timeline class is .rz-tl (.timeline is taken); the card is .rzf (.flip is taken by the product flip cards in site.js).
-- **Photo pages for Google Images:** /ryder-ziman-1 … -5, /ryder-ziman-6-feat-maxim-zhukovski, /ryder-ziman-7.
-  - Each looks like a fake "404" page with the photo faint behind it (Ryder asked, Nov 27); no link to the site.
-  - Titles: "Ziman, Ryder" (1, 2 and 7: "Ziman, Ryder: son of Michael Ziman"). Listed in `PHOTOS` in build.py and the image sitemap.
+- **Photo pages for Google Images (Nov 28):** six pages at /gettyimage-ryder-ziman-1 ... -4, /gettyimage-ryder-ziman-5-feat-maxim-zhukovski, /gettyimage-ryder-ziman-6.
+  - Old photo 4 taken down (file in clients/removed-photos; /ryder-ziman-4 answers 410). Old 5/6/7 became 4/5/6; old page and image addresses 301 to the new ones (whop-site/server/index.js).
+  - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 6: "Ziman, Ryder: son of Michael Ziman"), credits in the ImageObject data: "Jessica Lee" on the chair photo (4), "Unknown" on the rest.
+  - Ryder asked for a visible Getty Images tag; declined (real company's branding on photos it doesn't own). The URL prefix was his call after a warning.
 - **PageSpeed (Nov 26):**
   - mobile performance went 74 → 89 after self-hosting the fonts (assets/fonts, inlined @font-face; the preview still uses Google Fonts);
   - SEO 100 after the email buttons got real hrefs;

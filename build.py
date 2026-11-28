@@ -286,35 +286,35 @@ SIDE_LOCK = ("<style>html{overflow-x:hidden}"
              "@media (display-mode:standalone){html,body{overscroll-behavior-x:none}body{touch-action:pan-y pinch-zoom}}</style>\n")
 
 
-PHOTOS = [   # (page and file name, description, width, height): files in static/images/ryder-ziman/
-    ("ryder-ziman-1", "Ryder Ziman speaking at a podium", 840, 468),
-    ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470),
-    ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390),
-    ("ryder-ziman-4", "Ryder Ziman", 886, 886),
-    ("ryder-ziman-5", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066),
-    ("ryder-ziman-6-feat-maxim-zhukovski", "Ryder Ziman (right) with Maxim Zhukovski", 886, 886),
-    ("ryder-ziman-7", "Instant photo of Ryder Ziman", 886, 886),
+PHOTOS = [   # (page and file name, description, width, height, photo credit): files in static/images/ryder-ziman/
+    ("ryder-ziman-1", "Ryder Ziman speaking at a podium", 840, 468, "Unknown"),
+    ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "Unknown"),
+    ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Unknown"),
+    ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
+    ("ryder-ziman-5-feat-maxim-zhukovski", "Ryder Ziman (right) with Maxim Zhukovski", 886, 886, "Unknown"),
+    ("ryder-ziman-6", "Instant photo of Ryder Ziman", 886, 886, "Unknown"),
 ]
+# Nov 28: the old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
 
 
 SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi feel)
     "Caught on camera. Exclusive shot.",
     "Spotted. No comment from the subject.",
     "Snapped mid-smile. Unreleased photo.",
-    "Off duty and caught on film.",
     "Caught in the moment. Exclusive.",
     "Spotted together. Sources confirm.",
     "Rare photo surfaces.",
 ]
 
 
-PAGE_PREFIX = "gettyimage-"   # Ryder chose this page address prefix (Nov 28); the image files keep their names
+PAGE_PREFIX = "gettyimage-"   # Ryder chose this page address prefix (Nov 28)
 
-def photo_page(slug, alt, w, h):
+def photo_page(slug, alt, w, h, credit):
     n = slug.split("-")[2]   # the page number
-    # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 7
+    # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 6 (the instant photo)
     img = f"/images/ryder-ziman/{slug}.jpg"
     ld = json.dumps({"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": SITE + img, "name": alt,
+                     "creditText": credit, "creator": {"@type": "Person", "name": credit},
                      "description": alt + ", founder of Ziman Sites.",
                      "about": {"@type": "Person", "name": "Ryder Ziman", "jobTitle": "Founder", "url": SITE + "/ryderziman",
                                "worksFor": {"@type": "Organization", "name": "Ziman Sites", "url": SITE},
@@ -324,7 +324,7 @@ def photo_page(slug, alt, w, h):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "7") else "Ziman, Ryder"}</title>
+<title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "6") else "Ziman, Ryder"}</title>
 <meta name="description" content="{SNAP[int(n) - 1] if int(n) <= len(SNAP) else SNAP[-1]}">
 <link rel="canonical" href="{SITE}/{PAGE_PREFIX}{slug}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">
@@ -579,12 +579,12 @@ def build(preview=False, theme="royal"):
     # photo pages: one page per photo of Ryder, the photo filling the screen, so they can show up in Google Images
     # when someone searches "Ryder Ziman". Not in any menu; they are in the sitemap (with their images).
     if not preview:
-        for slug, alt, w, h in PHOTOS:
-            (out_dir / f"{PAGE_PREFIX}{slug}.html").write_text(lock_vh(photo_page(slug, alt, w, h)))
+        for slug, alt, w, h, credit in PHOTOS:
+            (out_dir / f"{PAGE_PREFIX}{slug}.html").write_text(lock_vh(photo_page(slug, alt, w, h, credit)))
     if not preview:
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
         urls += "".join(f"<url><loc>{SITE}/{PAGE_PREFIX}{slug}</loc><image:image><image:loc>{SITE}/images/ryder-ziman/{slug}.jpg</image:loc></image:image></url>"
-                        for slug, alt, w, h in PHOTOS)
+                        for slug, alt, w, h, credit in PHOTOS)
         # the sample sites are marked "noindex", so they stay out of the sitemap (no mixed signals for Google)
         (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">{urls}</urlset>')
         (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
