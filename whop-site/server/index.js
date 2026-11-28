@@ -6,7 +6,7 @@
 //
 // Clean addresses ask for the exact .html file FIRST: the host may answer any unknown address with the
 // home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
-const REDIRECTS = { '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about', '/samples/ashgrove': '/portfolio' };
+const REDIRECTS = { '/ryder-ziman-1': '/gettyimage-ryder-ziman-1', '/ryder-ziman-2': '/gettyimage-ryder-ziman-2', '/ryder-ziman-3': '/gettyimage-ryder-ziman-3', '/ryder-ziman-4': '/gettyimage-ryder-ziman-4', '/ryder-ziman-5': '/gettyimage-ryder-ziman-5', '/ryder-ziman-6-feat-maxim-zhukovski': '/gettyimage-ryder-ziman-6-feat-maxim-zhukovski', '/ryder-ziman-7': '/gettyimage-ryder-ziman-7', '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about', '/samples/ashgrove': '/portfolio' };
 
 const FORWARD_OLD_DOMAIN = true;
 

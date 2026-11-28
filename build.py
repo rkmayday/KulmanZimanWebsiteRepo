@@ -308,6 +308,8 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 ]
 
 
+PAGE_PREFIX = "gettyimage-"   # Ryder chose this page address prefix (Nov 28); the image files keep their names
+
 def photo_page(slug, alt, w, h):
     n = slug.split("-")[2]   # the page number
     # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 7
@@ -324,7 +326,7 @@ def photo_page(slug, alt, w, h):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "7") else "Ziman, Ryder"}</title>
 <meta name="description" content="{SNAP[int(n) - 1] if int(n) <= len(SNAP) else SNAP[-1]}">
-<link rel="canonical" href="{SITE}/{slug}">
+<link rel="canonical" href="{SITE}/{PAGE_PREFIX}{slug}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">{ld}</script>
@@ -578,10 +580,10 @@ def build(preview=False, theme="royal"):
     # when someone searches "Ryder Ziman". Not in any menu; they are in the sitemap (with their images).
     if not preview:
         for slug, alt, w, h in PHOTOS:
-            (out_dir / f"{slug}.html").write_text(lock_vh(photo_page(slug, alt, w, h)))
+            (out_dir / f"{PAGE_PREFIX}{slug}.html").write_text(lock_vh(photo_page(slug, alt, w, h)))
     if not preview:
         urls = "".join(f"<url><loc>{SITE}{'/' if p.stem == 'index' else '/' + p.stem}</loc></url>" for p in pages)
-        urls += "".join(f"<url><loc>{SITE}/{slug}</loc><image:image><image:loc>{SITE}/images/ryder-ziman/{slug}.jpg</image:loc></image:image></url>"
+        urls += "".join(f"<url><loc>{SITE}/{PAGE_PREFIX}{slug}</loc><image:image><image:loc>{SITE}/images/ryder-ziman/{slug}.jpg</image:loc></image:image></url>"
                         for slug, alt, w, h in PHOTOS)
         # the sample sites are marked "noindex", so they stay out of the sitemap (no mixed signals for Google)
         (out_dir / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">{urls}</urlset>')
