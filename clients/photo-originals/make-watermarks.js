@@ -1,7 +1,7 @@
 // Burns the "JL Press" mark (style 5) into each photo, at the photo's own size, from the clean originals
 const { chromium } = require('playwright'); const fs = require('fs'); const path = require('path');
 const R = '/home/user/kulmanzimanwebsiterepo';
-const P = [['ryder-ziman-1', 'Unknown'], ['ryder-ziman-2', 'Unknown'], ['ryder-ziman-3', 'Unknown'], ['ryder-ziman-4', 'Jessica Lee'],
+const P = [['ryder-ziman-1', 'R.J.C.'], ['ryder-ziman-2', 'R.J.C.'], ['ryder-ziman-3', 'Unknown'], ['ryder-ziman-4', 'Jessica Lee'],
            ['ryder-ziman-5', 'Unknown']];   // the Maxim photo was taken down and the instant photo moved up to 5
 (async () => { const b = await chromium.launch();
   for (const [i, [n, cred]] of P.entries()) {
