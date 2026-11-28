@@ -289,7 +289,7 @@ SIDE_LOCK = ("<style>html{overflow-x:hidden}"
 PHOTOS = [   # (page and file name, description, width, height, photo credit): files in static/images/ryder-ziman/
     ("ryder-ziman-1", "Ryder Ziman speaking at a podium", 840, 468, "Daniel Marks"),
     ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "Sofia Reyes"),
-    ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Unknown"),
+    ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Marcus Hale"),
     ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
 ]
 # Nov 28: the Maxim photo and later the photo with his dad (5) were taken down too. The old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.

@@ -2,7 +2,7 @@
 //   JL Media (1, 2, 4): corner logo + one big faint name   ·   BP Press (3): "BP" tiled diagonally across the photo, "BP PRESS" in the corner   ·   BG Coverage (5): five slanted faint names
 const { chromium } = require('playwright'); const fs = require('fs');
 const R = '/home/user/kulmanzimanwebsiterepo';
-const P = [['ryder-ziman-1', 'Daniel Marks', 'jl'], ['ryder-ziman-2', 'Sofia Reyes', 'jl'], ['ryder-ziman-3', 'Unknown', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl']];   // the photos with Maxim and with his dad were taken down   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
+const P = [['ryder-ziman-1', 'Daniel Marks', 'jl'], ['ryder-ziman-2', 'Sofia Reyes', 'jl'], ['ryder-ziman-3', 'Marcus Hale', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl']];   // the photos with Maxim and with his dad were taken down   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
 const NUM = {"ryder-ziman-1": "583324", "ryder-ziman-2": "220100", "ryder-ziman-3": "869692", "ryder-ziman-4": "918102", "ryder-ziman-5": "200035"};
 const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 (async () => { const b = await chromium.launch();
