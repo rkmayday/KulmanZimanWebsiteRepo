@@ -69,6 +69,7 @@ Last updated: Nov 27, 2026 (after v298).
   Nov 12 rebrand, Nov 20 Sports Culture, six demos, now, next), and the six demos as live cards. Timeline class is .rz-tl (.timeline is taken); the card is .rzf (.flip is taken by the product flip cards in site.js).
 - **Photo pages for Google Images (Nov 28):** five pages, /gettyimage-ryder-ziman-1 ... -5 (podium, navy suit, smiling, chair, instant photo).
   - Taken down: old photo 4 and the photo with Maxim (files in clients/removed-photos; their addresses answer 410). Older addresses 301 to the new ones (whop-site/server/index.js).
+  - Photo 3 is a "BMedia" photo: own page /bmedia-ryder-ziman (PAGE_PATH in build.py), agency-bar watermark "BM-000003".
   - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 5: "Ziman, Ryder: son of Michael Ziman"), credits: "R.J.C." on 1 and 2, "Jessica Lee" on the chair photo (4), "Unknown" on 3 and 5.
   - Photos carry a burned-in "JL Press" mark (Ryder's choice, style 5): corner logo, faint big name, "JL-00000N · Credit: ...". Clean originals + script in clients/photo-originals (make-watermarks.js).
   - Ryder asked for a visible Getty Images tag; declined (real company's branding on photos it doesn't own). The URL prefix was his call after a warning.
