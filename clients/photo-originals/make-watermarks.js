@@ -4,17 +4,18 @@ const { chromium } = require('playwright'); const fs = require('fs');
 const R = '/home/user/kulmanzimanwebsiterepo';
 const P = [['ryder-ziman-1', 'R.J.C.', 'jl'], ['ryder-ziman-2', 'R.J.C.', 'jl'], ['ryder-ziman-3', 'Unknown', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl'],
            ['ryder-ziman-5', 'Unknown', 'bg']];   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
+const NUM = {"ryder-ziman-1": "583324", "ryder-ziman-2": "220100", "ryder-ziman-3": "869692", "ryder-ziman-4": "918102", "ryder-ziman-5": "200035"};
 const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 (async () => { const b = await chromium.launch();
   for (const [n, cred, st] of P) {
     const src = `${R}/clients/photo-originals/${n}.jpg`; const { execSync } = require('child_process');
     const [w, h] = execSync(`python3 -c "from PIL import Image;print(*Image.open('${src}').size)"`).toString().trim().split(' ').map(Number);
     const u = Math.max(w, h * 1.2) / 900;   // scale everything to the photo
-    const id = PREFIX[st] + String(n.split('-')[2]).padStart(6, '0');   // the ID follows the photo number
+    const id = PREFIX[st] + NUM[n];   // random-looking photo IDs (fixed, so re-running gives the same ones)
     const px = v => Math.round(v * u) + 'px';
     const marks = {
       jl: `<div class="big">JL Media</div><div class="lg">JL<span> Media</span></div><div class="id">${id} · Credit: ${cred}</div>`,
-      ss: `<div class="ssf"></div><div class="ssl">BP&nbsp;COVERAGE</div><div class="ssid">${id} · Credit: ${cred}</div>`,
+      ss: `<div class="bps"><span>BP COVERAGE</span></div><div class="bpst"><b>BP</b><i>${id}<br>Credit: ${cred}</i></div>`,
       bg: `<div class="bgt">${Array(5).fill('<span>BG COVERAGE</span>').join('')}</div><div class="bgc"><b>BG</b>COVERAGE</div><div class="id">${id} · Credit: ${cred}</div>`,
     };
     const html = `<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800;900&family=IBM+Plex+Mono:wght@500&family=Archivo:wdth,wght@125,800&display=swap" rel="stylesheet">
@@ -30,6 +31,12 @@ const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 .ssf{inset:${px(26)};border:${Math.max(1, Math.round(2 * u))}px solid rgba(255,255,255,.6);box-shadow:0 0 ${px(18)} rgba(0,0,0,.25)}
 .ssl{left:50%;top:${px(26)};transform:translate(-50%,-50%);background:#fff;color:#111;padding:${px(7)} ${px(16)};font:900 ${px(22)} Inter;letter-spacing:.22em;white-space:nowrap;box-shadow:0 ${px(4)} ${px(16)} rgba(0,0,0,.35)}
 .ssid{right:${px(38)};bottom:${px(38)};font:500 ${Math.max(8, Math.round(13 * u))}px "IBM Plex Mono";letter-spacing:.1em;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+/* BP Coverage: a dark strip down the right edge with the name running up it, and a small stamp with the ID bottom-left */
+.bps{top:0;bottom:0;right:0;width:${px(70)};background:linear-gradient(90deg,rgba(8,8,10,.55),rgba(8,8,10,.82));display:grid;place-items:center;border-left:${Math.max(1, Math.round(2 * u))}px solid rgba(255,255,255,.55)}
+.bps span{position:static;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;font:900 ${px(30)} Inter;letter-spacing:.32em;color:#fff}
+.bpst{left:${px(22)};bottom:${px(22)};display:flex;align-items:center;gap:${px(10)};background:rgba(8,8,10,.62);padding:${px(8)} ${px(12)} ${px(8)} ${px(8)};border-radius:${px(4)}}
+.bpst b{display:grid;place-items:center;width:${px(46)};height:${px(46)};border-radius:50%;border:${Math.max(1, Math.round(2 * u))}px solid #fff;color:#fff;font:900 ${px(18)} Inter;letter-spacing:.04em}
+.bpst i{font:500 ${Math.max(7, Math.round(12 * u))}px "IBM Plex Mono";font-style:normal;letter-spacing:.08em;color:#fff;line-height:1.45}
 /* BGMEDIA: five slanted faint names across the photo, a small boxed logo in the corner */
 .bgt{left:-12%;right:-12%;top:2%;bottom:14%;transform:rotate(-20deg);display:flex;flex-direction:column;justify-content:space-between;align-items:center}
 .bgt span{font:800 ${px(42)} Archivo;font-stretch:125%;letter-spacing:.1em;color:rgba(255,255,255,.2);white-space:nowrap;text-shadow:0 0 ${px(6)} rgba(0,0,0,.08)}
