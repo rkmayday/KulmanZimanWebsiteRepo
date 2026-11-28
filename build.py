@@ -305,6 +305,7 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 ]
 
 
+TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "Ziman, Ryder", "4": "R. Ziman (BPP)", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
 PAGE_PREFIX = "jlpress/"   # Ryder chose this page address prefix (Nov 28): /jlpress/ryder-ziman-N
 PAGE_PATH = {"ryder-ziman-3": "bppress/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm", "ryder-ziman-5": "ryder-ziman-2019"}   # bm = bar mitzvah   # photos with their own page address
 
@@ -313,7 +314,7 @@ def page_path(slug):
 
 def photo_page(slug, alt, w, h, credit):
     n = slug.split("-")[2]   # the page number
-    # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 5 (the instant photo)
+    # page titles come from TITLES (Ryder's choice)
     img = f"/images/ryder-ziman/{slug}.jpg"
     ld = json.dumps({"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": SITE + img, "name": alt,
                      "creditText": credit, "creator": {"@type": "Person", "name": credit},
@@ -326,7 +327,7 @@ def photo_page(slug, alt, w, h, credit):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "5") else "Ziman, Ryder"}</title>
+<title>{TITLES.get(n, "Ziman, Ryder")}</title>
 <meta name="description" content="{SNAP[int(n) - 1] if int(n) <= len(SNAP) else SNAP[-1]}">
 <link rel="canonical" href="{SITE}/{page_path(slug)}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">

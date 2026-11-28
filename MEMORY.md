@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v330.**
+- **Latest version: v331.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -72,7 +72,7 @@ Last updated: Nov 27, 2026 (after v298).
   - Marks (clients/photo-originals/make-watermarks.js): "JL Media" on 1, 2, 4; "BP Press" tiled diagonally across photo 3 (design B) . Photo 5 has no mark.
   - Photo IDs are fixed random numbers (NUM in make-watermarks.js).
   - Ryder asked for "BFA Coverage" on 5; declined (BFA = Billy Farrell Agency, a real event-photo agency).
-  - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 5: "Ziman, Ryder: son of Michael Ziman"), credits: "Jessica Lee" on every JL Media photo (1, 2, 4), "Unknown" on 3 and 5.
+  - Fake "404" look, titles from TITLES in build.py ("Ziman, Ryder" on 1-3, "R. Ziman (BPP)" on 4, "Reported Child of Michael Ziman, Ryder Ziman" on 5), credits: "Jessica Lee" on every JL Media photo (1, 2, 4), "Unknown" on 3 and 5.
   - Photos carry a burned-in "JL Press" mark (Ryder's choice, style 5): corner logo, faint big name, "JL-00000N · Credit: ...". Clean originals + script in clients/photo-originals (make-watermarks.js).
   - Ryder asked for a visible Getty Images tag; declined (real company's branding on photos it doesn't own). The URL prefix was his call after a warning.
 - **PageSpeed (Nov 26):**
