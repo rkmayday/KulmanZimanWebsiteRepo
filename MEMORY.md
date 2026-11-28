@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v331.**
+- **Latest version: v332.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -67,9 +67,9 @@ Last updated: Nov 27, 2026 (after v298).
 - **Profile page (/ryderziman), Nov 27:** flip business card (photo front; back has email, LinkedIn, "Save contact" = /ryder-ziman.vcf),
   signature that writes itself, "The story so far" timeline (dates from git history: Aug 24 Kulman Ziman live, Nov 5 first samples (the redo with Claude),
   Nov 12 rebrand, Nov 20 Sports Culture, six demos, now, next), and the six demos as live cards. Timeline class is .rz-tl (.timeline is taken); the card is .rzf (.flip is taken by the product flip cards in site.js).
-- **Photo pages for Google Images (Nov 28):** five pages: /jlpress/ryder-ziman-1, -2, -bm (chair / bar mitzvah), /bppress/ryder-ziman (photo 3), /ryder-ziman-2019 (photo 5, Ryder and his dad, no mark) (podium, navy suit, smiling, chair, instant photo).
+- **Photo pages for Google Images (Nov 28):** five pages: /jlpress/ryder-ziman-1, -2, -bm (chair / bar mitzvah), /bp/ryder-ziman (photo 3), /ryder-ziman-2019 (photo 5, Ryder and his dad, no mark) (podium, navy suit, smiling, chair, instant photo).
   - Taken down: old photo 4 and the photo with Maxim (files in clients/removed-photos; their addresses answer 410). Older addresses 301 to the new ones (whop-site/server/index.js).
-  - Marks (clients/photo-originals/make-watermarks.js): "JL Media" on 1, 2, 4; "BP Press" tiled diagonally across photo 3 (design B) . Photo 5 has no mark.
+  - Marks (clients/photo-originals/make-watermarks.js): "JL Media" on 1, 2, 4; "BP" tiled diagonally across photo 3 with "BP PRESS" in the corner . Photo 5 has no mark.
   - Photo IDs are fixed random numbers (NUM in make-watermarks.js).
   - Ryder asked for "BFA Coverage" on 5; declined (BFA = Billy Farrell Agency, a real event-photo agency).
   - Fake "404" look, titles from TITLES in build.py ("Ziman, Ryder" on 1-3, "R. Ziman (BPP)" on 4, "Reported Child of Michael Ziman, Ryder Ziman" on 5), credits: "Jessica Lee" on every JL Media photo (1, 2, 4), "Unknown" on 3 and 5.

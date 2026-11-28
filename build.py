@@ -307,7 +307,7 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 
 TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "Ziman, Ryder", "4": "R. Ziman (BPP)", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
 PAGE_PREFIX = "jlpress/"   # Ryder chose this page address prefix (Nov 28): /jlpress/ryder-ziman-N
-PAGE_PATH = {"ryder-ziman-3": "bppress/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm", "ryder-ziman-5": "ryder-ziman-2019"}   # bm = bar mitzvah   # photos with their own page address
+PAGE_PATH = {"ryder-ziman-3": "bp/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm", "ryder-ziman-5": "ryder-ziman-2019"}   # bm = bar mitzvah   # photos with their own page address
 
 def page_path(slug):
     return PAGE_PATH.get(slug, PAGE_PREFIX + slug)
