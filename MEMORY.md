@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v326.**
+- **Latest version: v327.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -69,7 +69,7 @@ Last updated: Nov 27, 2026 (after v298).
   Nov 12 rebrand, Nov 20 Sports Culture, six demos, now, next), and the six demos as live cards. Timeline class is .rz-tl (.timeline is taken); the card is .rzf (.flip is taken by the product flip cards in site.js).
 - **Photo pages for Google Images (Nov 28):** five pages: /jlpress/ryder-ziman-1, -2, -bm (the chair / bar mitzvah photo), -5 and /bmedia/ryder-ziman (photo 3) (podium, navy suit, smiling, chair, instant photo).
   - Taken down: old photo 4 and the photo with Maxim (files in clients/removed-photos; their addresses answer 410). Older addresses 301 to the new ones (whop-site/server/index.js).
-  - Marks (clients/photo-originals/make-watermarks.js): "JL Media" on 1, 2, 4 (pages /jlpress/...); "BP Coverage" vertical right strip + round BP stamp on 3 (page /bmedia/ryder-ziman); "BG Coverage" five slanted names on 5 (cropped to Ryder and his dad).
+  - Marks (clients/photo-originals/make-watermarks.js): "JL Media" on 1, 2, 4 (pages /jlpress/...); "BP Press" tilted rubber stamp over the lower photo on 3 (page /bmedia/ryder-ziman); "BG Coverage" five slanted names on 5 (cropped to Ryder and his dad).
   - Photo IDs are fixed random numbers (NUM in make-watermarks.js).
   - Ryder asked for "BFA Coverage" on 5; declined (BFA = Billy Farrell Agency, a real event-photo agency).
   - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 5: "Ziman, Ryder: son of Michael Ziman"), credits: "R.J.C." on 1 and 2, "Jessica Lee" on the chair photo (4), "Unknown" on 3 and 5.
