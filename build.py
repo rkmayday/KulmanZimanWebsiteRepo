@@ -291,7 +291,7 @@ PHOTOS = [   # (page and file name, description, width, height, photo credit): f
     ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "R.J.C."),
     ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Unknown"),
     ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
-    ("ryder-ziman-5", "Instant photo of Ryder Ziman", 886, 886, "Unknown"),
+    ("ryder-ziman-5", "Instant photo of Ryder Ziman", 852, 960, "Unknown"),
 ]
 # Nov 28: photo 5 (with Maxim) taken down too and 6 moved up to 5. The old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
 
