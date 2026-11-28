@@ -1,4 +1,4 @@
-// Burns the "JL Media" mark (style 5) into each photo, at the photo's own size, from the clean originals
+// Burns the "JL Press" mark (style 5) into each photo, at the photo's own size, from the clean originals
 const { chromium } = require('playwright'); const fs = require('fs'); const path = require('path');
 const R = '/home/user/kulmanzimanwebsiterepo';
 const P = [['ryder-ziman-1', 'Unknown'], ['ryder-ziman-2', 'Unknown'], ['ryder-ziman-3', 'Unknown'], ['ryder-ziman-4', 'Jessica Lee'],
@@ -16,7 +16,7 @@ const P = [['ryder-ziman-1', 'Unknown'], ['ryder-ziman-2', 'Unknown'], ['ryder-z
 .lg{position:absolute;left:${Math.round(22 * u)}px;bottom:${Math.round(46 * u)}px;font:800 ${Math.round(40 * u)}px Inter;color:#fff;letter-spacing:-.02em;text-shadow:0 2px ${Math.round(14 * u)}px rgba(0,0,0,.55)}
 .lg span{font-weight:400;opacity:.85}
 .id{position:absolute;left:${Math.round(23 * u)}px;bottom:${Math.round(20 * u)}px;font:500 ${Math.max(9, Math.round(15 * u))}px "IBM Plex Mono";letter-spacing:.1em;color:rgba(255,255,255,.9);text-shadow:0 1px 6px rgba(0,0,0,.6)}</style>
-<div class="ph"><div class="big">JL Media</div><div class="lg">JL<span> Media</span></div><div class="id">${id} · Credit: ${cred}</div></div>`;
+<div class="ph"><div class="big">JL Press</div><div class="lg">JL<span> Press</span></div><div class="id">${id} · Credit: ${cred}</div></div>`;
     const p = await b.newPage({ viewport: { width: w, height: h } });
     await p.setContent(html, { waitUntil: 'networkidle' }); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(150);
     await p.screenshot({ path: `${R}/static/images/ryder-ziman/${n}.jpg`, type: 'jpeg', quality: 90 }); await p.close();
