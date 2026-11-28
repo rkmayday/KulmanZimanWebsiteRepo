@@ -2,7 +2,7 @@
 //   JL Media (1, 2, 4): corner logo + one big faint name   ·   BP Press (3): "BP" tiled diagonally across the photo, "BP PRESS" in the corner   ·   BG Coverage (5): five slanted faint names
 const { chromium } = require('playwright'); const fs = require('fs');
 const R = '/home/user/kulmanzimanwebsiterepo';
-const P = [['ryder-ziman-1', 'Jessica Lee', 'jl'], ['ryder-ziman-2', 'Jessica Lee', 'jl'], ['ryder-ziman-3', 'Unknown', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl']];   // the photos with Maxim and with his dad were taken down   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
+const P = [['ryder-ziman-1', 'Daniel Marks', 'jl'], ['ryder-ziman-2', 'Sofia Reyes', 'jl'], ['ryder-ziman-3', 'Unknown', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl']];   // the photos with Maxim and with his dad were taken down   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
 const NUM = {"ryder-ziman-1": "583324", "ryder-ziman-2": "220100", "ryder-ziman-3": "869692", "ryder-ziman-4": "918102", "ryder-ziman-5": "200035"};
 const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 (async () => { const b = await chromium.launch();
@@ -15,7 +15,7 @@ const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
     const px = v => Math.round(v * u) + 'px';
     const marks = {
       jl: `<div class="big">JL Media</div><div class="lg">JL<span> Media</span></div><div class="id">${id} · Credit: ${cred}</div>`,
-      ss: `<div class="bpt">${Array(30).fill('<span>BP</span>').join('')}</div><div class="id">BP PRESS · ${id} · Credit: ${cred}</div>`,
+      ss: `<div class="bpt">${Array(30).fill('<span>BP</span>').join('')}</div><div class="bpb"><b>BP PRESS</b><span>${id}</span><span>${cred}</span></div>`,
       bg: `<div class="bgt">${Array(5).fill('<span>BG COVERAGE</span>').join('')}</div><div class="bgc"><b>BG</b>COVERAGE</div><div class="id">${id} · Credit: ${cred}</div>`,
     };
     const html = `<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800;900&family=IBM+Plex+Mono:wght@500&family=Archivo:wdth,wght@125,800&display=swap" rel="stylesheet">
@@ -33,6 +33,9 @@ const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 .ssid{right:${px(38)};bottom:${px(38)};font:500 ${Math.max(8, Math.round(13 * u))}px "IBM Plex Mono";letter-spacing:.1em;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.7)}
 /* BP Press: "BP PRESS" tiled diagonally across the whole photo, like a stock-photo preview */
 .bpt{inset:-30%;transform:rotate(-30deg);display:grid;grid-template-columns:repeat(3,1fr);gap:${px(80)} ${px(34)};align-content:center;justify-items:center}
+.bpb{right:${px(18)};bottom:${px(18)};display:flex;align-items:stretch;border-radius:${px(30)};overflow:hidden;box-shadow:0 ${px(4)} ${px(16)} rgba(0,0,0,.35);font:600 ${Math.max(7, Math.round(13 * u))}px Inter;letter-spacing:.06em}
+.bpb b{background:#fff;color:#111;padding:${px(7)} ${px(12)};font-weight:900;letter-spacing:.14em}
+.bpb span{background:rgba(15,15,18,.78);color:#fff;padding:${px(7)} ${px(10)};border-left:1px solid rgba(255,255,255,.18)}
 .bpt span{font:800 ${px(34)} Inter;letter-spacing:.12em;color:rgba(255,255,255,.28);white-space:nowrap}
 /* BGMEDIA: five slanted faint names across the photo, a small boxed logo in the corner */
 .bgt{left:-12%;right:-12%;top:2%;bottom:14%;transform:rotate(-20deg);display:flex;flex-direction:column;justify-content:space-between;align-items:center}
