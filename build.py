@@ -291,6 +291,7 @@ PHOTOS = [   # (page and file name, description, width, height, photo credit): f
     ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "Sofia Reyes"),
     ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Marcus Hale"),
     ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
+    ("ryder-ziman-6", "Ryder Ziman at a press table", 390, 390, "Ethan Cole"),
 ]
 # Nov 28: the Maxim photo and later the photo with his dad (5) were taken down too. The old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
 
@@ -300,15 +301,15 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
     "Spotted. No comment from the subject.",
     "Snapped mid-smile. Unreleased photo.",
     "Caught in the moment. Exclusive.",
-    "Rare photo surfaces.",
+    "Rare photo surfaces.",    "Seen at the press table. Exclusive.",
 ]
 
 
-FILENAME = {"1": "IMG_4627.JPG", "2": "IMG_7139.JPG", "3": "IMG_2841.JPG", "4": "IMG_5376.JPG"}   # random-looking camera file names shown on each photo page
+FILENAME = {"1": "IMG_4627.JPG", "2": "IMG_7139.JPG", "3": "IMG_2841.JPG", "4": "IMG_5376.JPG", "6": "IMG_9058.JPG"}   # random-looking camera file names shown on each photo page
 CHECK = ["7C21", "3F9A", "B84E", "E19D", "5A63"]   # the fake checksum shown on each photo page
-TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "R. Ziman (BPP)", "4": "Ziman, Ryder", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
+TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "R. Ziman (BPP)", "4": "Ziman, Ryder", "6": "Ryder Ziman", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
 PAGE_PREFIX = "jlmedia/"   # Ryder chose this page address prefix (Nov 28): /jlmedia/ryder-ziman-N
-PAGE_PATH = {"ryder-ziman-3": "bp/ryder-ziman", "ryder-ziman-4": "jlmedia/ryder-ziman-bm"}   # bm = bar mitzvah   # photos with their own page address
+PAGE_PATH = {"ryder-ziman-3": "bp/ryder-ziman", "ryder-ziman-4": "jlmedia/ryder-ziman-bm", "ryder-ziman-6": "pwc/ryder-ziman"}   # bm = bar mitzvah   # photos with their own page address
 
 def page_path(slug):
     return PAGE_PATH.get(slug, PAGE_PREFIX + slug)
