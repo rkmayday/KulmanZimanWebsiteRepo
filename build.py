@@ -291,10 +291,9 @@ PHOTOS = [   # (page and file name, description, width, height, photo credit): f
     ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "Unknown"),
     ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Unknown"),
     ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
-    ("ryder-ziman-5-feat-maxim-zhukovski", "Ryder Ziman (right) with Maxim Zhukovski", 886, 886, "Unknown"),
-    ("ryder-ziman-6", "Instant photo of Ryder Ziman", 886, 886, "Unknown"),
+    ("ryder-ziman-5", "Instant photo of Ryder Ziman", 886, 886, "Unknown"),
 ]
-# Nov 28: the old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
+# Nov 28: photo 5 (with Maxim) taken down too and 6 moved up to 5. The old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
 
 
 SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi feel)
@@ -302,7 +301,6 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
     "Spotted. No comment from the subject.",
     "Snapped mid-smile. Unreleased photo.",
     "Caught in the moment. Exclusive.",
-    "Spotted together. Sources confirm.",
     "Rare photo surfaces.",
 ]
 
@@ -311,7 +309,7 @@ PAGE_PREFIX = "gettyimage-"   # Ryder chose this page address prefix (Nov 28)
 
 def photo_page(slug, alt, w, h, credit):
     n = slug.split("-")[2]   # the page number
-    # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 6 (the instant photo)
+    # titles as Ryder asked: "Ziman, Ryder", and "Ziman, Ryder: son of Michael Ziman" on photos 1, 2 and 5 (the instant photo)
     img = f"/images/ryder-ziman/{slug}.jpg"
     ld = json.dumps({"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": SITE + img, "name": alt,
                      "creditText": credit, "creator": {"@type": "Person", "name": credit},
@@ -324,7 +322,7 @@ def photo_page(slug, alt, w, h, credit):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "6") else "Ziman, Ryder"}</title>
+<title>{"Ziman, Ryder: son of Michael Ziman" if n in ("1", "2", "5") else "Ziman, Ryder"}</title>
 <meta name="description" content="{SNAP[int(n) - 1] if int(n) <= len(SNAP) else SNAP[-1]}">
 <link rel="canonical" href="{SITE}/{PAGE_PREFIX}{slug}">
 <meta property="og:type" content="profile"><meta property="og:title" content="Ryder Ziman"><meta property="og:image" content="{SITE}{img}">

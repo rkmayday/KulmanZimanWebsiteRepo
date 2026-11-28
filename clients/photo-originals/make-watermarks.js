@@ -2,13 +2,13 @@
 const { chromium } = require('playwright'); const fs = require('fs'); const path = require('path');
 const R = '/home/user/kulmanzimanwebsiterepo';
 const P = [['ryder-ziman-1', 'Unknown'], ['ryder-ziman-2', 'Unknown'], ['ryder-ziman-3', 'Unknown'], ['ryder-ziman-4', 'Jessica Lee'],
-           ['ryder-ziman-5-feat-maxim-zhukovski', 'Unknown'], ['ryder-ziman-6', 'Unknown']];
+           ['ryder-ziman-5', 'Unknown']];   // the Maxim photo was taken down and the instant photo moved up to 5
 (async () => { const b = await chromium.launch();
   for (const [i, [n, cred]] of P.entries()) {
     const src = `${R}/clients/photo-originals/${n}.jpg`; const { execSync } = require('child_process');
     const [w, h] = execSync(`python3 -c "from PIL import Image;print(*Image.open('${src}').size)"`).toString().trim().split(' ').map(Number);
     const u = Math.max(w, h * 1.2) / 900;   // scale everything to the photo
-    const id = 'JL-' + String(i + 1).padStart(6, '0');
+    const id = 'JL-' + String(n.split('-')[2]).padStart(6, '0');   // the ID follows the photo number
     const html = `<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>*{margin:0}html,body{width:${w}px;height:${h}px;overflow:hidden}
 .ph{position:relative;width:${w}px;height:${h}px;background:url(data:image/jpeg;base64,${fs.readFileSync(src).toString('base64')}) 0 0/100% 100%}

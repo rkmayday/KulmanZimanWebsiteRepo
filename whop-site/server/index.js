@@ -6,9 +6,10 @@
 //
 // Clean addresses ask for the exact .html file FIRST: the host may answer any unknown address with the
 // home page (200), so "try the plain path, then .html on a 404" would show the home page for every link.
-const REDIRECTS = { '/ryder-ziman-1': '/gettyimage-ryder-ziman-1', '/ryder-ziman-2': '/gettyimage-ryder-ziman-2', '/ryder-ziman-3': '/gettyimage-ryder-ziman-3', '/ryder-ziman-5': '/gettyimage-ryder-ziman-4', '/ryder-ziman-6-feat-maxim-zhukovski': '/gettyimage-ryder-ziman-5-feat-maxim-zhukovski', '/ryder-ziman-7': '/gettyimage-ryder-ziman-6', '/images/ryder-ziman/ryder-ziman-5.jpg': '/images/ryder-ziman/ryder-ziman-4.jpg', '/images/ryder-ziman/ryder-ziman-6-feat-maxim-zhukovski.jpg': '/images/ryder-ziman/ryder-ziman-5-feat-maxim-zhukovski.jpg', '/images/ryder-ziman/ryder-ziman-7.jpg': '/images/ryder-ziman/ryder-ziman-6.jpg', '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about', '/samples/ashgrove': '/portfolio' };
+const REDIRECTS = { '/ryder-ziman-1': '/gettyimage-ryder-ziman-1', '/ryder-ziman-2': '/gettyimage-ryder-ziman-2', '/ryder-ziman-3': '/gettyimage-ryder-ziman-3', '/ryder-ziman-5': '/gettyimage-ryder-ziman-4', '/ryder-ziman-7': '/gettyimage-ryder-ziman-5', '/gettyimage-ryder-ziman-6': '/gettyimage-ryder-ziman-5', '/images/ryder-ziman/ryder-ziman-7.jpg': '/images/ryder-ziman/ryder-ziman-5.jpg', '/images/ryder-ziman/ryder-ziman-6.jpg': '/images/ryder-ziman/ryder-ziman-5.jpg', '/fitness-sample': '/samples/ironpath', '/ironpath-app': '/samples/ironpath', '/rexkulman': '/about', '/samples/ashgrove': '/portfolio' };
 
-const GONE = new Set(['/ryder-ziman-4', '/ryder-ziman-4.html']);
+const GONE = new Set(['/ryder-ziman-4', '/ryder-ziman-4.html', '/gettyimage-ryder-ziman-5-feat-maxim-zhukovski', '/gettyimage-ryder-ziman-5-feat-maxim-zhukovski.html',
+  '/ryder-ziman-6-feat-maxim-zhukovski', '/images/ryder-ziman/ryder-ziman-5-feat-maxim-zhukovski.jpg', '/images/ryder-ziman/ryder-ziman-6-feat-maxim-zhukovski.jpg']);
 
 const FORWARD_OLD_DOMAIN = true;
 

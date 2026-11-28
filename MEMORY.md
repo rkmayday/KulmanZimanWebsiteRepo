@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v320.**
+- **Latest version: v321.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -67,9 +67,9 @@ Last updated: Nov 27, 2026 (after v298).
 - **Profile page (/ryderziman), Nov 27:** flip business card (photo front; back has email, LinkedIn, "Save contact" = /ryder-ziman.vcf),
   signature that writes itself, "The story so far" timeline (dates from git history: Aug 24 Kulman Ziman live, Nov 5 first samples (the redo with Claude),
   Nov 12 rebrand, Nov 20 Sports Culture, six demos, now, next), and the six demos as live cards. Timeline class is .rz-tl (.timeline is taken); the card is .rzf (.flip is taken by the product flip cards in site.js).
-- **Photo pages for Google Images (Nov 28):** six pages at /gettyimage-ryder-ziman-1 ... -4, /gettyimage-ryder-ziman-5-feat-maxim-zhukovski, /gettyimage-ryder-ziman-6.
-  - Old photo 4 taken down (file in clients/removed-photos; /ryder-ziman-4 answers 410). Old 5/6/7 became 4/5/6; old page and image addresses 301 to the new ones (whop-site/server/index.js).
-  - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 6: "Ziman, Ryder: son of Michael Ziman"), credits in the ImageObject data: "Jessica Lee" on the chair photo (4), "Unknown" on the rest.
+- **Photo pages for Google Images (Nov 28):** five pages, /gettyimage-ryder-ziman-1 ... -5 (podium, navy suit, smiling, chair, instant photo).
+  - Taken down: old photo 4 and the photo with Maxim (files in clients/removed-photos; their addresses answer 410). Older addresses 301 to the new ones (whop-site/server/index.js).
+  - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 5: "Ziman, Ryder: son of Michael Ziman"), credits: "Jessica Lee" on the chair photo (4), "Unknown" on the rest.
   - Photos carry a burned-in "JL Press" mark (Ryder's choice, style 5): corner logo, faint big name, "JL-00000N · Credit: ...". Clean originals + script in clients/photo-originals (make-watermarks.js).
   - Ryder asked for a visible Getty Images tag; declined (real company's branding on photos it doesn't own). The URL prefix was his call after a warning.
 - **PageSpeed (Nov 26):**
