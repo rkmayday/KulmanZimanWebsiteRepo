@@ -291,9 +291,8 @@ PHOTOS = [   # (page and file name, description, width, height, photo credit): f
     ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "Jessica Lee"),
     ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Unknown"),
     ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
-    ("ryder-ziman-5", "Instant photo of Ryder Ziman", 852, 960, "Unknown"),
 ]
-# Nov 28: photo 5 (with Maxim) taken down too and 6 moved up to 5. The old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
+# Nov 28: the Maxim photo and later the photo with his dad (5) were taken down too. The old photo 4 was taken down (kept in clients/removed-photos); 5, 6 and 7 moved up to 4, 5 and 6.
 
 
 SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi feel)
@@ -307,7 +306,7 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 
 TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "Ziman, Ryder", "4": "R. Ziman (BPP)", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
 PAGE_PREFIX = "jlpress/"   # Ryder chose this page address prefix (Nov 28): /jlpress/ryder-ziman-N
-PAGE_PATH = {"ryder-ziman-3": "bp/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm", "ryder-ziman-5": "ryder-ziman-2019"}   # bm = bar mitzvah   # photos with their own page address
+PAGE_PATH = {"ryder-ziman-3": "bp/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm"}   # bm = bar mitzvah   # photos with their own page address
 
 def page_path(slug):
     return PAGE_PATH.get(slug, PAGE_PREFIX + slug)
