@@ -2,8 +2,8 @@
 //   JL Media (1, 2, 4): corner logo + one big faint name   ·   BP Press (3): tiled diagonally across the photo   ·   BG Coverage (5): five slanted faint names
 const { chromium } = require('playwright'); const fs = require('fs');
 const R = '/home/user/kulmanzimanwebsiterepo';
-const P = [['ryder-ziman-1', 'R.J.C.', 'jl'], ['ryder-ziman-2', 'R.J.C.', 'jl'], ['ryder-ziman-3', 'Unknown', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl'],
-           ['ryder-ziman-5', 'Unknown', 'bg']];   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
+const P = [['ryder-ziman-1', 'Jessica Lee', 'jl'], ['ryder-ziman-2', 'Jessica Lee', 'jl'], ['ryder-ziman-3', 'Unknown', 'ss'], ['ryder-ziman-4', 'Jessica Lee', 'jl'],
+           ['ryder-ziman-5', 'Unknown', 'none']];   // the Maxim photo was taken down; the instant photo (cropped to Ryder and his dad) is 5
 const NUM = {"ryder-ziman-1": "583324", "ryder-ziman-2": "220100", "ryder-ziman-3": "869692", "ryder-ziman-4": "918102", "ryder-ziman-5": "200035"};
 const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 (async () => { const b = await chromium.launch();
@@ -11,6 +11,7 @@ const PREFIX = { jl: 'JL-', ss: 'BP-', bg: 'BG-' };
     const src = `${R}/clients/photo-originals/${n}.jpg`; const { execSync } = require('child_process');
     const [w, h] = execSync(`python3 -c "from PIL import Image;print(*Image.open('${src}').size)"`).toString().trim().split(' ').map(Number);
     const u = Math.max(w, h * 1.2) / 900;   // scale everything to the photo
+    if (st === 'none') { fs.copyFileSync(src, `${R}/static/images/ryder-ziman/${n}.jpg`); console.log(n, 'no mark'); continue; }   // photo 5 has no mark (Nov 28)
     const id = PREFIX[st] + NUM[n];   // random-looking photo IDs (fixed, so re-running gives the same ones)
     const px = v => Math.round(v * u) + 'px';
     const marks = {

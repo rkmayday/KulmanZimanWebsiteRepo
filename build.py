@@ -287,8 +287,8 @@ SIDE_LOCK = ("<style>html{overflow-x:hidden}"
 
 
 PHOTOS = [   # (page and file name, description, width, height, photo credit): files in static/images/ryder-ziman/
-    ("ryder-ziman-1", "Ryder Ziman speaking at a podium", 840, 468, "R.J.C."),
-    ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "R.J.C."),
+    ("ryder-ziman-1", "Ryder Ziman speaking at a podium", 840, 468, "Jessica Lee"),
+    ("ryder-ziman-2", "Ryder Ziman in a navy suit", 296, 470, "Jessica Lee"),
     ("ryder-ziman-3", "Ryder Ziman smiling", 318, 390, "Unknown"),
     ("ryder-ziman-4", "Ryder Ziman lifted on a chair at a celebration", 1600, 1066, "Jessica Lee"),
     ("ryder-ziman-5", "Instant photo of Ryder Ziman", 852, 960, "Unknown"),
@@ -306,7 +306,7 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 
 
 PAGE_PREFIX = "jlpress/"   # Ryder chose this page address prefix (Nov 28): /jlpress/ryder-ziman-N
-PAGE_PATH = {"ryder-ziman-3": "bppress/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm", "ryder-ziman-5": "bgcoverage/ryder-ziman"}   # bm = bar mitzvah   # photos with their own page address
+PAGE_PATH = {"ryder-ziman-3": "bppress/ryder-ziman", "ryder-ziman-4": "jlpress/ryder-ziman-bm", "ryder-ziman-5": "ryder-ziman-2019"}   # bm = bar mitzvah   # photos with their own page address
 
 def page_path(slug):
     return PAGE_PATH.get(slug, PAGE_PREFIX + slug)
