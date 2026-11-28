@@ -304,6 +304,8 @@ SNAP = [   # search-snippet lines, one per photo page, in order (a paparazzi fee
 ]
 
 
+FILENAME = {"1": "DSC_4827.JPG", "2": "IMG_7139.JPG", "3": "P1040562.JPG", "4": "_MG_2915.JPG"}   # random-looking camera file names shown on each photo page
+CHECK = ["7C21", "3F9A", "B84E", "E19D", "5A63"]   # the fake checksum shown on each photo page
 TITLES = {"1": "Ziman, Ryder", "2": "Ziman, Ryder", "3": "R. Ziman (BPP)", "4": "Ziman, Ryder", "5": "Reported Child of Michael Ziman, Ryder Ziman"}   # page titles, set by Ryder
 PAGE_PREFIX = "jlmedia/"   # Ryder chose this page address prefix (Nov 28): /jlmedia/ryder-ziman-N
 PAGE_PATH = {"ryder-ziman-3": "bp/ryder-ziman", "ryder-ziman-4": "jlmedia/ryder-ziman-bm"}   # bm = bar mitzvah   # photos with their own page address
@@ -333,20 +335,22 @@ def photo_page(slug, alt, w, h, credit):
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">{ld}</script>
 <style>
-/* Ryder asked for these pages to look like a broken error page (style C): the photo is still in the page for Google
-   Images, shown faint and grey behind a fake "404", with no caption and no link to the site. */
+/* Looks like a damaged photo file (Ryder's choice, Nov 28): the photo faint and grey, its "file name" big in the middle,
+   a couple of shifted strips through it. No error wording: Google rejected the old error-page look. */
 html,body{{margin:0;height:100%;background:#fff;color:#202124;font-family:Arial,Helvetica,sans-serif;overflow:hidden}}
 figure{{margin:0;position:fixed;inset:0}}
 figure img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.13;filter:grayscale(1)}}
 .e{{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;padding:0 20px}}
-.e b{{font:700 clamp(80px,18vw,120px)/1 Arial,Helvetica,sans-serif;letter-spacing:-.04em}}
+.e b{{font:700 clamp(44px,10vw,110px)/1 Arial,Helvetica,sans-serif;letter-spacing:-.04em;color:#202124}}
+.strip{{position:fixed;left:0;right:0;background:url({img}) center/contain no-repeat;opacity:.3;filter:grayscale(1);pointer-events:none}}
 .e p{{margin:0;font-size:18px;color:#5f6368;max-width:420px}}
 .e code{{font:13px ui-monospace,Menlo,monospace;color:#9aa0a6;margin-top:10px}}
 </style>
 </head>
 <body>
 <figure><img src="{img}" alt="{alt}" width="{w}" height="{h}"></figure>
-<div class="e" aria-hidden="true"><b>404</b><p>The requested resource could not be displayed.</p><code>ERR_IMAGE_DECODE_FAILED</code></div>
+<div class="strip" style="top:34%;height:8px;transform:translateX(-30px)" aria-hidden="true"></div><div class="strip" style="top:61%;height:5px;transform:translateX(44px)" aria-hidden="true"></div>
+<div class="e" aria-hidden="true"><b>{FILENAME.get(n, "IMG_0000.JPG")}</b><p>The image data is damaged and is shown partially.</p><code>CHECKSUM MISMATCH · 0x{CHECK[int(n) % len(CHECK)]}</code></div>
 </body>
 </html>
 """
