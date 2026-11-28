@@ -40,9 +40,9 @@ const PREFIX = { pw: 'PW-',  jl: 'JL-', ss: 'BP-', bg: 'BG-' };
 .bpt span{font:800 ${px(34)} Inter;letter-spacing:.12em;color:rgba(255,255,255,.28);white-space:nowrap}
 /* Presswall Coverage: one big slanted PRESSWALL across the photo, COVERAGE under it smaller and wider */
 .pwb{inset:0;display:grid;place-items:center}
-.pwb div{position:static;transform:rotate(-16deg);display:grid;justify-items:center;gap:${px(4)}}
-.pwb b{font:900 ${px(92)} Inter;letter-spacing:-.02em;line-height:.9;color:rgba(255,255,255,.42);white-space:nowrap;-webkit-text-stroke:${Math.max(1, Math.round(1.5 * u))}px rgba(0,0,0,.28);text-shadow:0 ${px(3)} ${px(14)} rgba(0,0,0,.35)}
-.pwb i{font:800 ${px(28)} Inter;font-style:normal;letter-spacing:.78em;margin-right:-.78em;color:rgba(255,255,255,.55);white-space:nowrap;text-shadow:0 ${px(2)} ${px(8)} rgba(0,0,0,.5)}
+.pwb div{position:static;transform:rotate(-45deg);display:grid;justify-items:center;gap:${px(6)}}
+.pwb b{font:900 ${px(124)} Inter;letter-spacing:0;line-height:.9;color:rgba(255,255,255,.32);white-space:nowrap;text-shadow:0 ${px(2)} ${px(18)} rgba(0,0,0,.18)}
+.pwb i{font:800 ${px(34)} Inter;font-style:normal;letter-spacing:.8em;margin-right:-.8em;color:rgba(255,255,255,.45);white-space:nowrap;text-shadow:0 ${px(2)} ${px(8)} rgba(0,0,0,.3)}
 /* BGMEDIA: five slanted faint names across the photo, a small boxed logo in the corner */
 .bgt{left:-12%;right:-12%;top:2%;bottom:14%;transform:rotate(-20deg);display:flex;flex-direction:column;justify-content:space-between;align-items:center}
 .bgt span{font:800 ${px(42)} Archivo;font-stretch:125%;letter-spacing:.1em;color:rgba(255,255,255,.2);white-space:nowrap;text-shadow:0 0 ${px(6)} rgba(0,0,0,.08)}
