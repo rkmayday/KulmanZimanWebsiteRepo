@@ -52,7 +52,7 @@ Last updated: Nov 27, 2026 (after v298).
    npm install
    whop apps deploy --app app_JdRDs81kkoj3CZ
    ```
-- **Latest version: v318.**
+- **Latest version: v319.**
 
 ## The site (mono theme)
 - **Pages:** Home, Pricing (products), About, Portfolio, Affiliates, Help, Legal, Get Started, Ryder Ziman (/ryderziman).
@@ -70,6 +70,7 @@ Last updated: Nov 27, 2026 (after v298).
 - **Photo pages for Google Images (Nov 28):** six pages at /gettyimage-ryder-ziman-1 ... -4, /gettyimage-ryder-ziman-5-feat-maxim-zhukovski, /gettyimage-ryder-ziman-6.
   - Old photo 4 taken down (file in clients/removed-photos; /ryder-ziman-4 answers 410). Old 5/6/7 became 4/5/6; old page and image addresses 301 to the new ones (whop-site/server/index.js).
   - Fake "404" look, titles "Ziman, Ryder" (1, 2 and 6: "Ziman, Ryder: son of Michael Ziman"), credits in the ImageObject data: "Jessica Lee" on the chair photo (4), "Unknown" on the rest.
+  - Photos carry a burned-in "JL Media" mark (Ryder's choice, style 5): corner logo, faint big name, "JL-00000N · Credit: ...". Clean originals + script in clients/photo-originals (make-watermarks.js).
   - Ryder asked for a visible Getty Images tag; declined (real company's branding on photos it doesn't own). The URL prefix was his call after a warning.
 - **PageSpeed (Nov 26):**
   - mobile performance went 74 → 89 after self-hosting the fonts (assets/fonts, inlined @font-face; the preview still uses Google Fonts);
